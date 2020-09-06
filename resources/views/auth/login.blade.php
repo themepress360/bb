@@ -45,12 +45,15 @@
 						<div class="account-wrapper">
 							<h3 class="account-title">Login</h3>
 							<p class="account-subtitle">Access to our dashboard</p>
-							
+							@if($errors->any())
+								<label class="alert alert-danger text-center" style="width:100%;">{{$errors->first()}}</label>
+							@endif
 							<!-- Account Form -->
-							<form action="index">
+							<form method="POST" action="login">
+    						{!! csrf_field() !!}
 								<div class="form-group">
 									<label>Email Address</label>
-									<input class="form-control" type="text">
+									<input class="form-control" type="email" name="email" placeholder="Enter Email" value="{{ old('email') }}">
 								</div>
 								<div class="form-group">
 									<div class="row">
@@ -63,7 +66,8 @@
 											</a>
 										</div>
 									</div>
-									<input class="form-control" type="password">
+									<input class="form-control" type="password" name="password" placeholder="Enter Password">
+									
 								</div>
 								<div class="form-group text-center">
 									<button class="btn btn-primary account-btn" type="submit">Login</button>
