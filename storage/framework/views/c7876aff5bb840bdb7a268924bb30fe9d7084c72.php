@@ -1,0 +1,1 @@
+this is a post<?php /**PATH C:\xampp\htdocs\blog1\resources\views/layout/appointment.blade.php ENDPATH**/ ?>
