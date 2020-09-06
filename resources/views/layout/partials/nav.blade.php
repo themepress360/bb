@@ -52,14 +52,35 @@
 									<li><a href="overtime">Overtime</a></li>
 								</ul>
 							</li>
-							<li> 
+							 
+								<li class="submenu">
+								<a href="#"><i class="la la-rocket"></i> <span> Projects</span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="projects">Projects</a></li>
+									<li><a href="tasks">Tasks</a></li>
+									<li><a href="task-board">Task Board</a></li>
+								</ul>
+							</li>
+							<li>
 								<a href="clients"><i class="la la-users"></i> <span>Clients</span></a>
 							</li>
 							<li> 
 								<a href="leads"><i class="la la-user-secret"></i> <span>Leads</span></a>
 							</li>
-							
-							
+							<li> 
+								<a href="tickets"><i class="la la-ticket"></i> <span>Tickets</span></a>
+							</li>
+							<li> 
+
+								<a href="users"><i class="la la-user-plus"></i> <span>Users</span></a>
+
+							</li>
+
+							<li> 
+
+								<a href="settings"><i class="la la-cog"></i> <span>Settings</span></a>
+
+							</li>							
 							
 						</ul>
 					</div>
