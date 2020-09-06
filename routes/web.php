@@ -182,3 +182,62 @@ Route::get('/employee/ticket-view', function () {
 
 
 
+Route::get('/client/dashboard', function () {
+        return view('clients.dashboard.index');
+    });
+Route::get('/client/profile', function () {
+        return view('clients.profile.index');
+    });
+
+Route::get('/client/chat', function () {
+        return view('clients.apps.chat.index');
+    });
+
+Route::get('/client/voice-call', function () {
+        return view('clients.apps.calls.voice-call');
+    });
+
+Route::get('/client/video-call', function () {
+        return view('clients.apps.calls.video-call');
+    });
+Route::get('/client/outgoing-call', function () {
+        return view('clients.apps.calls.outgoing-call');
+    });
+
+Route::get('/client/incoming-call', function () {
+        return view('clients.apps.calls.incoming-call');
+    });
+
+Route::get('/client/projects', function () {
+        return view('clients.projects.index');
+    });
+
+Route::get('/client/projects-list', function () {
+        return view('clients.projects.projects-list');
+    });
+Route::get('/client/projects-list', function () {
+        return view('clients.projects.projects-list');
+    });
+Route::get('/client/project-view', function () {
+        return view('clients.projects.project-view');
+    });
+Route::get('/client/tasks', function () {
+        return view('clients.projects.tasks');
+    });
+Route::get('/client/task-board', function () {
+        return view('clients.projects.task-board');
+    });
+Route::get('/client/tickets', function () {
+        return view('clients.tickets.index');
+    });
+Route::get('/client/ticket-view', function () {
+        return view('client.tickets.ticket-view');
+    });
+Route::get('/client/tickets', function () {
+        return view('clients.tickets.index');
+    });
+Route::get('/client/ticket-view', function () {
+        return view('clients.tickets.ticket-view');
+
+ });
+
