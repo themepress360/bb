@@ -12,15 +12,31 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware(['is-user-login'])->group(function () 
+{
+    Route::get('login', 'Auth\LoginController@show_login');
+    Route::post('/login','Auth\LoginController@doLogin');
+});
 
-Route::get('/login', function () {
-        return view('auth.login');
+Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
+//Route::middleware(['auth:web'])->group(function () {
+// {
+    Route::group(
+            ['middleware' => ['profile-status'],'namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin'], function () {
+        Route::get('dashboard', array('uses' => 'DashboardController@index'));
+
     });
 
-
-Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard.index');
+    Route::group(
+            ['middleware' => ['profile-status'],'namespace' => 'Client', 'prefix' => 'client', 'as' => 'client'], function () {
+        Route::get('dashboard', array('uses' => 'DashboardController@index'));
     });
+
+    Route::group(
+            ['middleware' => ['profile-status'],'namespace' => 'Employee', 'prefix' => 'employee', 'as' => 'employee'], function () {
+        Route::get('dashboard', array('uses' => 'DashboardController@index'));
+    });
+//});
 
 Route::get('/admin/employees', function () {
         return view('admin.employees.index');
@@ -108,9 +124,7 @@ Route::get('/admin/users', function () {
 
 
 
-Route::get('/employee/dashboard', function () {
-        return view('employees.dashboard.index');
-    });
+
 Route::get('/employee/profile', function () {
         return view('employees.profile.index');
     });
@@ -165,5 +179,6 @@ Route::get('/employee/ticket-view', function () {
         return view('employees.tickets.ticket-view');
 
  });
+
 
 

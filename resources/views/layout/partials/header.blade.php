@@ -260,12 +260,12 @@
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <span class="user-img"><img src="{{asset('img/profiles/avatar-21.jpg')}}" alt="">
                         <span class="status online"></span></span>
-                        <span>Admin</span>
+                        <span>{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="profile">My Profile</a>
                         <a class="dropdown-item" href="settings">Settings</a>
-                        <a class="dropdown-item" href="login">Logout</a>
+                        <a href="{{ URL::to('logout') }}" class="dropdown-item">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -277,7 +277,7 @@
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="profile">My Profile</a>
                     <a class="dropdown-item" href="settings">Settings</a>
-                    <a class="dropdown-item" href="login">Logout</a>
+                    <a class="dropdown-item" href="{{ URL::to('logout') }}">Logout</a>
                 </div>
             </div>
             <!-- /Mobile Menu -->
