@@ -7,7 +7,7 @@
 					<div class="sidebar-menu">
 						<ul>
 							<li> 
-								<a href="{{url('/admin/dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
+								<a href="{{url('/employee/dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
 							</li>
 							<li class="menu-title">Projects <a href="#" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i></a></li>
 							<li> 

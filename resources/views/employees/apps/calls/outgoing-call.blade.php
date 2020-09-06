@@ -26,7 +26,7 @@
 					<div class="sidebar-menu">
 						<ul>
 							<li> 
-								<a href="{{url('/admin/dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
+								<a href="{{url('/employee/dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
 							</li>
 							<li class="menu-title"><span>Chat Groups</span> <a href="#" data-toggle="modal" data-target="#add_group"><i class="fa fa-plus"></i></a></li>
 							<li> 
