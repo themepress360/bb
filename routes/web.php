@@ -68,8 +68,8 @@ Route::get('/admin/chat', function () {
         return view('admin.apps.chat.index');
     });
 
-Route::get('/admin/email', function () {
-        return view('admin.apps.chat.index');
+Route::get('/admin/inbox', function () {
+        return view('admin.apps.email.index');
     });
 
 Route::get('/admin/voice-call', function () {
@@ -122,6 +122,15 @@ Route::get('/admin/settings', function () {
     });
 Route::get('/admin/users', function () {
         return view('admin.users.index');
+    });
+Route::get('/admin/contacts', function () {
+        return view('admin.apps.contacts.index');
+    });
+Route::get('/admin/events', function () {
+        return view('admin.apps.calender.index');
+    });
+Route::get('/admin/file-manager', function () {
+        return view('admin.apps.filemanager.index');
     });
 
 
@@ -182,6 +191,20 @@ Route::get('/employee/ticket-view', function () {
         return view('employees.tickets.ticket-view');
 
  });
+
+Route::get('/employee/inbox', function () {
+        return view('employees.apps.email.index');
+    });
+
+Route::get('/employee/contacts', function () {
+        return view('employees.apps.contacts.index');
+    });
+Route::get('/employee/events', function () {
+        return view('employees.apps.calender.index');
+    });
+Route::get('/employee/file-manager', function () {
+        return view('employees.apps.filemanager.index');
+    });
 
 
 
@@ -244,3 +267,15 @@ Route::get('/client/ticket-view', function () {
 
  });
 
+Route::get('/client/inbox', function () {
+        return view('clients.apps.email.index');
+    });
+Route::get('/client/contacts', function () {
+        return view('clients.apps.contacts.index');
+    });
+Route::get('/client/events', function () {
+        return view('clients.apps.calender.index');
+    });
+Route::get('/client/file-manager', function () {
+        return view('clients.apps.filemanager.index');
+    });
