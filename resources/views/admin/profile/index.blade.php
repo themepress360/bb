@@ -34,7 +34,7 @@
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <div class="profile-info-left">
-                                                    <h3 class="user-name m-t-0 mb-0">John Doe</h3>
+                                                    <h3 class="user-name m-t-0 mb-0">{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}</h3>
                                                     <h6 class="text-muted">UI/UX Design Team</h6>
                                                     <small class="text-muted">Web Designer</small>
                                                     <div class="staff-id">Employee ID : FT-0001</div>
@@ -50,7 +50,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="title">Email:</div>
-                                                        <div class="text"><a href="">johndoe@example.com</a></div>
+                                                        <div class="text"><a href="">{{isset($mydetail['email']) ? strtolower($mydetail['email']) : '-'}}</a></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Birthday:</div>

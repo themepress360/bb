@@ -24,7 +24,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
     Route::group(
             ['middleware' => ['profile-status'],'namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin'], function () {
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
-
+        Route::get('profile', array('uses' => 'ProfileController@index'));
     });
 
     Route::group(
@@ -85,9 +85,7 @@ Route::get('/admin/incoming-call', function () {
 Route::get('/admin/leads', function () {
         return view('admin.leads.index');
     });
-Route::get('/admin/profile', function () {
-        return view('admin.profile.index');
-    });
+
 
 Route::get('/admin/projects', function () {
         return view('admin.projects.index');
