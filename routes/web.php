@@ -31,6 +31,11 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
         Route::get('profile', array('uses' => 'ProfileController@index'));
         Route::post('editprofile',array('as' => 'admin.editprofile','uses' => 'ProfileController@editprofile'));
+        Route::get('departments', array('uses' => 'DepartmentController@index'));
+        Route::post('departments', array('uses' => 'DepartmentController@store'));
+        Route::get('designations', array('uses' => 'DesignationController@index'));
+        Route::post('designations', array('uses' => 'DesignationController@store'));
+
     });
 
     Route::group(
@@ -41,8 +46,13 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
     Route::group(
             ['middleware' => ['profile-status'],'namespace' => 'Employee', 'prefix' => 'employee', 'as' => 'employee'], function () {
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
-    });
+       });
 //});
+
+
+
+
+
 
 Route::get('/admin/employees', function () {
         return view('admin.employees.index');
@@ -51,12 +61,8 @@ Route::get('/admin/employees-list', function () {
         return view('admin.employees.employees-list');
     });
 
-Route::get('/admin/departments', function () {
-        return view('admin.employees.departments');
-      });  
-Route::get('/admin/designations', function () {
-        return view('admin.employees.designations');
-      });  
+
+ 
 
 Route::get('/admin/clients', function () {
         return view('admin.clients.index');

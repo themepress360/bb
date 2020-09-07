@@ -57,4 +57,15 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
+  'tjgazel/laravel-toastr' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'TJGazel\\Toastr\\ToastrServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Toastr' => 'TJGazel\\Toastr\\Facades\\Toastr',
+    ),
+  ),
 );

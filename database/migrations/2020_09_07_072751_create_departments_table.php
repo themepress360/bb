@@ -15,7 +15,11 @@ class CreateDepartmentsTable extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
+<<<<<<< HEAD
             $table->string('name');
+=======
+            $table->string('department_name');
+>>>>>>> 3dcd935b3b0fc66a36cc8e50f2bc6416ad67f9aa
             $table->enum('deleted',['1','0']);
             $table->enum('status',['1','0']);
             $table->timestamps();
