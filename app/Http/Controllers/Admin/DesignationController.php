@@ -63,7 +63,7 @@ class DesignationController extends CommonController
           ]);       
                   
                  
-          Toastr()->success('Designation Addedd Successfully');
+          //Toastr()->success('Designation Addedd Successfully');
          
           return redirect()->back();
                                       

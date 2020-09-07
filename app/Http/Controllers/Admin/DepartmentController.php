@@ -12,7 +12,7 @@ use Auth;
 use Redirect;
 use Illuminate\Http\Request;
 use App\Department;
-use TJGazel\Toastr\Facades\Toastr;
+//use TJGazel\Toastr\Facades\Toastr;
 
 class DepartmentController extends CommonController
 {
@@ -53,7 +53,7 @@ class DepartmentController extends CommonController
          
           $dept->save();
          
-          Toastr()->success('Department Addess Successfully');
+          //Toastr()->success('Department Addess Successfully');
          
           return redirect()->back();
     }

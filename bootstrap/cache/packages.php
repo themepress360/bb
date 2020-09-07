@@ -31,18 +31,6 @@
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
     ),
   ),
-  'laravelcollective/html' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Collective\\Html\\HtmlServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Form' => 'Collective\\Html\\FormFacade',
-      'Html' => 'Collective\\Html\\HtmlFacade',
-    ),
-  ),
   'nesbot/carbon' => 
   array (
     'providers' => 
@@ -55,17 +43,6 @@
     'providers' => 
     array (
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    ),
-  ),
-  'tjgazel/laravel-toastr' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'TJGazel\\Toastr\\ToastrServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Toastr' => 'TJGazel\\Toastr\\Facades\\Toastr',
     ),
   ),
 );
