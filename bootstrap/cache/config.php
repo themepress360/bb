@@ -2,6 +2,9 @@
   'app' => 
   array (
     'name' => 'Laravel',
+    'imagesfolder' => 'images',
+    'profileimagesfolder' => 'images/profile_images',
+    'defaultstorage' => 'app',
     'env' => 'codecanyon',
     'debug' => true,
     'url' => 'http://localhost',

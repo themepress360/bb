@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/', function () {
+        return redirect('/login');
+    });
+
 Route::middleware(['is-user-login'])->group(function () 
 {
     Route::get('login', 'Auth\LoginController@show_login');
@@ -24,7 +29,8 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
     Route::group(
             ['middleware' => ['profile-status'],'namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin'], function () {
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
-
+        Route::get('profile', array('uses' => 'ProfileController@index'));
+        Route::post('editprofile',array('as' => 'admin.editprofile','uses' => 'ProfileController@editprofile'));
     });
 
     Route::group(
@@ -63,8 +69,8 @@ Route::get('/admin/chat', function () {
         return view('admin.apps.chat.index');
     });
 
-Route::get('/admin/email', function () {
-        return view('admin.apps.chat.index');
+Route::get('/admin/inbox', function () {
+        return view('admin.apps.email.index');
     });
 
 Route::get('/admin/voice-call', function () {
@@ -85,9 +91,7 @@ Route::get('/admin/incoming-call', function () {
 Route::get('/admin/leads', function () {
         return view('admin.leads.index');
     });
-Route::get('/admin/profile', function () {
-        return view('admin.profile.index');
-    });
+
 
 Route::get('/admin/projects', function () {
         return view('admin.projects.index');
@@ -119,6 +123,15 @@ Route::get('/admin/settings', function () {
     });
 Route::get('/admin/users', function () {
         return view('admin.users.index');
+    });
+Route::get('/admin/contacts', function () {
+        return view('admin.apps.contacts.index');
+    });
+Route::get('/admin/events', function () {
+        return view('admin.apps.calender.index');
+    });
+Route::get('/admin/file-manager', function () {
+        return view('admin.apps.filemanager.index');
     });
 
 
@@ -180,5 +193,90 @@ Route::get('/employee/ticket-view', function () {
 
  });
 
+Route::get('/employee/inbox', function () {
+        return view('employees.apps.email.index');
+    });
+
+Route::get('/employee/contacts', function () {
+        return view('employees.apps.contacts.index');
+    });
+Route::get('/employee/events', function () {
+        return view('employees.apps.calender.index');
+    });
+Route::get('/employee/file-manager', function () {
+        return view('employees.apps.filemanager.index');
+    });
 
 
+
+Route::get('/client/dashboard', function () {
+        return view('clients.dashboard.index');
+    });
+Route::get('/client/profile', function () {
+        return view('clients.profile.index');
+    });
+
+Route::get('/client/chat', function () {
+        return view('clients.apps.chat.index');
+    });
+
+Route::get('/client/voice-call', function () {
+        return view('clients.apps.calls.voice-call');
+    });
+
+Route::get('/client/video-call', function () {
+        return view('clients.apps.calls.video-call');
+    });
+Route::get('/client/outgoing-call', function () {
+        return view('clients.apps.calls.outgoing-call');
+    });
+
+Route::get('/client/incoming-call', function () {
+        return view('clients.apps.calls.incoming-call');
+    });
+
+Route::get('/client/projects', function () {
+        return view('clients.projects.index');
+    });
+
+Route::get('/client/projects-list', function () {
+        return view('clients.projects.projects-list');
+    });
+Route::get('/client/projects-list', function () {
+        return view('clients.projects.projects-list');
+    });
+Route::get('/client/project-view', function () {
+        return view('clients.projects.project-view');
+    });
+Route::get('/client/tasks', function () {
+        return view('clients.projects.tasks');
+    });
+Route::get('/client/task-board', function () {
+        return view('clients.projects.task-board');
+    });
+Route::get('/client/tickets', function () {
+        return view('clients.tickets.index');
+    });
+Route::get('/client/ticket-view', function () {
+        return view('client.tickets.ticket-view');
+    });
+Route::get('/client/tickets', function () {
+        return view('clients.tickets.index');
+    });
+Route::get('/client/ticket-view', function () {
+        return view('clients.tickets.ticket-view');
+
+ });
+
+Route::get('/client/inbox', function () {
+        return view('clients.apps.email.index');
+    });
+Route::get('/client/contacts', function () {
+        return view('clients.apps.contacts.index');
+    });
+Route::get('/client/events', function () {
+        return view('clients.apps.calender.index');
+    });
+Route::get('/client/file-manager', function () {
+        return view('clients.apps.filemanager.index');
+    });

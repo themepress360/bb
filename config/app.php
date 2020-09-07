@@ -30,6 +30,11 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'imagesfolder' => env('APP_Image_Folder', 'images'),
+
+    'profileimagesfolder' => env('APP_Profile_Image_Folder', 'images/profile_images'),
+
+    'defaultstorage' => env('APP_Default_Storage', 'app'),
 
 
     /*
@@ -324,7 +329,7 @@ return [
 
         Illuminate\View\ViewServiceProvider::class,
 
-
+        Collective\Html\HtmlServiceProvider::class,
 
         /*
 
@@ -454,8 +459,11 @@ return [
 
         'View' => Illuminate\Support\Facades\View::class,
 
-         'Input' => Illuminate\Support\Facades\Request::class,
+        'Input' => Illuminate\Support\Facades\Request::class,
 
+        'Form' => Collective\Html\FormFacade::class,
+            
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 

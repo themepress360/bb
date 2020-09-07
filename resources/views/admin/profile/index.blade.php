@@ -12,7 +12,7 @@
                         <div class="col-sm-12">
                             <h3 class="page-title">Profile</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/dashboard' : '#') }}">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Profile</li>
                             </ul>
                         </div>
@@ -27,55 +27,41 @@
                                 <div class="profile-view">
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
-                                            <a href="#"><img alt="" src="img/profiles/avatar-02.jpg"></a>
+                                            <a href="#"><img alt="" src="{{$mydetail['profile_image_url']}}"></a>
                                         </div>
                                     </div>
                                     <div class="profile-basic">
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <div class="profile-info-left">
-                                                    <h3 class="user-name m-t-0 mb-0">John Doe</h3>
+                                                    <h3 class="user-name m-t-0 mb-0">{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}</h3>
                                                     <h6 class="text-muted">UI/UX Design Team</h6>
                                                     <small class="text-muted">Web Designer</small>
-                                                    <div class="staff-id">Employee ID : FT-0001</div>
-                                                    <div class="small doj text-muted">Date of Join : 1st Jan 2013</div>
-                                                    <div class="staff-msg"><a class="btn btn-custom" href="chat">Send Message</a></div>
+                                                    <div class="staff-id">Employee ID : {{isset($mydetail['employee_id']) ? ucwords($mydetail['employee_id']) : '-'}}</div>
+                                                    <div class="small doj text-muted">Date of Join : {{isset($mydetail['date_of_joining']) ? date('M j, Y',strtotime($mydetail['date_of_joining'])) : '-'}}</div>
                                                 </div>
                                             </div>
                                             <div class="col-md-7">
                                                 <ul class="personal-info">
                                                     <li>
                                                         <div class="title">Phone:</div>
-                                                        <div class="text"><a href="">9876543210</a></div>
+                                                        <div class="text"><a href="">{{isset($mydetail['phone_no']) ? ucwords($mydetail['phone_no']) : '-'}}</a></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Email:</div>
-                                                        <div class="text"><a href="">johndoe@example.com</a></div>
+                                                        <div class="text"><a href="">{{isset($mydetail['email']) ? strtolower($mydetail['email']) : '-'}}</a></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Birthday:</div>
-                                                        <div class="text">24th July</div>
+                                                        <div class="text">{{isset($mydetail['dob']) ? date('M j, Y',strtotime($mydetail['dob'])) : '-'}}</div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Address:</div>
-                                                        <div class="text">1861 Bayonne Ave, Manchester Township, NJ, 08759</div>
+                                                        <div class="text">{{isset($mydetail['address']) ? ucwords($mydetail['address']) : '-'}}</div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Gender:</div>
-                                                        <div class="text">Male</div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="title">Reports to:</div>
-                                                        <div class="text">
-                                                           <div class="avatar-box">
-                                                              <div class="avatar avatar-xs">
-                                                                 <img src="img/profiles/avatar-16.jpg" alt="">
-                                                              </div>
-                                                           </div>
-                                                           <a href="profile">
-                                                                Jeffery Lalor
-                                                            </a>
-                                                        </div>
+                                                        <div class="text">{{isset($mydetail['gender']) ? ucwords($mydetail['gender']) : '-'}}</div>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -104,151 +90,7 @@
                 
                     <!-- Profile Info Tab -->
                     <div id="emp_profile" class="pro-overview tab-pane fade show active">
-                        <div class="row">
-                            <div class="col-md-6 d-flex">
-                                <div class="card profile-box flex-fill">
-                                    <div class="card-body">
-                                        <h3 class="card-title">Personal Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#personal_info_modal"><i class="fa fa-pencil"></i></a></h3>
-                                        <ul class="personal-info">
-                                            <li>
-                                                <div class="title">Passport No.</div>
-                                                <div class="text">9876543210</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Passport Exp Date.</div>
-                                                <div class="text">9876543210</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Tel</div>
-                                                <div class="text"><a href="">9876543210</a></div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Nationality</div>
-                                                <div class="text">Indian</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Religion</div>
-                                                <div class="text">Christian</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Marital status</div>
-                                                <div class="text">Married</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Employment of spouse</div>
-                                                <div class="text">No</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">No. of children</div>
-                                                <div class="text">2</div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 d-flex">
-                                <div class="card profile-box flex-fill">
-                                    <div class="card-body">
-                                        <h3 class="card-title">Emergency Contact <a href="#" class="edit-icon" data-toggle="modal" data-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
-                                        <h5 class="section-title">Primary</h5>
-                                        <ul class="personal-info">
-                                            <li>
-                                                <div class="title">Name</div>
-                                                <div class="text">John Doe</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Relationship</div>
-                                                <div class="text">Father</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Phone </div>
-                                                <div class="text">9876543210, 9876543210</div>
-                                            </li>
-                                        </ul>
-                                        <hr>
-                                        <h5 class="section-title">Secondary</h5>
-                                        <ul class="personal-info">
-                                            <li>
-                                                <div class="title">Name</div>
-                                                <div class="text">Karen Wills</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Relationship</div>
-                                                <div class="text">Brother</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Phone </div>
-                                                <div class="text">9876543210, 9876543210</div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 d-flex">
-                                <div class="card profile-box flex-fill">
-                                    <div class="card-body">
-                                        <h3 class="card-title">Bank information</h3>
-                                        <ul class="personal-info">
-                                            <li>
-                                                <div class="title">Bank name</div>
-                                                <div class="text">ICICI Bank</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Bank account No.</div>
-                                                <div class="text">159843014641</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">IFSC Code</div>
-                                                <div class="text">ICI24504</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">PAN No</div>
-                                                <div class="text">TC000Y56</div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 d-flex">
-                                <div class="card profile-box flex-fill">
-                                    <div class="card-body">
-                                        <h3 class="card-title">Family Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#family_info_modal"><i class="fa fa-pencil"></i></a></h3>
-                                        <div class="table-responsive">
-                                            <table class="table table-nowrap">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Relationship</th>
-                                                        <th>Date of Birth</th>
-                                                        <th>Phone</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Leo</td>
-                                                        <td>Brother</td>
-                                                        <td>Feb 16th, 2019</td>
-                                                        <td>9876543210</td>
-                                                        <td class="text-right">
-                                                            <div class="dropdown dropdown-action">
-                                                                <a aria-expanded="false" data-toggle="dropdown" class="action-icon dropdown-toggle" href="#"><i class="material-icons">more_vert</i></a>
-                                                                <div class="dropdown-menu dropdown-menu-right">
-                                                                    <a href="#" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                                    <a href="#" class="dropdown-item"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                        
                         <div class="row">
                             <div class="col-md-6 d-flex">
                                 <div class="card profile-box flex-fill">
@@ -809,6 +651,7 @@
             
             <!-- Profile Modal -->
             <div id="profile_info" class="modal custom-modal fade" role="dialog">
+               
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -818,7 +661,9 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form id="editprofile" onsubmit="return false">
+                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                 <input type="hidden" name="user_id" value="{{isset($mydetail['id']) ? $mydetail['id'] : '-'}}">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="profile-img-wrap edit-img">
@@ -832,29 +677,29 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>First Name</label>
-                                                    <input type="text" class="form-control" value="John">
+                                                    <input type="text" class="form-control" name="first_name" value="{{isset($mydetail['first_name']) ? ucwords($mydetail['first_name']) : '-'}}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Last Name</label>
-                                                    <input type="text" class="form-control" value="Doe">
+                                                    <input type="text" class="form-control" name="last_name" value="{{isset($mydetail['last_name']) ? ucwords($mydetail['last_name']) : '-'}}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Birth Date</label>
                                                     <div class="cal-icon">
-                                                        <input class="form-control datetimepicker" type="text" value="05/06/1985">
+                                                        <input class="form-control datetimepicker" type="text" value="{{isset($mydetail['dob']) ? date('d/m/y',strtotime($mydetail['dob'])) : '-'}}">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Gender</label>
-                                                    <select class="select form-control">
-                                                        <option value="male selected">Male</option>
-                                                        <option value="female">Female</option>
+                                                    <select class="select form-control" name="gender">
+                                                        <option value="male" {{$mydetail["gender"] == "male" ? 'selected' : ''}}>Male</option>
+                                                        <option value="female" {{$mydetail["gender"] == "female" ? 'selected' : ''}}>Female</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -865,74 +710,42 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input type="text" class="form-control" value="4487 Snowbird Lane">
+                                            <input type="text" class="form-control" name="address" value="{{isset($mydetail['address']) ? ucwords($mydetail['address']) : '-'}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>State</label>
-                                            <input type="text" class="form-control" value="New York">
+                                            <input type="text" class="form-control" name="state" value="{{isset($mydetail['state']) ? $mydetail['state'] : '-'}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Country</label>
-                                            <input type="text" class="form-control" value="United States">
+                                            <input type="text" class="form-control" name="country" value="{{isset($mydetail['country']) ? $mydetail['country'] : '-'}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Pin Code</label>
-                                            <input type="text" class="form-control" value="10523">
+                                            <input type="text" class="form-control" name="pin_code" value="{{isset($mydetail['pin_code']) ? $mydetail['pin_code'] : '-'}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Phone Number</label>
-                                            <input type="text" class="form-control" value="631-889-3206">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Department <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Department</option>
-                                                <option>Web Development</option>
-                                                <option>IT Management</option>
-                                                <option>Marketing</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Designation <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Designation</option>
-                                                <option>Web Designer</option>
-                                                <option>Web Developer</option>
-                                                <option>Android Developer</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Reports To <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>-</option>
-                                                <option>Wilmer Deluna</option>
-                                                <option>Lesley Grauer</option>
-                                                <option>Jeffery Lalor</option>
-                                            </select>
+                                            <input type="text" class="form-control" name="phone_no" value="{{isset($mydetail['phone_no']) ? $mydetail['phone_no'] : '-'}}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button onClick="editprofile()" class="btn btn-primary submit-btn">Submit</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
             </div>
             <!-- /Profile Modal -->
             
@@ -1424,5 +1237,27 @@
             <!-- /Experience Modal -->
             
         </div>
+        <script type="text/javascript">
+                
+
+                function editprofile() {
+                    var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/editprofile' : '#') }}";  
+                    var form = $('#editprofile').get(0);
+                    var formData = new FormData(form);
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response)
+                        {
+                            console.log(response);
+                        }
+                    }); 
+                }
+                
+           
+        </script>
         <!-- /Page Wrapper -->
 @endsection

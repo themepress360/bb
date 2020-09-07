@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','status','deleted','dob','phone_no','type','gender','address','date_of_joining','employee_id','profile_image','state','country','pin_code'
     ];
 
     /**
@@ -36,4 +36,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function image_url($folder,$file_name)
+    {   
+        $file_name = trim($file_name)=='' || !file_exists(storage_path(config('app.defaultstorage').'/'.$folder.'/'.$file_name)) ? 'noimage.png' : $file_name;
+        return url("storage/app/".$folder.'/'.$file_name);
+    }
 }

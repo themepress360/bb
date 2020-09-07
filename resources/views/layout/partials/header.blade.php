@@ -260,10 +260,10 @@
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <span class="user-img"><img src="{{asset('img/profiles/avatar-21.jpg')}}" alt="">
                         <span class="status online"></span></span>
-                        <span>{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</span>
+                        <span>{{{ isset(Auth::user()->name) ? Auth::user()->name : '' }}}</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="profile">My Profile</a>
+                        <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/profile' : '#') }}" class="dropdown-item">My Profile</a>
                         <a class="dropdown-item" href="settings">Settings</a>
                         <a href="{{ URL::to('logout') }}" class="dropdown-item">Logout</a>
                     </div>
@@ -275,7 +275,7 @@
             <div class="dropdown mobile-user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="profile">My Profile</a>
+                    <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/profile' : '#') }}" class="dropdown-item">My Profile</a>
                     <a class="dropdown-item" href="settings">Settings</a>
                     <a class="dropdown-item" href="{{ URL::to('logout') }}">Logout</a>
                 </div>
