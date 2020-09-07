@@ -324,6 +324,8 @@ return [
 
         Illuminate\View\ViewServiceProvider::class,
 
+         Collective\Html\HtmlServiceProvider::class,
+
 
 
         /*
@@ -455,6 +457,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
          'Input' => Illuminate\Support\Facades\Request::class,
+
+         'Form' => Collective\Html\FormFacade::class,
+   'Html' => Collective\Html\HtmlFacade::class,
 
     ],
 

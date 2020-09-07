@@ -43,13 +43,12 @@
 
 		<!-- Custom JS -->
 		<script src="{{asset('js/app.js')}}" type='application/javascript'></script>
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js">
+
 		<script>
 		 $(document).ready(function(){
-
 		
-
-
-
         // Read value on page load
         $("#result b").html($("#customRange").val());
 
