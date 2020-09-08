@@ -45,7 +45,6 @@
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
-        
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <script src="{{asset('js/jquery-3.2.1.min.js')}}" type='application/javascript'></script>
         
     </head>

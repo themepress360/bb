@@ -14,7 +14,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-        "laravelcollective/html": "^6.2",
+        "laravelcollective/html": "^6.1",
         "tjgazel/laravel-toastr": "^1.1"
     },
     "require-dev": {
@@ -36,7 +36,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Collective\\Html\\": "vendor/laravelcollective/html/src/"
         },
         "classmap": [
             "database/seeds",

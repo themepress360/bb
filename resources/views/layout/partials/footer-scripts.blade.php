@@ -1,5 +1,5 @@
 <!-- jQuery -->
-<script src="{{asset('js/jquery-3.2.1.min.js')}}" type='application/javascript'></script>
+
 		
 		<!-- Bootstrap Core JS -->
         <script src="{{asset('js/popper.min.js')}}" type='application/javascript'></script>
@@ -44,7 +44,7 @@
 		<!-- Custom JS -->
 		<script src="{{asset('js/app.js')}}" type='application/javascript'></script>
 		
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js">
+	
 
 		<script>
 		 $(document).ready(function(){
@@ -129,5 +129,28 @@
 				return '<td>'+rowsLength+'</td>' + '<td><input type="text" name = "DynamicTextBox" class="form-control" value = "" ></td>' + '<td><input type="text" name = "DynamicTextBox" class="form-control" value = "" ></td>' + '<td><input type="text" name = "DynamicTextBox" class="form-control" value = "" ></td>' + '<td><button type="button" class="btn btn-danger" id="comments_remove"><i class="fa fa-trash-o"></i></button></td>'
 			}
 		});
+		
 		</script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" type='application/javascript'></script>
+        <script>
+            toastr.options = {
+              "closeButton": false,
+              "debug": false,
+              "newestOnTop": false,
+              "progressBar": false,
+              "positionClass": "toast-top-center",
+              "preventDuplicates": false,
+              "onclick": null,
+              "showDuration": "300",
+              "hideDuration": "5000",
+              "timeOut": "5000",
+              "extendedTimeOut": "1000",
+              "showEasing": "swing",
+              "hideEasing": "linear",
+              "showMethod": "fadeIn",
+              "hideMethod": "fadeOut"
+            }
+        </script>
+		
 	

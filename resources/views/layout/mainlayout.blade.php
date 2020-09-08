@@ -15,8 +15,6 @@
 
  @include('layout.partials.footer-scripts')
 
-  {!! toastr()->render() !!}
-
-
+ 
   </body>
 </html>

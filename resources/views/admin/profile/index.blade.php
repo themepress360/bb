@@ -12,7 +12,7 @@
                         <div class="col-sm-12">
                             <h3 class="page-title">Profile</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/dashboard' : '#') }}">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Profile</li>
                             </ul>
                         </div>
@@ -27,7 +27,8 @@
                                 <div class="profile-view">
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
-                                            <a href="#"><img alt="" src="img/profiles/avatar-02.jpg"></a>
+                                            <!--{{$mydetail['profile_image_url']}}-->
+                                            <a href="#"><img alt="" src="{{ Storage::url('app/images/profile_images/5f57293768975.png')}}"></a>
                                         </div>
                                     </div>
                                     <div class="profile-basic">
@@ -37,16 +38,15 @@
                                                     <h3 class="user-name m-t-0 mb-0">{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}</h3>
                                                     <h6 class="text-muted">UI/UX Design Team</h6>
                                                     <small class="text-muted">Web Designer</small>
-                                                    <div class="staff-id">Employee ID : FT-0001</div>
-                                                    <div class="small doj text-muted">Date of Join : 1st Jan 2013</div>
-                                                    <div class="staff-msg"><a class="btn btn-custom" href="chat">Send Message</a></div>
+                                                    <div class="staff-id">Employee ID : {{isset($mydetail['employee_id']) ? ucwords($mydetail['employee_id']) : '-'}}</div>
+                                                    <div class="small doj text-muted">Date of Join : {{isset($mydetail['date_of_joining']) ? date('M j, Y',strtotime($mydetail['date_of_joining'])) : '-'}}</div>
                                                 </div>
                                             </div>
                                             <div class="col-md-7">
                                                 <ul class="personal-info">
                                                     <li>
                                                         <div class="title">Phone:</div>
-                                                        <div class="text"><a href="">9876543210</a></div>
+                                                        <div class="text"><a href="">{{isset($mydetail['phone_no']) ? ucwords($mydetail['phone_no']) : '-'}}</a></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Email:</div>
@@ -54,28 +54,15 @@
                                                     </li>
                                                     <li>
                                                         <div class="title">Birthday:</div>
-                                                        <div class="text">24th July</div>
+                                                        <div class="text">{{isset($mydetail['dob']) ? date('M j, Y',strtotime($mydetail['dob'])) : '-'}}</div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Address:</div>
-                                                        <div class="text">1861 Bayonne Ave, Manchester Township, NJ, 08759</div>
+                                                        <div class="text">{{isset($mydetail['address']) ? ucwords($mydetail['address']) : '-'}}</div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Gender:</div>
-                                                        <div class="text">Male</div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="title">Reports to:</div>
-                                                        <div class="text">
-                                                           <div class="avatar-box">
-                                                              <div class="avatar avatar-xs">
-                                                                 <img src="img/profiles/avatar-16.jpg" alt="">
-                                                              </div>
-                                                           </div>
-                                                           <a href="profile">
-                                                                Jeffery Lalor
-                                                            </a>
-                                                        </div>
+                                                        <div class="text">{{isset($mydetail['gender']) ? ucwords($mydetail['gender']) : '-'}}</div>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -665,6 +652,7 @@
             
             <!-- Profile Modal -->
             <div id="profile_info" class="modal custom-modal fade" role="dialog">
+               
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -674,43 +662,46 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form id="editprofile" onsubmit="return false">
+                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                 <input type="hidden" name="user_id" value="{{isset($mydetail['id']) ? $mydetail['id'] : '-'}}">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="profile-img-wrap edit-img">
-                                            <img class="inline-block" src="img/profiles/avatar-02.jpg" alt="user">
+                                            
+                                            <img id="imagePreview" class="inline-block" src="{{$mydetail['profile_image_url']}}" alt="user">
                                             <div class="fileupload btn">
-                                                <span class="btn-text">edit</span>
-                                                <input class="upload" type="file">
+                                                <span class="btn-text">Edit</span>
+                                                <input class="upload" type='file' name="profile_image" id="editimageUpload" accept=".png, .jpg, .jpeg" />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>First Name</label>
-                                                    <input type="text" class="form-control" value="John">
+                                                    <input type="text" class="form-control" name="first_name" value="{{isset($mydetail['first_name']) ? ucwords($mydetail['first_name']) : '-'}}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Last Name</label>
-                                                    <input type="text" class="form-control" value="Doe">
+                                                    <input type="text" class="form-control" name="last_name" value="{{isset($mydetail['last_name']) ? ucwords($mydetail['last_name']) : '-'}}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Birth Date</label>
                                                     <div class="cal-icon">
-                                                        <input class="form-control datetimepicker" type="text" value="05/06/1985">
+                                                        <input class="form-control datetimepicker" type="text" name="dob" value="{{isset($mydetail['dob']) ? date('d/m/y',strtotime($mydetail['dob'])) : '-'}}">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Gender</label>
-                                                    <select class="select form-control">
-                                                        <option value="male selected">Male</option>
-                                                        <option value="female">Female</option>
+                                                    <select class="select form-control" name="gender">
+                                                        <option value="male" {{$mydetail["gender"] == "male" ? 'selected' : ''}}>Male</option>
+                                                        <option value="female" {{$mydetail["gender"] == "female" ? 'selected' : ''}}>Female</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -721,74 +712,42 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input type="text" class="form-control" value="4487 Snowbird Lane">
+                                            <input type="text" class="form-control" name="address" value="{{isset($mydetail['address']) ? ucwords($mydetail['address']) : '-'}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>State</label>
-                                            <input type="text" class="form-control" value="New York">
+                                            <input type="text" class="form-control" name="state" value="{{isset($mydetail['state']) ? $mydetail['state'] : '-'}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Country</label>
-                                            <input type="text" class="form-control" value="United States">
+                                            <input type="text" class="form-control" name="country" value="{{isset($mydetail['country']) ? $mydetail['country'] : '-'}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Pin Code</label>
-                                            <input type="text" class="form-control" value="10523">
+                                            <input type="text" class="form-control" name="pin_code" value="{{isset($mydetail['pin_code']) ? $mydetail['pin_code'] : '-'}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Phone Number</label>
-                                            <input type="text" class="form-control" value="631-889-3206">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Department <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Department</option>
-                                                <option>Web Development</option>
-                                                <option>IT Management</option>
-                                                <option>Marketing</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Designation <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Designation</option>
-                                                <option>Web Designer</option>
-                                                <option>Web Developer</option>
-                                                <option>Android Developer</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Reports To <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>-</option>
-                                                <option>Wilmer Deluna</option>
-                                                <option>Lesley Grauer</option>
-                                                <option>Jeffery Lalor</option>
-                                            </select>
+                                            <input type="text" class="form-control" name="phone_no" value="{{isset($mydetail['phone_no']) ? $mydetail['phone_no'] : '-'}}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button onClick="editprofile()" class="btn btn-primary submit-btn">Submit</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
             </div>
             <!-- /Profile Modal -->
             
@@ -1280,5 +1239,58 @@
             <!-- /Experience Modal -->
             
         </div>
+        <script type="text/javascript">
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onloadend = function(e) {
+                        $('#imagePreview').attr('src', e.target.result);
+                    }
+                    if (input) { 
+                        reader.readAsDataURL(input.files[0]);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                else
+                    return false;
+            }
+                
+                function editprofile() {
+                    var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/editprofile' : '#') }}";  
+                    var form = $('#editprofile').get(0);
+                    var formData = new FormData(form);
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response)
+                        {
+                            if(response.status == "SUCCESS")
+                            {
+                                toastr['success'](response.message);
+                                window.location = "";
+                            }
+                            else
+                            {
+                                toastr['error'](response.message);
+                            }
+                            
+                        }
+                    }); 
+                }
+                $("#editimageUpload").change(function() {
+                    var upload = readURL(this);
+                    if(upload)
+                    {
+                        console.log("akber");
+                    }
+                });
+                
+           
+        </script>
         <!-- /Page Wrapper -->
 @endsection

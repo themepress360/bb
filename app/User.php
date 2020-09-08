@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Storage;
+use File;
+
 
 class User extends Authenticatable
 {
@@ -16,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','status','deleted','dob','phone_no','type'
+        'name', 'email', 'password','status','deleted','dob','phone_no','type','gender','address','date_of_joining','employee_id','profile_image','state','country','pin_code'
     ];
 
     /**
@@ -36,4 +39,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function image_url($folder,$file_name)
+    {   
+        $file_name = trim($file_name)=='' || !file_exists(storage_path(config('app.defaultstorage').'/'.$folder.'/'.$file_name)) ? 'noimage.png' : $file_name;
+        return url("storage/app/".$folder.'/'.$file_name);
+    }
+    
+    public static function uploadImage($path, $file, $width = 1020)
+    {
+        $filename = '';
+        
+        if ($file) {
+            $extension = $file->getClientOriginalExtension();
+            $filename  = uniqid() . '.' . $extension;
+            Storage::put($path . '/' . $filename, File::get($file));
+            
+            $image = Image::make(Storage::get($path . '/' . $filename))
+                ->resize($width, null,
+                    function ($constraint) {
+                        $constraint->aspectRatio();
+                    })
+                ->stream();
+        Storage::put($path . '/' . $filename, $image);
+        }
+        return $filename;
+    }
 }
