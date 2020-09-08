@@ -36,24 +36,87 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   @foreach($designations as $designation)
+                                    @forelse ($designations as $designation)
                                     <tr>
-                                        <td>{{$designation->id}}</td>
-                                        <td>{{$designation->designation_name}}</td>
-                                         
-                                        <td>{{$designation->department_name}}</td>
-                                      
+                                        <td>{{$designation['id']}}</td>
+                                        <td>{{ucwords($designation['name'])}}</td>
+                                        <td>{{ucwords($designation['dept_name'])}}</td>
                                         <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation{{$designation['id']}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation{{$designation['id']}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                             </div>
                                             </div>
                                         </td>
+                                        <!-- Edit Designation Modal -->
+                                            <div id="edit_designation{{$designation['id']}}" class="modal custom-modal fade" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit Designation</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {{ Form::open(array( 'id' => 'editdesignation'.$designation['id'] )) }}
+                                                            @csrf
+                                                                <input type="hidden" name="designation_id" value="{{$designation['id']}}">
+                                                                <div class="form-group">
+                                                                    <label>Designation Name <span class="text-danger">*</span></label>
+                                                                    <input class="form-control" name="name" value="{{ucwords($designation['name'])}}" type="text">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Department <span class="text-danger">*</span></label>
+                                                                    <select class="select" name="department_id">
+                                                                        <option>Select Department</option>
+                                                                        @foreach($department as $dept)
+                                                                        <option {{$dept['id'] == $designation['department_id'] ? 'selected' : ''}} value ="{{$dept['id']}}" >{{ucwords($dept['name'])}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="submit-section">
+                                                                    <a onClick="editdesignation('{{$designation['id']}}')" class="btn btn-primary submit-btn">Save</a>
+                                                                </div>
+                                                            {{ Form::close() }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /Edit Designation Modal -->
+                                            
+                                            <!-- Delete Designation Modal -->
+                                            <div class="modal custom-modal fade" id="delete_designation{{$designation['id']}}" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <div class="form-header">
+                                                                <h3>Delete Designation</h3>
+                                                                <p>Are you sure want to delete?</p>
+                                                            </div>
+                                                            <div class="modal-btn delete-action">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <a onClick="deletedesignation('{{$designation['id']}}')" class="btn btn-primary continue-btn">Delete</a>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /Delete Designation Modal -->
                                     </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            No Record Found
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -73,25 +136,23 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                           {{ Form::open(array('action' => 'Admin\DesignationController@store' )) }}
+                           {{ Form::open(array('id' => 'adddesignation' )) }}
                             @csrf
                                 <div class="form-group">
                                     <label>Designation Name <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="designation">
+                                    <input class="form-control" type="text" name="name">
                                 </div>
                                 <div class="form-group">
                                     <label>Department <span class="text-danger">*</span></label>
-                                   <select class="select" name="department_name">
+                                   <select class="select" name="department_id">
                                         <option>Select Department</option>
-                                         @foreach($department as $dept_name)
-                                        <option value ="{{$dept_name->id}}" >{{$dept_name->department_name}}</option>
-                                         @endforeach
-                                    </select>
-                                  
-                                    
+                                        @foreach($department as $dept)
+                                        <option value ="{{$dept['id']}}" >{{ucwords($dept['name'])}}</option>
+                                        @endforeach
+                                    </select>  
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <a onClick="adddesignation()" class="btn btn-primary submit-btn">Submit</a>
                                 </div>
                             {{ Form::close() }}
                         </div>
@@ -99,67 +160,82 @@
                 </div>
             </div>
             <!-- /Add Designation Modal -->
-            
-            <!-- Edit Designation Modal -->
-            <div id="edit_designation" class="modal custom-modal fade" role="dialog">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Edit Designation</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label>Designation Name <span class="text-danger">*</span></label>
-                                    <input class="form-control" value="Web Developer" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label>Department <span class="text-danger">*</span></label>
-                                    <select class="select">
-                                        <option>Select Department</option>
-                                        <option>Web Development</option>
-                                        <option>IT Management</option>
-                                        <option>Marketing</option>
-                                    </select>
-                                </div>
-                                <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Edit Designation Modal -->
-            
-            <!-- Delete Designation Modal -->
-            <div class="modal custom-modal fade" id="delete_designation" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="form-header">
-                                <h3>Delete Designation</h3>
-                                <p>Are you sure want to delete?</p>
-                            </div>
-                            <div class="modal-btn delete-action">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Delete Designation Modal -->
-        
         </div>
         <!-- /Page Wrapper -->
+<script type="text/javascript">
+    function adddesignation() {
+        var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/adddesignation' : '#') }}";
+        var form = $('#adddesignation').get(0);
+        var formData = new FormData(form);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response)
+            {
+                if(response.status == "SUCCESS")
+                {
+                    toastr['success'](response.message);
+                    window.location = "";
+                }
+                else
+                {
+                    toastr['error'](response.message);
+                }    
+            }
+        }); 
+    }
+    function editdesignation(id)
+    {
+        var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/editdesignation' : '#') }}";
+        var form = $('#editdesignation'+id).get(0);
+        var formData = new FormData(form);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response)
+            {
+                if(response.status == "SUCCESS")
+                {
+                    toastr['success'](response.message);
+                    //window.location = "";
+                }
+                else
+                {
+                    toastr['error'](response.message);
+                }    
+            }
+        });
+    }
+    function deletedesignation(id)
+    {
+        var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/deletedesignation' : '#') }}";
+        var form = $('#editdesignation'+id).get(0);
+        var formData = new FormData(form);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response)
+            {
+                if(response.status == "SUCCESS")
+                {
+                    toastr['success'](response.message);
+                    window.location = "";
+                }
+                else
+                {
+                    toastr['error'](response.message);
+                }    
+            }
+        });
+    }
+</script>
 @endsection

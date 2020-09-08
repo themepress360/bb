@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Storage;
 use File;
-
+use Image;
 
 class User extends Authenticatable
 {
@@ -42,8 +42,8 @@ class User extends Authenticatable
 
     public static function image_url($folder,$file_name)
     {   
-        $file_name = trim($file_name)=='' || !file_exists(storage_path(config('app.defaultstorage').'/'.$folder.'/'.$file_name)) ? 'noimage.png' : $file_name;
-        return url("storage/app/".$folder.'/'.$file_name);
+        $file_name = trim($file_name)=='' || !file_exists(storage_path(config('app.defaultstorage').'/'.config('app.folder').'/'.$folder.'/'.$file_name)) ? 'noimage.png' : $file_name;
+        return url("storage/".$folder.'/'.$file_name);
     }
     
     public static function uploadImage($path, $file, $width = 1020)

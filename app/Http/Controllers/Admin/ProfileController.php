@@ -48,44 +48,58 @@ class ProfileController extends CommonController
         if (!$validator->fails()) 
         {
             $requestData = $request->all();
-            $data['name'] = $requestData['first_name']." ".$requestData['last_name'];
-            $data['address'] = $requestData['address'];
-            $data['phone_no'] = $requestData['phone_no'];
-            $data['state'] = $requestData['state'];
-            $data['country'] = $requestData['country'];
-            $data['pin_code'] = $requestData['pin_code'];
-            $data['gender'] = $requestData['gender'];
-            $data['dob'] = date("Y-m-d", strtotime(str_replace('/', '-', $requestData['dob'])));
-            
-            /* Profile Image Save if exists Start */
-            if(!empty($requestData['profile_image']))
+            $user = User::where(['id' => (int) $requestData['user_id'],"deleted" => '0'])->first();
+            if(!empty($user))
             {
-                // if (!empty($custom_validate['user_data']['profile_image'])) {
-                //     Storage::delete(ProfileImageFolder . '/' . $custom_validate['user_data']['profile_image']);
-                // }     
-                $filename = User::uploadImage(config('app.profileimagesfolder'),$requestData['profile_image'],400);
-                // if($filename) 
-                //     $data['profile_image'] = $filename;
-            }
-            /* Profile Image Save if exists End */
-            
-            $edit_profile = User::where('id', (int) $requestData['user_id'])->update($data);
-            if($edit_profile)
-            {
-                $status   = 200;
-                $response = array(
-                    'status'  => 'SUCCESS',
-                    'message' => trans('messages.profile_edit_success'),
-                    'ref'     => 'profile_edit_success',
-                );
+                
+                $data['name'] = $requestData['first_name']." ".$requestData['last_name'];
+                $data['address'] = $requestData['address'];
+                $data['phone_no'] = $requestData['phone_no'];
+                $data['state'] = $requestData['state'];
+                $data['country'] = $requestData['country'];
+                $data['pin_code'] = $requestData['pin_code'];
+                $data['gender'] = $requestData['gender'];
+                $data['dob'] = date("Y-m-d", strtotime(str_replace('/', '-', $requestData['dob'])));
+                
+                /* Profile Image Save if exists Start */
+                if(!empty($requestData['profile_image']))
+                {
+                    if (!empty($user['profile_image'])) {
+                        Storage::delete(config('app.folder') . '/' . config('app.profileimagesfolder').'/'.$user['profile_image']);
+                    }     
+                    $filename = User::uploadImage(config('app.folder').'/'.config('app.profileimagesfolder'),$requestData['profile_image'],400);
+                    if($filename) 
+                        $data['profile_image'] = $filename;
+                }
+                /* Profile Image Save if exists End */
+                
+                $edit_profile = User::where('id', (int) $requestData['user_id'])->update($data);
+                if($edit_profile)
+                {
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.profile_edit_success'),
+                        'ref'     => 'profile_edit_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
             }
             else
             {
                 $status = 400;
                 $response = array(
                     'status'  => 'FAILED',
-                    'message' => trans('messages.server_error'),
-                    'ref'     => 'server_error'
+                    'message' => trans('messages.error_invalid_user_id'),
+                    'ref'     => 'error_invalid_user_id'
                 );
             }
         } else {

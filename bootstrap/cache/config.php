@@ -2,18 +2,18 @@
   'app' => 
   array (
     'name' => 'Laravel',
-    'imagesfolder' => 'images',
-    'profileimagesfolder' => 'images/profile_images',
+    'folder' => 'public',
+    'profileimagesfolder' => 'profile_images',
     'defaultstorage' => 'app',
-    'env' => 'local',
+    'env' => 'codecanyon',
     'debug' => true,
-    'url' => 'https://crm.nxgbs.com',
+    'url' => 'http://localhost',
     'asset_url' => NULL,
     'timezone' => 'UTC',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:3hL6UF1DRQLFwU9J7V4Vhe4btQyCM7fYnlW1+CsC4gA=',
+    'key' => 'base64:f02/fGCabArj7DxaZ9mW3yeg0NxlC4gobqSPqwk6a04=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -142,7 +142,7 @@
         'app_id' => '',
         'options' => 
         array (
-          'cluster' => 'mt1',
+          'cluster' => NULL,
           'useTLS' => true,
         ),
       ),
@@ -163,7 +163,7 @@
   ),
   'cache' => 
   array (
-    'default' => 'file',
+    'default' => 'array',
     'stores' => 
     array (
       'apc' => 
@@ -184,7 +184,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/home/nxgbxuzv/crm.nxgbs.com/storage/framework/cache/data',
+        'path' => '/var/www/html/bb/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -216,8 +216,8 @@
       'dynamodb' => 
       array (
         'driver' => 'dynamodb',
-        'key' => '',
-        'secret' => '',
+        'key' => NULL,
+        'secret' => NULL,
         'region' => 'us-east-1',
         'table' => 'cache',
         'endpoint' => NULL,
@@ -261,7 +261,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'nxgbxuzv_bb',
+        'database' => 'bbnew',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -269,11 +269,11 @@
       array (
         'driver' => 'mysql',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
-        'database' => 'nxgbxuzv_bb',
-        'username' => 'nxgbxuzv_bb',
-        'password' => '3S))]E?8cMHP',
+        'database' => 'bbnew',
+        'username' => 'akber',
+        'password' => 'akber123',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -289,11 +289,11 @@
       array (
         'driver' => 'pgsql',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
-        'database' => 'nxgbxuzv_bb',
-        'username' => 'nxgbxuzv_bb',
-        'password' => '3S))]E?8cMHP',
+        'database' => 'bbnew',
+        'username' => 'akber',
+        'password' => 'akber123',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -304,11 +304,11 @@
       array (
         'driver' => 'sqlsrv',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
-        'database' => 'nxgbxuzv_bb',
-        'username' => 'nxgbxuzv_bb',
-        'password' => '3S))]E?8cMHP',
+        'database' => 'bbnew',
+        'username' => 'akber',
+        'password' => 'akber123',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -350,29 +350,29 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/home/nxgbxuzv/crm.nxgbs.com/storage/app',
+        'root' => '/var/www/html/bb/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/home/nxgbxuzv/crm.nxgbs.com/storage/app/public',
-        'url' => 'https://crm.nxgbs.com/storage',
+        'root' => '/var/www/html/bb/storage/app/public',
+        'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
       's3' => 
       array (
         'driver' => 's3',
-        'key' => '',
-        'secret' => '',
-        'region' => 'us-east-1',
-        'bucket' => '',
+        'key' => NULL,
+        'secret' => NULL,
+        'region' => NULL,
+        'bucket' => NULL,
         'url' => NULL,
         'endpoint' => NULL,
       ),
     ),
     'links' => 
     array (
-      '/home/nxgbxuzv/crm.nxgbs.com/public/storage' => '/home/nxgbxuzv/crm.nxgbs.com/storage/app/public',
+      '/var/www/html/bb/public/storage' => '/var/www/html/bb/storage/app/public',
     ),
   ),
   'hashing' => 
@@ -406,13 +406,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/home/nxgbxuzv/crm.nxgbs.com/storage/logs/laravel.log',
+        'path' => '/var/www/html/bb/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/home/nxgbxuzv/crm.nxgbs.com/storage/logs/laravel.log',
+        'path' => '/var/www/html/bb/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -462,7 +462,7 @@
       ),
       'emergency' => 
       array (
-        'path' => '/home/nxgbxuzv/crm.nxgbs.com/storage/logs/laravel.log',
+        'path' => '/var/www/html/bb/storage/logs/laravel.log',
       ),
     ),
   ),
@@ -474,7 +474,7 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailtrap.io',
+        'host' => 'mailtrap.io',
         'port' => '2525',
         'encryption' => NULL,
         'username' => NULL,
@@ -510,15 +510,15 @@
     ),
     'from' => 
     array (
-      'address' => NULL,
-      'name' => 'Laravel',
+      'address' => 'hello@example.com',
+      'name' => 'Example',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/home/nxgbxuzv/crm.nxgbs.com/resources/views/vendor/mail',
+        0 => '/var/www/html/bb/resources/views/vendor/mail',
       ),
     ),
   ),
@@ -549,8 +549,8 @@
       'sqs' => 
       array (
         'driver' => 'sqs',
-        'key' => '',
-        'secret' => '',
+        'key' => NULL,
+        'secret' => NULL,
         'prefix' => 'https://sqs.us-east-1.amazonaws.com/your-account-id',
         'queue' => 'your-queue-name',
         'suffix' => NULL,
@@ -586,18 +586,18 @@
     ),
     'ses' => 
     array (
-      'key' => '',
-      'secret' => '',
+      'key' => NULL,
+      'secret' => NULL,
       'region' => 'us-east-1',
     ),
   ),
   'session' => 
   array (
     'driver' => 'file',
-    'lifetime' => '120',
+    'lifetime' => 120,
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/home/nxgbxuzv/crm.nxgbs.com/storage/framework/sessions',
+    'files' => '/var/www/html/bb/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -617,9 +617,9 @@
   array (
     'paths' => 
     array (
-      0 => '/home/nxgbxuzv/crm.nxgbs.com/resources/views',
+      0 => '/var/www/html/bb/resources/views',
     ),
-    'compiled' => '/home/nxgbxuzv/crm.nxgbs.com/storage/framework/views',
+    'compiled' => '/var/www/html/bb/storage/framework/views',
   ),
   'flare' => 
   array (
@@ -650,6 +650,10 @@
     'remote_sites_path' => '',
     'local_sites_path' => '',
     'housekeeping_endpoint_prefix' => '_ignition',
+  ),
+  'image' => 
+  array (
+    'driver' => 'gd',
   ),
   'trustedproxy' => 
   array (

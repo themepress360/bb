@@ -30,9 +30,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'imagesfolder' => env('APP_Image_Folder', 'images'),
+    'folder' => env('APP_Folder', 'public'),
 
-    'profileimagesfolder' => env('APP_Profile_Image_Folder', 'images/profile_images'),
+    'profileimagesfolder' => env('APP_Profile_Image_Folder', 'profile_images'),
 
     'defaultstorage' => env('APP_Default_Storage', 'app'),
 

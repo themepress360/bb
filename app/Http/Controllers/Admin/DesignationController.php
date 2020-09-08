@@ -23,94 +23,215 @@ class DesignationController extends CommonController
      */
     public function index()
     {
-         $designations = Designation::Join('departments', 'departments.id' , '=', 'designations.department_id')->get();
-                
-         $department = Department::all('id', 'department_name');
-    
-
+        $designations = Designation::select('designations.name','designations.id','departments.name as dept_name','department_id')->where(['designations.deleted' => '0'])->Join('departments', 'departments.id' , '=', 'designations.department_id')->get()->toArray();
+        
+        $department = Department::select('id','name')->where(['deleted' => '0'])->get()->toArray();
         return view('admin.employees.designations', compact('designations', 'department'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function adddesignation(Request $request)
     {
-        //
+        $rules = [
+            'name'      => 'required|string|min:2|max:20',
+            'department_id' => 'required'
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if (!$validator->fails()) 
+        {
+            $requestData = $request->all();
+            $department = Department::where(['id' => (int) $requestData['department_id'],"deleted" => '0'])->first();
+            if(!empty($department))
+            {    
+                $data['name'] = trim(strtolower($requestData['name']));
+                $data['deleted'] = '0';
+                $data['status']   = '1';
+                $data['department_id']   = (int) $requestData['department_id'];
+                $add_designation = Designation::create($data);
+                if($add_designation)
+                {
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.designation_add_success'),
+                        'ref'     => 'designation_add_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+            }
+            else
+            {
+                $status = 400;
+                $response = array(
+                    'status'  => 'FAILED',
+                    'message' => trans('messages.error_invalid_department_id'),
+                    'ref'     => 'error_invalid_department_id'
+                );
+            }        
+        } else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function editdesignation(Request $request)
     {
-      
-          $dept_name = $request->get('department_name');
-          $department_id = Department::where('id', $dept_name)->get()->first();
-           
-           $designation = $request->designation;
-          // dd($designation);
-                     
-           Designation::create([
+        $rules = [
+            'name'      => 'required|string|min:2|max:20',
+            'department_id' => 'required',
+            'designation_id' => 'required'
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if (!$validator->fails()) 
+        {
+            $requestData = $request->all();
+            $department = Department::where(['id' => (int) $requestData['department_id'],"deleted" => '0'])->first();
+            if(!empty($department))
+            {
+                $designation = Designation::where(['id' => (int) $requestData['designation_id'],"deleted" => '0'])->first();
+                if(!empty($designation))
+                {
+                    $requestData = $request->all();    
+                    $data['name'] = trim(strtolower($requestData['name']));
+                    $data['department_id']   = (int) $requestData['department_id'];
 
-            'designation_name' => $designation,
-            'department_id'  => $department_id->id,
-          ]);       
-                  
-                 
-          //Toastr()->success('Designation Addedd Successfully');
-         
-          return redirect()->back();
-                                      
+                    $edit_designation = Designation::where('id', (int) $requestData['designation_id'])->update($data);
+                    if($edit_designation)
+                    {
+                        $status   = 200;
+                        $response = array(
+                            'status'  => 'SUCCESS',
+                            'message' => trans('messages.designation_edit_success'),
+                            'ref'     => 'designation_edit_success',
+                        );
+                    }
+                    else
+                    {
+                        $status = 400;
+                        $response = array(
+                            'status'  => 'FAILED',
+                            'message' => trans('messages.server_error'),
+                            'ref'     => 'server_error'
+                        );
+                    }
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.error_invalid_designation_id'),
+                        'ref'     => 'error_invalid_designation_id'
+                    );
+                }
+            }
+            else
+            {
+                $status = 400;
+                $response = array(
+                    'status'  => 'FAILED',
+                    'message' => trans('messages.error_invalid_department_id'),
+                    'ref'     => 'error_invalid_department_id'
+                );
+            }
+        } else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function deletedesignation(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $rules = [
+            'designation_id' => 'required'
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if (!$validator->fails()) 
+        {
+            $requestData = $request->all();
+            $designation = Designation::where(['id' => (int) $requestData['designation_id'],"deleted" => '0'])->first();
+            if(!empty($designation))
+            {    
+                $requestData = $request->all();    
+                $data['deleted'] = '1';
+                $edit_designation = Designation::where('id', (int) $requestData['designation_id'])->update($data);
+                if($edit_designation)
+                {
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.designation_deleted_success'),
+                        'ref'     => 'designation_deleted_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+            }
+            else
+            {
+                $status = 400;
+                $response = array(
+                    'status'  => 'FAILED',
+                    'message' => trans('messages.error_invalid_designation_id'),
+                    'ref'     => 'error_invalid_designation_id'
+                );
+            }
+        } else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
     }
 }

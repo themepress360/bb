@@ -28,7 +28,7 @@
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
                                             <!--{{$mydetail['profile_image_url']}}-->
-                                            <a href="#"><img alt="" src="{{ Storage::url('app/images/profile_images/5f57293768975.png')}}"></a>
+                                            <a href="#"><img alt="" src="{{{$mydetail['profile_image_url']}}}"></a>
                                         </div>
                                     </div>
                                     <div class="profile-basic">

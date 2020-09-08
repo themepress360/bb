@@ -31,11 +31,14 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
         Route::get('profile', array('uses' => 'ProfileController@index'));
         Route::post('editprofile',array('as' => 'admin.editprofile','uses' => 'ProfileController@editprofile'));
+        Route::post('adddepartment', array('uses' => 'DepartmentController@adddepartment'));
+        Route::post('editdepartment', array('uses' => 'DepartmentController@editdepartment'));
+        Route::post('deletedepartment', array('uses' => 'DepartmentController@deletedepartment'));
+        Route::post('adddesignation', array('uses' => 'DesignationController@adddesignation'));
+        Route::post('editdesignation', array('uses' => 'DesignationController@editdesignation'));
+        Route::post('deletedesignation', array('uses' => 'DesignationController@deletedesignation'));
         Route::get('departments', array('uses' => 'DepartmentController@index'));
-        Route::post('departments', array('uses' => 'DepartmentController@store'));
         Route::get('designations', array('uses' => 'DesignationController@index'));
-        Route::post('designations', array('uses' => 'DesignationController@store'));
-
     });
 
     Route::group(
