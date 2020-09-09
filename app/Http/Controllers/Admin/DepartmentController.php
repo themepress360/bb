@@ -12,6 +12,7 @@ use Auth;
 use Redirect;
 use Illuminate\Http\Request;
 use App\Department;
+use App\Designation;
 
 class DepartmentController extends CommonController
 {
@@ -29,33 +30,48 @@ class DepartmentController extends CommonController
     public function adddepartment(Request $request)
     {
         $rules = [
-            'name'      => 'required|string|min:2|max:20'
+            'name'      => 'required|string|min:2|max:20',
+            'prefix'    => 'required|string|min:2|max:8'
         ];
         $validator = Validator::make($request->all(),$rules);
         if (!$validator->fails()) 
         {
-            $requestData = $request->all();    
-            $data['name'] = trim(strtolower($requestData['name']));
-            $data['deleted'] = '0';
-            $data['status']   = '1';
-            $add_department = Department::create($data);
-            if($add_department)
+            $requestData = $request->all();
+            $data['prefix'] = trim(strtolower($requestData['prefix']));
+            $is_prefix_exists = Department::where(['prefix' => $data['prefix'],"deleted" => '0'])->first();  
+            if(empty($is_prefix_exists))
             {
-                $status   = 200;
-                $response = array(
-                    'status'  => 'SUCCESS',
-                    'message' => trans('messages.department_add_success'),
-                    'ref'     => 'department_add_success',
-                );
+                $data['name'] = trim(strtolower($requestData['name']));
+                $data['deleted'] = '0';
+                $data['status']   = '1';
+                $add_department = Department::create($data);
+                if($add_department)
+                {
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.department_add_success'),
+                        'ref'     => 'department_add_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
             }
             else
             {
                 $status = 400;
                 $response = array(
                     'status'  => 'FAILED',
-                    'message' => trans('messages.server_error'),
-                    'ref'     => 'server_error'
-                );
+                    'message' => trans('messages.error_prefix_exists'),
+                    'ref'     => 'error_prefix_exists'
+                );  
             }        
         } else {
             $status = 400;
@@ -80,36 +96,51 @@ class DepartmentController extends CommonController
     {
         $rules = [
             'name'      => 'required|string|min:2|max:20',
-            'department_id' => 'required'
+            'department_id' => 'required',
+            'prefix'    => 'required|string|min:2|max:8'
         ];
         $validator = Validator::make($request->all(),$rules);
         if (!$validator->fails()) 
         {
             $requestData = $request->all();
-            $department = Department::where(['id' => (int) $requestData['department_id'],"deleted" => '0'])->first();
-            if(!empty($department))
-            {
-                
-                $requestData = $request->all();    
-                $data['name'] = trim(strtolower($requestData['name']));
-                
-                $edit_department = Department::where('id', (int) $requestData['department_id'])->update($data);
-                if($edit_department)
+            $data['prefix'] = trim(strtolower($requestData['prefix']));
+            $is_prefix_exists = Department::where('id', '!=' , $requestData['department_id'])->where(['prefix' => $data['prefix'],"deleted" => '0'])->first(); 
+            if(empty($is_prefix_exists))
+            {   
+                $department = Department::where(['id' => (int) $requestData['department_id'],"deleted" => '0'])->first();
+                if(!empty($department))
                 {
-                    $status   = 200;
-                    $response = array(
-                        'status'  => 'SUCCESS',
-                        'message' => trans('messages.department_edit_success'),
-                        'ref'     => 'department_edit_success',
-                    );
+                    
+                    $requestData = $request->all();    
+                    $data['name'] = trim(strtolower($requestData['name']));
+                    
+                    $edit_department = Department::where('id', (int) $requestData['department_id'])->update($data);
+                    if($edit_department)
+                    {
+                        $status   = 200;
+                        $response = array(
+                            'status'  => 'SUCCESS',
+                            'message' => trans('messages.department_edit_success'),
+                            'ref'     => 'department_edit_success',
+                        );
+                    }
+                    else
+                    {
+                        $status = 400;
+                        $response = array(
+                            'status'  => 'FAILED',
+                            'message' => trans('messages.server_error'),
+                            'ref'     => 'server_error'
+                        );
+                    }
                 }
                 else
                 {
                     $status = 400;
                     $response = array(
                         'status'  => 'FAILED',
-                        'message' => trans('messages.server_error'),
-                        'ref'     => 'server_error'
+                        'message' => trans('messages.error_invalid_department_id'),
+                        'ref'     => 'error_invalid_department_id'
                     );
                 }
             }
@@ -118,9 +149,9 @@ class DepartmentController extends CommonController
                 $status = 400;
                 $response = array(
                     'status'  => 'FAILED',
-                    'message' => trans('messages.error_invalid_department_id'),
-                    'ref'     => 'error_invalid_department_id'
-                );
+                    'message' => trans('messages.error_prefix_exists'),
+                    'ref'     => 'error_prefix_exists'
+                );  
             }
         } else {
             $status = 400;
@@ -158,6 +189,7 @@ class DepartmentController extends CommonController
                 $edit_department = Department::where('id', (int) $requestData['department_id'])->update($data);
                 if($edit_department)
                 {
+                    $delete_designation = Designation::where('department_id', (int) $requestData['department_id'])->update(['deleted' => '1']);
                     $status   = 200;
                     $response = array(
                         'status'  => 'SUCCESS',

@@ -39,6 +39,8 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('deletedesignation', array('uses' => 'DesignationController@deletedesignation'));
         Route::get('departments', array('uses' => 'DepartmentController@index'));
         Route::get('designations', array('uses' => 'DesignationController@index'));
+        Route::post('saveeducationinformation', array('uses' => 'EducationInformationController@save'));
+        
     });
 
     Route::group(

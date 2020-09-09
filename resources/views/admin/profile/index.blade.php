@@ -98,7 +98,7 @@
                                         <h3 class="card-title">Education Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#education_info"><i class="fa fa-pencil"></i></a></h3>
                                         <div class="experience-box">
                                             <ul class="experience-list">
-                                                <li>
+                                                <!-- <li>
                                                     <div class="experience-user">
                                                         <div class="before-circle"></div>
                                                     </div>
@@ -121,7 +121,7 @@
                                                             <span class="time">2000 - 2003</span>
                                                         </div>
                                                     </div>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                         </div>
                                     </div>
@@ -1006,6 +1006,7 @@
             <!-- /Emergency Contact Modal -->
             
             <!-- Education Modal -->
+            <?php $image_row = 0; ?>
             <div id="education_info" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
@@ -1016,29 +1017,82 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
-                                <div class="form-scroll">
-                                                                   
+                            {{ Form::open(array( 'id' => 'EducationInformationForm')) }}
+                            @csrf
+                                <div class="form-scroll">                             
                                     <div class="card">
+                                        @if (!empty($educations_info))
+                                            @foreach($educations_info as $id => $education_info) 
+                                                <div class="card-body">
+                                                    <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"></a></h3>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus focused">
+                                                                <input type="text" value="{{$education_info['institute']}}" class="form-control floating" id="institute<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][institute]">
+                                                                <label class="focus-label">Institution</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus focused">
+                                                                <input type="text" value="{{$education_info['subject']}}" class="form-control floating" id="subject<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][subject]">
+                                                                <label class="focus-label">Subject</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus focused">
+                                                                <div class="cal-icon">
+                                                                    <input type="text" value="{{$education_info['start_date']}}" class="form-control floating datetimepicker" id="start_date<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][start_date]">
+                                                                </div>
+                                                                <label class="focus-label">Starting Date</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus focused">
+                                                                <div class="cal-icon">
+                                                                    <input type="text" value="{{$education_info['complete_date']}}" class="form-control floating datetimepicker" id="complete_date<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][complete_date]">
+                                                                </div>
+                                                                <label class="focus-label">Complete Date</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus focused">
+                                                                <input type="text" value="{{$education_info['degree']}}" class="form-control floating" id="degree<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][degree]">
+                                                                <label class="focus-label">Degree</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus focused">
+                                                                <input type="text" value="{{$education_info['grade']}}" class="form-control floating" id="grade<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][grade]">
+                                                                <label class="focus-label">Grade</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="add-more">
+                                                        <a href="javascript:void(0);" id="addMoreEducation"><i class="fa fa-plus-circle"></i> Add More</a>
+                                                    </div>
+                                                </div>
+                                                <?php $image_row++; ?>
+                                            @endforeach
+                                        @else
                                         <div class="card-body">
                                             <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"></a></h3>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="" class="form-control floating">
+                                                        <input type="text" value="" class="form-control floating" id="institute<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][institute]">
                                                         <label class="focus-label">Institution</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="" class="form-control floating">
+                                                        <input type="text" value="" class="form-control floating" id="subject<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][subject]">
                                                         <label class="focus-label">Subject</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
                                                         <div class="cal-icon">
-                                                            <input type="text" value="" class="form-control floating datetimepicker">
+                                                            <input type="text" value="" class="form-control floating datetimepicker" id="start_date<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][start_date]">
                                                         </div>
                                                         <label class="focus-label">Starting Date</label>
                                                     </div>
@@ -1046,20 +1100,20 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
                                                         <div class="cal-icon">
-                                                            <input type="text" value="" class="form-control floating datetimepicker">
+                                                            <input type="text" value="" class="form-control floating datetimepicker" id="complete_date<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][complete_date]">
                                                         </div>
                                                         <label class="focus-label">Complete Date</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="" class="form-control floating">
+                                                        <input type="text" value="" class="form-control floating" id="degree<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][degree]">
                                                         <label class="focus-label">Degree</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="" class="form-control floating">
+                                                        <input type="text" value="" class="form-control floating" id="grade<?php echo $image_row;?>" name="education_informations[<?php echo $image_row;?>][grade]">
                                                         <label class="focus-label">Grade</label>
                                                     </div>
                                                 </div>
@@ -1068,15 +1122,17 @@
                                                 <a href="javascript:void(0);" id="addMoreEducation"><i class="fa fa-plus-circle"></i> Add More</a>
                                             </div>
                                         </div>
+                                        <?php $image_row++; ?>
+                                        @endif
                                     </div>
                                     <div class="" id="card_body_education">
                                         
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <a onClick="EducationInformation()" class="btn btn-primary submit-btn">Submit</a>
                                 </div>
-                            </form>
+                            {{ Form::close() }}
                         </div>
                     </div>
                 </div>
@@ -1174,40 +1230,135 @@
                     return false;
             }
                 
-                function editprofile() {
-                    var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/editprofile' : '#') }}";  
-                    var form = $('#editprofile').get(0);
-                    var formData = new FormData(form);
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(response)
-                        {
-                            if(response.status == "SUCCESS")
-                            {
-                                toastr['success'](response.message);
-                                window.location = "";
-                            }
-                            else
-                            {
-                                toastr['error'](response.message);
-                            }
-                            
-                        }
-                    }); 
-                }
-                $("#editimageUpload").change(function() {
-                    var upload = readURL(this);
-                    if(upload)
+            function editprofile() {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/editprofile' : '#') }}";  
+                var form = $('#editprofile').get(0);
+                var formData = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
                     {
-                        console.log("akber");
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
                     }
-                });
-                
-           
+                }); 
+            }
+            $("#editimageUpload").change(function() {
+                var upload = readURL(this);
+                if(upload)
+                {
+                }
+            });
+        </script>
+        <script type="text/javascript">
+        var image_row = <?php echo $image_row; ?>;
+        // add Form
+        $(document).on('click', '#addMoreEducation', function () {
+            var html = '';
+            html +='<div class="card" id="inputEduForm">'
+            html +='<div class="card-body">'
+            html +='<h3 class="card-title">Education Informations'
+            html +='<a href="javascript:void(0);" class="delete-icon" id="removeEduForm">'
+            html +='<i class="fa fa-trash-o">'
+            html +='</i>'
+            html +='</a>'
+            html +='</h3>'
+            html +='<div class="row">'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<input type="text" class="form-control floating" value="" id="institute'+image_row+'" name="education_informations['+image_row+'][institute]">'
+            html +='<label class="focus-label">Institute</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<input type="text" class="form-control floating" value="" id="subject'+image_row+'" name="education_informations['+image_row+'][subject]">'
+            html +='<label class="focus-label">Subject</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<input type="text" class="form-control floating datetimepicker" value="" id="start_date'+image_row+'" name="education_informations['+image_row+'][start_date]">'
+            html +='<label class="focus-label">Starting Date</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<div class="cal-icon">'
+            html +='<input type="text" class="form-control floating datetimepicker" value="" id="complete_date'+image_row+'" name="education_informations['+image_row+'][complete_date]">'
+            html +='</div>'
+            html +='<label class="focus-label">Complete Date</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<div class="cal-icon">'
+            html +='<input type="text" class="form-control floating" value="" id="degree'+image_row+'" name="education_informations['+image_row+'][degree]">'
+            html +='</div>'
+            html +='<label class="focus-label">Degree</label>'                                                    
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<div class="cal-icon">'
+            html +='<input type="text" class="form-control floating" value="" id="grade'+image_row+'" name="education_informations['+image_row+'][grade]">'
+            html +='</div>'
+            html +='<label class="focus-label">Grade</label>'                                                    
+            html +='</div>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="add-more">'
+            html +='<a href="javascript:void(0);" id="addMoreEducation">'
+            html +='<i class="fa fa-plus-circle">'
+            html +='</i>'
+            html +='Add More'
+            html +='</a>'
+            html +='</div>'
+            html +='</div>'
+            html +='</div>';
+            $('#card_body_education').append(html);
+            image_row++;
+          });
+        // remove Form
+        $(document).on('click', '#removeEduForm', function () {
+            $(this).closest('#inputEduForm').remove();
+        });
+        function EducationInformation()
+        {
+            var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/saveeducationinformation' : '#') }}";  
+            var form = $('#EducationInformationForm').get(0);
+            var formData = new FormData(form);
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response)
+                {
+                    if(response.status == "SUCCESS")
+                    {
+                        toastr['success'](response.message);
+                        //window.location = "";
+                    }
+                    else
+                    {
+                        toastr['error'](response.message);
+                    }    
+                }
+            }); 
+        }
         </script>
         <!-- /Page Wrapper -->
 @endsection

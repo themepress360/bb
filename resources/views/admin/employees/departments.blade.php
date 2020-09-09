@@ -31,6 +31,7 @@
                                     <tr>
                                         <th style="width: 30px;">#</th>
                                         <th>Department Name</th>
+                                        <th>Prefix</th>
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
@@ -39,6 +40,7 @@
                                     <tr>
                                         <td>{{$department['id']}}</td>
                                         <td>{{ucwords($department['name'])}}</td>
+                                        <td>{{strtolower($department['prefix'])}}</td>
                                         <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -66,6 +68,10 @@
                                                             <div class="form-group">
                                                                 <label>Department Name <span class="text-danger">*</span></label>
                                                                 <input class="form-control" value="{{ucwords($department['name'])}}" name="name" type="text">
+                                                            </div>
+                                                             <div class="form-group">
+                                                                <label>Prefix <span class="text-danger">*</span></label>
+                                                                <input class="form-control" type="text" name="prefix" value="{{!empty($department['prefix']) ? $department['prefix'] : ''}}">
                                                             </div>
                                                             <div class="submit-section">
                                                                 <a onClick="editdepartment('{{$department['id']}}')"class="btn btn-primary submit-btn">Save</a>
@@ -131,6 +137,10 @@
                                 <div class="form-group">
                                     <label>Department Name <span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prefix <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="prefix">
                                 </div>
                                 <div class="submit-section">
                                     <a onClick="adddepartment()" class="btn btn-primary submit-btn">Submit</a>
