@@ -38,12 +38,13 @@
 									<div class="navbar">
 										<div class="float-left mr-auto">
 											<div class="add-task-btn-wrapper">
-												<span class="add-task-btn btn btn-white btn-sm">
-													Add Task
-												</span>
+												<!--<span class="add-task-btn btn btn-white btn-sm">
+												 <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_task">	Add Task </a>
+												</span> -->
+												<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_task">Add Task </a>
 											</div>
 										</div>
-										<a class="task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i class="fa fa fa-comment"></i></a>
+										<!--<a class="task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i class="fa fa fa-comment"></i></a> -->
 										<ul class="nav float-right custom-menu">
 											<li class="nav-item dropdown dropdown-action">
 												<a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-cog"></i></a>
@@ -248,11 +249,30 @@
 																	<div class="task-head-title">Due Date</div>
 																	<div class="due-date">Mar 26, 2019</div>
 																</div>
+																
 															</a>
 															<span class="remove-icon">
 																<i class="fa fa-close"></i>
 															</span>
 														</div>
+														 <div class="dropdown">
+															  <div class="assignee-info dropdown-toggle" data-toggle="dropdown">
+															  	<div class="assigned-info">
+															  	<div class="task-head-title">Status</div>
+																	<div class="task-assignee">Assigned</div>
+																</div>
+
+																  <span class="caret"></span></button>
+																  <ul class="dropdown-menu">
+																    <li><a href="#" >In-Progress</a></li>
+																    <li><a href="#" >Pending</a></li>
+																    <li><a href="#" >Cancelled</a></li>
+																    <li><a href="#" >On-Hold</a></li>
+																     <li><a href="#">Complete</a></li>
+
+																  </ul>
+																</div>
+																</div>
 													</div>
 													<hr class="task-line">
 													<div class="task-desc">
@@ -260,7 +280,7 @@
 															<i class="material-icons">subject</i>
 														</div>
 														<div class="task-textarea">
-															<textarea class="form-control" placeholder="Description"></textarea>
+															Description
 														</div>
 													</div>
 													<hr class="task-line">
@@ -384,6 +404,8 @@
 											</div>
 										</div>
 									</div>
+									<div class="row">
+										<div class="col-md-6">
 									<div class="project-members task-followers">
 										<span class="followers-title">Followers</span>
 										<a class="avatar" href="#" data-toggle="tooltip" title="Jeffery Lalor">
@@ -399,7 +421,20 @@
 											<img alt="" src="img/profiles/avatar-05.jpg">
 										</a>
 										<a href="#" class="followers-add" data-toggle="modal" data-target="#task_followers"><i class="material-icons">add</i></a>
+										
 									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="file-options" style="margin-right:20px;">
+										<span class="btn-file"><input type="file" class="upload"><i class="fa fa-upload"></i></span>
+										
+										<a href="#" class="followers-add" data-toggle="modal" data-target="#task_followers"><i class="material-icons">add</i></a> <span class="followers-title">Add Client</span>
+										</div>
+									</div>
+										
+										
+									
+								</div>
 								</div>
 							</div>
 						</div>
@@ -671,6 +706,121 @@
 					</div>
 				</div>
 				<!-- /Task Followers Modal -->
+
+
+				 <!-- Add Task Modal -->
+            <div id="add_task" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Task</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                  
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Task Title <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Due Date<span class="text-danger">*</span></label>
+                                            <div class="cal-icon">
+                                                <input class="form-control datetimepicker" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Task Description<span class="text-danger">*</span></label>
+                                           <textarea class="form-control" placeholder="Description"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Assign To <span class="text-danger">*</span></label>
+                                            <!--<input class="form-control floating" type="email">-->
+                                            <div class="dropdown" style="display:flex;">
+											    <a href="#" class="followers-add" data-toggle="dropdown" style=" margin-right:10px;"><i class="material-icons">add</i></a>
+											    <div class="dropdown-menu">
+											      <div>
+												<ul class="chat-user-list">
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Jeffery Lalor</div>
+														<span class="designation">Team Leader</span>
+													</div>
+												</div>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Catherine Manseau</div>
+														<span class="designation">Android Developer</span>
+													</div>
+												</div>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Wilmer Deluna</div>
+														<span class="designation">Team Leader</span>
+													</div>
+												</div>
+											</a>
+										</li>
+													</ul>
+												</div>
+											    </div>
+											    <div class="project-members">
+                                                
+												<a href="#" data-toggle="tooltip" title="John Doe" class="avatar">
+                                                   <img src="img/profiles/avatar-16.jpg" alt="">
+                                                </a>
+                                                <a href="#" data-toggle="tooltip" title="Richard Miles" class="avatar">
+                                                    <img src="img/profiles/avatar-09.jpg" alt="">
+                                                </a>
+                                                <a href="#" data-toggle="tooltip" title="John Smith" class="avatar">
+                                                    <img src="{{asset('img/profiles/avatar-10.jpg')}}" alt="">
+                                                </a>                                              
+                                               
+                                            </div>
+											  </div>
+											  
+
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                                                      
+                                </div>
+                                
+                                <div class="submit-section">
+                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Add Task Modal -->
 				
             </div>
 			<!-- /Page Wrapper -->

@@ -105,7 +105,7 @@ Route::get('/admin/leads', function () {
 Route::get('/admin/projects', function () {
         return view('admin.projects.index');
     });
-Route::get('/admin/projects-list', function () {
+Route::get('/admin/project-list', function () {
         return view('admin.projects.projects-list');
     });
 Route::get('/admin/projects-list', function () {
@@ -141,6 +141,9 @@ Route::get('/admin/events', function () {
     });
 Route::get('/admin/file-manager', function () {
         return view('admin.apps.filemanager.index');
+    });
+Route::get('/admin/roles-permissions', function () {
+        return view('admin.roles.index');
     });
 
 

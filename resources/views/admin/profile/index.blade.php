@@ -91,8 +91,7 @@
                 
                     <!-- Profile Info Tab -->
                     <div id="emp_profile" class="pro-overview tab-pane fade show active">
-                                        
-                        <div class="row">
+                         <div class="row">
                             <div class="col-md-6 d-flex">
                                 <div class="card profile-box flex-fill">
                                     <div class="card-body">
@@ -1019,26 +1018,27 @@
                         <div class="modal-body">
                             <form>
                                 <div class="form-scroll">
+                                                                   
                                     <div class="card">
                                         <div class="card-body">
-                                            <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
+                                            <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"></a></h3>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="Oxford University" class="form-control floating">
+                                                        <input type="text" value="" class="form-control floating">
                                                         <label class="focus-label">Institution</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="Computer Science" class="form-control floating">
+                                                        <input type="text" value="" class="form-control floating">
                                                         <label class="focus-label">Subject</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
                                                         <div class="cal-icon">
-                                                            <input type="text" value="01/06/2002" class="form-control floating datetimepicker">
+                                                            <input type="text" value="" class="form-control floating datetimepicker">
                                                         </div>
                                                         <label class="focus-label">Starting Date</label>
                                                     </div>
@@ -1046,76 +1046,31 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
                                                         <div class="cal-icon">
-                                                            <input type="text" value="31/05/2006" class="form-control floating datetimepicker">
+                                                            <input type="text" value="" class="form-control floating datetimepicker">
                                                         </div>
                                                         <label class="focus-label">Complete Date</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="BE Computer Science" class="form-control floating">
+                                                        <input type="text" value="" class="form-control floating">
                                                         <label class="focus-label">Degree</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="Grade A" class="form-control floating">
-                                                        <label class="focus-label">Grade</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="Oxford University" class="form-control floating">
-                                                        <label class="focus-label">Institution</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="Computer Science" class="form-control floating">
-                                                        <label class="focus-label">Subject</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <div class="cal-icon">
-                                                            <input type="text" value="01/06/2002" class="form-control floating datetimepicker">
-                                                        </div>
-                                                        <label class="focus-label">Starting Date</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <div class="cal-icon">
-                                                            <input type="text" value="31/05/2006" class="form-control floating datetimepicker">
-                                                        </div>
-                                                        <label class="focus-label">Complete Date</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="BE Computer Science" class="form-control floating">
-                                                        <label class="focus-label">Degree</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="Grade A" class="form-control floating">
+                                                        <input type="text" value="" class="form-control floating">
                                                         <label class="focus-label">Grade</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="add-more">
-                                                <a href="javascript:void(0);"><i class="fa fa-plus-circle"></i> Add More</a>
+                                                <a href="javascript:void(0);" id="addMoreEducation"><i class="fa fa-plus-circle"></i> Add More</a>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="" id="card_body_education">
+                                        
                                     </div>
                                 </div>
                                 <div class="submit-section">
@@ -1141,74 +1096,33 @@
                         <div class="modal-body">
                             <form>
                                 <div class="form-scroll">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h3 class="card-title">Experience Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="Digital Devlopment Inc">
-                                                        <label class="focus-label">Company Name</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="United States">
-                                                        <label class="focus-label">Location</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="Web Developer">
-                                                        <label class="focus-label">Job Position</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="01/07/2007">
-                                                        </div>
-                                                        <label class="focus-label">Period From</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="08/06/2018">
-                                                        </div>
-                                                        <label class="focus-label">Period To</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     
-                                    <div class="card">
+                                     <div class="card">
                                         <div class="card-body">
-                                            <h3 class="card-title">Experience Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
+                                            <h3 class="card-title">Experience Informations <a href="javascript:void(0);" class="delete-icon"></a></h3>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="Digital Devlopment Inc">
+                                                        <input type="text" class="form-control floating" value="">
                                                         <label class="focus-label">Company Name</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="United States">
+                                                        <input type="text" class="form-control floating" value="">
                                                         <label class="focus-label">Location</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="Web Developer">
+                                                        <input type="text" class="form-control floating" value="">
                                                         <label class="focus-label">Job Position</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
                                                         <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="01/07/2007">
+                                                            <input type="text" class="form-control floating datetimepicker" value="">
                                                         </div>
                                                         <label class="focus-label">Period From</label>
                                                     </div>
@@ -1216,16 +1130,19 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
                                                         <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="08/06/2018">
+                                                            <input type="text" class="form-control floating datetimepicker" value="">
                                                         </div>
                                                         <label class="focus-label">Period To</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="add-more">
-                                                <a href="javascript:void(0);"><i class="fa fa-plus-circle"></i> Add More</a>
+                                                <a href="javascript:void(0);" id="addMoreExperience"><i class="fa fa-plus-circle"></i> Add More</a>
                                             </div>
                                         </div>
+                                    </div>
+                                     <div class="" id="card_body_experience">
+                                        
                                     </div>
                                 </div>
                                 <div class="submit-section">

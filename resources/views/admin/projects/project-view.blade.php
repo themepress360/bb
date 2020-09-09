@@ -278,14 +278,14 @@
 									<h6 class="card-title m-b-15">Project details</h6>
 									<table class="table table-striped table-border">
 										<tbody>
-											<tr>
+											<!--<tr>
 												<td>Cost:</td>
 												<td class="text-right">$1200</td>
 											</tr>
 											<tr>
 												<td>Total Hours:</td>
 												<td class="text-right">100 Hours</td>
-											</tr>
+											</tr> -->
 											<tr>
 												<td>Created:</td>
 												<td class="text-right">25 Feb, 2019</td>

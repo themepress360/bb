@@ -819,13 +819,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Project Name</label>
+                                            <label>Project Name<span class="text-danger">*</span></label>
                                             <input class="form-control" type="text">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Client</label>
+                                            <label>Client<span class="text-danger">*</span></label>
                                             <select class="select">
                                                 <option>Global Technologies</option>
                                                 <option>Delta Infotech</option>
@@ -836,7 +836,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Start Date</label>
+                                            <label>Start Date<span class="text-danger">*</span></label>
                                             <div class="cal-icon">
                                                 <input class="form-control datetimepicker" type="text">
                                             </div>
@@ -844,7 +844,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>End Date</label>
+                                            <label>End Date<span class="text-danger">*</span></label>
                                             <div class="cal-icon">
                                                 <input class="form-control datetimepicker" type="text">
                                             </div>
@@ -852,24 +852,9 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Rate</label>
-                                            <input placeholder="$50" class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>&nbsp;</label>
-                                            <select class="select">
-                                                <option>Hourly</option>
-                                                <option>Fixed</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Priority</label>
+                                            <label>Priority<span class="text-danger">*</span></label>
                                             <select class="select">
                                                 <option>High</option>
                                                 <option>Medium</option>
@@ -877,12 +862,64 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Department<span class="text-danger">*</span></label>
+                                            <select class="select">
+                                                <option>Software</option>
+                                                <option>Network</option>
+                                                <option>Hardware</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Add Project Leader</label>
-                                            <input class="form-control" type="text">
+                                            <label>Add Project Leader<span class="text-danger">*</span></label>
+                                           <!-- <input class="form-control" type="text"> -->
+                                           <div class="dropdown">
+                                                <a href="#" class="followers-add" data-toggle="dropdown"><i class="material-icons">add</i></a>
+                                                <div class="dropdown-menu">
+                                                  <div>
+                                    <ul class="chat-user-list">
+                                        <li>
+                                            <a href="#">
+                                                <div class="media">
+                                                    <span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
+                                                    <div class="media-body media-middle text-nowrap">
+                                                        <div class="user-name">Jeffery Lalor</div>
+                                                        <span class="designation">Team Leader</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="media">
+                                                    <span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
+                                                    <div class="media-body media-middle text-nowrap">
+                                                        <div class="user-name">Catherine Manseau</div>
+                                                        <span class="designation">Android Developer</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="media">
+                                                    <span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
+                                                    <div class="media-body media-middle text-nowrap">
+                                                        <div class="user-name">Wilmer Deluna</div>
+                                                        <span class="designation">Team Leader</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                                </div>
+                                              </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -899,8 +936,50 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Add Team</label>
-                                            <input class="form-control" type="text">
+                                            <label>Add Team<span class="text-danger">*</span></label>
+                                            <!--<input class="form-control" type="text"> -->
+                                            <div class="dropdown">
+                                                <a href="#" class="followers-add" data-toggle="dropdown"><i class="material-icons">add</i></a>
+                                                <div class="dropdown-menu">
+                                                  <div>
+                                    <ul class="chat-user-list">
+                                        <li>
+                                            <a href="#">
+                                                <div class="media">
+                                                    <span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
+                                                    <div class="media-body media-middle text-nowrap">
+                                                        <div class="user-name">Jeffery Lalor</div>
+                                                        <span class="designation">Team Leader</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="media">
+                                                    <span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
+                                                    <div class="media-body media-middle text-nowrap">
+                                                        <div class="user-name">Catherine Manseau</div>
+                                                        <span class="designation">Android Developer</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="media">
+                                                    <span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
+                                                    <div class="media-body media-middle text-nowrap">
+                                                        <div class="user-name">Wilmer Deluna</div>
+                                                        <span class="designation">Team Leader</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                                </div>
+                                              </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">

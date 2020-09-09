@@ -526,13 +526,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Project Name</label>
+                                            <label>Project Name<span class="text-danger">*</span></label>
                                             <input class="form-control" type="text">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Client</label>
+                                            <label>Client<span class="text-danger">*</span></label>
                                             <select class="select">
                                                 <option>Global Technologies</option>
                                                 <option>Delta Infotech</option>
@@ -543,7 +543,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Start Date</label>
+                                            <label>Start Date<span class="text-danger">*</span></label>
                                             <div class="cal-icon">
                                                 <input class="form-control datetimepicker" type="text">
                                             </div>
@@ -551,7 +551,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>End Date</label>
+                                            <label>End Date<span class="text-danger">*</span></label>
                                             <div class="cal-icon">
                                                 <input class="form-control datetimepicker" type="text">
                                             </div>
@@ -559,24 +559,9 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-3">
+                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Rate</label>
-                                            <input placeholder="$50" class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>&nbsp;</label>
-                                            <select class="select">
-                                                <option>Hourly</option>
-                                                <option>Fixed</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Priority</label>
+                                            <label>Priority<span class="text-danger">*</span></label>
                                             <select class="select">
                                                 <option>High</option>
                                                 <option>Medium</option>
@@ -584,12 +569,66 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Department<span class="text-danger">*</span></label>
+                                            <select class="select">
+                                                <option>Software</option>
+                                                <option>Network</option>
+                                                <option>Hardware</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Add Project Leader</label>
-                                            <input class="form-control" type="text">
+                                            <label>Add Project Leader<span class="text-danger">*</span></label>
+                                            <!--<input class="form-control" type="text"> -->
+                                           	<div class="dropdown">
+											    <a href="#" class="followers-add" data-toggle="dropdown"><i class="material-icons">add</i></a>
+											    <div class="dropdown-menu">
+											      <div>
+									<ul class="chat-user-list">
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Jeffery Lalor</div>
+														<span class="designation">Team Leader</span>
+													</div>
+												</div>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Catherine Manseau</div>
+														<span class="designation">Android Developer</span>
+													</div>
+												</div>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Wilmer Deluna</div>
+														<span class="designation">Team Leader</span>
+													</div>
+												</div>
+											</a>
+										</li>
+									</ul>
+								</div>
+											    </div>
+											  </div>
+
+
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -606,8 +645,50 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Add Team</label>
-                                            <input class="form-control" type="text">
+                                            <label>Add Team<span class="text-danger">*</span></label>
+                                            <!--<input class="form-control" type="text">-->
+                                            <div class="dropdown">
+											    <a href="#" class="followers-add" data-toggle="dropdown"><i class="material-icons">add</i></a>
+											    <div class="dropdown-menu">
+											      <div>
+									<ul class="chat-user-list">
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Jeffery Lalor</div>
+														<span class="designation">Team Leader</span>
+													</div>
+												</div>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Catherine Manseau</div>
+														<span class="designation">Android Developer</span>
+													</div>
+												</div>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Wilmer Deluna</div>
+														<span class="designation">Team Leader</span>
+													</div>
+												</div>
+											</a>
+										</li>
+									</ul>
+								</div>
+											    </div>
+											  </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -811,6 +892,69 @@
                 </div>
             </div>
             <!-- /Delete Project Modal -->
+
+            <!-- Task Followers Modal -->
+				<div id="task_followers" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Add followers to this task</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="input-group m-b-30">
+									<input placeholder="Search to add" class="form-control search-input" type="text">
+									<span class="input-group-append">
+										<button class="btn btn-primary">Search</button>
+									</span>
+								</div>
+								<div>
+									<ul class="chat-user-list">
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Jeffery Lalor</div>
+														<span class="designation">Team Leader</span>
+													</div>
+												</div>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Catherine Manseau</div>
+														<span class="designation">Android Developer</span>
+													</div>
+												</div>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<div class="media">
+													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
+													<div class="media-body media-middle text-nowrap">
+														<div class="user-name">Wilmer Deluna</div>
+														<span class="designation">Team Leader</span>
+													</div>
+												</div>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div class="submit-section">
+									<button class="btn btn-primary submit-btn">Add to Follow</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Task Followers Modal -->
             
         </div>
         <!-- /Page Wrapper -->

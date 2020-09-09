@@ -21,7 +21,7 @@
         <li class="{{ Request::is('theme-settings') ? 'active' : '' }}">
         <a  href="{{ url('theme-settings') }}"><i class="la la-photo"></i><span>Theme Settings</span>  </a></li>
         <li class="{{ Request::is('roles-permissions') ? 'active' : '' }}">
-        <a  href="{{ url('roles-permissions') }}"><i class="la la-key"></i> <span>Roles & Permissions</span>  </a></li>
+        <a  href="{{ url('admin/roles-permissions') }}"><i class="la la-key"></i> <span>Roles & Permissions</span>  </a></li>
         <li class="{{ Request::is('email-settings') ? 'active' : '' }}">
         <a  href="{{ url('email-settings') }}"><i class="la la-at"></i><span>Email Settings</span>  </a></li>
 		<li class="{{ Request::is('invoice-settings') ? 'active' : '' }}">

@@ -153,4 +153,154 @@
             }
         </script>
 		
-	
+	<script type="text/javascript">
+        // add Form
+   $(document).on('click', '#addMoreExperience', function () {
+
+        	var html = '';
+         html +='<div class="card" id="inputExpForm">'
+         html +='<div class="card-body">'
+         html +='<h3 class="card-title">Experience Informations'
+         html +='<a href="javascript:void(0);" class="delete-icon" id="removeExpForm">'
+         html +='<i class="fa fa-trash-o">'
+         html +='</i>'
+         html +='</a>'
+         html +='</h3>'
+         html +='<div class="row">'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<input type="text" class="form-control floating" value="">'
+         html +='<label class="focus-label">Company Name</label>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<input type="text" class="form-control floating" value="">'
+         html +='<label class="focus-label">Location</label>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<input type="text" class="form-control floating" value="">'
+         html +='<label class="focus-label">Job Position</label>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<div class="cal-icon">'
+         html +='<input type="text" class="form-control floating datetimepicker" value="">'
+         html +='</div>'
+         html +='<label class="focus-label">Period From</label>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<div class="cal-icon">'
+         html +='<input type="text" class="form-control floating datetimepicker" value="">'
+         html +='</div>'
+         html +='<label class="focus-label">Period To</label>'                                                    
+         html +='</div>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="add-more">'
+         html +='<a href="javascript:void(0);" id="addMoreExperience">'
+         html +='<i class="fa fa-plus-circle">'
+         html +='</i>'
+         html +='Add More'
+         html +='</a>'
+         html +='</div>'
+         html +='</div>'
+         html +='</div>';
+
+            $('#card_body_experience').append(html);
+           
+          });
+
+        // remove Form
+        $(document).on('click', '#removeExpForm', function () {
+            $(this).closest('#inputExpForm').remove();
+          });
+
+        
+
+
+    </script>
+
+
+    <script type="text/javascript">
+        // add Form
+   $(document).on('click', '#addMoreEducation', function () {
+
+        	var html = '';
+         html +='<div class="card" id="inputEduForm">'
+         html +='<div class="card-body">'
+         html +='<h3 class="card-title">Education Informations'
+         html +='<a href="javascript:void(0);" class="delete-icon" id="removeEduForm">'
+         html +='<i class="fa fa-trash-o">'
+         html +='</i>'
+         html +='</a>'
+         html +='</h3>'
+         html +='<div class="row">'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<input type="text" class="form-control floating" value="">'
+         html +='<label class="focus-label">Institute</label>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<input type="text" class="form-control floating" value="">'
+         html +='<label class="focus-label">Subject</label>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<input type="text" class="form-control floating datetimepicker" value="">'
+         html +='<label class="focus-label">Starting Date</label>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<div class="cal-icon">'
+         html +='<input type="text" class="form-control floating datetimepicker" value="">'
+         html +='</div>'
+         html +='<label class="focus-label">Complete Date</label>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<div class="cal-icon">'
+         html +='<input type="text" class="form-control floating" value="">'
+         html +='</div>'
+         html +='<label class="focus-label">Degree</label>'                                                    
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="col-md-6">'
+         html +='<div class="form-group form-focus">'
+         html +='<div class="cal-icon">'
+         html +='<input type="text" class="form-control floating" value="">'
+         html +='</div>'
+         html +='<label class="focus-label">Grade</label>'                                                    
+         html +='</div>'
+         html +='</div>'
+         html +='</div>'
+         html +='<div class="add-more">'
+         html +='<a href="javascript:void(0);" id="addMoreEducation">'
+         html +='<i class="fa fa-plus-circle">'
+         html +='</i>'
+         html +='Add More'
+         html +='</a>'
+         html +='</div>'
+         html +='</div>'
+         html +='</div>';
+
+            $('#card_body_education').append(html);
+           
+          });
+
+        // remove Form
+        $(document).on('click', '#removeEduForm', function () {
+            $(this).closest('#inputEduForm').remove();
+          });
+
+         </script>
