@@ -225,59 +225,66 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form id="addclient" onsubmit="return false">
+                                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                   
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">First Name <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="fname">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Last Name<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="lname">
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                                            <input class="form-control floating" type="email">
+                                            <input class="form-control floating" type="email" name="email">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Password<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="password">
+                                            <input class="form-control" type="password" name="password">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Confirm Password<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="password">
+                                            <input class="form-control" type="password_confirmation">
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Phone<span class="text-danger">*</span> </label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="phone">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Company Name<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="company_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Client Designation<span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="client_designation">
                                         </div>
                                     </div>
                                                                       
                                 </div>
                                 
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button onClick ="addClient()" class="btn btn-primary submit-btn">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -536,5 +543,35 @@
 
         </div>
         <!-- /Page Wrapper -->
+
+        <script type="text/javascript">
+
+            function addClient() {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addclient' : '#') }}";  
+                var form = $('#addclient').get(0);
+                var formData = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                }); 
+            }
+
+
+        </script>
 @endsection
 

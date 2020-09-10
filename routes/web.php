@@ -40,6 +40,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('departments', array('uses' => 'DepartmentController@index'));
         Route::get('designations', array('uses' => 'DesignationController@index'));
         Route::post('saveeducationinformation', array('uses' => 'EducationInformationController@save'));
+        Route::post('addclient', array('uses' => 'ClientController@addclient'));
         
     });
 
