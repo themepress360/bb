@@ -127,39 +127,21 @@
                                         <h3 class="card-title">Experience <a href="#" class="edit-icon" data-toggle="modal" data-target="#experience_info"><i class="fa fa-pencil"></i></a></h3>
                                         <div class="experience-box">
                                             <ul class="experience-list">
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">Web Designer at Zen Corporation</a>
-                                                            <span class="time">Jan 2013 - Present (5 years 2 months)</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">Web Designer at Ron-tech</a>
-                                                            <span class="time">Jan 2013 - Present (5 years 2 months)</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">Web Designer at Dalt Technology</a>
-                                                            <span class="time">Jan 2013 - Present (5 years 2 months)</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                @if (!empty($experiences))
+                                                    @foreach($experiences as $index => $experience)
+                                                        <li>
+                                                            <div class="experience-user">
+                                                                <div class="before-circle"></div>
+                                                            </div>
+                                                            <div class="experience-content">
+                                                                <div class="timeline-content">
+                                                                    <a href="#/" class="name">{{ucwords($experience['job_position'])}} at {{ucwords($experience['company_name'])}}</a>
+                                                                    <span class="time">{{date('Y M',strtotime(str_replace('/', '-', $experience['period_from'])))}} - {{date('Y M',strtotime(str_replace('/', '-', $experience['period_to'])))}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
@@ -931,6 +913,7 @@
             <!-- /Education Modal -->
             
             <!-- Experience Modal -->
+            <?php $experience_row = 0; ?>
             <div id="experience_info" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
@@ -941,35 +924,88 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            {{ Form::open(array( 'id' => 'ExperienceForm')) }}
+                            @csrf
                                 <div class="form-scroll">
-                                    
-                                     <div class="card">
+                                    <div class="card">
+                                        @if (!empty($experiences))
+                                            @foreach($experiences as $index => $experience) 
+                                                <div class="card-body">
+                                                    <h3 class="card-title">Experience Informations 
+                                                        @if ($index != 0)
+                                                        <a href="javascript:void(0);" class="delete-icon" id="removeEduForm">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </a>
+                                                        @endif
+                                                    </h3>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus">
+                                                                <input type="text" class="form-control floating" value="{{$experience['company_name']}}" id="company_name<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][company_name]">
+                                                                <label class="focus-label">Company Name</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus">
+                                                                <input type="text" class="form-control floating" value="{{$experience['location']}}" id="location<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][location]">
+                                                                <label class="focus-label">Location</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus">
+                                                                <input type="text" class="form-control floating" value="{{$experience['job_position']}}" id="job_position<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][job_position]">
+                                                                <label class="focus-label">Job Position</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus">
+                                                                <div class="cal-icon">
+                                                                    <input type="text" class="form-control floating datetimepicker" value="{{$experience['period_from']}}" id="period_from<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][period_from]">
+                                                                </div>
+                                                                <label class="focus-label">Period From</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-focus">
+                                                                <div class="cal-icon">
+                                                                    <input type="text" class="form-control floating datetimepicker" value="{{$experience['period_to']}}" id="period_to<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][period_to]">
+                                                                </div>
+                                                                <label class="focus-label">Period To</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="add-more">
+                                                        <a href="javascript:void(0);" id="addMoreExperience"><i class="fa fa-plus-circle"></i> Add More</a>
+                                                    </div>
+                                                </div>
+                                                <?php $experience_row++; ?>
+                                            @endforeach
+                                        @else
                                         <div class="card-body">
                                             <h3 class="card-title">Experience Informations <a href="javascript:void(0);" class="delete-icon"></a></h3>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="">
+                                                        <input type="text" class="form-control floating" value="" id="company_name<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][company_name]">
                                                         <label class="focus-label">Company Name</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="">
+                                                        <input type="text" class="form-control floating" value="" id="location<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][location]">
                                                         <label class="focus-label">Location</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="">
+                                                        <input type="text" class="form-control floating" value="" id="job_position<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][job_position]">
                                                         <label class="focus-label">Job Position</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
                                                         <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="">
+                                                            <input type="text" class="form-control floating datetimepicker" value="" id="period_from<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][period_from]">
                                                         </div>
                                                         <label class="focus-label">Period From</label>
                                                     </div>
@@ -977,7 +1013,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
                                                         <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="">
+                                                            <input type="text" class="form-control floating datetimepicker" value="" id="period_to<?php echo $experience_row;?>" name="expirences[<?php echo $experience_row;?>][period_to]">
                                                         </div>
                                                         <label class="focus-label">Period To</label>
                                                     </div>
@@ -987,15 +1023,17 @@
                                                 <a href="javascript:void(0);" id="addMoreExperience"><i class="fa fa-plus-circle"></i> Add More</a>
                                             </div>
                                         </div>
+                                        <?php $experience_row++; ?>
+                                        @endif
                                     </div>
-                                     <div class="" id="card_body_experience">
+                                    <div class="" id="card_body_experience">
                                         
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <a onClick="addExperience()" class="btn btn-primary submit-btn">Submit</a>
                                 </div>
-                            </form>
+                            {{ Form::close() }}
                         </div>
                     </div>
                 </div>
@@ -1054,6 +1092,7 @@
         </script>
         <script type="text/javascript">
         var image_row = <?php echo $image_row; ?>;
+        var experience_row = <?php echo $experience_row; ?>;
         // add Form
         $(document).on('click', '#addMoreEducation', function () {
             var html = '';
@@ -1151,5 +1190,97 @@
             }); 
         }
         </script>
+        <script type="text/javascript">
+        // add Form
+        $(document).on('click', '#addMoreExperience', function () {
+            var html = '';
+            html +='<div class="card" id="inputExpForm">'
+            html +='<div class="card-body">'
+            html +='<h3 class="card-title">Experience Informations'
+            html +='<a href="javascript:void(0);" class="delete-icon" id="removeExpForm">'
+            html +='<i class="fa fa-trash-o">'
+            html +='</i>'
+            html +='</a>'
+            html +='</h3>'
+            html +='<div class="row">'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<input type="text" class="form-control floating" value="" id="company_name'+experience_row+'" name="expirences['+experience_row+'][company_name]">'
+            html +='<label class="focus-label">Company Name</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<input type="text" class="form-control floating" value="" id="location'+experience_row+'" name="expirences['+experience_row+'][location]">'
+            html +='<label class="focus-label">Location</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<input type="text" class="form-control floating" value="" id="job_position'+experience_row+'" name="expirences['+experience_row+'][job_position]">'
+            html +='<label class="focus-label">Job Position</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<div class="cal-icon">'
+            html +='<input type="text" class="form-control floating datetimepicker" value="" id="period_from'+experience_row+'" name="expirences['+experience_row+'][period_from]">'
+            html +='</div>'
+            html +='<label class="focus-label">Period From</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<div class="cal-icon">'
+            html +='<input type="text" class="form-control floating datetimepicker" value="" id="period_to'+experience_row+'" name="expirences['+experience_row+'][period_to]">'
+            html +='</div>'
+            html +='<label class="focus-label">Period To</label>'                                                    
+            html +='</div>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="add-more">'
+            html +='<a href="javascript:void(0);" id="addMoreExperience">'
+            html +='<i class="fa fa-plus-circle">'
+            html +='</i>'
+            html +='Add More'
+            html +='</a>'
+            html +='</div>'
+            html +='</div>'
+            html +='</div>';
+            $('#card_body_experience').append(html);
+            experience_row++;
+        });
+
+        // remove Form
+        $(document).on('click', '#removeExpForm', function () {
+            $(this).closest('#inputExpForm').remove();
+        });
+
+        function addExperience()
+        {
+            var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/saveexperiences' : '#') }}";  
+            var form = $('#ExperienceForm').get(0);
+            var formData = new FormData(form);
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response)
+                {
+                    if(response.status == "SUCCESS")
+                    {
+                        toastr['success'](response.message);
+                        window.location = "";
+                    }
+                    else
+                    {
+                        toastr['error'](response.message);
+                    }    
+                }
+            }); 
+        }
+    </script>
         <!-- /Page Wrapper -->
 @endsection

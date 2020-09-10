@@ -16,5 +16,6 @@ return [
   'error_invalid_designation_id' => 'Invalid Designation Id.',
   'designation_deleted_success' => 'Deleted Designation successfully.',
   'error_prefix_exists' => 'Prefix already exists.',
-  'education_information_add_success' => 'Education information save successfully.'
+  'education_information_add_success' => 'Education information save successfully.',
+  'experience_add_success' => 'Experiences save successfully.'
 ];

@@ -10,46 +10,43 @@ use Redirect;
 use Illuminate\Http\Request;
 use Storage;
 use Illuminate\Support\Facades\File;
-use App\EducationInformation;
+use App\Experiences;
 
-
-class EducationInformationController extends CommonController
+class ExperienceController extends CommonController
 {
     public function save(Request $request)
     {
         $rules = [
-            'education_informations'      => 'required|Array'
+            'expirences'      => 'required|Array'
         ];
         $validator = Validator::make($request->all(),$rules);
         if (!$validator->fails()) 
         {
             $requestData = $request->all();
             $user = $request->user();
-            $information_exists = EducationInformation::where(['user_id' => (int) $user['id'],'deleted' => '0'])->get()->toArray();
-            if(!empty($information_exists))
+            $experiences_exists = Experiences::where(['user_id' => (int) $user['id'],'deleted' => '0'])->get()->toArray();
+            if(!empty($experiences_exists))
             {
-                $delete_education_information = EducationInformation::where('user_id', (int) $user['id'])->update(['deleted' => '1']);
+                $delete_experiences = Experiences::where('user_id', (int) $user['id'])->update(['deleted' => '1']);
             }
-            foreach($requestData['education_informations'] as $key => $education_information)
+            foreach($requestData['expirences'] as $key => $experience)
             {
-                $data['institute'] = trim(strtolower($education_information['institute']));
-                $data['subject']   = trim(strtolower($education_information['subject']));
-                $data['start_date'] = trim(strtolower($education_information['start_date']));
-                $data['complete_date'] = trim(strtolower($education_information['complete_date']));
-                $data['degree'] = trim(strtolower($education_information['degree']));
-                $data['grade'] = trim(strtolower($education_information['grade']));
+                $data['company_name'] = trim(strtolower($experience['company_name']));
+                $data['location']   = trim(strtolower($experience['location']));
+                $data['job_position'] = trim(strtolower($experience['job_position']));
+                $data['period_from'] = trim(strtolower($experience['period_from']));
+                $data['period_to'] = trim(strtolower($experience['period_to']));
                 $data['deleted'] = '0';
                 $data['status']   = '1';
                 $data['user_id'] = (int) $user['id'];
-                $add_education_information = EducationInformation::create($data);
+                $add_experience_information = Experiences::create($data);
                 $status   = 200;
                 $response = array(
                     'status'  => 'SUCCESS',
-                    'message' => trans('messages.education_information_add_success'),
-                    'ref'     => 'education_information_add_success',
+                    'message' => trans('messages.experience_add_success'),
+                    'ref'     => 'experience_add_success',
                 );
             }
-
         } else {
             $status = 400;
             $response = array(
@@ -69,3 +66,4 @@ class EducationInformationController extends CommonController
         return \Response::json($data,200);
     }
 }
+

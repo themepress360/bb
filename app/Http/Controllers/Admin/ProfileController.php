@@ -15,6 +15,7 @@ use App\User as User;
 use App\EducationInformation as EducationInformation;
 use Storage;
 use Illuminate\Support\Facades\File;
+use App\Experiences;
 
 class ProfileController extends CommonController
 {
@@ -28,7 +29,11 @@ class ProfileController extends CommonController
 	    	$data['mydetail']['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$data['mydetail']['profile_image']);
 	    else
 	    	$data['mydetail']['profile_image_url'] = '';
+
         $data['educations_informations'] = EducationInformation::where(['user_id' => (int) $data['mydetail']['id'],'deleted' => '0'])->get()->toArray();
+
+        $data['experiences'] = Experiences::where(['user_id' => (int) $data['mydetail']['id'],'deleted' => '0'])->get()->toArray();
+        
         return view('admin.profile.index',$data);
 	}
 	public function editprofile(Request $request)
