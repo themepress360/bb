@@ -41,7 +41,9 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('designations', array('uses' => 'DesignationController@index'));
         Route::post('saveeducationinformation', array('uses' => 'EducationInformationController@save'));
         Route::post('addclient', array('uses' => 'ClientController@addclient'));
-        
+   
+        Route::post('saveexperiences', array('uses' => 'ExperienceController@save'));
+
     });
 
     Route::group(
