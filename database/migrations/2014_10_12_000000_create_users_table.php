@@ -23,15 +23,14 @@ class CreateUsersTable extends Migration
             $table->enum('gender',['male','female']);
             $table->enum('deleted',['1','0']);
             $table->enum('status',['1','0']);
-            $table->string('email')->unique();
+            $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('employee_id');
             $table->string('date_of_joining');
             $table->string('profile_image');
             $table->string('state');
             $table->string('country');
-            $table->string('pin_code');
+            $table->string('zip_code');
             $table->rememberToken();
             $table->timestamps();
         });
