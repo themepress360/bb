@@ -27,8 +27,11 @@
                                 <div class="profile-view">
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
-                                            <!--{{$mydetail['profile_image_url']}}-->
-                                            <a href="#"><img alt="" src="{{{$mydetail['profile_image_url']}}}"></a>
+                                            @if(!empty($mydetail['profile_image_url']))
+                                            <a href="#"><img alt="{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}" src="{{{$mydetail['profile_image_url']}}}"></a>
+                                            @else
+                                            <a href="#"><img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}"></a>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="profile-basic">
@@ -98,30 +101,22 @@
                                         <h3 class="card-title">Education Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#education_info"><i class="fa fa-pencil"></i></a></h3>
                                         <div class="experience-box">
                                             <ul class="experience-list">
-                                                <!-- <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">International College of Arts and Science (UG)</a>
-                                                            <div>Bsc Computer Science</div>
-                                                            <span class="time">2000 - 2003</span>
+                                                @if (!empty($educations_informations))
+                                                    @foreach($educations_informations as $index => $education_info)
+                                                    <li>
+                                                        <div class="experience-user">
+                                                            <div class="before-circle"></div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">International College of Arts and Science (PG)</a>
-                                                            <div>Msc Computer Science</div>
-                                                            <span class="time">2000 - 2003</span>
+                                                        <div class="experience-content">
+                                                            <div class="timeline-content">
+                                                                <a href="#/" class="name">{{ucwords($education_info['institute'])}}</a>
+                                                                <div>{{strtoupper($education_info['degree'])}} {{ucwords($education_info['subject'])}}</div>
+                                                                <span class="time">{{date('Y',strtotime(str_replace('/', '-', $education_info['start_date'])))}} - {{date('Y',strtotime(str_replace('/', '-', $education_info['complete_date'])))}}</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </li> -->
+                                                    </li>
+                                                    @endforeach
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
@@ -667,8 +662,11 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="profile-img-wrap edit-img">
-                                            
-                                            <img id="imagePreview" class="inline-block" src="{{$mydetail['profile_image_url']}}" alt="user">
+                                            @if(!empty($mydetail['profile_image_url']))
+                                            <img id="imagePreview" class="inline-block" src="{{$mydetail['profile_image_url']}}" alt="{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}">
+                                            @else
+                                            <img id="imagePreview" class="inline-block" src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">
+                                            @endif
                                             <div class="fileupload btn">
                                                 <span class="btn-text">Edit</span>
                                                 <input class="upload" type='file' name="profile_image" id="editimageUpload" accept=".png, .jpg, .jpeg" />
@@ -1021,10 +1019,16 @@
                             @csrf
                                 <div class="form-scroll">                             
                                     <div class="card">
-                                        @if (!empty($educations_info))
-                                            @foreach($educations_info as $id => $education_info) 
+                                        @if (!empty($educations_informations))
+                                            @foreach($educations_informations as $index => $education_info) 
                                                 <div class="card-body">
-                                                    <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"></a></h3>
+                                                    <h3 class="card-title">Education Informations
+                                                        @if ($index != 0)
+                                                        <a href="javascript:void(0);" class="delete-icon" id="removeEduForm">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </a>
+                                                        @endif
+                                                    </h3>
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group form-focus focused">
@@ -1350,7 +1354,7 @@
                     if(response.status == "SUCCESS")
                     {
                         toastr['success'](response.message);
-                        //window.location = "";
+                        window.location = "";
                     }
                     else
                     {

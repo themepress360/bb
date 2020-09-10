@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
             'dob'      => '1994-02-18',
             'date_of_joining' => '1994-02-18',
             'employee_id' => 'FT-0001',
-            'profile_image' => 'admin.png',
+            'profile_image' => '',
             'state' => 'New York',
             'country' => 'United States',
             'pin_code' => '10523'
@@ -62,7 +62,7 @@ class UsersTableSeeder extends Seeder
             'dob'      => '1994-02-18',
             'date_of_joining' => '1994-02-18',
             'employee_id' => 'FT-0001',
-            'profile_image' => 'admin.png',
+            'profile_image' => '',
             'state' => 'New York',
             'country' => 'United States',
             'pin_code' => '10523'

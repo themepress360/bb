@@ -12,6 +12,7 @@ use Auth;
 use Redirect;
 use Illuminate\Http\Request;
 use App\User as User;
+use App\EducationInformation as EducationInformation;
 use Storage;
 use Illuminate\Support\Facades\File;
 
@@ -27,7 +28,8 @@ class ProfileController extends CommonController
 	    	$data['mydetail']['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$data['mydetail']['profile_image']);
 	    else
 	    	$data['mydetail']['profile_image_url'] = '';
-	    return view('admin.profile.index',$data);
+        $data['educations_informations'] = EducationInformation::where(['user_id' => (int) $data['mydetail']['id'],'deleted' => '0'])->get()->toArray();
+        return view('admin.profile.index',$data);
 	}
 	public function editprofile(Request $request)
 	{
