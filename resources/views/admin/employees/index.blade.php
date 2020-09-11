@@ -289,22 +289,11 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Password</label>
+                                            <label class="col-form-label">Password<span class="text-danger">*</span></label>
                                             <input class="form-control" type="password">
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Confirm Password</label>
-                                            <input class="form-control" type="password">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">  
-                                        <div class="form-group">
-                                            <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
+                                                                      
                                     <div class="col-sm-6">  
                                         <div class="form-group">
                                             <label class="col-form-label">Joining Date <span class="text-danger">*</span></label>
@@ -313,7 +302,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Phone </label>
+                                            <label class="col-form-label">Phone <span class="text-danger">*</span> </label>
                                             <input class="form-control" type="text">
                                         </div>
                                     </div>
