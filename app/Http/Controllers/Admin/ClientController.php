@@ -121,4 +121,15 @@ class ClientController extends CommonController
         array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
         return \Response::json($data,200);
     }
+
+    public function clients_list(Request $request)
+    {
+        $data['clients_list'] = User::select('users.*','clients.company_name','clients.client_designation')->where(['type' => 'client','users.deleted' => '0'])->Join('clients', 'clients.user_id' , '=', 'users.id')->get()->toArray();
+        return view('admin.clients.clients-list',$data);
+    }
+
+    public function clients(Request $request)
+    {
+        return view('admin.clients.index');
+    }
 }

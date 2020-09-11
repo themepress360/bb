@@ -40,10 +40,10 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('departments', array('uses' => 'DepartmentController@index'));
         Route::get('designations', array('uses' => 'DesignationController@index'));
         Route::post('saveeducationinformation', array('uses' => 'EducationInformationController@save'));
-        Route::post('addclient', array('uses' => 'ClientController@addclient'));
-   
         Route::post('saveexperiences', array('uses' => 'ExperienceController@save'));
-
+        Route::post('addclient', array('uses' => 'ClientController@addclient'));
+        Route::get('clients-list', array('uses' => 'ClientController@clients_list'));
+        Route::get('clients', array('uses' => 'ClientController@clients'));   
     });
 
     Route::group(
@@ -68,17 +68,6 @@ Route::get('/admin/employees', function () {
 Route::get('/admin/employees-list', function () {
         return view('admin.employees.employees-list');
     });
-
-
- 
-
-Route::get('/admin/clients', function () {
-        return view('admin.clients.index');
-    });
-Route::get('/admin/clients-list', function () {
-        return view('admin.clients.clients-list');
-    });
-
 Route::get('/admin/chat', function () {
         return view('admin.apps.chat.index');
     });

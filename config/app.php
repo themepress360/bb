@@ -36,6 +36,8 @@ return [
 
     'defaultstorage' => env('APP_Default_Storage', 'app'),
 
+    'clientprefix' => env('APP_Client_Prefix', 'CLT'),
+
 
     /*
 
