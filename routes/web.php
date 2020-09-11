@@ -60,7 +60,9 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
 
 
-
+Route::get('/admin/client/registration', function () {
+        return view('admin.emails.ClientRegistration');
+    });
 
 Route::get('/admin/employees', function () {
         return view('admin.employees.index');
