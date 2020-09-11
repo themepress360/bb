@@ -189,7 +189,7 @@
 							<div class="m-b-30">
 								<ul class="list-group notification-list">
 									<li class="list-group-item">
-										Chat
+										Client
 										<div class="status-toggle">
 											<input type="checkbox" id="staff_module" class="check">
 											<label for="staff_module" class="checktoggle">checkbox</label>
