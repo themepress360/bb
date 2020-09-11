@@ -306,9 +306,9 @@
             </div>
             <!-- /Page Content -->
             
-            <!-- Add Employee Modal -->
+        <!-- Add Employee Modal -->
             <div id="add_employee" class="modal custom-modal fade" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Add Employee</h5>
@@ -331,8 +331,7 @@
                                             <input class="form-control" type="text">
                                         </div>
                                     </div>
-                                    
-                                    <div class="col-sm-6">
+                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Email <span class="text-danger">*</span></label>
                                             <input class="form-control" type="email">
@@ -404,73 +403,6 @@
                                     </div>
                                 </div>
                                 
-                                </div>
-                                <div class="table-responsive m-t-15">
-                                    <table class="table table-striped custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Module Permission</th>
-                                                <th class="text-center">Read</th>
-                                                <th class="text-center">Write</th>
-                                                <th class="text-center">Create</th>
-                                                <th class="text-center">Delete</th>
-                                                
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            
-                                            <tr>
-                                                <td>Clients</td>
-                                                <td class="text-center">
-                                                    <input checked="" type="checkbox">
-                                                </td>
-                                                <td class="text-center">
-                                                    <input checked="" type="checkbox">
-                                                </td>
-                                                <td class="text-center">
-                                                    <input checked="" type="checkbox">
-                                                </td>
-                                                <td class="text-center">
-                                                    <input type="checkbox">
-                                                </td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>Projects</td>
-                                                <td class="text-center">
-                                                    <input checked="" type="checkbox">
-                                                </td>
-                                                <td class="text-center">
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td class="text-center">
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td class="text-center">
-                                                    <input type="checkbox">
-                                                </td>
-                                               
-                                            </tr>
-                                            <tr>
-                                                <td>Tasks</td>
-                                                <td class="text-center">
-                                                    <input checked="" type="checkbox">
-                                                </td>
-                                                <td class="text-center">
-                                                    <input checked="" type="checkbox">
-                                                </td>
-                                                <td class="text-center">
-                                                    <input checked="" type="checkbox">
-                                                </td>
-                                                <td class="text-center">
-                                                    <input checked="" type="checkbox">
-                                                </td>
-                                               
-                                            </tr>
-                                           
-                                        </tbody>
-                                    </table>
-                                </div>
                                 <div class="submit-section">
                                     <button class="btn btn-primary submit-btn">Submit</button>
                                 </div>
