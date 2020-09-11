@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html lang="en" style="min-height: 100%; font-family: Helvetica, Arial, sans-serif !important; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; position: relative; box-sizing: border-box; font-size: 12px; width: 100%; background: #fff; margin: 0;"> <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description"><meta name="author">
 	<title>Business Box</title> 
-	<link rel="stylesheet" href="{{asset('email.css')}}">
+	<link rel="stylesheet" href="email.css">
 	 <!--[if mso]><style type="text/css">body,table,td{font-family:Arial,Helvetica,sans-serif!important}a{text-decoration:none}</style><![endif]--> </head> 
 	 <body style="margin:0;padding:0;background-color:#ffffff;">
 
@@ -36,18 +36,17 @@
 					<tbody> 
 						<tr>
 							<td align="center" style="color:#0a0a0a; font-family:Helvetica; font-size:30px; line-height:39px;">
-								Hurray! You have Joined our Team
+								Password Reset 
 							</td>
 						</tr> 
-						<tr> 
-							<td align="center" style="color:#676D76; font-family:Helvetica, Arial, sans-serif !important; font-size:18px; line-height: 25px;">Start Working in Business Box.</td> </tr> </tbody> </table> 
+						 </tbody> </table> 
 							<table cellspacing="0" cellpadding="0" border="0" width="100%"> <tbody> <tr> <td align="center" style="padding:35px 0px;">
 								<table cellpadding="0" cellspacing="0" border="0" width="100%">
 									<tbody> 
 										<tr> 
 											<td align="center">
 												<a target="_blank" href="">
-													<img alt="" border="0" width="600" style="width:100%; max-width:600px; height:auto; display:block; outline:0; border:0; padding:0;" src="https://static.iterable.com/8cb45ebcfb7c4c8189af4a5ff6ca1a98/19-07-10-Welcome_Email_Illustration@2x.png"/>
+													<img alt="" border="0" width="600" style="width:50%; max-width:600px; height:auto; display:block; outline:0; border:0; padding:0;" src="{{asset('/img/lock.png')}}"/>
 												</a>
 											</td> 
 										</tr>
@@ -58,10 +57,8 @@
 					</tbody>
 				</table> 
 				<table cellspacing="0" cellpadding="0" border="0" width="100%"> <tbody> <tr> <td align="center"> <table cellpadding="0" cellspacing="0" border="0" style="width:88%; max-width: 528px;"> <tbody> <tr> <td align="center" style="font-family:Helvetica,Arial, sans-serif;font-size:18px; line-height: 1.38;color:#676D76;">
-					Hello "Client_Name",<br> 
-					Your Login Credentials for Business Box are given below.<br><br>
-					User Name: client@gmail.com<br>
-					Pwd :  123456 <br>
+					Hello "Client/Employee Name",<br> 
+					Seems like you forgot your password. If this is true click below to reset your password.
 
 				</td> 
 			</tr>
@@ -79,7 +76,7 @@
 					<tbody>
 						<tr>
 							<td align="center" height="45" style="height:45px;">
-								<a style="display:inline-block; padding:10px 30px; font-size:16px;font-family: Helvetica, sans-serif; font-size:16px; font-style:normal; color:#ffffff; font-weight:600;text-decoration:none;" target="_blank" href="">Get started</a>
+								<a style="display:inline-block; padding:10px 30px; font-size:16px;font-family: Helvetica, sans-serif; font-size:16px; font-style:normal; color:#ffffff; font-weight:600;text-decoration:none;" target="_blank" href="">Rest Password</a>
 							</td>
 						</tr>
 					</tbody>
