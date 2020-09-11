@@ -64,6 +64,20 @@ Route::get('/admin/client/registration', function () {
         return view('admin.emails.ClientRegistration');
     });
 
+Route::get('/admin/addproject', function () {
+        return view('admin.emails.AddProjectEmail');
+    });
+Route::get('/admin/addtask', function () {
+        return view('admin.emails.AddTaskEmail');
+    });
+Route::get('/admin/taskcomplete', function () {
+        return view('admin.emails.TaskCompleteEmail');
+    });
+Route::get('/admin/passwordreset', function () {
+        return view('admin.emails.ResetPasswordEmail');
+    });
+
+
 Route::get('/admin/employees', function () {
         return view('admin.employees.index');
     });
