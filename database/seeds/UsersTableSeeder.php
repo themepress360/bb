@@ -25,11 +25,10 @@ class UsersTableSeeder extends Seeder
             'phone_no' => '0331-1234567',
             'dob'      => '1994-02-18',
             'date_of_joining' => '1994-02-18',
-            'employee_id' => 'FT-0001',
             'profile_image' => '',
             'state' => 'New York',
             'country' => 'United States',
-            'pin_code' => '10523'
+            'zip_code' => '10523'
         ));
         User::create(array(
             'name'     => 'Client Themepress',
@@ -43,11 +42,10 @@ class UsersTableSeeder extends Seeder
             'phone_no' => '0331-1234567',
             'dob'      => '1994-02-18',
             'date_of_joining' => '1994-02-18',
-            'employee_id' => 'FT-0001',
             'profile_image' => '',
             'state' => 'New York',
             'country' => 'United States',
-            'pin_code' => '10523'
+            'zip_code' => '10523'
         ));
         User::create(array(
             'name'     => 'Employee Themepress',
@@ -61,11 +59,10 @@ class UsersTableSeeder extends Seeder
             'phone_no' => '0331-1234567',
             'dob'      => '1994-02-18',
             'date_of_joining' => '1994-02-18',
-            'employee_id' => 'FT-0001',
             'profile_image' => '',
             'state' => 'New York',
             'country' => 'United States',
-            'pin_code' => '10523'
+            'zip_code' => '10523'
         ));
     }
 }

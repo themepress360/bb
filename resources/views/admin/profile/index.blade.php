@@ -41,7 +41,7 @@
                                                     <h3 class="user-name m-t-0 mb-0">{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}</h3>
                                                     <h6 class="text-muted">UI/UX Design Team</h6>
                                                     <small class="text-muted">Web Designer</small>
-                                                    <div class="staff-id">Employee ID : {{isset($mydetail['employee_id']) ? ucwords($mydetail['employee_id']) : '-'}}</div>
+                                                    <div class="staff-id">Employee ID : {{isset($mydetail['id']) ? ucwords($mydetail['id']) : '-'}}</div>
                                                     <div class="small doj text-muted">Date of Join : {{isset($mydetail['date_of_joining']) ? date('M j, Y',strtotime($mydetail['date_of_joining'])) : '-'}}</div>
                                                 </div>
                                             </div>
@@ -495,8 +495,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Pin Code</label>
-                                            <input type="text" class="form-control" name="pin_code" value="{{isset($mydetail['pin_code']) ? $mydetail['pin_code'] : '-'}}">
+                                            <label>Zip Code</label>
+                                            <input type="text" class="form-control" name="zip_code" value="{{isset($mydetail['zip_code']) ? $mydetail['zip_code'] : '-'}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">

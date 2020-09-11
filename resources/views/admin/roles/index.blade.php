@@ -189,47 +189,27 @@
 							<div class="m-b-30">
 								<ul class="list-group notification-list">
 									<li class="list-group-item">
-										Employee
+										Client
 										<div class="status-toggle">
 											<input type="checkbox" id="staff_module" class="check">
 											<label for="staff_module" class="checktoggle">checkbox</label>
 										</div>
 									</li>
 									<li class="list-group-item">
-										Holidays
+										Projects
 										<div class="status-toggle">
 											<input type="checkbox" id="holidays_module" class="check" checked>
 											<label for="holidays_module" class="checktoggle">checkbox</label>
 										</div>
 									</li>
 									<li class="list-group-item">
-										Leaves
+										Tasks
 										<div class="status-toggle">
 											<input type="checkbox" id="leave_module" class="check" checked>
 											<label for="leave_module" class="checktoggle">checkbox</label>
 										</div>
 									</li>
-									<li class="list-group-item">
-										Events
-										<div class="status-toggle">
-											<input type="checkbox" id="events_module" class="check" checked>
-											<label for="events_module" class="checktoggle">checkbox</label>
-										</div>
-									</li>
-									<li class="list-group-item">
-										Chat
-										<div class="status-toggle">
-											<input type="checkbox" id="chat_module" class="check" checked>
-											<label for="chat_module" class="checktoggle">checkbox</label>
-										</div>
-									</li>
-									<li class="list-group-item">
-										Jobs
-										<div class="status-toggle">
-											<input type="checkbox" id="job_module" class="check">
-											<label for="job_module" class="checktoggle">checkbox</label>
-										</div>
-									</li>
+									
 								</ul>
 							</div>      	
 							<div class="table-responsive">
@@ -241,13 +221,12 @@
 											<th class="text-center">Write</th>
 											<th class="text-center">Create</th>
 											<th class="text-center">Delete</th>
-											<th class="text-center">Import</th>
-											<th class="text-center">Export</th>
+											
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<td>Employee</td>
+											<td>Clients</td>
 											<td class="text-center">
 												<input type="checkbox" checked="">
 											</td>
@@ -260,15 +239,10 @@
 											<td class="text-center">
 												<input type="checkbox" checked="">
 											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
+											
 										</tr>
 										<tr>
-											<td>Holidays</td>
+											<td>Projects</td>
 											<td class="text-center">
 												<input type="checkbox" checked="">
 											</td>
@@ -281,15 +255,10 @@
 											<td class="text-center">
 												<input type="checkbox" checked="">
 											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
+											
 										</tr>
 										<tr>
-											<td>Leaves</td>
+											<td>Tasks</td>
 											<td class="text-center">
 												<input type="checkbox" checked="">
 											</td>
@@ -302,34 +271,9 @@
 											<td class="text-center">
 												<input type="checkbox" checked="">
 											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
+											
 										</tr>
-										<tr>
-											<td>Events</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
-											<td class="text-center">
-												<input type="checkbox" checked="">
-											</td>
-										</tr>
+										
 									</tbody>
 								</table>
 							</div>

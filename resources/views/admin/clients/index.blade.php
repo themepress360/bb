@@ -225,24 +225,21 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="addclient" onsubmit="return false">
-                                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                  
-
+                            {{ Form::open(array( 'id' => 'AddClientForm')) }}
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">First Name <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text" name="fname">
+                                            <input class="form-control" type="text" name="first_name">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Last Name<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text" name="lname">
+                                            <input class="form-control" type="text" name="last_name">
                                         </div>
                                     </div>
-                                    
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Email <span class="text-danger">*</span></label>
@@ -254,18 +251,53 @@
                                             <label class="col-form-label">Password<span class="text-danger">*</span></label>
                                             <input class="form-control" type="password" name="password">
                                         </div>
+                                    </div>  
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Address<span class="text-danger">*</span> </label>
+                                            <input class="form-control" type="text" name="address">
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Confirm Password<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="password_confirmation">
+                                            <label>Gender</label>
+                                            <select class="select form-control" name="gender">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    
+                                    <div class="col-md-6">
+                                        <label>Date Of Joining</label>
+                                        <div class="form-group form-focus">
+                                            <div class="cal-icon">
+                                                <input type="text" class="form-control floating datetimepicker" value="" name="date_of_joining">
+                                            </div>
+                                            <label class="focus-label">Date Of Joining</label>
+                                        </div>
+                                    </div>  
+                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">State<span class="text-danger">*</span> </label>
+                                            <input class="form-control" type="text" name="state">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Country<span class="text-danger">*</span> </label>
+                                            <input class="form-control" type="text" name="country">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Zip Code<span class="text-danger">*</span> </label>
+                                            <input class="form-control" type="text" name="zip_code">
+                                        </div>
+                                    </div>                              
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Phone<span class="text-danger">*</span> </label>
-                                            <input class="form-control" type="text" name="phone">
+                                            <input class="form-control" type="text" name="phone_no">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -284,9 +316,9 @@
                                 </div>
                                 
                                 <div class="submit-section">
-                                    <button onClick ="addClient()" class="btn btn-primary submit-btn">Submit</button>
+                                    <a onClick ="addClient()" class="btn btn-primary submit-btn">Submit</a>
                                 </div>
-                            </form>
+                            {{ Form::close() }}
                         </div>
                     </div>
                 </div>
@@ -548,7 +580,7 @@
 
             function addClient() {
                 var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addclient' : '#') }}";  
-                var form = $('#addclient').get(0);
+                var form = $('#AddClientForm').get(0);
                 var formData = new FormData(form);
                 $.ajax({
                     type: "POST",

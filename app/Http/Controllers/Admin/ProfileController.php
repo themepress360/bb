@@ -44,7 +44,7 @@ class ProfileController extends CommonController
             'address'         => 'required|string|min:2|max:100',
             'state'           => 'required|string|min:2|max:30',
             'country'         => 'required|string|min:2|max:30',
-            'pin_code'        => 'required|string|min:2|max:10',
+            'zip_code'        => 'required|string|min:2|max:10',
             'gender'          => 'required|in:male,female',
             'phone_no'        => 'required|string',
             'profile_image'   => 'file|mimes:jpeg,png,jpg|max:5128',
@@ -64,7 +64,7 @@ class ProfileController extends CommonController
                 $data['phone_no'] = $requestData['phone_no'];
                 $data['state'] = $requestData['state'];
                 $data['country'] = $requestData['country'];
-                $data['pin_code'] = $requestData['pin_code'];
+                $data['zip_code'] = $requestData['zip_code'];
                 $data['gender'] = $requestData['gender'];
                 $data['dob'] = date("Y-m-d", strtotime(str_replace('/', '-', $requestData['dob'])));
                 
