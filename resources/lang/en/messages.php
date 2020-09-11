@@ -19,5 +19,9 @@ return [
   'education_information_add_success' => 'Education information save successfully.',
   'experience_add_success' => 'Experiences save successfully.',
   'error_client_email_exists' => 'Client already exists in this email address.',
-  'client_add_success' => 'Client added successfully.'
+  'client_add_success' => 'Client added successfully.',
+  'error_client_id_invalid' => 'CLient id is invalid',
+  'client_edit_success' => 'Client edit successfully',
+  'client_delete_success' => 'Client deleted successfully.',
+  'client_statuschange_success' => 'Client status change successfully.'
 ];
