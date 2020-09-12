@@ -253,6 +253,26 @@
 																<i class="fa fa-close"></i>
 															</span>
 														</div>
+
+														<div class="dropdown">
+															  <div class="assignee-info dropdown-toggle" data-toggle="dropdown">
+															  	<div class="assigned-info">
+															  	<div class="task-head-title">Status</div>
+																	<div class="task-assignee">Assigned</div>
+																</div>
+
+																  <span class="caret"></span></button>
+																  <ul class="dropdown-menu">
+																    <li><a href="#" >In-Progress</a></li>
+																    <li><a href="#" >Pending</a></li>
+																    <li><a href="#" >Cancelled</a></li>
+																    <li><a href="#" >On-Hold</a></li>
+																     <li><a href="#">Complete</a></li>
+
+																  </ul>
+															</div>
+														</div>
+														
 													</div>
 													<hr class="task-line">
 													<div class="task-desc">
