@@ -65,6 +65,9 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 Route::get('/admin/email-settings', function () {
         return view('admin.settings.email.email-settings');
     });
+Route::get('/admin/theme-settings', function () {
+        return view('admin.settings.theme-settings.theme-settings');
+    });
 
 Route::get('/admin/client/registration', function () {
         return view('admin.emails.ClientRegistration');

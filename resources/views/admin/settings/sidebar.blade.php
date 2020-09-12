@@ -15,8 +15,8 @@
         <li class="{{ Request::is('localization') ? 'active' : '' }}">
         <a  href="{{ url('localization') }}"><i class="la la-clock-o"></i><span>Localization</span>  </a></li>
 
-        <li class="{{ Request::is('theme-settings') ? 'active' : '' }}">
-        <a  href="{{ url('theme-settings') }}"><i class="la la-photo"></i><span>Theme Settings</span>  </a></li>
+        <li class="{{ Request::is('admin/theme-settings') ? 'active' : '' }}">
+        <a  href="{{ url('admin/theme-settings') }}"><i class="la la-photo"></i><span>Theme Settings</span>  </a></li>
         <li class="{{ Request::is('admin/roles-permissions') ? 'active' : '' }}">
         <a  href="{{ url('admin/roles-permissions') }}"><i class="la la-key"></i> <span>Roles & Permissions</span>  </a></li>
         <li class="{{ Request::is('admin/email-settings') ? 'active' : '' }}">
