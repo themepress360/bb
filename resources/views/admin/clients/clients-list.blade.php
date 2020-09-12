@@ -90,10 +90,16 @@
                                                 <td>{{isset($client_list['phone_no']) ? $client_list['phone_no'] : '-'}}</td>
                                                 <td>
                                                     <div class="dropdown action-label">
-                                                        <a href="#" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
+                                                        <a href="#" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                            @if($client_list['status'] == 1)
+                                                                <i class="fa fa-dot-circle-o text-success"></i> Active 
+                                                            @else
+                                                                <i class="fa fa-dot-circle-o text-danger"></i> Inactive 
+                                                            @endif
+                                                        </a>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                            <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
+                                                            <a class="dropdown-item" href="#" onclick="statuschange('{{$client_list['id']}}')"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
+                                                            <a class="dropdown-item" href="#" onclick="statuschange('{{$client_list['id']}}')"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -119,6 +125,7 @@
                                                             <div class="modal-body">
                                                                 {{ Form::open(array( 'id' => 'EditClient'.$client_list['id'])) }}
                                                                 @csrf
+                                                                    <input type="hidden" name="id" value="{{$client_list['id']}}">
                                                                     <div class="row">
                                                                         <?php $name = explode(' ', $client_list['name']);?>
                                                                         <div class="col-md-6">
@@ -142,7 +149,49 @@
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label class="col-form-label">Password</label>
-                                                                                <input class="form-control" value="barrycuda" type="password">
+                                                                                <input class="form-control" name="password" type="password">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="col-form-label">Address<span class="text-danger">*</span> </label>
+                                                                                <input class="form-control" type="text" name="address" value="{{isset($client_list['address']) ? $client_list['address'] : '-'}}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label>Gender</label>
+                                                                                <select class="select form-control" name="gender">
+                                                                                    <option {{$client_list['gender'] == "male" ? 'selected' : ''}} value="male">Male</option>
+                                                                                    <option {{$client_list['gender'] == "female" ? 'selected' : ''}} value="female">Female</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label>Date Of Joining</label>
+                                                                            <div class="form-group form-focus">
+                                                                                <div class="cal-icon">
+                                                                                    <input type="text" class="form-control floating datetimepicker" value="{{isset($client_list['date_of_joining']) ? date("d/m/y",strtotime($client_list['date_of_joining'])) : '-'}}" name="date_of_joining">
+                                                                                </div>
+                                                                                <label class="focus-label">Date Of Joining</label>
+                                                                            </div>
+                                                                        </div>  
+                                                                         <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="col-form-label">State<span class="text-danger">*</span> </label>
+                                                                                <input class="form-control" type="text" name="state" value="{{isset($client_list['state']) ? $client_list['state'] : '-'}}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="col-form-label">Country<span class="text-danger">*</span> </label>
+                                                                                <input class="form-control" type="text" name="country" value="{{isset($client_list['country']) ? $client_list['country'] : '-'}}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="col-form-label">Zip Code<span class="text-danger">*</span> </label>
+                                                                                <input class="form-control" type="text" name="zip_code" value="{{isset($client_list['zip_code']) ? $client_list['zip_code'] : '-'}}">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">  
@@ -160,15 +209,13 @@
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label class="col-form-label">Company Name</label>
-                                                                                <input class="form-control" type="text" value="Global Technologies">
+                                                                                <input class="form-control" type="text" value="{{isset($client_list['company_name']) ? $client_list['company_name'] : '-'}}" name="company_name">
                                                                             </div>
                                                                         </div>
-                                                                         <div class="col-md-6">
+                                                                        <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label class="col-form-label">Clients Image</label>
-                                                                                 <img id="blah" src="#" />
-                                                                                <input type='file' id="imgInp" />
-                                                                               
+                                                                                <label class="col-form-label">Client Designation<span class="text-danger">*</span></label>
+                                                                                <input class="form-control" type="text" name="client_designation" value="{{isset($client_list['client_designation']) ? $client_list['client_designation'] : '-'}}">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -337,7 +384,7 @@
                                                                 <div class="modal-btn delete-action">
                                                                     <div class="row">
                                                                         <div class="col-6">
-                                                                            <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                                                                            <a onClick="DeleteClient('{{$client_list['id']}}')" href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
                                                                         </div>
                                                                         <div class="col-6">
                                                                             <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
@@ -375,59 +422,100 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            {{ Form::open(array( 'id' => 'AddClientForm')) }}
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">First Name <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text" onkeyup="this.value = this.value.replace(/\s/g,'')" onkeypress="return /[A-Z a-z 0-9 _]+$/i.test(event.key)">
+                                            <input class="form-control" type="text" name="first_name">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Last Name<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text" onkeyup="this.value = this.value.replace(/\s/g,'')" onkeypress="return /[A-Z a-z 0-9 _]+$/i.test(event.key)">
+                                            <input class="form-control" type="text" name="last_name">
                                         </div>
                                     </div>
-                                    
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                                            <input class="form-control floating" type="email">
+                                            <input class="form-control floating" type="email" name="email">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Password<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="password">
+                                            <input class="form-control" type="password" name="password">
+                                        </div>
+                                    </div>  
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Address<span class="text-danger">*</span> </label>
+                                            <input class="form-control" type="text" name="address">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Confirm Password<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="password">
+                                            <label>Gender</label>
+                                            <select class="select form-control" name="gender">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    
+                                    <div class="col-md-6">
+                                        <label>Date Of Joining</label>
+                                        <div class="form-group form-focus">
+                                            <div class="cal-icon">
+                                                <input type="text" class="form-control floating datetimepicker" value="" name="date_of_joining">
+                                            </div>
+                                            <label class="focus-label">Date Of Joining</label>
+                                        </div>
+                                    </div>  
+                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">State<span class="text-danger">*</span> </label>
+                                            <input class="form-control" type="text" name="state">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Country<span class="text-danger">*</span> </label>
+                                            <input class="form-control" type="text" name="country">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Zip Code<span class="text-danger">*</span> </label>
+                                            <input class="form-control" type="text" name="zip_code">
+                                        </div>
+                                    </div>                              
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Phone<span class="text-danger">*</span> </label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="phone_no">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Company Name<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="company_name">
                                         </div>
                                     </div>
-                                     
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Client Designation<span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="client_designation">
+                                        </div>
+                                    </div>
+                                                                      
                                 </div>
                                 
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <a onClick ="addClient()" class="btn btn-primary submit-btn">Submit</a>
                                 </div>
-                            </form>
+                            {{ Form::close() }}
                         </div>
                     </div>
                 </div>
@@ -435,4 +523,107 @@
             <!-- /Add Client Modal -->    
         </div>
         <!-- /Page Wrapper -->
+        <script type="text/javascript">
+            function addClient() {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addclient' : '#') }}";  
+                var form = $('#AddClientForm').get(0);
+                var formData = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                }); 
+            }
+
+            function EditClient(id)
+            {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/editclient' : '#') }}";
+                var form = $('#EditClient'+id).get(0);
+                var formData = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                });
+            }
+            
+            function DeleteClient(id)
+            {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/deleteclient' : '#') }}";
+                var form = $('#EditClient'+id).get(0);
+                var formData = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                });
+            }
+            function statuschange(id)
+            {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/statuschange' : '#') }}";
+                var form = $('#EditClient'+id).get(0);
+                var formData = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                });
+            }
+        </script>
 @endsection
