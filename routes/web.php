@@ -62,6 +62,9 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
 
 
+Route::get('/admin/email-settings', function () {
+        return view('admin.settings.email.email-settings');
+    });
 
 Route::get('/admin/client/registration', function () {
         return view('admin.emails.ClientRegistration');
@@ -156,7 +159,7 @@ Route::get('/admin/file-manager', function () {
         return view('admin.apps.filemanager.index');
     });
 Route::get('/admin/roles-permissions', function () {
-        return view('admin.roles.index');
+        return view('admin.settings.roles.index');
     });
 
 
