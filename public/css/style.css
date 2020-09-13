@@ -309,7 +309,7 @@ table.table td h2 a {
 	color: #333;
 }
 table.table td h2 a:hover {
-	color: #f43b48;
+	color: #3699FF;
 }
 table.table td h2 span {
 	color: #888;
@@ -590,8 +590,8 @@ justify-content: space-between !important;
     color: #fff;
 }
 .btn-success {
-	background-color: #55ce63;
-	border: 1px solid #55ce63
+	background-color: #1BC5BD;
+	border: 1px solid #1BC5BD;
 }
 
 .btn-light-success{
@@ -658,8 +658,8 @@ border-color: transparent;
 .btn-success.active,
 .btn-success:active,
 .open > .dropdown-toggle.btn-success {
-	background: #4ab657;
-	border: 1px solid #4ab657;
+	background: #0BB7AF;
+	border: 1px solid #0BB7AF;
 	color: #fff;
 }
 .btn-success.active.focus,
@@ -810,8 +810,8 @@ border-color: transparent;
 .pagination > .active > span,
 .pagination > .active > span:focus,
 .pagination > .active > span:hover {
-	background-color: #f43b48;
-	border-color: #f43b48;
+	background-color: #3699FF;
+	border-color: #3699FF;
 }
 .pagination > li > a, 
 .pagination > li > span {
@@ -824,8 +824,8 @@ border-color: transparent;
 	box-shadow: unset;
 }
 .page-item.active .page-link {
-	background-color: #f43b48;
-	border-color: #f43b48;
+	background-color: #3699FF;
+	border-color: #3699FF;
 }
 .dropdown-menu {
 	border: 1px solid rgba(0, 0, 0, 0.1);
@@ -1680,19 +1680,19 @@ border-color: transparent;
 	margin-bottom: 20px;
 }
 .add-btn {
-    background-color: #f43b48;
-    border: 1px solid #f43b48;
-    border-radius: 50px;
+    background-color: #3699FF;
+    border: 1px solid #3699FF;
+    
     color: #fff;
     float: right;
     font-weight: 500;
-    min-width: 140px;
+    min-width: 130px;
 }
 .add-btn:hover,
 .add-btn:focus,
 .add-btn:active {
-	background-color: #f10e1d;
-	border: 1px solid #f10e1d;
+	background-color: #187DE4;
+	border: 1px solid #187DE4;
     color: #fff;
 }
 .add-btn i {
