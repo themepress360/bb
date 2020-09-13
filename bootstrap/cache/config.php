@@ -7,7 +7,7 @@
     'websiteimagesfolder' => 'websitelogo',
     'defaultstorage' => 'app',
     'clientprefix' => 'CLT',
-    'env' => 'codecanyon',
+    'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
     'asset_url' => NULL,
@@ -15,7 +15,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:f02/fGCabArj7DxaZ9mW3yeg0NxlC4gobqSPqwk6a04=',
+    'key' => 'base64:sN6gYChdUhHyUVD/+o22osZzCqZtk/p2e7o8ulTsTWk=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -145,7 +145,7 @@
         'app_id' => '',
         'options' => 
         array (
-          'cluster' => NULL,
+          'cluster' => 'mt1',
           'useTLS' => true,
         ),
       ),
@@ -166,7 +166,7 @@
   ),
   'cache' => 
   array (
-    'default' => 'array',
+    'default' => 'file',
     'stores' => 
     array (
       'apc' => 
@@ -219,8 +219,8 @@
       'dynamodb' => 
       array (
         'driver' => 'dynamodb',
-        'key' => NULL,
-        'secret' => NULL,
+        'key' => '',
+        'secret' => '',
         'region' => 'us-east-1',
         'table' => 'cache',
         'endpoint' => NULL,
@@ -264,7 +264,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'bbnew',
+        'database' => 'crm',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -272,11 +272,11 @@
       array (
         'driver' => 'mysql',
         'url' => NULL,
-        'host' => 'localhost',
+        'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'bbnew',
-        'username' => 'akber',
-        'password' => 'akber123',
+        'database' => 'crm',
+        'username' => 'root',
+        'password' => '4A4aA8ZVbGHrQy4M',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -292,11 +292,11 @@
       array (
         'driver' => 'pgsql',
         'url' => NULL,
-        'host' => 'localhost',
+        'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'bbnew',
-        'username' => 'akber',
-        'password' => 'akber123',
+        'database' => 'crm',
+        'username' => 'root',
+        'password' => '4A4aA8ZVbGHrQy4M',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -307,11 +307,11 @@
       array (
         'driver' => 'sqlsrv',
         'url' => NULL,
-        'host' => 'localhost',
+        'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'bbnew',
-        'username' => 'akber',
-        'password' => 'akber123',
+        'database' => 'crm',
+        'username' => 'root',
+        'password' => '4A4aA8ZVbGHrQy4M',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -365,10 +365,10 @@
       's3' => 
       array (
         'driver' => 's3',
-        'key' => NULL,
-        'secret' => NULL,
-        'region' => NULL,
-        'bucket' => NULL,
+        'key' => '',
+        'secret' => '',
+        'region' => 'us-east-1',
+        'bucket' => '',
         'url' => NULL,
         'endpoint' => NULL,
       ),
@@ -473,10 +473,10 @@
   array (
     'driver' => 'smtp',
     'host' => 'smtp.googlemail.com',
-    'port' => '465',
+    'port' => '587',
     'username' => 'themepress360@gmail.com',
     'password' => 'Master@81',
-    'encryption' => 'ssl',
+    'encryption' => 'tls',
     'from' => 
     array (
       'address' => 'themepress360@gmail.com',
@@ -512,8 +512,8 @@
       'sqs' => 
       array (
         'driver' => 'sqs',
-        'key' => NULL,
-        'secret' => NULL,
+        'key' => '',
+        'secret' => '',
         'prefix' => 'https://sqs.us-east-1.amazonaws.com/your-account-id',
         'queue' => 'your-queue-name',
         'suffix' => NULL,
@@ -549,15 +549,15 @@
     ),
     'ses' => 
     array (
-      'key' => NULL,
-      'secret' => NULL,
+      'key' => '',
+      'secret' => '',
       'region' => 'us-east-1',
     ),
   ),
   'session' => 
   array (
     'driver' => 'file',
-    'lifetime' => 120,
+    'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
     'files' => '/var/www/html/bb/storage/framework/sessions',
