@@ -1,4 +1,4 @@
-@extends('layout.mainlayout')
+@extends('layout.clientlayout')
 @section('content')
 	<!-- Page Wrapper -->
     <div class="page-wrapper">
@@ -31,7 +31,13 @@
                                                 @if(!empty($mydetail['profile_image_url']))
                                                     <img alt="{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}" src="{{{$mydetail['profile_image_url']}}}">
                                                 @else
-                                                     <img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}">
+                                                    <!-- <img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}"> -->
+                                                    <div class="symbol symbol-lg-75 symbol-primary">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest">
+                                                {{ substr($mydetail['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
                                                 @endif
                                             </a>
                                         </div>
@@ -44,7 +50,7 @@
                                                     <h5 class="company-role m-t-0 mb-0">{{isset($mydetail['client_data']['company_name']) ? ucwords($mydetail['client_data']['company_name']) : '-'}}</h5>
                                                     <small class="text-muted">{{isset($mydetail['client_data']['client_designation']) ? ucwords($mydetail['client_data']['client_designation']) : '-'}}</small>
                                                     <div class="staff-id">Client ID : {{config('app.clientprefix')}}-{{isset($mydetail['id']) ? ucwords($mydetail['id']) : '-'}}</div>
-                                                    <div class="staff-msg"><a href="chat" class="btn btn-custom">Send Message</a></div>
+                                                    <div class="staff-msg"><a href="chat" class="btn btn-light-success">Send Message</a></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-7">

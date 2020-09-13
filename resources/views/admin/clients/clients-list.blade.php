@@ -79,7 +79,14 @@
                                                          @if(!empty($client_list['profile_image_url']))
                                                             <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}" src="{{{$client_list['profile_image_url']}}}"></a>
                                                         @else
-                                                            <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img src="{{asset('img/profiles/avatar-21.jpg')}}" alt=""></a>
+                                                           <!-- <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img src="{{asset('img/profiles/avatar-21.jpg')}}" alt=""></a> -->
+
+                                                           <div class="symbol symbol-sm-35 symbol-light-success m-r-10">
+                                                         <span class="symbol-label font-size-h3 font-weight-boldest">
+                                                            {{ mb_substr($client_list['name'], 0, 1) }}
+                                                                
+                                             </span>
+                                            </div>
                                                         @endif
                                                         <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}">{{ucwords($client_list['name'])}}</a>
                                                     </h2>

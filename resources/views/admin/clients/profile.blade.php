@@ -28,7 +28,15 @@
                             @if(!empty($client['profile_image_url']))
                                 <img src="{{{$client['profile_image_url']}}}" alt="{{isset($client['name']) ? ucwords($client['name']) : '-'}}">
                             @else
-                                <img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}">
+                              <!--  <img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}"> -->
+
+                              <div class="symbol symbol-lg-75 symbol-primary">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest">
+                                                {{ mb_substr($client['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+
                             @endif
                            </a>
                         </div>
@@ -41,7 +49,7 @@
                                  <h5 class="company-role m-t-0 mb-0">{{isset($client['client_data']['company_name']) ? ucwords($client['client_data']['company_name']) : '-'}}</h5>
                                  <small class="text-muted">{{isset($client['client_data']['client_designation']) ? ucwords($client['client_data']['client_designation']) : '-'}}</small>
                                  <div class="staff-id">Client ID : {{config('app.clientprefix')}}-{{isset($client['id']) ? ucwords($client['id']) : '-'}}</div>
-                                 <div class="staff-msg"><a href="chat" class="btn btn-custom">Send Message</a></div>
+                                 <div class="staff-msg"><a href="chat" class="btn btn-light-success">Send Message</a></div>
                               </div>
                            </div>
                            <div class="col-md-7">

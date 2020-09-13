@@ -273,7 +273,8 @@
                             @if(!empty($profile_image_url))
                                 <img src="{{$profile_image_url}}" alt="{{{ isset(Auth::user()->name) ? Auth::user()->name : '' }}}">
                             @else
-                                <img src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">
+                              <img src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">
+                             
                             @endif
                         <span class="status online"></span></span>
                         <span>{{{ isset(Auth::user()->name) ? Auth::user()->name : '' }}}</span>

@@ -1,4 +1,4 @@
-@extends('layout.mainlayout')
+@extends('layout.clientlayout')
 @section('content')
 <!-- Page Wrapper -->
 <div class="page-wrapper">
