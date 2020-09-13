@@ -51,7 +51,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('emailconfigure', array('uses' => 'EmailSettingController@emailconfigure'));
         Route::get('theme-settings', array('uses' => 'ThemeSettingController@index'));
         Route::post('addthemesetting', array('uses' => 'ThemeSettingController@addthemesetting'));
-        
+        Route::get('client-profile/{id}', array('uses' => 'ClientController@getprofile'));
         Route::get('dummyemailsent',function(){
                 $mail_config = \Config::get('mail');
                 //dd(\Config::get('mail'));
@@ -66,6 +66,8 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
     Route::group(
             ['middleware' => ['profile-status'],'namespace' => 'Client', 'prefix' => 'client', 'as' => 'client'], function () {
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
+        Route::get('profile', array('uses' => 'ProfileController@index'));
+        Route::post('editprofile',array('as' => 'client.editprofile','uses' => 'ProfileController@editprofile'));
     });
 
     Route::group(
@@ -75,9 +77,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 //});
 
 
-Route::get('/admin/client-profile', function () {
-        return view('admin.clients.profile');
-    });
+
 
 
 
@@ -253,12 +253,8 @@ Route::get('/employee/file-manager', function () {
 
 
 
-Route::get('/client/dashboard', function () {
-        return view('clients.dashboard.index');
-    });
-Route::get('/client/profile', function () {
-        return view('clients.profile.index');
-    });
+
+
 
 Route::get('/client/chat', function () {
         return view('clients.apps.chat.index');

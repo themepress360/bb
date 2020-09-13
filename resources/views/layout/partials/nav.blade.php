@@ -55,7 +55,7 @@
 								</ul>
 							</li>
 							<li>
-								<a href="clients"><i class="la la-users"></i> <span>Clients</span></a>
+								<a href="{{url(isset(Auth::user()->type) ? Auth::user()->type.'/clients' : '')}}"><i class="la la-users"></i> <span>Clients</span></a>
 							</li>
 							<li> 
 								<a href="leads"><i class="la la-user-secret"></i> <span>Leads</span></a>

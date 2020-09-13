@@ -16,6 +16,7 @@ class DashboardController extends BaseController
 {
 	public function index(Request $request)
 	{
+		
 		return view('employees.dashboard.index');
 	}
 }

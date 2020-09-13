@@ -7,7 +7,7 @@
     'websiteimagesfolder' => 'websitelogo',
     'defaultstorage' => 'app',
     'clientprefix' => 'CLT',
-    'env' => 'local',
+    'env' => 'codecanyon',
     'debug' => true,
     'url' => 'http://localhost',
     'asset_url' => NULL,
@@ -15,7 +15,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:sN6gYChdUhHyUVD/+o22osZzCqZtk/p2e7o8ulTsTWk=',
+    'key' => 'base64:f02/fGCabArj7DxaZ9mW3yeg0NxlC4gobqSPqwk6a04=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -145,7 +145,7 @@
         'app_id' => '',
         'options' => 
         array (
-          'cluster' => 'mt1',
+          'cluster' => NULL,
           'useTLS' => true,
         ),
       ),
@@ -166,7 +166,7 @@
   ),
   'cache' => 
   array (
-    'default' => 'file',
+    'default' => 'array',
     'stores' => 
     array (
       'apc' => 
@@ -187,7 +187,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\laragon\\www\\bb\\storage\\framework/cache/data',
+        'path' => '/var/www/html/bb/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -219,8 +219,8 @@
       'dynamodb' => 
       array (
         'driver' => 'dynamodb',
-        'key' => '',
-        'secret' => '',
+        'key' => NULL,
+        'secret' => NULL,
         'region' => 'us-east-1',
         'table' => 'cache',
         'endpoint' => NULL,
@@ -264,7 +264,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'bb',
+        'database' => 'bbnew',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -272,11 +272,11 @@
       array (
         'driver' => 'mysql',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
-        'database' => 'bb',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'bbnew',
+        'username' => 'akber',
+        'password' => 'akber123',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -292,11 +292,11 @@
       array (
         'driver' => 'pgsql',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
-        'database' => 'bb',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'bbnew',
+        'username' => 'akber',
+        'password' => 'akber123',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -307,11 +307,11 @@
       array (
         'driver' => 'sqlsrv',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
-        'database' => 'bb',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'bbnew',
+        'username' => 'akber',
+        'password' => 'akber123',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -353,29 +353,29 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\laragon\\www\\bb\\storage\\app',
+        'root' => '/var/www/html/bb/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\laragon\\www\\bb\\storage\\app/public',
+        'root' => '/var/www/html/bb/storage/app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
       's3' => 
       array (
         'driver' => 's3',
-        'key' => '',
-        'secret' => '',
-        'region' => 'us-east-1',
-        'bucket' => '',
+        'key' => NULL,
+        'secret' => NULL,
+        'region' => NULL,
+        'bucket' => NULL,
         'url' => NULL,
         'endpoint' => NULL,
       ),
     ),
     'links' => 
     array (
-      'C:\\laragon\\www\\bb\\public\\storage' => 'C:\\laragon\\www\\bb\\storage\\app/public',
+      '/var/www/html/bb/public/storage' => '/var/www/html/bb/storage/app/public',
     ),
   ),
   'hashing' => 
@@ -409,13 +409,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\laragon\\www\\bb\\storage\\logs/laravel.log',
+        'path' => '/var/www/html/bb/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\laragon\\www\\bb\\storage\\logs/laravel.log',
+        'path' => '/var/www/html/bb/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -465,7 +465,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\laragon\\www\\bb\\storage\\logs/laravel.log',
+        'path' => '/var/www/html/bb/storage/logs/laravel.log',
       ),
     ),
   ),
@@ -512,8 +512,8 @@
       'sqs' => 
       array (
         'driver' => 'sqs',
-        'key' => '',
-        'secret' => '',
+        'key' => NULL,
+        'secret' => NULL,
         'prefix' => 'https://sqs.us-east-1.amazonaws.com/your-account-id',
         'queue' => 'your-queue-name',
         'suffix' => NULL,
@@ -549,18 +549,18 @@
     ),
     'ses' => 
     array (
-      'key' => '',
-      'secret' => '',
+      'key' => NULL,
+      'secret' => NULL,
       'region' => 'us-east-1',
     ),
   ),
   'session' => 
   array (
     'driver' => 'file',
-    'lifetime' => '120',
+    'lifetime' => 120,
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\laragon\\www\\bb\\storage\\framework/sessions',
+    'files' => '/var/www/html/bb/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -580,9 +580,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\laragon\\www\\bb\\resources\\views',
+      0 => '/var/www/html/bb/resources/views',
     ),
-    'compiled' => 'C:\\laragon\\www\\bb\\storage\\framework\\views',
+    'compiled' => '/var/www/html/bb/storage/framework/views',
   ),
   'flare' => 
   array (

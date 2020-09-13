@@ -12,7 +12,7 @@ use Auth;
 use Redirect;
 use Illuminate\Http\Request;
 
-class DashboardController extends BaseController
+class DashboardController extends CommonController
 {
 	public function index(Request $request)
 	{

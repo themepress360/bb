@@ -15,6 +15,7 @@ use App\Client;
 use App\User as User;
 use Hash;
 use Mail;
+use Storage;
 
 class ClientController extends CommonController
 {
@@ -145,7 +146,8 @@ class ClientController extends CommonController
             'date_of_joining' => 'required',
             'client_designation'    => 'required|string',
             'client_id' => 'required',
-            'id' => 'required'
+            'id' => 'required',
+            'profile_image'   => 'file|mimes:jpeg,png,jpg|max:5128',
         ];
         $validator = Validator::make($request->all(),$rules);
         if (!$validator->fails()) 
@@ -169,11 +171,25 @@ class ClientController extends CommonController
                         'gender'   => trim($requestData['gender']),
                         'date_of_joining' => date('Y-m-d',strtotime(str_replace('/', '-', $requestData['date_of_joining'])))
                     );
+
+                    /* Profile Image Save if exists Start */
+                    if(!empty($requestData['profile_image']))
+                    {
+                        if (!empty($is_client_exists['profile_image'])) {
+                            Storage::delete(config('app.folder') . '/' . config('app.profileimagesfolder').'/'.$is_client_exists['profile_image']);
+                        }     
+                        $filename = User::uploadImage(config('app.folder').'/'.config('app.profileimagesfolder'),$requestData['profile_image'],400);
+                        if($filename) 
+                            $edit_user_data['profile_image'] = $filename;
+                    }
+                    /* Profile Image Save if exists End */
+                    //dd($edit_user_data);
                     if(!empty($requestData['password']))
                     {
                         $edit_user_data['password'] = Hash::make(trim($requestData['password']));
                     }
                     $edit_client = User::where('id', (int) $requestData['id'])->update($edit_user_data);
+                    //dd($edit_client);
                     if($edit_client)
                     {
                         $client_data = Client::where(['user_id' => (int) $requestData['id'],"deleted" => '0'])->first();
@@ -388,6 +404,37 @@ class ClientController extends CommonController
     public function clients(Request $request)
     {
         $data['clients_list'] = User::select('users.*','clients.company_name','clients.client_designation')->where(['type' => 'client','users.deleted' => '0'])->Join('clients', 'clients.user_id' , '=', 'users.id')->get()->toArray();
+        if(!empty($data['clients_list']))
+        {
+            foreach ($data['clients_list'] as $key => $clients_list) {
+                if(!empty($clients_list['profile_image']))
+                    $data['clients_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$clients_list['profile_image']);
+                else
+                    $data['clients_list'][$key]['profile_image_url'] = '';
+            }
+        }
         return view('admin.clients.index',$data);
+    }
+
+    public function getprofile($id)
+    {
+        $data['client'] = User::where(['id' => (int) $id,'type' => 'client',"deleted" => '0'])->first();
+        if(!empty($data['client']))
+        {
+            $data['client']['client_data'] = Client::where(['user_id' => (int) $id,"deleted" => '0'])->first();
+            $name = explode(' ',$data['client']['name']);
+            $data['client']['first_name'] = isset($name[0]) ? $name[0] : "";
+            $data['client']['last_name'] = isset($name[1]) ? $name[1] : "";
+            //$data['client']['prefix'] = clientprefix;
+            if(!empty($data['client']['profile_image']))
+                $data['client']['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$data['client']['profile_image']);
+            else
+                $data['client']['profile_image_url'] = '';
+                return view('admin.clients.profile',$data);
+        }
+        // else
+        // {
+        //     echo 'error';
+        // }
     }
 }
