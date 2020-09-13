@@ -398,6 +398,15 @@ class ClientController extends CommonController
     public function clients_list(Request $request)
     {
         $data['clients_list'] = User::select('users.*','clients.company_name','clients.client_designation')->where(['type' => 'client','users.deleted' => '0'])->Join('clients', 'clients.user_id' , '=', 'users.id')->get()->toArray();
+        if(!empty($data['clients_list']))
+        {
+            foreach ($data['clients_list'] as $key => $clients_list) {
+                if(!empty($clients_list['profile_image']))
+                    $data['clients_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$clients_list['profile_image']);
+                else
+                    $data['clients_list'][$key]['profile_image_url'] = '';
+            }
+        }
         return view('admin.clients.clients-list',$data);
     }
 
