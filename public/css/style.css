@@ -651,6 +651,15 @@ border-color: transparent;
 
 }
 
+.font-size-base {
+    font-size: 0.9rem;
+}
+.text-dark-50 {
+    color: #7E8299 !important;
+}
+.font-weight-bolder {
+    font-weight: 600 !important;
+}
 
 
 .btn-success:hover,
