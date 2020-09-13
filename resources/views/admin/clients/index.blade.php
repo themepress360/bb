@@ -64,9 +64,9 @@
                                 <div class="profile-widget">
                                     <div class="profile-img">
                                         @if(!empty($client_list['profile_image_url']))
-                                            <a href="client-profile" class="avatar"><img alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}" src="{{{$client_list['profile_image_url']}}}"></a>
+                                            <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}" src="{{{$client_list['profile_image_url']}}}"></a>
                                         @else
-                                            <a href="client-profile" class="avatar"><img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}"></a>
+                                            <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}"></a>
                                          @endif
                                     </div>
                                     <div class="dropdown profile-action">
@@ -372,8 +372,8 @@
                                                     </div>
                                                 </div>
                                                 <!-- /Delete Client Modal -->
-                                    <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="client-profile">{{isset($client_list['company_name']) ? $client_list['company_name'] : '-'}}</a></h4>
-                                    <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a href="client-profile">{{isset($client_list['name']) ? $client_list['name'] : '-'}}</a></h5>
+                                    <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}">{{isset($client_list['company_name']) ? $client_list['company_name'] : '-'}}</a></h4>
+                                    <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}">{{isset($client_list['name']) ? $client_list['name'] : '-'}}</a></h5>
                                     <div class="small text-muted">{{isset($client_list['client_designation']) ? $client_list['client_designation'] : '-'}}</div>
                                     <a href="chat" class="btn btn-white btn-sm m-t-10">Message</a>
                                     <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="btn btn-white btn-sm m-t-10">View Profile</a>

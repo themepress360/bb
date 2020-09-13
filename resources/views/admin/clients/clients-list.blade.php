@@ -81,7 +81,7 @@
                                                         @else
                                                             <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img src="{{asset('img/profiles/avatar-21.jpg')}}" alt=""></a>
                                                         @endif
-                                                        <a href="client-profile">{{ucwords($client_list['name'])}}</a>
+                                                        <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}">{{ucwords($client_list['name'])}}</a>
                                                     </h2>
                                                 </td>
                                                 <td>{{config('app.clientprefix')}}-{{$client_list['id']}}</td>
