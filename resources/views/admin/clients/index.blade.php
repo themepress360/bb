@@ -63,10 +63,10 @@
                             <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                                 <div class="profile-widget">
                                     <div class="profile-img">
-                                        @if(!empty($client_list['profile_image']))
-                                            <a href="client-profile" class="avatar"><img alt="{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}" src="{{{$mydetail['profile_image_url']}}}"></a>
+                                        @if(!empty($client_list['profile_image_url']))
+                                            <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}" src="{{{$client_list['profile_image_url']}}}"></a>
                                         @else
-                                            <a href="client-profile" class="avatar"><img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}"></a>
+                                            <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}"></a>
                                          @endif
                                     </div>
                                     <div class="dropdown profile-action">
@@ -89,6 +89,19 @@
                                                             <div class="modal-body">
                                                                 {{ Form::open(array( 'id' => 'EditClient'.$client_list['id'])) }}
                                                                 @csrf
+                                                                <div class="col-md-12">
+                                                                        <div class="profile-img-wrap edit-img">
+                                                                            @if(!empty($client_list['profile_image_url']))
+                                                                                <img id="imagePreview" class="inline-block" src="{{$client_list['profile_image_url']}}" alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}">
+                                                                            @else
+                                                                                <img id="imagePreview" class="inline-block" src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">
+                                                                            @endif
+                                                                            <div class="fileupload btn">
+                                                                                <span class="btn-text">Edit</span>
+                                                                                <input class="upload" type='file' name="profile_image" id="editimageUpload" accept=".png, .jpg, .jpeg" />
+                                                                            </div>
+                                                                        </div>
+                                                                        </div>
                                                                     <input type="hidden" name="id" value="{{$client_list['id']}}">
                                                                     <div class="row" style="text-align: left !important">
                                                                         <?php $name = explode(' ', $client_list['name']);?>
@@ -359,11 +372,11 @@
                                                     </div>
                                                 </div>
                                                 <!-- /Delete Client Modal -->
-                                    <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="client-profile">{{isset($client_list['company_name']) ? $client_list['company_name'] : '-'}}</a></h4>
-                                    <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a href="client-profile">{{isset($client_list['name']) ? $client_list['name'] : '-'}}</a></h5>
+                                    <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}">{{isset($client_list['company_name']) ? $client_list['company_name'] : '-'}}</a></h4>
+                                    <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}">{{isset($client_list['name']) ? $client_list['name'] : '-'}}</a></h5>
                                     <div class="small text-muted">{{isset($client_list['client_designation']) ? $client_list['client_designation'] : '-'}}</div>
                                     <a href="chat" class="btn btn-white btn-sm m-t-10">Message</a>
-                                    <a href="client-profile" class="btn btn-white btn-sm m-t-10">View Profile</a>
+                                    <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="btn btn-white btn-sm m-t-10">View Profile</a>
                                 </div>
                             </div>
                         @endforeach
@@ -816,7 +829,28 @@
                     }
                 });
             }
-
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onloadend = function(e) {
+                        $('#imagePreview').attr('src', e.target.result);
+                    }
+                    if (input) { 
+                        reader.readAsDataURL(input.files[0]);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                else
+                    return false;
+            }
+            $("#editimageUpload").change(function() {
+                var upload = readURL(this);
+                if(upload)
+                {
+                }
+            });
         </script>
 @endsection
 
