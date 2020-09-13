@@ -277,7 +277,9 @@
                              
                             @endif
                         <span class="status online"></span></span>
-                        <span>{{{ isset(Auth::user()->name) ? Auth::user()->name : '' }}}</span>
+                       
+                        <span class="text-muted">Hi,<span> 
+                            <span class="text-dark-50 font-weight-bolder font-size-base">{{{ isset(Auth::user()->name) ? explode(' ', trim(Auth::user()->name))[0] : '' }}}</span>
                     </a>
                     <div class="dropdown-menu">
                         <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/profile' : '#') }}" class="dropdown-item">My Profile</a>
