@@ -352,6 +352,7 @@
             </div>
             <!-- /Add Employee Modal -->
             
+           
             <!-- Edit Employee Modal -->
             <div id="edit_employee" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
