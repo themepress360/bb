@@ -1,10 +1,14 @@
 
 <div class="header">
-			
+    
             <!-- Logo -->
             <div class="header-left">
                 <a href="index" class="logo">
-                    <img src="img/logo.png" width="40" height="40" alt="">
+                    @if(!empty($website_data['theme']['website_image_url']))
+                        <img src="{{$website_data['theme']['website_image_url']}}" width="40" height="40" alt="{{isset($website_data['theme']['website_name']) ? ucwords($website_data['theme']['website_name']) : '-'}}">
+                    @else
+                        <img src="{{asset('img/profiles/avatar-21.jpg')}}" width="40" height="40" alt="No Image">
+                    @endif
                 </a>
             </div>
             <!-- /Logo -->
@@ -19,7 +23,7 @@
             
             <!-- Header Title -->
             <div class="page-title-box">
-                <h3>Dreamguy's Technologies</h3>
+                <h3>{{isset($website_data['theme']['website_name']) ? ucwords($website_data['theme']['website_name']) : '-'}}</h3>
             </div>
             <!-- /Header Title -->
             
@@ -258,7 +262,19 @@
 
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                        <span class="user-img"><img src="{{asset('img/profiles/avatar-21.jpg')}}" alt="">
+                        <span class="user-img">
+                            <?php 
+                                $profile_image = isset(Auth::user()->profile_image) ? Auth::user()->profile_image : '';
+                            if(!empty($profile_image))
+                                $profile_image_url = App\User::image_url(config('app.profileimagesfolder'),$profile_image);
+                            else
+                                $profile_image_url = '';
+                            ?>
+                            @if(!empty($profile_image_url))
+                                <img src="{{$profile_image_url}}" alt="{{{ isset(Auth::user()->name) ? Auth::user()->name : '' }}}">
+                            @else
+                                <img src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">
+                            @endif
                         <span class="status online"></span></span>
                         <span>{{{ isset(Auth::user()->name) ? Auth::user()->name : '' }}}</span>
                     </a>

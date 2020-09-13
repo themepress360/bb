@@ -34,6 +34,8 @@ return [
 
     'profileimagesfolder' => env('APP_Profile_Image_Folder', 'profile_images'),
 
+    'websiteimagesfolder' => env('APP_Website_Image_Folder', 'websitelogo'),
+
     'defaultstorage' => env('APP_Default_Storage', 'app'),
 
     'clientprefix' => env('APP_Client_Prefix', 'CLT'),
@@ -360,7 +362,7 @@ return [
 
         App\Providers\RouteServiceProvider::class,
 
-
+        App\Providers\MailConfigServiceProvider::class,
 
     ],
 

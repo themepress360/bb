@@ -1,4 +1,4 @@
-@include('layout.mainlayout')							
+@include('layout.mainlayout')						
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
 				<!-- Page Content -->

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Client;
 use App\User as User;
 use Hash;
+use Mail;
 
 class ClientController extends CommonController
 {
@@ -66,6 +67,12 @@ class ClientController extends CommonController
                     'profile_image' => '',
                     'type'    => 'client'
                 );
+                $to_email = $data['email'];
+                $to_name = 'Client Registration';
+                $add_user_data['plain_password'] = trim($requestData['password']); 
+                Mail::send('admin.emails.ClientRegistration', $add_user_data, function($message) use ($to_name, $to_email) {
+                    $message->to(strtolower($to_email), 'Tutorials Point')->subject($to_name);
+                });
                 $add_client_user = User::create($add_user_data);
                 if($add_client_user)
                 {

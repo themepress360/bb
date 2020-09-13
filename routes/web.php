@@ -46,7 +46,21 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('deleteclient', array('uses' => 'ClientController@deleteclient'));
         Route::post('statuschange', array('uses' => 'ClientController@statuschange'));
         Route::get('clients-list', array('uses' => 'ClientController@clients_list'));
-        Route::get('clients', array('uses' => 'ClientController@clients'));   
+        Route::get('clients', array('uses' => 'ClientController@clients'));
+        Route::get('email-settings', array('uses' => 'EmailSettingController@index'));
+        Route::post('emailconfigure', array('uses' => 'EmailSettingController@emailconfigure'));
+        Route::get('theme-settings', array('uses' => 'ThemeSettingController@index'));
+        Route::post('addthemesetting', array('uses' => 'ThemeSettingController@addthemesetting'));
+        
+        Route::get('dummyemailsent',function(){
+                $mail_config = \Config::get('mail');
+                //dd(\Config::get('mail'));
+                $data = array('name'=>"Themepress");
+                Mail::send('admin.emails.ClientRegistration', $data, function($message) {
+                    $message->to('akkhan1587@gmail.com', 'Tutorials Point')->subject('Laravel HTML Testing Mail');
+                });
+                echo "HTML Email Sent. Check your inbox.";
+        });  
     });
 
     Route::group(
@@ -59,16 +73,6 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
        });
 //});
-
-
-
-Route::get('/admin/email-settings', function () {
-        return view('admin.settings.email.email-settings');
-    });
-Route::get('/admin/theme-settings', function () {
-        return view('admin.settings.theme-settings.theme-settings');
-    });
-
 Route::get('/admin/client/registration', function () {
         return view('admin.emails.ClientRegistration');
     });

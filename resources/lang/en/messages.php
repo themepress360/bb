@@ -23,5 +23,7 @@ return [
   'error_client_id_invalid' => 'CLient id is invalid',
   'client_edit_success' => 'Client edit successfully',
   'client_delete_success' => 'Client deleted successfully.',
-  'client_statuschange_success' => 'Client status change successfully.'
+  'client_statuschange_success' => 'Client status change successfully.',
+  'emailconfigure_success' => 'Email Configure Successfully.',
+  'theme_setting_success' => 'Theme Setting Save successfully.'
 ];
