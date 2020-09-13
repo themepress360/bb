@@ -10,7 +10,7 @@
                             <li class="menu-title">Settings</li>
 
                             <li class="{{ Request::is('settings') ? 'active' : '' }}">
-        <a  href="{{ url('settings') }}"><i class="la la-building"></i><span>Company Settings</span>  </a></li>
+        <a  href="{{ url('/admin/settings') }}"><i class="la la-building"></i><span>Company Settings</span>  </a></li>
 
         <li class="{{ Request::is('localization') ? 'active' : '' }}">
         <a  href="{{ url('localization') }}"><i class="la la-clock-o"></i><span>Localization</span>  </a></li>
