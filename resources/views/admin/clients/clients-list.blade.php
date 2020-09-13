@@ -76,8 +76,8 @@
                                             <tr>
                                                 <td>
                                                     <h2 class="table-avatar">
-                                                        @if(!empty($client_list['profile_image']))
-                                                            <a href="client-profile" class="avatar"><img src="{{{User::image_url(config('app.profileimagesfolder'),$client_list['profile_image'])}}}" alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}"></a>
+                                                         @if(!empty($client_list['profile_image_url']))
+                                                            <a href="client-profile" class="avatar"><img alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}" src="{{{$client_list['profile_image_url']}}}"></a>
                                                         @else
                                                             <a href="client-profile" class="avatar"><img src="{{asset('img/profiles/avatar-21.jpg')}}" alt=""></a>
                                                         @endif
