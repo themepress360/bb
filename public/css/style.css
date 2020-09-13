@@ -133,6 +133,7 @@ Version      : 3.4
 	font-weight: 800;
 	src: local('Circular Std Black Italic'), url('../fonts/CircularStd-BlackItalic.woff') format('woff');
 }
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 /*-----------------
 	1. General
@@ -142,10 +143,10 @@ html {
 	height: 100%;
 }
 body {
-	font-family: 'CircularStd', sans-serif;
+	font-family: Poppins, Helvetica, "sans-serif";
 	font-size: .9375rem;
 	color: #1f1f1f;
-	background-color: #f7f7f7;
+	background-color:#EEF0F8;;
 	min-height: 100%;
 	overflow-x: hidden;
 }
@@ -155,7 +156,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: CircularStd;
+	font-family: Poppins, Helvetica, "sans-serif";
 	margin-top: 0;
 	font-weight: 500;
 }
@@ -1121,11 +1122,8 @@ table.dataTable thead > tr > td.sorting {
 -----------------------*/
 
 .header {
-	background: #f43b48;
-	background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+	background: #fff;
+	
 	border-bottom: 1px solid transparent;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 	height: 60px;
@@ -1136,6 +1134,7 @@ table.dataTable thead > tr > td.sorting {
 	z-index: 1002;
 }
 .header .header-left {
+	background-color: #1a1a27;
 	float: left;
 	height: 60px;
 	padding: 0 20px;
@@ -1154,7 +1153,7 @@ table.dataTable thead > tr > td.sorting {
     width: 21px;
 }
 .bar-icon span {
-    background-color: #fff;
+    background-color: #181C32;
     border-radius: 500px;
     display: block;
     float: left;
@@ -1182,8 +1181,8 @@ table.dataTable thead > tr > td.sorting {
 .header .has-arrow .dropdown-toggle:after {
 	border-top: 0;
 	border-left: 0;
-	border-bottom: 2px solid #fff;
-	border-right: 2px solid #fff;
+	border-bottom: 2px solid #181C32;
+	border-right: 2px solid #181C32;
 	content: '';
 	height: 8px;
 	display: inline-block;
@@ -1212,7 +1211,7 @@ table.dataTable thead > tr > td.sorting {
 	padding: 17px 20px;
 }
 .page-title-box h3 {
-	color: #fff;
+	color: #181C32;
 	font-size: 20px;
 	font-weight: normal;
 	margin: 0;
@@ -1224,7 +1223,7 @@ table.dataTable thead > tr > td.sorting {
     z-index: 99;
 }
 .user-menu.nav > li > a {
-	color: #fff;
+	color: #181C32;
 	font-size: 15px;
 	line-height: 60px;
 	padding: 0 15px;
@@ -1232,7 +1231,7 @@ table.dataTable thead > tr > td.sorting {
 }
 .user-menu.nav > li > a:hover,
 .user-menu.nav > li > a:focus {
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: #F3F6F9;
 }
 .flag-nav img {
 	margin-right: 5px;
@@ -1291,7 +1290,7 @@ table.dataTable thead > tr > td.sorting {
 -----------------------*/
 
 .sidebar {
-    background-color: #34444c;
+    background-color: #1e1e2d;
     border-right: 1px solid transparent;
     bottom: 0;
     left: 0;
@@ -1324,9 +1323,10 @@ table.dataTable thead > tr > td.sorting {
 .sidebar-menu li a {
 	color: #b7c0cd;
 	display: block;
-	font-size: 15px;
+	font-size: 14px;
 	height: auto;
 	padding: 0 20px;
+	font-weight:400;
 }
 .sidebar-menu li a:hover {
 	color: #fff;
