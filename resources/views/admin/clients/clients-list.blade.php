@@ -77,9 +77,9 @@
                                                 <td>
                                                     <h2 class="table-avatar">
                                                          @if(!empty($client_list['profile_image_url']))
-                                                            <a href="client-profile" class="avatar"><img alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}" src="{{{$client_list['profile_image_url']}}}"></a>
+                                                            <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}" src="{{{$client_list['profile_image_url']}}}"></a>
                                                         @else
-                                                            <a href="client-profile" class="avatar"><img src="{{asset('img/profiles/avatar-21.jpg')}}" alt=""></a>
+                                                            <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/client-profile/'.$client_list['id'] : '#') }}" class="avatar"><img src="{{asset('img/profiles/avatar-21.jpg')}}" alt=""></a>
                                                         @endif
                                                         <a href="client-profile">{{ucwords($client_list['name'])}}</a>
                                                     </h2>
@@ -127,6 +127,19 @@
                                                                 @csrf
                                                                     <input type="hidden" name="id" value="{{$client_list['id']}}">
                                                                     <div class="row">
+                                                                         <div class="col-md-12">
+                                                                        <div class="profile-img-wrap edit-img">
+                                                                            @if(!empty($client_list['profile_image_url']))
+                                                                                <img id="imagePreview" class="inline-block" src="{{$client_list['profile_image_url']}}" alt="{{isset($client_list['name']) ? ucwords($client_list['name']) : '-'}}">
+                                                                            @else
+                                                                                <img id="imagePreview" class="inline-block" src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">
+                                                                            @endif
+                                                                            <div class="fileupload btn">
+                                                                                <span class="btn-text">Edit</span>
+                                                                                <input class="upload" type='file' name="profile_image" id="editimageUpload" accept=".png, .jpg, .jpeg" />
+                                                                            </div>
+                                                                        </div>
+                                                                        </div>
                                                                         <?php $name = explode(' ', $client_list['name']);?>
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
@@ -625,5 +638,27 @@
                     }
                 });
             }
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onloadend = function(e) {
+                        $('#imagePreview').attr('src', e.target.result);
+                    }
+                    if (input) { 
+                        reader.readAsDataURL(input.files[0]);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                else
+                    return false;
+            }
+            $("#editimageUpload").change(function() {
+                var upload = readURL(this);
+                if(upload)
+                {
+                }
+            });
         </script>
 @endsection
