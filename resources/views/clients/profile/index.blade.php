@@ -12,7 +12,7 @@
                         <div class="col-sm-12">
                             <h3 class="page-title">Profile</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/dashboard' : '#') }}">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Profile</li>
                             </ul>
                         </div>
@@ -28,7 +28,11 @@
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
                                             <a href="">
-                                                <img src="img/profiles/avatar-19.jpg" alt="">
+                                                @if(!empty($mydetail['profile_image_url']))
+                                                    <img alt="{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}" src="{{{$mydetail['profile_image_url']}}}">
+                                                @else
+                                                     <img alt="No Image" src="{{asset('img/profiles/avatar-21.jpg')}}">
+                                                @endif
                                             </a>
                                         </div>
                                     </div>
@@ -36,10 +40,10 @@
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <div class="profile-info-left">
-                                                    <h3 class="user-name m-t-0">Global Technologies</h3>
-                                                    <h5 class="company-role m-t-0 mb-0">Barry Cuda</h5>
-                                                    <small class="text-muted">CEO</small>
-                                                    <div class="staff-id">Employee ID : CLT-0001</div>
+                                                    <h3 class="user-name m-t-0">{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}</h3>
+                                                    <h5 class="company-role m-t-0 mb-0">{{isset($mydetail['client_data']['company_name']) ? ucwords($mydetail['client_data']['company_name']) : '-'}}</h5>
+                                                    <small class="text-muted">{{isset($mydetail['client_data']['client_designation']) ? ucwords($mydetail['client_data']['client_designation']) : '-'}}</small>
+                                                    <div class="staff-id">Client ID : {{config('app.clientprefix')}}-{{isset($mydetail['id']) ? ucwords($mydetail['id']) : '-'}}</div>
                                                     <div class="staff-msg"><a href="chat" class="btn btn-custom">Send Message</a></div>
                                                 </div>
                                             </div>
@@ -47,23 +51,19 @@
                                                 <ul class="personal-info">
                                                     <li>
                                                         <span class="title">Phone:</span>
-                                                        <span class="text"><a href="">9876543210</a></span>
+                                                        <span class="text"><a href="">{{isset($mydetail['phone_no']) ? ucwords($mydetail['phone_no']) : '-'}}</a></span>
                                                     </li>
                                                     <li>
                                                         <span class="title">Email:</span>
-                                                        <span class="text"><a href="">barrycuda@example.com</a></span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="title">Birthday:</span>
-                                                        <span class="text">2nd August</span>
+                                                        <span class="text"><a href="">{{isset($mydetail['email']) ? ucwords($mydetail['email']) : '-'}}</a></span>
                                                     </li>
                                                     <li>
                                                         <span class="title">Address:</span>
-                                                        <span class="text">5754 Airport Rd, Coosada, AL, 36020</span>
+                                                        <span class="text">{{isset($mydetail['address']) ? ucwords($mydetail['address']) : '-'}}</span>
                                                     </li>
                                                     <li>
                                                         <span class="title">Gender:</span>
-                                                        <span class="text">Male</span>
+                                                        <span class="text">{{isset($mydetail['gender']) ? ucwords($mydetail['gender']) : '-'}}</span>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -85,8 +85,7 @@
                         </div>
                     </div>
                 </div>
-
-<!-- Profile Modal -->
+            <!-- Profile Modal -->
             <div id="client_profile_info" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
@@ -97,14 +96,20 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form id="editprofile" onsubmit="return false">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="user_id" value="{{isset($mydetail['id']) ? $mydetail['id'] : '-'}}">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="profile-img-wrap edit-img">
-                                            <img class="inline-block" src="img/profiles/avatar-02.jpg" alt="user">
+                                            @if(!empty($mydetail['profile_image_url']))
+                                                <img id="imagePreview" class="inline-block" src="{{$mydetail['profile_image_url']}}" alt="{{isset($mydetail['name']) ? ucwords($mydetail['name']) : '-'}}">
+                                            @else
+                                                <img id="imagePreview" class="inline-block" src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">
+                                            @endif
                                             <div class="fileupload btn">
                                                 <span class="btn-text">edit</span>
-                                                <input class="upload" type="file">
+                                                <input class="upload" type="file" name="profile_image" id="editimageUpload" accept=".png, .jpg, .jpeg">
                                             </div>
                                         </div>
                                        
@@ -112,7 +117,7 @@
                                 </div>
                                 
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <a onClick="editprofile()" class="btn btn-primary submit-btn">Submit</a>
                                 </div>
                             </form>
                         </div>
@@ -729,4 +734,53 @@
             <!-- /Page Content -->
             
         </div>
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onloadend = function(e) {
+                $('#imagePreview').attr('src', e.target.result);
+            }
+            if (input) { 
+                reader.readAsDataURL(input.files[0]);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else
+            return false;
+    }
+                
+    function editprofile() {
+        var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/editprofile' : '#') }}";  
+        var form = $('#editprofile').get(0);
+        var formData = new FormData(form);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response)
+            {
+                if(response.status == "SUCCESS")
+                {
+                    toastr['success'](response.message);
+                    window.location = "";
+                }
+                else
+                {
+                    toastr['error'](response.message);
+                }    
+            }
+        }); 
+    }
+    $("#editimageUpload").change(function() {
+        var upload = readURL(this);
+        if(upload)
+        {
+        }
+    });
+    </script>
 @endsection
