@@ -12,7 +12,7 @@
                         <div class="col">
                             <h3 class="page-title">Department</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/dashboard' : '#') }}">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Department</li>
                             </ul>
                         </div>

@@ -60,8 +60,8 @@
 				<table cellspacing="0" cellpadding="0" border="0" width="100%"> <tbody> <tr> <td align="center"> <table cellpadding="0" cellspacing="0" border="0" style="width:88%; max-width: 528px;"> <tbody> <tr> <td align="center" style="font-family:Helvetica,Arial, sans-serif;font-size:18px; line-height: 1.38;color:#676D76;">
 					Hello "Client_Name",<br> 
 					Your Login Credentials for Business Box are given below.<br><br>
-					User Name: client@gmail.com<br>
-					Pwd :  123456 <br>
+					User Name: {{$email}}<br>
+					Pwd :  {{$plain_password}} <br>
 
 				</td> 
 			</tr>
@@ -78,8 +78,9 @@
 				<table border="0" cellspacing="0" cellpadding="0" style="width:300px;background:#7968FF;">
 					<tbody>
 						<tr>
+							
 							<td align="center" height="45" style="height:45px;">
-								<a style="display:inline-block; padding:10px 30px; font-size:16px;font-family: Helvetica, sans-serif; font-size:16px; font-style:normal; color:#ffffff; font-weight:600;text-decoration:none;" target="_blank" href="">Get started</a>
+								<a  href="{{ URL::to('/login')}}" style="display:inline-block; padding:10px 30px; font-size:16px;font-family: Helvetica, sans-serif; font-size:16px; font-style:normal; color:#ffffff; font-weight:600;text-decoration:none;" target="_blank" href="">Get started</a>
 							</td>
 						</tr>
 					</tbody>
