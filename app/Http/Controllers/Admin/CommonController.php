@@ -29,17 +29,13 @@ class CommonController extends BaseController
             $data_images = json_decode($theme['data'],true);
             $data['theme']['website_name'] = $data_images['website_name'];
             $data['theme']['website_logo'] = $data_images['website_logo'];
-            $data['theme']['favicon_logo'] = $data_images['favicon_logo'];
             $data['theme']['website_image_url'] = User::image_url(config('app.websiteimagesfolder'),$data_images['website_logo']);
-            $data['theme']['favicon_image_url'] = User::image_url(config('app.websiteimagesfolder'),$data_images['favicon_logo']);
         }
         else
         {
             $data['theme']['website_name'] = "";
             $data['theme']['website_image_url'] = '';
-            $data['theme']['favicon_image_url'] = '';
             $data['theme']['website_logo'] = "";
-            $data['theme']['favicon_logo'] = "";
         }
 		View::share('website_data',$data);
 		//View::share('admin.share',$data['share']);

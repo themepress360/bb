@@ -27,18 +27,13 @@ class ThemeSettingController extends CommonController
             $data_images = json_decode($data['theme']['data'],true);
             $data['theme']['website_name'] = $data_images['website_name'];
             $data['theme']['website_logo'] = $data_images['website_logo'];
-            $data['theme']['favicon_logo'] = $data_images['favicon_logo'];
             $data['theme']['website_image_url'] = User::image_url(config('app.websiteimagesfolder'),$data_images['website_logo']);
-            //dd($data['theme']['website_image_url']);
-            $data['theme']['favicon_image_url'] = User::image_url(config('app.websiteimagesfolder'),$data_images['favicon_logo']);
         }
         else
         {
             $data['theme']['website_name'] = "";
             $data['theme']['website_image_url'] = '';
-            $data['theme']['favicon_image_url'] = '';
             $data['theme']['website_logo'] = "";
-            $data['theme']['favicon_logo'] = "";
         }
         // print_r("<pre>");
         // print_r($data);
@@ -51,7 +46,6 @@ class ThemeSettingController extends CommonController
         $rules = [
             'module'         => 'required|string|in:theme',
             'website_name'   => 'required|string|min:2|max:50',
-            'favicon_logo'   => 'file|mimes:jpeg,png,jpg|max:5128',
             'website_logo'   => 'file|mimes:jpeg,png,jpg|max:5128'
         ];
         $validator = Validator::make($request->all(),$rules);
@@ -83,17 +77,6 @@ class ThemeSettingController extends CommonController
             }
             /* Website Image Save if exists End */
 
-            /* Favicon Image Save if exists Start */
-            if(!empty($requestData['favicon_logo']))
-            {
-                if (!empty($data['favicon_logo'])) {
-                        Storage::delete(config('app.folder') . '/' . config('app.websiteimagesfolder').'/'.$data['favicon_logo']);
-                }     
-                $filename = User::uploadImage(config('app.folder').'/'.config('app.websiteimagesfolder'),$requestData['favicon_logo'],400);
-                if($filename) 
-                    $data['favicon_logo'] = $filename;
-            }
-            /* Favicon Image Save if exists End */
             $data['website_name'] = trim($requestData['website_name']);
             $website_data['data'] = json_encode($data);
             if(!empty($themesetting))
