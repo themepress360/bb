@@ -73,6 +73,15 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
        });
 //});
+
+
+Route::get('/admin/client-profile', function () {
+        return view('admin.clients.profile');
+    });
+
+
+
+
 Route::get('/admin/client/registration', function () {
         return view('admin.emails.ClientRegistration');
     });

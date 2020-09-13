@@ -271,8 +271,8 @@
 																     <li><a href="#">Complete</a></li>
 
 																  </ul>
-																</div>
-																</div>
+															</div>
+														</div>
 													</div>
 													<hr class="task-line">
 													<div class="task-desc">
