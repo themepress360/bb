@@ -144,7 +144,7 @@ html {
 }
 body {
 	font-family: Poppins, Helvetica, "sans-serif";
-	font-size: .9375rem;
+	font-size: 13px;
 	color: #1f1f1f;
 	background-color:#EEF0F8;;
 	min-height: 100%;
@@ -511,8 +511,30 @@ table.dataTable thead > tr > td.sorting {
 	color: #7460ee !important;
 }
 .text-muted {
-    color: #8e8e8e !important;
+    color:#B5B5C3 !important;
 }
+
+.profile-widget .text-muted > a {
+    color:#B5B5C3 !important;
+}
+
+.profile-widget .text-muted:hover > a {
+color: #3699FF !important;
+}
+
+.d-flex{
+
+	display: flex !important;
+}
+
+.align-items-center {
+align-items: center !important;
+	}
+
+.justify-content-between {
+justify-content: space-between !important;
+
+	}
 .btn-purple {
 	background-color: #7460ee;
 	border: 1px solid #7460ee;
@@ -568,6 +590,66 @@ table.dataTable thead > tr > td.sorting {
 	background-color: #55ce63;
 	border: 1px solid #55ce63
 }
+
+.btn-light-success{
+
+	background-color: #C9F7F5;
+color: #1BC5BD;
+}
+
+.btn.btn-light-success:hover{
+    color: #ffffff;
+    background-color: #1BC5BD;
+    border-color: transparent;
+
+}
+.btn-light-primary{
+
+color: #3699FF;
+background-color: #E1F0FF;
+}
+.btn.btn-light-primary:hover{
+color: #FFFFFF;
+background-color: #3699FF;
+border-color: transparent;
+
+}
+
+.symbol {
+	display: table;
+	text-align: center;
+
+}
+.symbol.symbol-lg-75 .symbol-label {
+    width: 75px;
+    height: 75px;
+    display:table-cell;
+ 	vertical-align:middle;
+ 	font-size:32px;
+ 	border-radius: 0.42rem;
+}
+.symbol.symbol-primary .symbol-label {
+    background-color: #3699FF;
+    color: #FFFFFF;
+}
+
+.symbol.symbol-light-success .symbol-label {
+    background-color: #C9F7F5;
+    color: #1BC5BD;
+}
+
+.symbol.symbol-sm-35 .symbol-label {
+    width: 30px;
+    height: 30px;
+    display:table-cell;
+ 	vertical-align:middle;
+ 	font-size:20px;
+ 	border-radius: 0.42rem;
+
+}
+
+
+
 .btn-success:hover,
 .btn-success:focus,
 .btn-success.active,
@@ -2467,7 +2549,7 @@ table.dataTable thead > tr > td.sorting {
 	height: 24px
 }
 .avatar > img {
-    border-radius: 50%;
+    border-radius: 5px;
     display: block;
     overflow: hidden;
     width: 100%;
@@ -3047,6 +3129,23 @@ table.dataTable thead > tr > td.sorting {
 	position: relative;
 	width: 80px;
 }
+.profile-img-card {
+	cursor: pointer;
+	height: 80px;
+	
+	position: relative;
+	width: 80px;
+}
+
+.profile-img-card .avatar {
+	font-size: 24px;
+	height: 80px;
+	line-height: 80px;
+	margin: 0;
+	width: 80px;
+}
+
+
 .profile-img .avatar {
 	font-size: 24px;
 	height: 80px;

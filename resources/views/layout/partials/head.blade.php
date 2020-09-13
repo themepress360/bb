@@ -8,6 +8,9 @@
         <meta name="author" content="Dreamguys - Bootstrap Admin Template">
         <meta name="robots" content="noindex, nofollow">
         <title>Dashboard - HRMS admin template</title>
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
 		
 		<!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
