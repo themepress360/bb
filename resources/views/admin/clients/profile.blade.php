@@ -1,3 +1,4 @@
+
 @extends('layout.mainlayout')
 @section('content')
 	<!-- Page Wrapper -->
@@ -39,7 +40,7 @@
                                                     <h3 class="user-name m-t-0">Global Technologies</h3>
                                                     <h5 class="company-role m-t-0 mb-0">Barry Cuda</h5>
                                                     <small class="text-muted">CEO</small>
-                                                    <div class="staff-id">Employee ID : CLT-0001</div>
+                                                    <div class="staff-id">Client ID : CLT-0001</div>
                                                     <div class="staff-msg"><a href="chat" class="btn btn-custom">Send Message</a></div>
                                                 </div>
                                             </div>
@@ -53,10 +54,7 @@
                                                         <span class="title">Email:</span>
                                                         <span class="text"><a href="">barrycuda@example.com</a></span>
                                                     </li>
-                                                    <li>
-                                                        <span class="title">Birthday:</span>
-                                                        <span class="text">2nd August</span>
-                                                    </li>
+                                                    
                                                     <li>
                                                         <span class="title">Address:</span>
                                                         <span class="text">5754 Airport Rd, Coosada, AL, 36020</span>
@@ -75,18 +73,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card tab-box">
-                    <div class="row user-tabs">
-                        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
-                            <ul class="nav nav-tabs nav-tabs-bottom">
-                                <li class="nav-item col-sm-3"><a class="nav-link active" data-toggle="tab" href="#myprojects">Projects</a></li>
-                                <li class="nav-item col-sm-3"><a class="nav-link" data-toggle="tab" href="#tasks">Tasks</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
 
-<!-- Profile Modal -->
+               <!-- Profile Modal -->
             <div id="client_profile_info" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
@@ -107,10 +95,79 @@
                                                 <input class="upload" type="file">
                                             </div>
                                         </div>
-                                       
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>First Name</label>
+                                                    <input type="text" class="form-control" value="John">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Last Name</label>
+                                                    <input type="text" class="form-control" value="Doe">
+                                                </div>
+                                            </div>
+                                             <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <input type="text" class="form-control" value="Doe">
+
+                                                </div>
+                                            </div>
+                                             <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Designation</label>
+                                                    <input type="text" class="form-control" value="Doe">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Gender</label>
+                                                    <select class="select form-control">
+                                                        <option value="male selected">Male</option>
+                                                        <option value="female">Female</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <input type="text" class="form-control" value="4487 Snowbird Lane">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>State</label>
+                                            <input type="text" class="form-control" value="New York">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Country</label>
+                                            <input type="text" class="form-control" value="United States">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Zip Code</label>
+                                            <input type="text" class="form-control" value="10523">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input type="text" class="form-control" value="631-889-3206">
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
                                 <div class="submit-section">
                                     <button class="btn btn-primary submit-btn">Submit</button>
                                 </div>
@@ -122,6 +179,17 @@
             <!-- /Profile Modal -->
 
 
+
+                <div class="card tab-box">
+                    <div class="row user-tabs">
+                        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                            <ul class="nav nav-tabs nav-tabs-bottom">
+                                <li class="nav-item col-sm-3"><a class="nav-link active" data-toggle="tab" href="#myprojects">Projects</a></li>
+                                <li class="nav-item col-sm-3"><a class="nav-link" data-toggle="tab" href="#tasks">Tasks</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-lg-12"> 
