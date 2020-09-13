@@ -42,23 +42,7 @@
                      </div>
                   </div>
                </div>
-               <div class="form-group row">
-                  <label class="col-lg-3 col-form-label">Favicon</label>
-                  <div class="col-lg-7">
-                     <input type="file" class="form-control" accept=".png, .jpg, .jpeg" id="FaviconLogo"
-                      name="favicon_logo">
-                     <span class="form-text text-muted">Recommended image size is 16px x 16px</span>
-                  </div>
-                  <div class="col-lg-2">
-                     <div class="settings-image img-thumbnail float-right">
-                        @if(!empty($theme['favicon_image_url']))
-                           <img id="FaviconLogoPreview" src="{{$theme['favicon_image_url']}}" alt="{{isset($theme['website_name']) ? ucwords($theme['website_name']) : '-'}}" class="img-fluid" width="16" height="16">
-                        @else
-                           <img  id="FaviconLogoPreview" src="{{asset('img/profiles/avatar-21.jpg')}}" alt="{{isset($theme['website_name']) ? ucwords($theme['website_name']) : '-'}}" class="img-fluid" width="16" height="16" alt="">
-                        @endif
-                     </div>
-                  </div>
-               </div>
+              
                <div class="submit-section">
                   <a onClick="ThemeSetting()" class="btn btn-primary submit-btn">Save</a>
                </div>
@@ -93,12 +77,7 @@
       {
       }
    });
-   $("#FaviconLogo").change(function() {
-      var upload = readURL(this,'FaviconLogoPreview');
-      if(upload)
-      {
-      }
-   });
+   
    function ThemeSetting()
    {
        var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addthemesetting' : '#') }}";var form = $('#ThemeSetting').get(0);
