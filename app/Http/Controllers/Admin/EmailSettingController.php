@@ -30,6 +30,8 @@ class EmailSettingController extends CommonController
             'smtp_port' 		=> 'required|string',
             'smtp_security' 	=> 'required|string|in:ssl,tls',
             'smtp_authentication_domain' => 'required|string',
+            'smtp_from_email' => 'required|string',
+            'smtp_from_name' => 'required|string',
             'type' => 'required|string|in:smtp'
         ];
         $validator = Validator::make($request->all(),$rules);
@@ -43,7 +45,9 @@ class EmailSettingController extends CommonController
 	        	"smtp_password" => trim($requestData['smtp_password']),
 	        	"smtp_port" => trim($requestData['smtp_port']),
 	        	"smtp_security" => trim($requestData['smtp_security']),
-	        	"smtp_authentication_domain" => trim($requestData['smtp_authentication_domain'])
+	        	"smtp_authentication_domain" => trim($requestData['smtp_authentication_domain']),
+                "smtp_from_email" => trim($requestData['smtp_from_email']),
+                "smtp_from_name" => trim($requestData['smtp_from_name'])
 	        );
 	        $data['data'] = json_encode($email_data);
 	        $data['type'] = trim(trim($requestData['type']));
