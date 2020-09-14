@@ -58,7 +58,7 @@
 					</tbody>
 				</table> 
 				<table cellspacing="0" cellpadding="0" border="0" width="100%"> <tbody> <tr> <td align="center"> <table cellpadding="0" cellspacing="0" border="0" style="width:88%; max-width: 528px;"> <tbody> <tr> <td align="center" style="font-family:Helvetica,Arial, sans-serif;font-size:18px; line-height: 1.38;color:#676D76;">
-					Hello "Client_Name",<br> 
+					Hello "{{$name}}",<br> 
 					Your Login Credentials for Business Box are given below.<br><br>
 					User Name: {{$email}}<br>
 					Pwd :  {{$plain_password}} <br>

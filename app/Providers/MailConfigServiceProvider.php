@@ -36,9 +36,19 @@ class MailConfigServiceProvider extends ServiceProvider
                 'username'   => $emailconfigure->smtp_user,
                 'password'   => $emailconfigure->smtp_password,
                 'encryption' => $emailconfigure->smtp_security,
-                'from'       => array('address' => $emailconfigure->smtp_user, 'name' => "Theme Press 1"),
+                'from'       => array('address' => $emailconfigure->smtp_from_email, 'name' => $emailconfigure->smtp_from_name),
                 'sendmail'   => '/usr/sbin/sendmail -bs',
                 'pretend'    => false,
+
+               //  'driver'     => 'smtp',
+               //  'host'       => 'smtp.sendgrid.net',
+               //  'port'       => '465',
+               //  'username'   => 'themepress360',
+               //   'password'   => 'Master@81',
+               //   'encryption' => 'ssl',
+               //   'from'       => array('address' => $emailconfigure->smtp_user, 'name' => "Theme Press"),
+               //   'sendmail'   => '/usr/sbin/sendmail -bs',
+               //   'pretend'    => false,
             );
             \Config::set('mail', $config);
         }
