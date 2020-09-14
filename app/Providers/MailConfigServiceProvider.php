@@ -30,15 +30,26 @@ class MailConfigServiceProvider extends ServiceProvider
             $emailconfigure = json_decode($emailServices['data']);
             
             $config = array(
-                'driver'     => $emailconfigure->smtp_authentication_domain,
-                'host'       => $emailconfigure->smtp_host,
-                'port'       => $emailconfigure->smtp_port,
-                'username'   => $emailconfigure->smtp_user,
-                'password'   => $emailconfigure->smtp_password,
-                'encryption' => $emailconfigure->smtp_security,
-                'from'       => array('address' => $emailconfigure->smtp_user, 'name' => "Theme Press 1"),
-                'sendmail'   => '/usr/sbin/sendmail -bs',
-                'pretend'    => false,
+              //  'driver'     => $emailconfigure->smtp_authentication_domain,
+              //  'host'       => $emailconfigure->smtp_host,
+             //   'port'       => $emailconfigure->smtp_port,
+             //   'username'   => $emailconfigure->smtp_user,
+             //   'password'   => $emailconfigure->smtp_password,
+             //   'encryption' => $emailconfigure->smtp_security,
+            //    'from'       => array('address' => $emailconfigure->smtp_user, 'name' => "Theme Press 1"),
+            //    'sendmail'   => '/usr/sbin/sendmail -bs',
+            //    'pretend'    => false,
+
+                  'driver'     => 'smtp',
+                  'host'       => 'smtp.sendgrid.net',
+                  'port'       => '587',
+                  'username'   => 'TiPLkP3GRhqoXxF337JheQ',
+                  'password'   => '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',
+                  'encryption' => 'tls',
+                  'from'       => 'themepress360@gmail.com';
+                  'sendmail'   => '/usr/sbin/sendmail -bs',
+                  'pretend'    => false,
+
             );
             \Config::set('mail', $config);
         }
