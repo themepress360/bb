@@ -25,5 +25,13 @@ return [
   'client_delete_success' => 'Client deleted successfully.',
   'client_statuschange_success' => 'Client status change successfully.',
   'emailconfigure_success' => 'Email Configure Successfully.',
-  'theme_setting_success' => 'Theme Setting Save successfully.'
+  'theme_setting_success' => 'Theme Setting Save successfully.',
+  'role_add_success' => 'Role Added Successfully',
+  'error_role_exists' => 'Role already exists',
+  'role_delete_success' => 'Role Deleted Successfully',
+  'role_update_success' => 'Role Updated Successfully',
+  'employee_add_success' => 'Employee Addedd Sucessfully',
+  'error_employee_email_exists' =>  'Employee Email already exists',
+  'employee_edit_success' => "Employee edit succussfully"
+
 ];

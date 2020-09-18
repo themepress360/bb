@@ -58,201 +58,76 @@
                     </div>
                 </div>
                 <!-- Search Filter -->
-                
+                 
                 <div class="row staff-grid-row">
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-02.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                          @foreach($employees_list as $index => $employee)
+                            <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+                                <div class="profile-widget">
+                                   <div class="d-flex">
+                                    <div class="profile-img-card">
+                                        <a href="">
+                            @if(!empty($employee['profile_image_url']))
+                                <img src="{{{$employee['profile_image_url']}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                            @else
+                               <div class="symbol symbol-lg-75 symbol-primary">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+
+                            @endif
+                           </a>
+                                                                        
+                                    </div>
+                                    <div class="m-l-10"><h4 class="user-name m-t-10 mb-0"><a href=""></a>{{$employee['name']}}</h4>
+                                        <span class="text-muted"><h6>{{ucwords($employee['designation_name'])}}<h6></span>
+                                            <span class="text-muted"><h6>Emp ID: {{strtoupper($employee['prefix'])}}-{{sprintf("%04d",$employee['id'])}}<h6></span>
+                                    </div>
+                                    
                                 </div>
+
+                                 <div class="d-flex align-items-center justify-content-between m-t-10" >
+                                    <span>
+                                        Department:
+                                    </span>    
+                           <span><h5 class="text-muted m-t-10 mb-0 text-ellipsis"><a href=""> {{ucwords($employee['department_name'])}}</a></h5></span>
+                                    </div>
+
+                                    <div class="d-flex align-items-center justify-content-between m-t-10" >
+                                    <span>
+                                        Email:
+                                    </span>    
+                           <span><h5 class="text-muted m-t-10 mb-0 text-ellipsis"><a href=""> {{$employee['email']}}</a></h5></span>
+                                    </div>
+
+                                    <div class="d-flex align-items-center justify-content-between m-t-10" >
+                                    <span>
+                                        Phone:
+                                    </span>    
+                           <span><h5 class="text-muted m-t-10 mb-0 text-ellipsis"><a href=""> {{$employee['phone_no']}}</a></h5></span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between m-t-10" >
+                                    <span>
+                                        Location:
+                                    </span>    
+                           <span><h5 class="text-muted m-t-10 mb-0 text-ellipsis"><a href=""> {{$employee['country']}}</a></h5></span>
+                                    </div>
+
+                           
+                        
+                                    <div class="dropdown profile-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    </div>
+                                    </div>
+                                    <a href="chat" class="btn btn-light-success btn-sm m-t-10">Message</a>
+                                    <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'. $employee['id'] : '#') }}" class="btn btn-light-primary btn-sm m-t-10">View Profile</a>
                             </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">John Doe</a></h4>
-                            <div class="small text-muted">Web Designer</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-09.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Richard Miles</a></h4>
-                            <div class="small text-muted">Web Developer</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-10.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">John Smith</a></h4>
-                            <div class="small text-muted">Android Developer</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-05.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Mike Litorus</a></h4>
-                            <div class="small text-muted">IOS Developer</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-11.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Wilmer Deluna</a></h4>
-                            <div class="small text-muted">Team Leader</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-12.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Jeffrey Warden</a></h4>
-                            <div class="small text-muted">Web Developer</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-13.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Bernardo Galaviz</a></h4>
-                            <div class="small text-muted">Web Developer</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-01.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Lesley Grauer</a></h4>
-                            <div class="small text-muted">Team Leader</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-16.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Jeffery Lalor</a></h4>
-                            <div class="small text-muted">Team Leader</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-04.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Loren Gatlin</a></h4>
-                            <div class="small text-muted">Android Developer</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-03.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Tarah Shropshire</a></h4>
-                            <div class="small text-muted">Android Developer</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a href="profile" class="avatar"><img src="img/profiles/avatar-08.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">Catherine Manseau</a></h4>
-                            <div class="small text-muted">Android Developer</div>
-                        </div>
-                    </div>
                 </div>
+                 @endforeach
             </div>
             <!-- /Page Content -->
             
@@ -267,85 +142,99 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                           {{ Form::open(array( 'id' => 'AddEmployeeForm')) }}
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">First Name <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="first_name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Last Name<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="last_name">
                                         </div>
                                     </div>
                                      <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="email">
+                                            <input class="form-control" type="email" name="email">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Password<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="password">
+                                            <input class="form-control" type="password" name="password">
                                         </div>
                                     </div>
                                                                       
                                     <div class="col-sm-6">  
                                         <div class="form-group">
                                             <label class="col-form-label">Joining Date <span class="text-danger">*</span></label>
-                                            <div class="cal-icon"><input class="form-control datetimepicker" type="text"></div>
+                                            <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_joining"></div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Phone <span class="text-danger">*</span> </label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="phone_no">
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Department <span class="text-danger">*</span></label>
-                                            <select class="select">
+                                           
+                                            <select class="select" name="department">
                                                 <option>Select Department</option>
-                                                <option>Web Development</option>
-                                                <option>IT Management</option>
-                                                <option>Marketing</option>
-                                            </select>
+                                                 @foreach($departments as $department)
+                                                <option value="{{$department->id}}">{{strtoupper($department->name)}}</option>
+                                                 @endforeach
+                                              </select>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Designation <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Designation</option>
-                                                <option>Web Designer</option>
-                                                <option>Web Developer</option>
-                                                <option>Android Developer</option>
-                                            </select>
-                                        </div>
+                                             <select class="select" name="designation">
+                                              <option>Select Designation</option>
+                                                 @foreach($designations as $designation)
+                                               <option value="{{$designation->id}}">{{strtoupper($designation->name)}}</option>
+                                                 @endforeach
+                                             </select>
+                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Assign Role <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Role</option>
-                                                <option>Administrator</option>
-                                                <option>Manager</option>
-                                                <option>Employee</option>
+                                         
+                                           <select class="select" name="employee_role">
+                                              <option>Select Role</option>
+                                                 @foreach($roles as $role)
+                                                <option value="{{$role->id}}">{{strtoupper($role->role_name)}}</option>
+                                              @endforeach
+                                             </select>
+                                           
+                                        </div>
+                                    </div>
+                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gender</label>
+                                            <select class="select form-control" name="gender">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <a onClick="addEmployee()" class="btn btn-primary submit-btn">Submit</a>
                                 </div>
-                            </form>
+                            {{ Form::close() }}
                         </div>
                     </div>
                 </div>
@@ -676,4 +565,35 @@
             
         </div>
         <!-- /Page Wrapper -->
+
+ <script type="text/javascript">
+
+            function addEmployee() {
+
+                console.log("Employee Function Called");
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addemployees' : '#') }}";  
+                var form = $('#AddEmployeeForm').get(0);
+                var formData = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                }); 
+            }
+        </script>
+
 @endsection

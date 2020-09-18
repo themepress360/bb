@@ -269,6 +269,11 @@ class ClientController extends CommonController
 
     public function deleteclient(Request $request)
     {
+        
+         $id = $request->all();
+
+         dd($id);
+
         $rules = [
             'id' => 'required'
         ];
@@ -437,9 +442,12 @@ class ClientController extends CommonController
             //$data['client']['prefix'] = clientprefix;
             if(!empty($data['client']['profile_image']))
                 $data['client']['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$data['client']['profile_image']);
+             
+         
             else
                 $data['client']['profile_image_url'] = '';
                 return view('admin.clients.profile',$data);
+            
         }
         // else
         // {

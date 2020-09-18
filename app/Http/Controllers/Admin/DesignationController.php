@@ -32,7 +32,7 @@ class DesignationController extends CommonController
     public function adddesignation(Request $request)
     {
         $rules = [
-            'name'      => 'required|string|min:2|max:20',
+            'name'      => 'required|string|min:2|max:50',
             'department_id' => 'required'
         ];
         $validator = Validator::make($request->all(),$rules);
