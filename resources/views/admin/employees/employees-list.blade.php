@@ -74,13 +74,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   @foreach($employees as $employee)
+                                  @foreach($employees_list as $index => $employee)
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
                                                 
-                                                 <a href="">
+                                                
                             @if(!empty($employee['profile_image_url']))
+                             <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar">
                                 <img src="{{{$employee['profile_image_url']}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                             @else
                                <div class="symbol symbol-sm-35 symbol-primary m-r-10">
@@ -137,85 +138,99 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                           {{ Form::open(array( 'id' => 'AddEmployeeForm')) }}
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">First Name <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="first_name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Last Name<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="last_name">
                                         </div>
                                     </div>
                                      <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="email">
+                                            <input class="form-control" type="email" name="email">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Password<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="password">
+                                            <input class="form-control" type="password" name="password">
                                         </div>
                                     </div>
-                                                                        
+                                                                      
                                     <div class="col-sm-6">  
                                         <div class="form-group">
                                             <label class="col-form-label">Joining Date <span class="text-danger">*</span></label>
-                                            <div class="cal-icon"><input class="form-control datetimepicker" type="text"></div>
+                                            <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_joining"></div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Phone<span class="text-danger">*</span> </label>
-                                            <input class="form-control" type="text">
+                                            <label class="col-form-label">Phone <span class="text-danger">*</span> </label>
+                                            <input class="form-control" type="text" name="phone_no">
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Department <span class="text-danger">*</span></label>
-                                            <select class="select">
+                                           
+                                            <select class="select" name="department">
                                                 <option>Select Department</option>
-                                                <option>Web Development</option>
-                                                <option>IT Management</option>
-                                                <option>Marketing</option>
-                                            </select>
+                                                 @foreach($departments as $department)
+                                                <option value="{{$department->id}}">{{strtoupper($department->name)}}</option>
+                                                 @endforeach
+                                              </select>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Designation <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Designation</option>
-                                                <option>Web Designer</option>
-                                                <option>Web Developer</option>
-                                                <option>Android Developer</option>
-                                            </select>
-                                        </div>
+                                             <select class="select" name="designation">
+                                              <option>Select Designation</option>
+                                                 @foreach($designations as $designation)
+                                               <option value="{{$designation->id}}">{{strtoupper($designation->name)}}</option>
+                                                 @endforeach
+                                             </select>
+                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Assign Role <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Role</option>
-                                                <option>Administrator</option>
-                                                <option>Manager</option>
-                                                <option>Employee</option>
+                                         
+                                           <select class="select" name="employee_role">
+                                              <option>Select Role</option>
+                                                 @foreach($roles as $role)
+                                                <option value="{{$role->id}}">{{strtoupper($role->role_name)}}</option>
+                                              @endforeach
+                                             </select>
+                                           
+                                        </div>
+                                    </div>
+                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gender</label>
+                                            <select class="select form-control" name="gender">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <a onClick="addEmployee()" class="btn btn-primary submit-btn">Submit</a>
                                 </div>
-                            </form>
+                            {{ Form::close() }}
                         </div>
                     </div>
                 </div>
@@ -543,4 +558,35 @@
             <!-- /Delete Employee Modal -->
             
         </div>
+
+
+        <script type="text/javascript">
+
+            function addEmployee() {
+
+                console.log("Employee Function Called");
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addemployees' : '#') }}";  
+                var form = $('#AddEmployeeForm').get(0);
+                var formData = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                }); 
+            }
+        </script>
 @endsection
