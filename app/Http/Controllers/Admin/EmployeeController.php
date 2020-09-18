@@ -107,7 +107,11 @@ class EmployeeController extends CommonController
 
             $requestData = $request->all();
             $data['email'] = trim(strtolower($requestData['email']));
-            $is_employee_exists = User::where(['type' => 'employee','email' => strtolower($requestData['email']),"deleted" => '0'])->first(); 
+
+
+            $is_employee_exists = User::where('email', strtolower($requestData['email']) )->first(); 
+
+           // dd($is_employee_exists);
 
              if(empty($is_employee_exists))
             {
