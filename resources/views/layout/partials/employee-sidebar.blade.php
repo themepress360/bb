@@ -7,7 +7,7 @@
 							<li class="menu-title"> 
 								<span>Main</span>
 							</li>
-							
+							<li>
 								<a href="dashboard"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
 								
 							</li>
