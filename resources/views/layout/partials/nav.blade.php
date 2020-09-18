@@ -8,7 +8,7 @@
 								<span>Main</span>
 							</li>
 							<li>
-								<a href="dashboard"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
+								<a href="/admin/dashboard"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
 								
 							</li>
 							<li class="submenu">
@@ -18,16 +18,16 @@
 									<li class="submenu">
 										<a href="#"><span> Calls</span> <span class="menu-arrow"></span></a>
 										<ul style="display: none;">
-											<li><a href="voice-call">Voice Call</a></li>
-											<li><a href="video-call">Video Call</a></li>
-											<li><a href="outgoing-call">Outgoing Call</a></li>
-											<li><a href="incoming-call">Incoming Call</a></li>
+											<li><a href="/admin/voice-call">Voice Call</a></li>
+											<li><a href="/admin/video-call">Video Call</a></li>
+											<li><a href="/admin/outgoing-call">Outgoing Call</a></li>
+											<li><a href="/admin/incoming-call">Incoming Call</a></li>
 										</ul>
 									</li>
-									<li><a href="events">Calendar</a></li>
-									<li><a href="contacts">Contacts</a></li>
-									<li><a href="inbox">Email</a></li>
-									<li><a href="file-manager">File Manager</a></li>
+									<li><a href="/admin/events">Calendar</a></li>
+									<li><a href="/admin/contacts">Contacts</a></li>
+									<li><a href="/admin/inbox">Email</a></li>
+									<li><a href="/admin/file-manager">File Manager</a></li>
 								</ul>
 							</li>
 							<li class="menu-title"> 
@@ -36,9 +36,9 @@
 							<li class="submenu">
 								<a href="#" class="noti-dot"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="employees">All Employees</a></li>
-								    <li><a href="departments">Departments</a></li>
-									<li><a href="designations">Designations</a></li>
+									<li><a href="/admin/employees">All Employees</a></li>
+								    <li><a href="/admin/departments">Departments</a></li>
+									<li><a href="/admin/designations">Designations</a></li>
 									
 								</ul>
 							</li>
@@ -46,29 +46,29 @@
 								<li class="submenu">
 								<a href="#"><i class="la la-rocket"></i> <span> Projects</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="projects">Projects</a></li>
-									<li><a href="tasks">Tasks</a></li>
-									<li><a href="task-board">Task Board</a></li>
+									<li><a href="/admin/projects">Projects</a></li>
+									<li><a href="/admin/tasks">Tasks</a></li>
+									<li><a href="/admin/task-board">Task Board</a></li>
 								</ul>
 							</li>
 							<li>
 								<a href="{{url(isset(Auth::user()->type) ? Auth::user()->type.'/clients' : '')}}"><i class="la la-users"></i> <span>Clients</span></a>
 							</li>
 							<li> 
-								<a href="leads"><i class="la la-user-secret"></i> <span>Leads</span></a>
+								<a href="/admin/leads"><i class="la la-user-secret"></i> <span>Leads</span></a>
 							</li>
 							<li> 
-								<a href="tickets"><i class="la la-ticket"></i> <span>Tickets</span></a>
+								<a href="/admin/tickets"><i class="la la-ticket"></i> <span>Tickets</span></a>
 							</li>
 							<li> 
 
-								<a href="users"><i class="la la-user-plus"></i> <span>Users</span></a>
+								<a href="/admin/users"><i class="la la-user-plus"></i> <span>Users</span></a>
 
 							</li>
 
 							<li> 
 
-								<a href="settings"><i class="la la-cog"></i> <span>Settings</span></a>
+								<a href="/admin/settings"><i class="la la-cog"></i> <span>Settings</span></a>
 
 							</li>							
 							

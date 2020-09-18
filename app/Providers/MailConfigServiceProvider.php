@@ -30,6 +30,7 @@ class MailConfigServiceProvider extends ServiceProvider
             $emailconfigure = json_decode($emailServices['data']);
             
             $config = array(
+
                 'driver'     => $emailconfigure->smtp_authentication_domain,
                 'host'       => $emailconfigure->smtp_host,
                 'port'       => $emailconfigure->smtp_port,
@@ -40,15 +41,7 @@ class MailConfigServiceProvider extends ServiceProvider
                 'sendmail'   => '/usr/sbin/sendmail -bs',
                 'pretend'    => false,
 
-               //  'driver'     => 'smtp',
-               //  'host'       => 'smtp.sendgrid.net',
-               //  'port'       => '465',
-               //  'username'   => 'themepress360',
-               //   'password'   => 'Master@81',
-               //   'encryption' => 'ssl',
-               //   'from'       => array('address' => $emailconfigure->smtp_user, 'name' => "Theme Press"),
-               //   'sendmail'   => '/usr/sbin/sendmail -bs',
-               //   'pretend'    => false,
+      
             );
             \Config::set('mail', $config);
         }

@@ -2232,7 +2232,7 @@ border-color: transparent;
 	width: 100%;
 }
 .profile-img-wrap img {
-    border-radius: 50%;
+    border-radius: 0.42rem;
     height: 120px;
     width: 120px;
 }

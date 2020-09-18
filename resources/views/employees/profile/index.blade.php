@@ -27,42 +27,53 @@
                                 <div class="profile-view">
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
-                                            <a href="#"><img alt="" src="img/profiles/avatar-02.jpg"></a>
+                                         @if(!empty($employee['profile_image_url']))
+                                <img src="{{{$employee['profile_image_url']}}}" alt="{{isset($employee['name']) ? ucwords($employee['name']) : '-'}}">
+                            @else
+                               <div class="symbol symbol-lg-75 symbol-primary">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+
+                            @endif
                                         </div>
                                     </div>
                                     <div class="profile-basic">
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <div class="profile-info-left">
-                                                    <h3 class="user-name m-t-0 mb-0">John Doe</h3>
-                                                    <h6 class="text-muted">UI/UX Design Team</h6>
-                                                    <small class="text-muted">Web Designer</small>
-                                                    <div class="staff-id">Employee ID : FT-0001</div>
-                                                    <div class="small doj text-muted">Date of Join : 1st Jan 2013</div>
-                                                    <div class="staff-msg"><a class="btn btn-custom" href="chat">Send Message</a></div>
+                                                    <h3 class="user-name m-t-0 mb-0">{{isset($employee['name']) ? ucwords($employee['name']) : '-'}}</h3>
+                                                    <h6 class="text-muted">{{isset($employee['designation_name']) ? ucwords($employee['designation_name']) : '-'}}</h6>
+                                                    <div class="staff-id text-muted">Department: {{isset($employee['deptartment_name']) ? ucwords($employee['deptartment_name']) : '-'}}</div>
+                                                    <div class="staff-id text-muted">Employee ID : {{strtoupper($employee->prefix)}}-{{isset($employee['id']) ? ucwords($employee['id']) : '-'}}</div>
+                                                    <div class="staff-id text-muted">Role :{{isset($employee['role']) ? ucwords($employee['role']) : '-'}}</div>
+                                                    <div class="staff-id text-muted">Date of Join : {{$employee->date_of_joining}}</div>
+                                                    <div class="staff-msg"><a class="btn btn-light-success" href="chat">Send Message</a></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-7">
                                                 <ul class="personal-info">
                                                     <li>
                                                         <div class="title">Phone:</div>
-                                                        <div class="text"><a href="">9876543210</a></div>
+                                                        <div class="text"><a href="">{{isset($employee['phone_no']) ? ucwords($employee['phone_no']) : '-'}}</a></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Email:</div>
-                                                        <div class="text"><a href="">johndoe@example.com</a></div>
+                                                        <div class="text"><a href="">{{isset($employee['email']) ? $employee['email'] : '-'}}</a></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Birthday:</div>
-                                                        <div class="text">24th July</div>
+                                                        <div class="text">{{$employee['dob']}}</div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Address:</div>
-                                                        <div class="text">1861 Bayonne Ave, Manchester Township, NJ, 08759</div>
+                                                        <div class="text">{{isset($employee['address']) ? ucwords($employee['address']) : '-'}}</div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Gender:</div>
-                                                        <div class="text">Male</div>
+                                                        <div class="text">{{isset($employee['gender']) ? ucwords($employee['gender']) : '-'}}</div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Reports to:</div>
@@ -88,6 +99,130 @@
                     </div>
                 </div>
                 
+                      <!-- Profile Modal -->
+      <div id="profile_info" class="modal custom-modal fade" role="dialog">
+         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title">employee Profile Information</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <div class="modal-body">
+                    {{ Form::open(array( 'id' => 'updateprofile')) }}
+                    @csrf
+                        <div class="profile-img-wrap edit-img">
+                            @if(!empty($employee['profile_image_url']))
+                                <img id="imagePreview" class="inline-block" src="{{$employee['profile_image_url']}}" alt="{{isset($employee['name']) ? ucwords($employee['name']) : '-'}}">
+                            @else
+                                <img id="imagePreview" class="inline-block" src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">
+                            @endif
+                            <div class="fileupload btn">
+                                <span class="btn-text">Edit</span>
+                                <input class="upload" type='file' name="profile_image" id="editimageUpload" accept=".png, .jpg, .jpeg" />
+                            </div>
+                        </div>
+                        <input type="hidden" name="id" value="{{$employee['id']}}">
+                        <div class="row" style="text-align: left !important">
+                            <?php $name = explode(' ', $employee['name']);?>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">First Name <span class="text-danger">*</span></label>
+                                    <input class="form-control" value="{{isset($name[0]) ? ucwords($name[0]) : '-'}}" type="text" onkeyup="this.value = this.value.replace(/\s/g,'')" onkeypress="return /[A-Z a-z 0-9 _]+$/i.test(event.key)" name="first_name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Last Name</label>
+                                        <input class="form-control" value="{{isset($name[1]) ? ucwords($name[1]) : '-'}}" type="text" onkeyup="this.value = this.value.replace(/\s/g,'')" onkeypress="return /[A-Z a-z 0-9 _]+$/i.test(event.key)" name="last_name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                                    <input class="form-control floating" value="{{isset($employee['email']) ? $employee['email'] : '-'}}" type="email" name="email" readonly="true">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Password</label>
+                                    <input class="form-control" name="password" type="password">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Address<span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="text" name="address" value="{{isset($employee['address']) ? $employee['address'] : '-'}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                        <select class="select form-control" name="gender">
+                                            <option {{$employee['gender'] == "male" ? 'selected' : ''}} value="male">Male</option>
+                                            <option {{$employee['gender'] == "female" ? 'selected' : ''}} value="female">Female</option>
+                                        </select>
+                                </div>
+                            </div>
+                             <div class="col-md-6">
+                                <label>Date Of Birth</label>
+                                <div class="form-group form-focus">
+                                    <div class="cal-icon">
+                                        <input type="text" class="form-control floating datetimepicker" value="{{isset($employee['dob']) ? date("d/m/y",strtotime($employee['dob'])) : '-'}}" name="dob">
+                                    </div>
+                                    <label class="focus-label">Date Of Birth</label>
+                                </div>
+                            </div>   
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">State<span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="text" name="state" value="{{isset($employee['state']) ? $employee['state'] : '-'}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Country<span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="text" name="country" value="{{isset($employee['country']) ? $employee['country'] : '-'}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Zip Code<span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="text" name="zip_code" value="{{isset($employee['zip_code']) ? $employee['zip_code'] : '-'}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">  
+                                <div class="form-group">
+                                    <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
+                                    <input class="form-control floating" value="{{strtoupper($employee->prefix)}}-{{isset($employee['id']) ? ucwords($employee['id']) : '-'}}" type="text" readonly="true" name="employee_id">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Phone </label>
+                                    <input class="form-control" value="{{isset($employee['phone_no']) ? $employee['phone_no'] : '-'}}" name="phone_no" type="text">
+                                </div>
+                            </div>
+                        
+                                   
+                        </div>
+                        <div class="submit-section">
+                            <a onClick="updateProfile()" class="btn btn-primary submit-btn">Save</a>
+                        </div>
+                    {{ Form::close() }}
+                    </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /Profile Modal -->
+
+
+
+
+
                 <div class="card tab-box">
                     <div class="row user-tabs">
                         <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
@@ -453,134 +588,7 @@
             </div>
             <!-- /Page Content -->
             
-            <!-- Profile Modal -->
-            <div id="profile_info" class="modal custom-modal fade" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Profile Information</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="profile-img-wrap edit-img">
-                                            <img class="inline-block" src="img/profiles/avatar-02.jpg" alt="user">
-                                            <div class="fileupload btn">
-                                                <span class="btn-text">edit</span>
-                                                <input class="upload" type="file">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>First Name</label>
-                                                    <input type="text" class="form-control" value="John">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Last Name</label>
-                                                    <input type="text" class="form-control" value="Doe">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Birth Date</label>
-                                                    <div class="cal-icon">
-                                                        <input class="form-control datetimepicker" type="text" value="05/06/1985">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Gender</label>
-                                                    <select class="select form-control">
-                                                        <option value="male selected">Male</option>
-                                                        <option value="female">Female</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Address</label>
-                                            <input type="text" class="form-control" value="4487 Snowbird Lane">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>State</label>
-                                            <input type="text" class="form-control" value="New York">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Country</label>
-                                            <input type="text" class="form-control" value="United States">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Pin Code</label>
-                                            <input type="text" class="form-control" value="10523">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Phone Number</label>
-                                            <input type="text" class="form-control" value="631-889-3206">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Department <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Department</option>
-                                                <option>Web Development</option>
-                                                <option>IT Management</option>
-                                                <option>Marketing</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Designation <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Designation</option>
-                                                <option>Web Designer</option>
-                                                <option>Web Developer</option>
-                                                <option>Android Developer</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Reports To <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>-</option>
-                                                <option>Wilmer Deluna</option>
-                                                <option>Lesley Grauer</option>
-                                                <option>Jeffery Lalor</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Profile Modal -->
+           
             
             <!-- Personal Info Modal -->
             <div id="personal_info_modal" class="modal custom-modal fade" role="dialog">
@@ -1071,4 +1079,55 @@
             
         </div>
         <!-- /Page Wrapper -->
+
+<script type="text/javascript">
+    function updateProfile()
+    {
+        var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/updateprofile' : '#') }}";
+        var form = $('#updateprofile').get(0);
+        var formData = new FormData(form);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response)
+            {
+                if(response.status == "SUCCESS")
+                {
+                    toastr['success'](response.message);
+                    window.location = "";
+                }
+                else
+                {
+                    toastr['error'](response.message);
+                }    
+            }
+        });
+    }
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onloadend = function(e) {
+                $('#imagePreview').attr('src', e.target.result);
+            }
+            if (input) { 
+                reader.readAsDataURL(input.files[0]);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else
+            return false;
+    }
+    $("#editimageUpload").change(function() {
+        var upload = readURL(this);
+        if(upload)
+        {
+        }
+    });
+</script>
+
 @endsection

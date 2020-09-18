@@ -53,6 +53,7 @@
                         <input class="form-control" type="text" name="smtp_authentication_domain" value="{{!empty($email['smtp_authentication_domain']) ? $email['smtp_authentication_domain'] : ''}}">
                      </div>
                   </div>
+
                   <div class="col-sm-6">
                      <div class="form-group">
                         <label>From Email</label>
@@ -65,6 +66,7 @@
                         <input class="form-control" type="text" name="smtp_from_name" value="{{!empty($email['smtp_from_name']) ? $email['smtp_from_name'] : ''}}">
                      </div>
                   </div>
+
                </div>
                <div class="submit-section">
                   <a onClick="EmailConfigure()" class="btn btn-primary submit-btn">Save &amp; update</a>

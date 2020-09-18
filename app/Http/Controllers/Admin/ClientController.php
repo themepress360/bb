@@ -72,7 +72,7 @@ class ClientController extends CommonController
                 $to_name = 'Client Registration';
                 $add_user_data['plain_password'] = trim($requestData['password']); 
                 Mail::send('admin.emails.ClientRegistration', $add_user_data, function($message) use ($to_name, $to_email) {
-                    $message->to(strtolower($to_email), 'Tutorials Point')->subject($to_name);
+                    $message->to(strtolower($to_email), 'Client Registration')->subject($to_name);
                 });
                 $add_client_user = User::create($add_user_data);
                 if($add_client_user)
@@ -269,6 +269,11 @@ class ClientController extends CommonController
 
     public function deleteclient(Request $request)
     {
+        
+         $id = $request->all();
+
+         dd($id);
+
         $rules = [
             'id' => 'required'
         ];
@@ -437,9 +442,12 @@ class ClientController extends CommonController
             //$data['client']['prefix'] = clientprefix;
             if(!empty($data['client']['profile_image']))
                 $data['client']['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$data['client']['profile_image']);
+             
+         
             else
                 $data['client']['profile_image_url'] = '';
                 return view('admin.clients.profile',$data);
+            
         }
         // else
         // {

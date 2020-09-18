@@ -52,15 +52,22 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('theme-settings', array('uses' => 'ThemeSettingController@index'));
         Route::post('addthemesetting', array('uses' => 'ThemeSettingController@addthemesetting'));
         Route::get('client-profile/{id}', array('uses' => 'ClientController@getprofile'));
-        Route::get('dummyemailsent',function(){
-                $mail_config = \Config::get('mail');
-                //dd(\Config::get('mail'));
-                $data = array('name'=>"Themepress");
-                Mail::send('admin.emails.ClientRegistration', $data, function($message) {
-                    $message->to('akkhan1587@gmail.com', 'Tutorials Point')->subject('Laravel HTML Testing Mail');
-                });
-                echo "HTML Email Sent. Check your inbox.";
-        });  
+        
+
+
+        Route::get('roles-permissions',  array('uses' => 'RolesController@index'));
+        Route::post('addrole',  array('uses' => 'RolesController@addRole'));
+        Route::post('editrole',  array('uses' => 'RolesController@editRole'));
+        Route::post('deleterole',  array('uses' => 'RolesController@deleteRole'));
+
+        Route::get('employees', array('uses' => 'EmployeeController@index'));
+        Route::post('addemployees', array('uses' => 'EmployeeController@addEmployee'));
+        Route::get('employee-profile/{id}', array('uses' => 'EmployeeController@getprofile'));
+        Route::post('editemployee', array('uses' => 'EmployeeController@editEmployee'));
+
+        Route::get('employees-list', array('uses' => 'EmployeeController@employeelist'));
+            
+           
     });
 
     Route::group(
@@ -73,6 +80,9 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
     Route::group(
             ['middleware' => ['profile-status'],'namespace' => 'Employee', 'prefix' => 'employee', 'as' => 'employee'], function () {
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
+        Route::get('profile', array('uses' => 'ProfileController@index'));
+        Route::post('updateprofile', array('uses' => 'ProfileController@updateprofile'));
+
        });
 //});
 
@@ -100,12 +110,8 @@ Route::get('/admin/passwordreset', function () {
     });
 
 
-Route::get('/admin/employees', function () {
-        return view('admin.employees.index');
-    });
-Route::get('/admin/employees-list', function () {
-        return view('admin.employees.employees-list');
-    });
+
+
 Route::get('/admin/chat', function () {
         return view('admin.apps.chat.index');
     });
@@ -174,17 +180,15 @@ Route::get('/admin/events', function () {
 Route::get('/admin/file-manager', function () {
         return view('admin.apps.filemanager.index');
     });
-Route::get('/admin/roles-permissions', function () {
-        return view('admin.settings.roles.index');
-    });
 
 
 
 
 
-Route::get('/employee/profile', function () {
-        return view('employees.profile.index');
-    });
+
+//Route::get('/employee/profile', function () {
+  //      return view('employees.profile.index');
+    //});
 Route::get('/employee/chat', function () {
         return view('employees.apps.chat.index');
     });
