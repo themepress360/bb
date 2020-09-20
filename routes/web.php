@@ -64,9 +64,12 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('addemployees', array('uses' => 'EmployeeController@addEmployee'));
         Route::get('employee-profile/{id}', array('uses' => 'EmployeeController@getprofile'));
         Route::post('editemployee', array('uses' => 'EmployeeController@editEmployee'));
-
         Route::get('employees-list', array('uses' => 'EmployeeController@employeelist'));
-            
+
+
+        Route::get('projects',  array('uses' => 'ProjectsController@index'));
+        Route::post('addmembers',  array('uses' => 'ProjectsController@addmembers'));
+         
            
     });
 
@@ -140,9 +143,7 @@ Route::get('/admin/leads', function () {
     });
 
 
-Route::get('/admin/projects', function () {
-        return view('admin.projects.index');
-    });
+
 Route::get('/admin/project-list', function () {
         return view('admin.projects.projects-list');
     });

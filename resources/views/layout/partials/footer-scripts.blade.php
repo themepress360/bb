@@ -152,3 +152,15 @@
               "hideMethod": "fadeOut"
             }
         </script>
+        <script>
+
+        	var $loading = $('#loader').hide();
+            $(document)
+            .ajaxStart(function () {
+              $loading.show();
+            })
+            .ajaxStop(function () {
+             $loading.hide();
+            });
+
+        </script>
