@@ -41,8 +41,7 @@ class ProjectsController extends CommonController
      
  $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
 
-        
-
+       
          if(!empty($employees) )
         {
 
@@ -71,39 +70,7 @@ class ProjectsController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function addmembers(Request $request)
-    {
-         $id = $request->all();
-          $clients = User::where(['type' => 'client', "deleted" => '0' ])->get()->all();        
-          $departments = Department::where('deleted', '0')->get()->all();
-          $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
-
-         $employee = User::where(['id' => $id, 'type' => 'employee','users.deleted' => '0'])->first();
-        
-        //dd($employee);
-
-        if(!empty($employee) )
-        {
-
-          
-            //    dd($employee->profile_image);
-
-               if(!empty($employee->profile_image))
-
-                $employee->profile_image = User::image_url(config('app.profileimagesfolder'),$employee->profile_image);
-
-           // dd($employee->profile_image);
-            
-              else  $employee->profile_image = '';
-
-          
-
-        }
-
-        return view('admin.projects.index', compact('employee','clients','departments', 'employees'));
-
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
