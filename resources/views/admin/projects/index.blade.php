@@ -1003,61 +1003,14 @@
        
        
 
-    <script>
+     <script>
    
-
          $(document).on('click','#team-members li', function() {
            
              var imgUrl = $(this).find("img").attr("src");
-
-                var id = $(this).attr('id');
-                             
-                var name = "Ali";
-
-                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addmembers': '#') }}";  
-               
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: { id:id},
-                    success: function(response)
-                    {
-                        
-                        var employeeObject = search(id);
-                        if(response.status == "SUCCESS")
-                        {
-                            toastr['success'](response.message);
-                            window.location = "";
-                        }
-                        else
-                        {
-                            toastr['error'](response.message);
-                            if (typeof imgUrl === "undefined") 
-                            {
-                                var html = '';
-                                html +='<div class="symbol symbol-sm-35 symbol-primary m-r-10">'
-                                html +='<span class="symbol-label font-size-h3 font-weight-boldest">'
-                                html +=' {{ mb_substr($employee['name'], 0, 1) }}'
-                                html +='</div>'
-                                html +='</span>'     
-                                $('#all-team-members').append(html);
-                            }else{           
-                                var html = '';
-                                html +='<a href="#" data-toggle="tooltip" title="'+employeeObject.name+'" class="avatar" id="all-team-members" class="avatar"">'
-                                html +='<img src="'  +imgUrl+ ' " />'    
-                                $('#all-team-members').append(html);           
-                                var title =  $("#title").attr("title");
-                                 
-                            }
-                        }    
-                    }
-                    
-                }); 
-
              console.log(imgUrl);
         
                         $("#TeamMember").clone().appendTo($("#all-team-members"));
-
                     //        if (typeof imgUrl === "undefined") {
                                 // ...
                                //      var html = '';
@@ -1069,7 +1022,6 @@
                                 //      html +='</span>'
                                      
                                   //   $('#all-team-members').append(html);
-
                               //      }else{
                                        
                                 //       var html = '';
@@ -1079,18 +1031,12 @@
                                   //      html +='<img src="'  +imgUrl+ ' " />'
                                     
                               //         $('#all-team-members').append(html);  
-
                                                                         
-
-
                                 //      var title =  $("#title").attr("title");
                                   //   console.log(title);
-
                                   //  }
                       
-
             })
-
     </script>
 
            
