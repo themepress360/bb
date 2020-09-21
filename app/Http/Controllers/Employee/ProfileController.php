@@ -99,7 +99,7 @@ public function updateprofile(Request $request)
                     }     
              $filename = User::uploadImage(config('app.folder').'/'.config('app.profileimagesfolder'),$requestData['profile_image'],400);
             if($filename) 
-                   $data['profile_image'] = $filename;
+                   $edit_user_data['profile_image'] = $filename;
                 }
                 /* Profile Image Save if exists End */
                 

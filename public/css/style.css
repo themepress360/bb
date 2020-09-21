@@ -2317,7 +2317,8 @@ border-color: transparent;
 	display: table;
 	height: 100%;
 	table-layout: fixed;
-	width: 100%;
+	width: 75%;
+	margin:auto;
 }
 .message-view {
 	display: table-cell;
@@ -4100,7 +4101,7 @@ border-color: transparent;
 	vertical-align: -4px;
 }
 .task-wrapper {
-	padding: 20px;
+	padding-top: 20px;
 	width: 100%;
 	margin: 0 auto;
 	box-sizing: border-box;
@@ -8268,4 +8269,52 @@ ul.comment-list li ul.children {
 		font-size: 14px;
 		min-width: inherit;
 	}
+}
+
+.lable-sm {
+	padding: 0.2rem 0.35rem;
+}
+.label.label-light-warning {
+    color: #FFA800;
+    background-color: #FFF4DE;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.task-main-wrapper {
+	display: table;
+	height: 100%;
+	table-layout: fixed;
+	width: 75%;
+	margin:auto;
+}
+
+.task-window {
+	display: table;
+	height: 100%;
+	table-layout: fixed;
+	width: 80%;
+		
 }

@@ -534,8 +534,9 @@
                                         <div class="form-group">
                                             <label>Client<span class="text-danger">*</span></label>
                                             <select class="select">
-                                                <option>Global Technologies</option>
-                                                <option>Delta Infotech</option>
+                                                @foreach($clients as $client)
+                                                <option>{{$client->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -573,9 +574,9 @@
                                         <div class="form-group">
                                             <label>Department<span class="text-danger">*</span></label>
                                             <select class="select">
-                                                <option>Software</option>
-                                                <option>Network</option>
-                                                <option>Hardware</option>
+                                               @foreach($departments as $department)
+                                                <option name="{{$department->id}}">{{strtoupper($department->name)}}</option>
+                                           @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -589,40 +590,36 @@
 											    <a href="#" class="followers-add" data-toggle="dropdown"><i class="material-icons">add</i></a>
 											    <div class="dropdown-menu">
 											      <div>
-									<ul class="chat-user-list">
-										<li>
+									<ul class="chat-user-list" id="team-lead-image" >
+										@foreach($employees as $employee)
+                                         @if($employee->role == "team lead")
+                                        <li>
 											<a href="#">
 												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
+                                                    @if(!empty($employee->profile_image))
+                             <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" id="TeamLeadName">
+                         <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                            @else
+                               <div class="symbol symbol-sm-35 symbol-primary m-r-10">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+
+                            @endif
+                           </a>
+													<!--<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span> -->
 													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Jeffery Lalor</div>
-														<span class="designation">Team Leader</span>
+														<div class="user-name">{{ $employee->name }}</div>
+														<span class="designation">{{ucwords($employee->role)}}</span>
 													</div>
 												</div>
 											</a>
 										</li>
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Catherine Manseau</div>
-														<span class="designation">Android Developer</span>
-													</div>
-												</div>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Wilmer Deluna</div>
-														<span class="designation">Team Leader</span>
-													</div>
-												</div>
-											</a>
-										</li>
+                                       @endif
+                                        @endforeach
+										
 									</ul>
 								</div>
 											    </div>
@@ -634,11 +631,15 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Team Leader</label>
-                                            <div class="project-members">
-                                                <a href="#" data-toggle="tooltip" title="Jeffery Lalor" class="avatar">
-                                                    <img src="img/profiles/avatar-16.jpg" alt="">
-                                                </a>
+                                        @foreach($employees as $employee)
+                                         @if($employee->role == "team lead")
+                                            <div class="project-members" id="team-lead">
+                                         <!-- <a href="#" data-toggle="tooltip" title="{{$employee->name}}" class="avatar" id="team-lead" >
+                                                   <img src="img/profiles/avatar-16.jpg" alt=""> 
+                                                </a> -->
                                             </div>
+                                            @endif
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -651,40 +652,34 @@
 											    <a href="#" class="followers-add" data-toggle="dropdown"><i class="material-icons">add</i></a>
 											    <div class="dropdown-menu">
 											      <div>
-									<ul class="chat-user-list">
-										<li>
+									<ul class="chat-user-list" id="team-members">
+									@foreach($employees as $employee)
+                                         @if($employee->role == "employee")
+                                    	<li   id="{{{$employee->id}}}">
 											<a href="#">
 												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
+													 @if(!empty($employee->profile_image))
+                         <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" id="TeamMember">
+                         <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" >
+                            @else
+                               <div class="symbol symbol-sm-35 symbol-primary m-r-10">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+
+                            @endif
+                           </a>
 													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Jeffery Lalor</div>
-														<span class="designation">Team Leader</span>
+														<div class="user-name">{{$employee->name}}</div>
+														<span class="designation">{{$employee->designation_name}}</span>
 													</div>
 												</div>
 											</a>
 										</li>
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Catherine Manseau</div>
-														<span class="designation">Android Developer</span>
-													</div>
-												</div>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Wilmer Deluna</div>
-														<span class="designation">Team Leader</span>
-													</div>
-												</div>
-											</a>
-										</li>
+										@endif
+                                        @endforeach
 									</ul>
 								</div>
 											    </div>
@@ -694,21 +689,17 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Team Members</label>
-                                            <div class="project-members">
-                                                <a href="#" data-toggle="tooltip" title="John Doe" class="avatar">
-                                                    <img src="img/profiles/avatar-16.jpg" alt="">
-                                                </a>
-                                                <a href="#" data-toggle="tooltip" title="Richard Miles" class="avatar">
-                                                    <img src="img/profiles/avatar-09.jpg" alt="">
-                                                </a>
-                                                <a href="#" data-toggle="tooltip" title="John Smith" class="avatar">
-                                                    <img src="{{asset('img/profiles/avatar-10.jpg')}}" alt="">
-                                                </a>
-                                                <a href="#" data-toggle="tooltip" title="Mike Litorus" class="avatar">
-                                                    <img src="img/profiles/avatar-05.jpg" alt="">
-                                                </a>
-                                                <span class="all-team">+2</span>
-                                            </div>
+                                       
+                                            <div class="project-members" id="all-team-members" >
+                                         
+                                        <!--  <a href="#" data-toggle="tooltip" title="{{$employee->name}}"  id="all-team-members"  class="avatar"> -->
+                                           
+                                         </a>
+                                            
+                                         </div>
+                                              
+                                          
+                                        <span class="all-team">+2</span>
                                         </div>
                                     </div>
                                 </div>
@@ -958,4 +949,96 @@
             
         </div>
         <!-- /Page Wrapper -->
-@endsection
+
+
+<script>
+
+ 
+</script>
+       
+ <script>
+   
+
+         $(document).on('click','#team-lead-image li', function() {
+           
+            // var imgUrl = $(this).find("img").attr("src");
+            // console.log(imgUrl);
+        
+                    $("#TeamLeadName").clone().appendTo($("#team-lead"));   
+
+                   //         if (typeof imgUrl === "undefined") {
+                                // ...
+                    //                 var html = '';
+                   //                 
+                     // //                html +='<div class="symbol symbol-sm-35 symbol-primary m-r-10">'
+                            //          html +='<span class="symbol-label font-size-h3 font-weight-boldest">'
+                     //                 html +=' {{ mb_substr($employee['name'], 0, 1) }}'
+                            //          html +='</div>'
+                           //           html +='</span>'
+                                     
+                            //         $('#team-lead').append(html);
+
+                             //       }else{
+                                       
+                             //          var html = '';
+                                     
+                                      
+                                    //  html +='<a href="#" data-toggle="tooltip" title="{{$employee->name}}" class="avatar" id="all-team-members" class="avatar"">'
+                             //           html +='<img src="'  +imgUrl+ ' " />'
+                                    
+                                     //  $('#team-lead').append(html);  
+
+                                                                        
+
+
+                             //         var title =  $("#title").attr("title");
+                                  //   console.log(title);
+
+                             //       }
+                      
+            })
+
+    </script>
+
+       
+       
+
+     <script>
+   
+         $(document).on('click','#team-members li', function() {
+           
+             var imgUrl = $(this).find("img").attr("src");
+             console.log(imgUrl);
+        
+                        $("#TeamMember").clone().appendTo($("#all-team-members"));
+                    //        if (typeof imgUrl === "undefined") {
+                                // ...
+                               //      var html = '';
+                      //              
+                          //            html +='<div class="symbol symbol-sm-35 symbol-primary m-r-10">'
+                        //              html +='<span class="symbol-label font-size-h3 font-weight-boldest">'
+                              //        html +=' {{ mb_substr($employee['name'], 0, 1) }}'
+                            //          html +='</div>'
+                                //      html +='</span>'
+                                     
+                                  //   $('#all-team-members').append(html);
+                              //      }else{
+                                       
+                                //       var html = '';
+                                     
+                                      
+                                  //    html +='<a href="#" data-toggle="tooltip" title="{{$employee->name}}" class="avatar" id="all-team-members" class="avatar"">'
+                                  //      html +='<img src="'  +imgUrl+ ' " />'
+                                    
+                              //         $('#all-team-members').append(html);  
+                                                                        
+                                //      var title =  $("#title").attr("title");
+                                  //   console.log(title);
+                                  //  }
+                      
+            })
+    </script>
+
+           
+@endsection 
+                                            

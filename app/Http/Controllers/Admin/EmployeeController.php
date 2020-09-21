@@ -44,12 +44,19 @@ class EmployeeController extends CommonController
         if(!empty($data['employees_list']))
         {
             foreach ($data['employees_list'] as $key => $employees_list) {
+
                 if(!empty($employees_list['profile_image']))
-      $data['employees'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$employees_list['profile_image']);
+
+      $data['employees_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$employees_list['profile_image']);
+             //   dd( $data['employees'][$key]['profile_image_url']); 
+               
                 else
                     $data['employees'][$key]['profile_image_url'] = '';
-            }
+                
+            
         }
+    }
+       
 
         return view('admin.employees.index', $data, compact('roles', 'departments', 'designations'));
             
@@ -67,11 +74,27 @@ class EmployeeController extends CommonController
         $departments = Department::where('deleted', '0')->get()->all();
         $designations = Designation::where('deleted', '0')->get()->all();
 
-        $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();;
+        $data['employees_list'] = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();;
             
-                 
+                 if(!empty($data['employees_list']))
+        {
+            foreach ($data['employees_list'] as $key => $employees_list) {
 
-        return view('admin.employees.employees-list', compact('roles', 'departments', 'designations','employees'));
+                if(!empty($employees_list['profile_image']))
+
+      $data['employees_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$employees_list['profile_image']);
+             //   dd( $data['employees'][$key]['profile_image_url']); 
+               
+                else
+                    $data['employees'][$key]['profile_image_url'] = '';
+                
+            
+        }
+    }
+       
+
+
+        return view('admin.employees.employees-list', $data, compact('roles', 'departments', 'designations'));
 
        
     }
@@ -107,7 +130,11 @@ class EmployeeController extends CommonController
 
             $requestData = $request->all();
             $data['email'] = trim(strtolower($requestData['email']));
-            $is_employee_exists = User::where(['type' => 'employee','email' => strtolower($requestData['email']),"deleted" => '0'])->first(); 
+
+
+            $is_employee_exists = User::where('email', strtolower($requestData['email']) )->first(); 
+
+           // dd($is_employee_exists);
 
              if(empty($is_employee_exists))
             {
@@ -195,15 +222,17 @@ class EmployeeController extends CommonController
 
   public function getprofile($id)
     {
-        //$data['employee'] = User::where(['id' => (int) $id,'type' => 'employee',"deleted" => '0'])->first();
+     
+      //  dd($id);
+      //  $data['employee'] = User::where(['id' => (int) $id,'type' => 'employee',"deleted" => '0'])->first();
 
         $roles = Roles::where('deleted', '0')->get()->all();
         $departments = Department::where('deleted', '0')->get()->all();
         $designations = Designation::where('deleted', '0')->get()->all();
        
-$data['employee'] = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->first();
+$data['employee'] = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['users.id'=> $id, 'type' => 'employee','users.deleted' => '0'])->first();
 
-       // dd($data);
+       // dd($data['employee']);
 
         if(!empty($data['employee']))
         {

@@ -1,8 +1,9 @@
 @extends('layout.mainlayout')
 @section('content')
 <!-- Page Wrapper -->
+
 <div class="page-wrapper">
-			
+		
             <!-- Page Content -->
             <div class="content container-fluid">
             
@@ -65,14 +66,16 @@
                                 <div class="profile-widget">
                                    <div class="d-flex">
                                     <div class="profile-img-card">
-                                        <a href="">
+                                       
                             @if(!empty($employee['profile_image_url']))
+                                 <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar">
+
                                 <img src="{{{$employee['profile_image_url']}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                             @else
                                <div class="symbol symbol-lg-75 symbol-primary">
                                              <span class="symbol-label font-size-h3 font-weight-boldest">
                                                 {{ mb_substr($employee['name'], 0, 1) }}
-                                                    
+                                                   
                                              </span>
                                             </div>
 
@@ -83,6 +86,7 @@
                                     <div class="m-l-10"><h4 class="user-name m-t-10 mb-0"><a href=""></a>{{$employee['name']}}</h4>
                                         <span class="text-muted"><h6>{{ucwords($employee['designation_name'])}}<h6></span>
                                             <span class="text-muted"><h6>Emp ID: {{strtoupper($employee['prefix'])}}-{{sprintf("%04d",$employee['id'])}}<h6></span>
+                                        <span class="label lable-sm label-light-warning">{{ucwords($employee['role'])}}</span>
                                     </div>
                                     
                                 </div>
@@ -592,8 +596,13 @@
                             toastr['error'](response.message);
                         }    
                     }
+                    
                 }); 
             }
+
         </script>
+
+
+
 
 @endsection
