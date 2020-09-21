@@ -597,7 +597,7 @@
 											<a href="#">
 												<div class="media">
                                                     @if(!empty($employee->profile_image))
-                             <a href="" class="avatar">
+                             <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" id="TeamLeadName">
                          <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                             @else
                                <div class="symbol symbol-sm-35 symbol-primary m-r-10">
@@ -633,10 +633,10 @@
                                             <label>Team Leader</label>
                                         @foreach($employees as $employee)
                                          @if($employee->role == "team lead")
-                                            <div class="project-members" >
-                                          <a href="#" data-toggle="tooltip" title="{{$employee->name}}" class="avatar" id="team-lead">
-                                                   <!-- <img src="img/profiles/avatar-16.jpg" alt=""> -->
-                                                </a> 
+                                            <div class="project-members" id="team-lead">
+                                         <!-- <a href="#" data-toggle="tooltip" title="{{$employee->name}}" class="avatar" id="team-lead" >
+                                                   <img src="img/profiles/avatar-16.jpg" alt=""> 
+                                                </a> -->
                                             </div>
                                             @endif
                                             @endforeach
@@ -659,8 +659,8 @@
 											<a href="#">
 												<div class="media">
 													 @if(!empty($employee->profile_image))
-                             <a href="" class="avatar">
-                         <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                         <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" id="TeamMember">
+                         <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" >
                             @else
                                <div class="symbol symbol-sm-35 symbol-primary m-r-10">
                                              <span class="symbol-label font-size-h3 font-weight-boldest">
@@ -691,8 +691,10 @@
                                             <label>Team Members</label>
                                        
                                             <div class="project-members" id="all-team-members" >
-                                           
                                          
+                                        <!--  <a href="#" data-toggle="tooltip" title="{{$employee->name}}"  id="all-team-members"  class="avatar"> -->
+                                           
+                                         </a>
                                             
                                          </div>
                                               
@@ -954,28 +956,60 @@
  
 </script>
        
+ <script>
+   
+
+         $(document).on('click','#team-lead-image li', function() {
+           
+            // var imgUrl = $(this).find("img").attr("src");
+            // console.log(imgUrl);
+        
+                    $("#TeamLeadName").clone().appendTo($("#team-lead"));   
+
+                   //         if (typeof imgUrl === "undefined") {
+                                // ...
+                    //                 var html = '';
+                   //                 
+                     // //                html +='<div class="symbol symbol-sm-35 symbol-primary m-r-10">'
+                            //          html +='<span class="symbol-label font-size-h3 font-weight-boldest">'
+                     //                 html +=' {{ mb_substr($employee['name'], 0, 1) }}'
+                            //          html +='</div>'
+                           //           html +='</span>'
+                                     
+                            //         $('#team-lead').append(html);
+
+                             //       }else{
+                                       
+                             //          var html = '';
+                                     
+                                      
+                                    //  html +='<a href="#" data-toggle="tooltip" title="{{$employee->name}}" class="avatar" id="all-team-members" class="avatar"">'
+                             //           html +='<img src="'  +imgUrl+ ' " />'
+                                    
+                                     //  $('#team-lead').append(html);  
+
+                                                                        
+
+
+                             //         var title =  $("#title").attr("title");
+                                  //   console.log(title);
+
+                             //       }
+                      
+            })
+
+    </script>
+
+       
+       
 
     <script>
+   
 
-        
-        $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        function search(id){
-            var employees = <?php echo json_encode($employees); ?>;
-            for (var i=0; i < employees.length; i++) {
-                if (employees[i].id == id) {
-                    return employees[i];
-                }
-            }
-        }
-
-         $('#team-members li').click(function() {
+         $(document).on('click','#team-members li', function() {
            
              var imgUrl = $(this).find("img").attr("src");
+
                 var id = $(this).attr('id');
                              
                 var name = "Ali";
@@ -1019,6 +1053,42 @@
                     }
                     
                 }); 
+
+             console.log(imgUrl);
+        
+                        $("#TeamMember").clone().appendTo($("#all-team-members"));
+
+                    //        if (typeof imgUrl === "undefined") {
+                                // ...
+                               //      var html = '';
+                      //              
+                          //            html +='<div class="symbol symbol-sm-35 symbol-primary m-r-10">'
+                        //              html +='<span class="symbol-label font-size-h3 font-weight-boldest">'
+                              //        html +=' {{ mb_substr($employee['name'], 0, 1) }}'
+                            //          html +='</div>'
+                                //      html +='</span>'
+                                     
+                                  //   $('#all-team-members').append(html);
+
+                              //      }else{
+                                       
+                                //       var html = '';
+                                     
+                                      
+                                  //    html +='<a href="#" data-toggle="tooltip" title="{{$employee->name}}" class="avatar" id="all-team-members" class="avatar"">'
+                                  //      html +='<img src="'  +imgUrl+ ' " />'
+                                    
+                              //         $('#all-team-members').append(html);  
+
+                                                                        
+
+
+                                //      var title =  $("#title").attr("title");
+                                  //   console.log(title);
+
+                                  //  }
+                      
+
             })
 
     </script>
