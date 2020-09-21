@@ -957,19 +957,25 @@
 
     <script>
 
-    
+        
         $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
+        function search(id){
+            var employees = <?php echo json_encode($employees); ?>;
+            for (var i=0; i < employees.length; i++) {
+                if (employees[i].id == id) {
+                    return employees[i];
+                }
+            }
+        }
 
          $('#team-members li').click(function() {
            
              var imgUrl = $(this).find("img").attr("src");
-             console.log(imgUrl);
-                console.log("Add Team Member Function Called ");
                 var id = $(this).attr('id');
                              
                 var name = "Ali";
@@ -982,6 +988,8 @@
                     data: { id:id},
                     success: function(response)
                     {
+                        
+                        var employeeObject = search(id);
                         if(response.status == "SUCCESS")
                         {
                             toastr['success'](response.message);
@@ -990,35 +998,23 @@
                         else
                         {
                             toastr['error'](response.message);
-
-                           
-
-                            if (typeof imgUrl === "undefined") {
-                                // ...
-                                     var html = '';
-
-                                    
-                                      html +='<div class="symbol symbol-sm-35 symbol-primary m-r-10">'
-                                      html +='<span class="symbol-label font-size-h3 font-weight-boldest">'
-                                      html +=' {{ mb_substr($employee['name'], 0, 1) }}'
-                                      html +='</div>'
-                                      html +='</span>'
-                                     
-                                     $('#all-team-members').append(html);
-
-                                    }else{
-                                       
-                                       var html = '';
-
-                                     html +='<a href="#" data-toggle="tooltip" title="{{$employee->name}}" class="avatar" id="all-team-members" class="avatar"">'
-                                        html +='<img src="'  +imgUrl+ ' " />'
-                                    
-                                       $('#all-team-members').append(html);           
-
-                                      var title =  $("#title").attr("title");
-                                  //   console.log(title);
-
-                                    }
+                            if (typeof imgUrl === "undefined") 
+                            {
+                                var html = '';
+                                html +='<div class="symbol symbol-sm-35 symbol-primary m-r-10">'
+                                html +='<span class="symbol-label font-size-h3 font-weight-boldest">'
+                                html +=' {{ mb_substr($employee['name'], 0, 1) }}'
+                                html +='</div>'
+                                html +='</span>'     
+                                $('#all-team-members').append(html);
+                            }else{           
+                                var html = '';
+                                html +='<a href="#" data-toggle="tooltip" title="'+employeeObject.name+'" class="avatar" id="all-team-members" class="avatar"">'
+                                html +='<img src="'  +imgUrl+ ' " />'    
+                                $('#all-team-members').append(html);           
+                                var title =  $("#title").attr("title");
+                                 
+                            }
                         }    
                     }
                     
