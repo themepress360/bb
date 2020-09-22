@@ -68,7 +68,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
 
         Route::get('projects',  array('uses' => 'ProjectsController@index'));
-        Route::post('addmembers',  array('uses' => 'ProjectsController@addmembers'));
+        Route::post('addprojects',  array('uses' => 'ProjectsController@addprojects'));
          
            
     });

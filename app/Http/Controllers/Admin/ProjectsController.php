@@ -20,6 +20,11 @@ use App\Department;
 use App\Designation;
 use App\Employees;
 use App\Roles;
+use App\Projects;
+use App\Project_members;
+
+
+
 
 
 class ProjectsController extends CommonController
@@ -32,7 +37,7 @@ class ProjectsController extends CommonController
    public function index()
     {
         
-          $clients = User::where(['type' => 'client', "deleted" => '0' ])->get()->all();        
+          $clients = Client::where("deleted" , '0' )->get()->all();        
           $departments = Department::where('deleted', '0')->get()->all();
          
          // $roles = Roles::where('deleted', '0')->get()->all();
@@ -77,9 +82,79 @@ class ProjectsController extends CommonController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function addprojects(Request $request)
     {
-        //
+        $data = $request->all();
+       
+       // dd(sizeof($members));
+
+        $rules = [
+
+            'project_title'   => 'required|string|min:2|max:50',
+            'clients'    =>  'required',
+            'start_date' => 'required',
+            'end_date'     => 'required',
+            'priority'     => 'required',
+            'department' =>   'required',
+            'team_leaders' => 'required',
+            'team_members' => 'required',
+            'description'  => 'required'
+        ];
+
+         $validator = Validator::make($request->all(),$rules);
+
+         if (!$validator->fails()) 
+        {
+            $projectData =  $request->all();
+            $project_title = $request['project_title'];
+          //  dd($project_title);
+            $folder = Storage::makeDirectory('FileManager/' . $project_title);
+                   
+            $project_data = array(
+                'project_title' => $projectData['project_title'],
+                'description'   => $projectData['description'],
+                'clients'     => $projectData['clients'],
+                'start_date'    => $projectData['start_date'],
+                'end_date'      => $projectData['end_date'],
+                'priority'     =>$projectData['priority'],
+                'department'    => $projectData['department'],
+             );
+
+              //  dd($projectData['project_file']);
+
+             if(!empty($projectData['project_file'])) {
+
+                $rules = [
+
+                  'project_file'  => 'mimes:gif,png,jpeg,csv,txt,xlx,docs,pdf|max:5120'
+                ];
+
+                 $validator = Validator::make($request->all(),$rules);
+
+                 if (!$validator->fails()) 
+                     {
+                      
+                       $filePath = Storage::disk('local')->path('FileManager'. $project_title );
+
+                       //dd($filePath);
+
+                        $file = $request['project_file']->store($filePath);
+
+                       // Projects::Create($project_data);
+
+                      // $path =   storage_path() . 'FileManager/' . $project_title ;
+
+
+                     }
+
+
+             }
+
+                   
+
+        }
+
+       
     }
 
     /**

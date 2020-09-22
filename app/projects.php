@@ -4,7 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class projects extends Model
+class Projects extends Model
 {
-    //
+     
+	 protected $table = 'projects';
+     protected $fillable = [ 'project_title', 'description', 'start_date', 'end_date','clients','department','priority','project_file'];
+
+         
 }

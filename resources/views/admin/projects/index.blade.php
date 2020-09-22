@@ -514,20 +514,21 @@
                </button>
             </div>
             <div class="modal-body">
-               <form>
+             {{ Form::open(array( 'id' => 'AddProjectForm')) }}
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                   <div class="row">
                      <div class="col-sm-6">
                         <div class="form-group">
                            <label>Project Name<span class="text-danger">*</span></label>
-                           <input class="form-control" type="text">
+                           <input class="form-control" name="project_title" type="text">
                         </div>
                      </div>
                      <div class="col-sm-6">
                         <div class="form-group">
                            <label>Client<span class="text-danger">*</span></label>
-                           <select class="select">
+                           <select class="select" name="clients">
                               @foreach($clients as $client)
-                              <option>{{$client->name}}</option>
+                              <option  value="{{$client->user_id}}">{{$client->company_name}}</option>
                               @endforeach
                            </select>
                         </div>
@@ -538,7 +539,7 @@
                         <div class="form-group">
                            <label>Start Date<span class="text-danger">*</span></label>
                            <div class="cal-icon">
-                              <input class="form-control datetimepicker" type="text">
+                              <input class="form-control datetimepicker" name="start_date" type="text">
                            </div>
                         </div>
                      </div>
@@ -546,7 +547,7 @@
                         <div class="form-group">
                            <label>End Date<span class="text-danger">*</span></label>
                            <div class="cal-icon">
-                              <input class="form-control datetimepicker" type="text">
+                              <input class="form-control datetimepicker" name="end_date" type="text">
                            </div>
                         </div>
                      </div>
@@ -555,19 +556,19 @@
                      <div class="col-sm-6">
                         <div class="form-group">
                            <label>Priority<span class="text-danger">*</span></label>
-                           <select class="select">
-                              <option>High</option>
-                              <option>Medium</option>
-                              <option>Low</option>
+                           <select class="select" name="priority">
+                              <option value="1">High</option>
+                              <option value="2">Medium</option>
+                              <option value="3">Low</option>
                            </select>
                         </div>
                      </div>
                      <div class="col-sm-6">
                         <div class="form-group">
                            <label>Department<span class="text-danger">*</span></label>
-                           <select class="select">
+                           <select class="select" name="department">
                               @foreach($departments as $department)
-                              <option name="{{$department->id}}">{{strtoupper($department->name)}}</option>
+                              <option value="{{$department->id}}">{{strtoupper($department->name)}}</option>
                               @endforeach
                            </select>
                         </div>
@@ -619,7 +620,7 @@
                         <div class="form-group">
                            <label>Team Leader</label>
                          <div class="d-flex align-items-center">
-                            <div class="project-members" id="team-lead" >
+                            <div class="project-members" name="team_leaders[]" id="team-lead" >
                               <!-- <a href="#" data-toggle="tooltip" title="{{$employee->name}}" class="avatar" id="team-lead" >
                                  <img src="img/profiles/avatar-16.jpg" alt=""> 
                                  </a> -->
@@ -676,7 +677,7 @@
                         <div class="form-group">
                            <label>Team Members</label>
                              <div class="d-flex align-items-center">
-                           <div class="project-members" id="all-team-members" >
+                           <div class="project-members" name="members[]" id="all-team-members" >
                               <!--  <a href="#" data-toggle="tooltip" title="{{$employee->name}}"  id="all-team-members"  class="avatar"></a>-->
                              
                            </div>
@@ -689,16 +690,16 @@
                   </div>
                   <div class="form-group">
                      <label>Description</label>
-                     <textarea rows="4" class="form-control summernote" placeholder="Enter your message here"></textarea>
+                     <textarea rows="4" class="form-control summernote" placeholder="Enter your message here" name="description"></textarea>
                   </div>
                   <div class="form-group">
                      <label>Upload Files</label>
-                     <input class="form-control" type="file">
+                     <input class="form-control" type="file" name="project_file">
                   </div>
                   <div class="submit-section">
-                     <button class="btn btn-primary submit-btn">Submit</button>
+                     <a onClick="addProject()" class="btn btn-primary submit-btn">Submit</a>
                   </div>
-               </form>
+                {{ Form::close() }}
             </div>
          </div>
       </div>
@@ -830,7 +831,7 @@
                   </div>
                   <div class="form-group">
                      <label>Upload Files</label>
-                     <input class="form-control" type="file">
+                     <input class="form-control" type="project_file">
                   </div>
                   <div class="submit-section">
                      <button class="btn btn-primary submit-btn">Save</button>
@@ -942,19 +943,20 @@
    }
    var total_members = 0 ;
    var total_leaders = 0  ;
-   var added_employees = [];
+   var added_team_leaders = [];
+   var added_team_members = [];
 
    $(document).on('click','#team-leader li', function() {
      
      	 var id = $(this).attr('id');
-      if(typeof added_employees[id] === 'undefined') 
+      if(typeof  added_team_leaders[id] === 'undefined') 
       {
          var employeeObject = search(id);
-         added_employees[employeeObject.id] = employeeObject;
-         console.log(added_employees);
+         added_team_leaders[employeeObject.id] = employeeObject;
+       //  console.log(added_employees);
          var html = '';
-         html +='<a href="#" data-toggle="tooltip" title="'+employeeObject.name+'"  class="avatar"">'
-         html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'    
+         html +='<a href="#" data-toggle="tooltip" value = "'+id+'"  title="'+employeeObject.name+'"  class="avatar"">'
+         html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'  
          $('#team-lead').append(html);
          total_leaders = total_leaders + 1;
          $('#total_leaders').html('+'+total_leaders); 
@@ -963,27 +965,23 @@
       else
       {
          var employeeObject = search(id);
-         added_employees[employeeObject.id] = employeeObject;
-       
-          toastr['error']( employeeObject.name + " Already Added" );
+         added_team_leaders[employeeObject.id] = employeeObject;
+         toastr['error']( employeeObject.name + " Already Added" );
       }
       
                 
       });
 
-
-
-
    $(document).on('click','#team-members li', function() {  
       var id = $(this).attr('id');
-      if(typeof added_employees[id] === 'undefined') 
+      if(typeof added_team_members[id] === 'undefined') 
       {
          var employeeObject = search(id);
-         added_employees[employeeObject.id] = employeeObject;
-         console.log(added_employees);
+         added_team_members[employeeObject.id] = employeeObject;
+       //  console.log(added_employees);
          var html = '';
-         html +='<a href="#" data-toggle="tooltip" title="'+employeeObject.name+'" class="avatar" id="all-team-members" class="avatar"">'
-         html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'    
+         html +='<a href="#" data-toggle="tooltip" value = "'+id+'" title="'+employeeObject.name+'" class="avatar" id="all-team-members" class="avatar"" value="'+employeeObject.name+ '" >'
+         html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'
          $('#all-team-members').append(html);
          total_members = total_members + 1;
          $('#total_members').html('+'+total_members); 
@@ -991,14 +989,59 @@
       else
       {
          var employeeObject = search(id);
-         added_employees[employeeObject.id] = employeeObject;
+         added_team_members[employeeObject.id] = employeeObject;
           toastr['error'](employeeObject.name + " Already Added");
       }
       
                    
       })
 
-
-
 </script>
+
+<script type="text/javascript">
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+</script>
+
+<script type="text/javascript">
+
+            function addProject() {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addprojects' : '#') }}";  
+                var form = $('#AddProjectForm').get(0);
+                var formData = new FormData(form);
+                           
+                var team_leaders = Object.keys(added_team_leaders);
+                var team_members = Object.keys(added_team_members);
+
+                console.log(team_leaders, team_members);
+                            
+               formData.append('team_leaders', team_leaders);
+               formData.append('team_members', team_members);
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+            }
+
+        </script>
 @endsection
