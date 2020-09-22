@@ -514,7 +514,7 @@
                </button>
             </div>
             <div class="modal-body">
-             {{ Form::open(array( 'id' => 'AddProjectForm')) }}
+             {{ Form::open(array( 'id' => 'AddProjectForm' ,  'enctype'=>'multipart/form-data')) }}
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                   <div class="row">
                      <div class="col-sm-6">
@@ -661,7 +661,7 @@
                                           </a>
                                           <div class="media-body media-middle text-nowrap">
                                           <div class="user-name">{{$employee->name}}</div>
-                                          <span class="designation">{{$employee->designation_name}}</span>
+                                          <span class="designation">{{ucwords($employee->designation_name)}}</span>
                                           </div>
                                           </div>
                                        </li>

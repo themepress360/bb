@@ -69,6 +69,8 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
         Route::get('projects',  array('uses' => 'ProjectsController@index'));
         Route::post('addprojects',  array('uses' => 'ProjectsController@addprojects'));
+
+
          
            
     });
@@ -91,17 +93,16 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
 
 
-
-
+Route::get('/admin/addprojectemail', function () {
+        return view('admin.emails.AddProjectEmail');
+    });
 
 
 Route::get('/admin/client/registration', function () {
         return view('admin.emails.ClientRegistration');
     });
 
-Route::get('/admin/addproject', function () {
-        return view('admin.emails.AddProjectEmail');
-    });
+
 Route::get('/admin/addtask', function () {
         return view('admin.emails.AddTaskEmail');
     });

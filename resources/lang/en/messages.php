@@ -32,6 +32,8 @@ return [
   'role_update_success' => 'Role Updated Successfully',
   'employee_add_success' => 'Employee Addedd Sucessfully',
   'error_employee_email_exists' =>  'Employee Email already exists',
-  'employee_edit_success' => "Employee edit succussfully"
+  'employee_edit_success' => "Employee edit succussfully",
+  'project_add_success' => "Project Created succfully",
+  'error_project_exists' => 'Project Already Exists'
 
 ];
