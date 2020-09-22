@@ -134,16 +134,19 @@ class ProjectsController extends CommonController
                  if (!$validator->fails()) 
                      {
                       
-                       $filePath = Storage::disk('local')->path('FileManager'. $project_title );
+                      $path = 'FileManager/' . $project_title . '/' ; 
 
-                       //dd($filePath);
+                      // $filePath = Storage::disk('local')->path($path);
 
-                        $file = $request['project_file']->store($filePath);
+                     //  dd($path);
+
+                       // $file = $request['project_file']->store($filePath);
 
                        // Projects::Create($project_data);
 
                       // $path =   storage_path() . 'FileManager/' . $project_title ;
 
+                        Storage::put($path , $projectData['project_file']) ;
 
                      }
 
