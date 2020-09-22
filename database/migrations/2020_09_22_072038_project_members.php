@@ -13,6 +13,7 @@ class ProjectMembers extends Migration
      */
     public function up()
     {
+             Schema::create('project_members', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('project_id');
             $table->string('team_leaders');
@@ -20,6 +21,7 @@ class ProjectMembers extends Migration
             $table->enum('deleted',['1','0']);
             $table->enum('status',['1','0']);
             $table->timestamps();
+            });
     }
 
     /**
