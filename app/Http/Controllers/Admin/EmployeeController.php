@@ -178,7 +178,7 @@ class EmployeeController extends CommonController
                     $response = array(
                         'status'  => 'SUCCESS',
                         'message' => trans('messages.employee_add_success'),
-                        'ref'     => 'client_add_success',
+                        'ref'     => 'project_add_success',
                     );
                 }
                 else

@@ -84,9 +84,20 @@ class ProjectsController extends CommonController
      */
     public function addprojects(Request $request)
     {
-        $data = $request->all();
-       
-       // dd(sizeof($members));
+        // $data = $request->all();
+        // $members = explode(",",$data['team_members']);
+          
+       //   $users = User::whereIn('id' , $members)->get();
+         // dd($users);
+
+        //  $emails = [];
+        //    foreach($users as $user) {
+        //      $emails[] = $user->email;
+              //do your thing here
+        //    }
+        //    print_r($emails);
+        //    exit();
+
 
         $rules = [
 
@@ -106,21 +117,115 @@ class ProjectsController extends CommonController
          if (!$validator->fails()) 
         {
             $projectData =  $request->all();
-            $project_title = $request['project_title'];
-          //  dd($project_title);
-            $folder = Storage::makeDirectory('FileManager/' . $project_title);
+            $project_title = strtolower($projectData['project_title']);
+                                 
+        $is_project_exists = Projects::where(['project_title' => strtolower($projectData['project_title']) ,"deleted" => '0'])->first(); 
+
+       // dd($is_project_exists->id);
+
+            if(empty( $is_project_exists)) {
+
+            $folder = Storage::makeDirectory('FileManager/' . ucwords($project_title));
                    
             $project_data = array(
-                'project_title' => $projectData['project_title'],
-                'description'   => $projectData['description'],
+                'project_title' => strtolower($projectData['project_title']),
+                'description'   => strip_tags($projectData['description']),
                 'clients'     => $projectData['clients'],
                 'start_date'    => $projectData['start_date'],
                 'end_date'      => $projectData['end_date'],
                 'priority'     =>$projectData['priority'],
                 'department'    => $projectData['department'],
+                'deleted'  => '0',
+                'status'   => '1',
+                
              );
 
-              //  dd($projectData['project_file']);
+             $add_project =  Projects::create($project_data);
+
+
+             if($add_project){
+
+                $project_id = Projects::where(['project_title' => strtolower($projectData['project_title']) ,"deleted" => '0'])->first();
+
+               $members = explode(",",$projectData['team_members']);
+               $leaders = explode(",",$projectData['team_leaders']);
+
+               if(!empty($leaders)){
+
+                for($i=0; $i<sizeof($leaders); $i++ ){ 
+
+                    $project_leaders = array(
+                   
+                   'project_id' => $project_id->id,
+                   'user_id' => $leaders[$i],
+                   'is_members' => '0',
+                   'is_leaders' => '1',
+                   'deleted'  => '0',
+                   'status'   => '1',
+
+                  );
+             //  dd($project_members);
+                     $add_leaders = Project_members::create($project_leaders);
+                   }
+                 }
+
+               if(!empty($members)){
+            
+               for($i=0; $i<sizeof($members); $i++ ){              
+
+               // dd($members[$i]);
+
+               $project_members = array(
+                   
+                   'project_id' => $project_id->id,
+                   'user_id' => $members[$i],
+                   'is_members' => '1',
+                   'is_leaders' => '0',
+                   'deleted'  => '0',
+                   'status'   => '1',
+
+                  );
+             //  dd($project_members);
+                     $add_members = Project_members::create($project_members);
+                       }
+                 }
+
+               $status   = 200;
+               $response = array(
+               'status'  => 'SUCCESS',
+               'message' => trans('messages.project_add_success'),
+               'ref'     => 'project_add_success',
+               );
+
+                $to_email = 'themepress360@gmail.com';
+                $to_name = 'A New Project has been Created';
+                $team_leaders = User::whereIn('id' , $members)->get();
+                $team_members = User::whereIn('id' , $leaders)->get();
+
+               $project_data_email = array(
+                 'project_title' => strtolower($projectData['project_title']),
+                 'team_leaders' => $projectData['team_leaders'],
+                 'team_members' => $projectData['team_members']
+               );
+
+
+                Mail::send('admin.emails.AddProjectEmail', $project_data_email, function($message) use ($to_name, $to_email) {
+                    $message->to(strtolower($to_email), 'New Project')->subject($to_name);
+                });
+
+
+
+             }else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+
+
 
              if(!empty($projectData['project_file'])) {
 
@@ -135,32 +240,44 @@ class ProjectsController extends CommonController
                      {
                       
                       $path = 'FileManager/' . $project_title . '/' ; 
+                      $fileName = $request->file('project_file')->getClientOriginalName();
+                      $upload = $request->file('project_file')->storeAs($path, $fileName) ;
 
-                      // $filePath = Storage::disk('local')->path($path);
+                     }          
+                    
+                 } 
 
-                     //  dd($path);
-
-                       // $file = $request['project_file']->store($filePath);
-
-                       // Projects::Create($project_data);
-
-                      // $path =   storage_path() . 'FileManager/' . $project_title ;
-
-                        Storage::put($path , $projectData['project_file']) ;
-
-                     }
-
-
-             }
-
-                   
-
+            }else
+            {
+                $status = 400;
+                $response = array(
+                    'status'  => 'FAILED',
+                    'message' => trans('messages.error_project_exists'),
+                    'ref'     => 'error_project_exists'
+                );  
+            }
+      
+        }else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
         }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
 
-       
     }
 
-    /**
+      /**
      * Display the specified resource.
      *
      * @param  \App\projects  $projects
