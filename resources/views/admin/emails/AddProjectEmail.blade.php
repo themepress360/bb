@@ -33,9 +33,9 @@
 
 			<table cellpadding="0" cellspacing="0" border="0" style="width:100%; background-color:#ffffff; max-width: 600px;" class="mw100" width="600"> <tbody> <tr> <td align="center" style="padding: 30px 0; border: 1px solid #eff0f1;">
 				
-				<table style="width:100%;min-width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0"><tbody><tr><td style="line-height:32px;max-width:0;min-width:0;height:32px;width:0;font-size:32px">&nbsp;</td></tr><tr><td><table style="width:100%;min-width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0"><tbody><tr><td align="center"><table style="table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0"><tbody><tr><td style="border-radius:23px;line-height:24px;min-width:46px;height:46px;width:46px;text-align:center;vertical-align:middle"><img src="https://ci3.googleusercontent.com/proxy/ugNml4Oqp-CzJiIoO01x21lQNRzTmGTcGW23BbjY9yrRGhog6xwR2LhnvrTXoj15haIWch83764XU3agmOQvKZH5eoX6VTFd2d6-S3O7Eyk46C0qNGtA3-0jKuUBq4aAgbMJ1PD7zoutnTw=s0-d-e1-ft#https://s3.amazonaws.com/profile_photos/362839676784321.AmcrtULYxjEnJOWC1sf1_128x128.png" style="border-radius:46px;display:block;line-height:46px" class="CToWUd" width="46" height="46"></td></tr></tbody></table></td></tr><tr>
+				<table style="width:100%;min-width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0"><tbody><tr><td style="line-height:32px;max-width:0;min-width:0;height:32px;width:0;font-size:32px">&nbsp;</td></tr><tr><td><table style="width:100%;min-width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0"><tbody><tr><td align="center"><table style="table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0"><tbody><tr><td style="border-radius:23px;line-height:24px;min-width:46px;height:46px;width:46px;text-align:center;vertical-align:middle"><img src="{{!empty($project_added) ? $project_added['profile_images_url'] : '-'}}" style="border-radius:46px;display:block;line-height:46px" class="CToWUd" width="46" height="46"></td></tr></tbody></table></td></tr><tr>
 					<td style="line-height:8px;max-width:0;min-width:0;height:8px;width:0;font-size:8px">&nbsp;</td></tr><tr><td align="center"><span style="font-size:20px;font-weight:400;line-height:26px;color:#151b26;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif">
-						Christopher Rex <span class="il">shared</span> a <span class="il">project</span> with you</span></td></tr></tbody>
+						{{!empty($project_added) ? $project_added['name'] : '-'}} <span class="il">shared</span> a <span class="il">project</span> with you</span></td></tr></tbody>
 					</table>
 				</td>
 			</tr><tr>
@@ -47,7 +47,7 @@
 					<table style="width:100%;min-width:100%;table-layout:fixed;" cellspacing="0" cellpadding="0"><tbody><tr><td style="line-height:24px;max-width:24px;min-width:24px;height:24px;width:24px;font-size:24px">&nbsp;</td><td style="line-height:24px;max-width:15px;min-width:15px;height:24px;width:15px;font-size:24px">&nbsp;</td><td style="line-height:24px;max-width:16px;min-width:16px;height:24px;width:16px;font-size:24px">&nbsp;</td><td style="line-height:24px;height:24px;font-size:24px">&nbsp;</td><td style="line-height:24px;max-width:24px;min-width:24px;height:24px;width:24px;font-size:24px">&nbsp;</td></tr><tr><td>&nbsp;</td><td style="vertical-align:baseline"><div style="display:inline-block;height:15px;width:15px;min-width:15px;border-radius:5px"></div></td><td></td>
 
 					<td style="vertical-align:baseline">
-						<span style="font-size:16px;font-weight:600;line-height:26px;color:#151b26;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif">Project: {{$project_title}}</span> 
+						<span style="font-size:16px;font-weight:600;line-height:26px;color:#151b26;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif">Project: {{ucwords($project_title)}}</span> 
 					</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td></td><td></td><td>
 
 						<table style="width:100%;min-width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0">
@@ -58,8 +58,8 @@
 							<tr>
 						<td>
 							
-						<span style="font-size:13px;font-weight:600;line-height:20px;color:#6f7782;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif">Team Lead
-							{{$team_leaders}}
+						<span style="font-size:13px;font-weight:600;line-height:20px;color:#6f7782;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif">Team Lead ( 
+							{{count($team_leaders)}} )
 						</span>
 					</td>
 				</tr>
@@ -69,7 +69,18 @@
 		<table style="table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0">
 										<tbody>
 											<tr>
-												<td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle"><img src="https://ci6.googleusercontent.com/proxy/DQq7VT5U1VDP7bnv08I8t8JfkQ4OgVIQ9J7aZ-Ud_JccxFW55hYhxMszpl385PXZQFB2Xh2BFEJZUAp74NoFPiL7H3GQvT1PU5Q4K7totVtwhBMDN2qu2vllj3A6P8xc3JO9zYia8hue=s0-d-e1-ft#https://s3.amazonaws.com/profile_photos/362839676784321.AmcrtULYxjEnJOWC1sf1_60x60.png" style="border-radius:24px;display:block;line-height:24px" class="CToWUd" width="24" height="24"></td></tr>
+												@forelse($team_leaders as $team_leader)
+												<td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
+													<img src="{{$team_leader['profile_images_url']}}" alt="{{$team_leader['name']}}" style="border-radius:24px;display:block;line-height:24px" class="CToWUd" width="24" height="24">
+												</td>
+												@empty
+												<td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
+													No Records
+												</td>
+												@endforelse
+												
+											</tr>
+
 											</tbody>
 										</table>
 
@@ -82,7 +93,8 @@
 							<tr>
 						<td>
 
-						<span style="font-size:13px;font-weight:600;line-height:20px;color:#6f7782;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif">Team Members</span>
+						<span style="font-size:13px;font-weight:600;line-height:20px;color:#6f7782;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif">Team Members ( 
+							{{count($team_members)}} )</span>
 					</td>
 				</tr>
 				<tr>
@@ -97,12 +109,25 @@
 									<table style="table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0">
 										<tbody>
 											<tr>
-												<td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle"><img src="https://ci6.googleusercontent.com/proxy/DQq7VT5U1VDP7bnv08I8t8JfkQ4OgVIQ9J7aZ-Ud_JccxFW55hYhxMszpl385PXZQFB2Xh2BFEJZUAp74NoFPiL7H3GQvT1PU5Q4K7totVtwhBMDN2qu2vllj3A6P8xc3JO9zYia8hue=s0-d-e1-ft#https://s3.amazonaws.com/profile_photos/362839676784321.AmcrtULYxjEnJOWC1sf1_60x60.png" style="border-radius:24px;display:block;line-height:24px" class="CToWUd" width="24" height="24"></td></tr>
+												@forelse($team_members as $team_member)
+												<td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle"><img src="{{$team_member['profile_images_url']}}" alt="{{$team_member['name']}}" style="border-radius:24px;display:block;line-height:24px" class="CToWUd" width="24" height="24"></td>
+												@empty
+												<td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
+													No Records
+												</td>
+												@endforelse
+
+											</tr>
 											</tbody>
 										</table>
 
 										</td>
-										<td style="max-width:4px;min-width:4px;width:4px">&nbsp;</td><td><table style="table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0"><tbody><tr><td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle"><img src="https://ci6.googleusercontent.com/proxy/TUJHJLOtikxDQyhYvLIPv0hTZpn0LAxpsYN3r8I3AeDoqV5bJgH6A_FABv9XDb_FQuegChYIldzbQ2V9Sld1U3Rrkpj_Gi8hzDJSCRpcgi88MCtdF_Scbt11BE_EzhCYL2mcidtC4xy7=s0-d-e1-ft#https://s3.amazonaws.com/profile_photos/905639278356833.eBDiZUmRVXar0hkMZ2cx_60x60.png" style="border-radius:24px;display:block;line-height:24px" class="CToWUd" width="24" height="24"></td></tr></tbody></table></td><td style="max-width:4px;min-width:4px;width:4px">&nbsp;</td><td><table style="table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0"><tbody><tr><td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle"><img src="https://ci3.googleusercontent.com/proxy/9Q30egCyTPjq7Evb6QbKgGH7U8ATVmfuNP8xRTuZQAnFOxYP3CYFlnk8oyMoXdinCiwvdNrTdBt9oNWHk2xAQZ9Dll7JZH8bRNcti5hjuQcqWLDcLSU8tQavu44zpc6A44KsahK6u6Q8QA=s0-d-e1-ft#https://s3.amazonaws.com/profile_photos/1132271805964572.eEOZGfAjz4H1C2jqaVU5_60x60.png" style="border-radius:24px;display:block;line-height:24px" class="CToWUd" width="24" height="24"></td></tr></tbody></table></td><td style="max-width:4px;min-width:4px;width:4px">&nbsp;</td><td><table style="table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0"><tbody><tr><td style="background-color:#7a6ff0;border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle"><span style="font-size:11px;font-weight:400;line-height:16px;color:#fff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif">ka</span></td></tr></tbody></table></td></tr></tbody></table></td></tr><tr><td style="line-height:8px;max-width:0;min-width:0;height:8px;width:0;font-size:8px">&nbsp;</td></tr><tr><td><span style="font-size:13px;font-weight:400;line-height:20px;color:#151b26;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif">{{$team_members}}</span></td></tr></tbody></table></td></tr><tr><td style="line-height:24px;max-width:0;min-width:0;height:24px;width:0;font-size:24px">&nbsp;</td></tr><tr><td></td></tr></tbody></table></td><td>&nbsp;</td></tr><tr><td style="line-height:32px;max-width:0;min-width:0;height:32px;width:0;font-size:32px">&nbsp;</td></tr></tbody></table></td></tr></tbody></table>
+
+										
+
+										
+
+									</tr></tbody></table></td></tr><tr><td style="line-height:8px;max-width:0;min-width:0;height:8px;width:0;font-size:8px">&nbsp;</td></tr><tr><td><span style="font-size:13px;font-weight:400;line-height:20px;color:#151b26;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif"></span></td></tr></tbody></table></td></tr><tr><td style="line-height:24px;max-width:0;min-width:0;height:24px;width:0;font-size:24px">&nbsp;</td></tr><tr><td></td></tr></tbody></table></td><td>&nbsp;</td></tr><tr><td style="line-height:32px;max-width:0;min-width:0;height:32px;width:0;font-size:32px">&nbsp;</td></tr></tbody></table></td></tr></tbody></table>
 							
 
 				

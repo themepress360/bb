@@ -19,6 +19,7 @@ class CreateProjectsTable extends Migration
             $table->string('description');
             $table->bigInteger('clients');
             $table->bigInteger('department');
+            $table->bigInteger('added_by');
             $table->string('priority');
             $table->string('start_date');
             $table->string('end_date');

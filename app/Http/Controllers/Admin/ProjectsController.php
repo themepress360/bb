@@ -117,8 +117,9 @@ class ProjectsController extends CommonController
          if (!$validator->fails()) 
         {
             $projectData =  $request->all();
+            $mydetail = $request->user();   
             $project_title = strtolower($projectData['project_title']);
-                                 
+                                
         $is_project_exists = Projects::where(['project_title' => strtolower($projectData['project_title']) ,"deleted" => '0'])->first(); 
 
        // dd($is_project_exists->id);
@@ -126,7 +127,7 @@ class ProjectsController extends CommonController
             if(empty( $is_project_exists)) {
 
             $folder = Storage::makeDirectory('FileManager/' . ucwords($project_title));
-                   
+            
             $project_data = array(
                 'project_title' => strtolower($projectData['project_title']),
                 'description'   => strip_tags($projectData['description']),
@@ -137,11 +138,12 @@ class ProjectsController extends CommonController
                 'department'    => $projectData['department'],
                 'deleted'  => '0',
                 'status'   => '1',
+                'added_by' => (int) $mydetail['id'],
                 
              );
 
              $add_project =  Projects::create($project_data);
-
+              
 
              if($add_project){
 
@@ -185,36 +187,26 @@ class ProjectsController extends CommonController
                    'status'   => '1',
 
                   );
-             //  dd($project_members);
+                 
                      $add_members = Project_members::create($project_members);
                        }
                  }
+                 $project_data_email = array(
+              'project_title' => strtolower($projectData['project_title']),
+              'team_leaders' => $projectData['team_leaders'],
+              'team_members' => $projectData['team_members'],
+              'added_by' => $mydetail['id']
+            );
 
+              Projects::EmailAddProject($project_data_email);
                $status   = 200;
                $response = array(
                'status'  => 'SUCCESS',
                'message' => trans('messages.project_add_success'),
                'ref'     => 'project_add_success',
                );
-
-                $to_email = 'themepress360@gmail.com';
-                $to_name = 'A New Project has been Created';
                 $team_leaders = User::whereIn('id' , $members)->get();
                 $team_members = User::whereIn('id' , $leaders)->get();
-
-               $project_data_email = array(
-                 'project_title' => strtolower($projectData['project_title']),
-                 'team_leaders' => $projectData['team_leaders'],
-                 'team_members' => $projectData['team_members']
-               );
-
-
-                Mail::send('admin.emails.AddProjectEmail', $project_data_email, function($message) use ($to_name, $to_email) {
-                    $message->to(strtolower($to_email), 'New Project')->subject($to_name);
-                });
-
-
-
              }else
                 {
                     $status = 400;
