@@ -70,7 +70,8 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('projects',  array('uses' => 'ProjectsController@index'));
         Route::post('addprojects',  array('uses' => 'ProjectsController@addprojects'));
 
-
+        Route::get('tasks', array('uses' => 'TasksController@index'));
+  
          
            
     });
@@ -154,9 +155,7 @@ Route::get('/admin/projects-list', function () {
 Route::get('/admin/project-view', function () {
         return view('admin.projects.project-view');
     });
-Route::get('/admin/tasks', function () {
-        return view('admin.projects.tasks');
-    });
+
 Route::get('/admin/task-board', function () {
         return view('admin.projects.task-board');
     });

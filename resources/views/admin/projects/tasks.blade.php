@@ -512,65 +512,48 @@
 											    <a href="#" class="followers-add" data-toggle="dropdown" style=" margin-right:10px;"><i class="material-icons">add</i></a>
 											    <div class="dropdown-menu">
 											      <div>
-												<ul class="chat-user-list">
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Jeffery Lalor</div>
-														<span class="designation">Team Leader</span>
-													</div>
-												</div>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Catherine Manseau</div>
-														<span class="designation">Android Developer</span>
-													</div>
-												</div>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Wilmer Deluna</div>
-														<span class="designation">Team Leader</span>
-													</div>
-												</div>
-											</a>
-										</li>
+												<ul class="chat-user-list" id="assign">
+									 @foreach($employees as $employee)
+                                       @if($employee->role == "employee")
+										 <li   id="{{{$employee->id}}}">
+                                          
+                                             <div class="media">
+                                                @if(!empty($employee->profile_image))
+                                          <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" id="TeamMember">
+                                          <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" >
+                                          @else
+                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest">
+                                          {{ mb_substr($employee['name'], 0, 1) }}
+                                          </span>
+                                          </div>
+                                          @endif
+                                          </a>
+                                          <div class="media-body media-middle text-nowrap">
+                                          <div class="user-name">{{$employee->name}}</div>
+                                          <span class="designation">{{ucwords($employee->designation_name)}}</span>
+                                          </div>
+                                          </div>
+                                       </li>
+										@endif
+									 @endforeach
 													</ul>
 												</div>
-											    </div>
-											    <div class="project-members">
+										  </div>
+										  <div class="d-flex align-items-center">
+											    <div class="project-members"  id="assigned-to" >
                                                 
-												<a href="#" data-toggle="tooltip" title="John Doe" class="avatar">
-                                                   <img src="img/profiles/avatar-16.jpg" alt="">
-                                                </a>
-                                                <a href="#" data-toggle="tooltip" title="Richard Miles" class="avatar">
-                                                    <img src="img/profiles/avatar-09.jpg" alt="">
-                                                </a>
-                                                <a href="#" data-toggle="tooltip" title="John Smith" class="avatar">
-                                                    <img src="{{asset('img/profiles/avatar-10.jpg')}}" alt="">
-                                                </a>                                              
-                                               
+												                                    
+                                               <div>
+					                          	 <span class="all-team" id="total_members">+0</span>
+					                          </div>
                                             </div>
-											  </div>
-											  
+                                        </div>		  
 
                                         </div>
                                     </div>
-                                    
-                                    
-                                                                      
-                                </div>
+								</div>
+		                    </div>
                                 
                                 <div class="submit-section">
                                     <a class="btn btn-primary submit-btn" onClick="openNav()" >Submit</a>
@@ -624,7 +607,7 @@
 															</span>
 														</div>
 														<div class="task-due-date">
-															<a href="#" data-toggle="modal" data-target="#assignee">
+															<a href="#">
 																<div class="due-icon">
 																	<span>
 																		<i class="material-icons">date_range</i>
@@ -633,7 +616,9 @@
 																<div class="due-info">
 																	<div class="task-head-title">Due Date</div>
 																	<div class="due-date">Mar 26, 2019</div>
-																</div>
+																</div> 
+
+															<div id="due-date"></div>
 																
 															</a>
 															<span class="remove-icon">
@@ -846,5 +831,48 @@ function closeNav() {
 }
 </script>
 
+<script>
+   function search(id){
+      var employees = <?php echo json_encode($employees); ?>;
+      for (var i=0; i < employees.length; i++) {
+         if (employees[i].id == id) {
+            return employees[i];
+         }
+      }
+   }
+   var total_members = 0 ;
+  
+   var added_team_members = [];
 
-		@endsection
+   $(document).on('click','#assign li', function() {
+     
+     	 var id = $(this).attr('id');
+      if(typeof  added_team_members[id] === 'undefined') 
+      {
+         var employeeObject = search(id);
+         added_team_members[employeeObject.id] = employeeObject;
+       //  console.log(added_employees);
+         var html = '';
+         html +='<a href="#" data-toggle="tooltip" value = "'+id+'"  title="'+employeeObject.name+'"  class="avatar"">'
+         html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'  
+         $('#assigned-to').append(html);
+         total_members = total_members + 1;
+         $('#total_members').html('+'+total_members); 
+
+      }
+      else
+      {
+         var employeeObject = search(id);
+         added_team_members[employeeObject.id] = employeeObject;
+         toastr['error']( employeeObject.name + " Already Added" );
+      }
+      
+                
+      });
+
+      </script>
+@endsection
+
+
+                                                
+                                            
