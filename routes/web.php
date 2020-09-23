@@ -71,6 +71,8 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('addprojects',  array('uses' => 'ProjectsController@addprojects'));
 
         Route::get('tasks', array('uses' => 'TasksController@index'));
+        Route::post('addtasks', array('uses' => 'TasksController@addTask'));
+        Route::post('gettask', array('uses' => 'TasksController@getTask'));
   
          
            

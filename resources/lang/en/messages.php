@@ -34,6 +34,8 @@ return [
   'error_employee_email_exists' =>  'Employee Email already exists',
   'employee_edit_success' => "Employee edit succussfully",
   'project_add_success' => "Project Created succfully",
-  'error_project_exists' => 'Project Already Exists'
+  'error_project_exists' => 'Project Already Exists',
+  'task_add_success'  => 'Task Added Successfully',
+  'error_task_exists' => 'Task Already Exists'
 
 ];

@@ -4101,10 +4101,11 @@ border-color: transparent;
 	vertical-align: -4px;
 }
 .task-wrapper {
-	padding-top: 20px;
+	padding-top: 10px;
 	width: 100%;
 	margin: 0 auto;
 	box-sizing: border-box;
+	margin-bottom: 15px;
 }
 .task-wrapper .mark-all-tasks {
 	text-align: right;
@@ -8317,4 +8318,14 @@ ul.comment-list li ul.children {
 	table-layout: fixed;
 	width: 80%;
 		
+}
+.rotate {
+    -moz-transition: all .4s ease;
+    -webkit-transition: all .4s ease;
+    transition: all .4s ease;
+}
+.rotate.down {
+    -moz-transform:rotate(-90deg);
+    -webkit-transform:rotate(-90deg);
+    transform:rotate(-90deg);
 }

@@ -14,7 +14,7 @@ class Projects extends Model
 
 	static function EmailAddProject($project_data_email)
 	{
-		$to_email = 'akkhan1587@gmail.com';
+		$to_email = 'themepress360@gmail.com';
         $to_name = 'A New Project has been Created';
         if(!empty($project_data_email['team_leaders']))
         {

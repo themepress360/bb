@@ -2,30 +2,24 @@
 @section('content')
     
 <!-- Sidebar -->
-<div class="sidebar" id="sidebar">
+<!--<div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
 					<div class="sidebar-menu">
 						<ul>
+					
 							<li> 
 								<a href="{{url('/admin/dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
 							</li>
-							<li class="menu-title">Projects <a href="#" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i></a></li>
-							<li> 
-								<a href="tasks">Project Management</a>
+							<a href="#" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i></a>
 							</li>
-							<li class="active"> 
-								<a href="tasks">Hospital Administration</a>
-							</li>
-							<li> 
-								<a href="tasks">Video Calling App</a>
-							</li>
-							<li> 
-								<a href="tasks">Office Management</a>
-							</li>
+								@foreach($projects as $project)
+							<li class="menu-title" value="{{$project->id}}">{{ucwords($project->project_title)}}
+
+							@endforeach
 						</ul>
 					</div>
                 </div>
-            </div>
+            </div> -->
 			<!-- /Sidebar -->
 			
 			<!-- Page Wrapper -->
@@ -61,18 +55,29 @@
 									<div class="chat-content-wrap">
 										<div class="chat-wrap-inner">
 											<div class="chat-box">
-												<div class="task-wrapper">
+							
+								<div class="dropdown task-wrapper">	
+								
+									@foreach($projects as $project)	
+								
+				<a href="#" class="dropdown-btn" style="display:block;" value="{{$project->id}}"><span  class="span-rotate">{{ucwords($project->project_title)}}</span> <i class="fa fa fa-chevron-down rotate m-l-10"></i> </a>
+									 
+
+									  <div class="dropdown-container">
+												<div class="task-wrapper" >
 													<div class="task-list-container">
 														<div class="task-list-body">
-															<ul id="task-list">
-																<li class="task">
+      		     											 <ul id="task-list" onClick="openTask()">
+															     @foreach($tasks as $task)														 
+																@if($task->project_id == $project->id)
+																<li class="task"  value="{{$task->id}}" >
 																	<div class="task-container">
 																		<span class="task-action-btn task-check">
 																			<span class="action-circle large complete-btn" title="Mark Complete">
 																				<i class="material-icons">check</i>
 																			</span>
 																		</span>
-																		<span class="task-label" contenteditable="true">Patient appointment booking</span>
+																		<span class="task-label" contenteditable="true">{{$task->task_title}}</span>
 																		<span class="task-action-btn task-btn-right">
 																			<span class="action-circle large" title="Assign">
 																				<i class="material-icons">person_add</i>
@@ -83,14 +88,38 @@
 																		</span>
 																	</div>
 																</li>
-																<li class="task">
+																  @endif
+																   @endforeach
+																
+															</ul>
+														</div>
+													</div>
+												</div>
+										  </div>
+										     									  
+										@endforeach
+									</div>
+
+
+		
+			@foreach($projects as $project)	
+	<!--	<div class="dropdown task-wrapper keep-open">
+			 <a href="#" value="{{$project->id}}" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				<span class="span-rotate">{{ucwords($project->project_title)}}</span><i class="fa fa-chevron-right m-l-10 rotate"></i></a>
+								<div class="dropdown-menu task-wrapper" aria-labelledby="task-dropdown">
+    										<div class="task-wrapper" >
+													<div class="task-list-container">
+														<div class="task-list-body">
+															<ul id="task-list" onClick="openTask()">
+																@foreach($tasks as $task)
+																<li class="task"  value="{{$task->id}}" >
 																	<div class="task-container">
 																		<span class="task-action-btn task-check">
 																			<span class="action-circle large complete-btn" title="Mark Complete">
 																				<i class="material-icons">check</i>
 																			</span>
 																		</span>
-																		<span class="task-label" contenteditable="true">Appointment booking with payment gateway</span>
+																		<span class="task-label" contenteditable="true">{{$task->task_title}}</span>
 																		<span class="task-action-btn task-btn-right">
 																			<span class="action-circle large" title="Assign">
 																				<i class="material-icons">person_add</i>
@@ -101,78 +130,8 @@
 																		</span>
 																	</div>
 																</li>
-																<li class="completed task">
-																	<div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<span class="action-circle large complete-btn" title="Mark Complete">
-																				<i class="material-icons">check</i>
-																			</span>
-																		</span>
-																		<span class="task-label">Doctor available module</span>
-																		<span class="task-action-btn task-btn-right">
-																			<span class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
-																			</span>
-																			<span class="action-circle large delete-btn" title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-																	</div>
-																</li>
-																<li class="task">
-																	<div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<span class="action-circle large complete-btn" title="Mark Complete">
-																				<i class="material-icons">check</i>
-																			</span>
-																		</span>
-																		<span class="task-label" contenteditable="true">Patient and Doctor video conferencing</span>
-																		<span class="task-action-btn task-btn-right">
-																			<span class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
-																			</span>
-																			<span class="action-circle large delete-btn" title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-																	</div>
-																</li>
-																<li class="task">
-																	<div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<span class="action-circle large complete-btn" title="Mark Complete">
-																				<i class="material-icons">check</i>
-																			</span>
-																		</span>
-																		<span class="task-label" contenteditable="true">Private chat module</span>
-																		<span class="task-action-btn task-btn-right">
-																			<span class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
-																			</span>
-																			<span class="action-circle large delete-btn" title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-																	</div>
-																</li>
-																<li class="task">
-																	<div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<span class="action-circle large complete-btn" title="Mark Complete">
-																				<i class="material-icons">check</i>
-																			</span>
-																		</span>
-																		<span class="task-label" contenteditable="true">Patient Profile add</span>
-																		<span class="task-action-btn task-btn-right">
-																			<span class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
-																			</span>
-																			<span class="action-circle large delete-btn" title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-																	</div>
-																</li>
+																@endforeach
+																
 															</ul>
 														</div>
 														<div class="task-list-footer">
@@ -184,7 +143,53 @@
 															</div>
 														</div>
 													</div>
+													
 												</div>
+  									</div>
+							</div>
+							    
+							@endforeach
+
+						<!--	<div class="task-wrapper" >
+									
+													<div class="task-list-container">
+														<div class="task-list-body">
+															<ul id="task-list">
+																@foreach($tasks as $task)
+																<li class="task"  value="{{$task->id}}" >
+																	<div class="task-container">
+																		<span class="task-action-btn task-check">
+																			<span class="action-circle large complete-btn" title="Mark Complete">
+																				<i class="material-icons">check</i>
+																			</span>
+																		</span>
+																		<span class="task-label" contenteditable="true">{{$task->task_title}}</span>
+																		<span class="task-action-btn task-btn-right">
+																			<span class="action-circle large" title="Assign">
+																				<i class="material-icons">person_add</i>
+																			</span>
+																			<span class="action-circle large delete-btn" title="Delete Task">
+																				<i class="material-icons">delete</i>
+																			</span>
+																		</span>
+																	</div>
+																</li>
+																@endforeach
+																
+															</ul>
+														</div>
+														<div class="task-list-footer">
+															<div class="new-task-wrapper">
+																<textarea  id="new-task" placeholder="Enter new task here. . ."></textarea>
+																<span class="error-message hidden">You need to enter a task first</span>
+																<span class="add-new-task-btn btn" id="add-task">Add Task</span>
+																<span class="btn" id="close-task-panel">Close</span>
+															</div>
+														</div>
+													</div>
+													
+												</div> 
+											
 												<div class="notification-popup hide">
 													<p>
 														<span class="task"></span>
@@ -199,7 +204,7 @@
 						</div>
 						
 					</div>
-				</div>
+				</div> -->
 				
 				<!-- Create Project Modal -->
 				<div id="create_project" class="modal custom-modal fade" role="dialog">
@@ -479,32 +484,35 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
-                                  
+                  {{ Form::open(array( 'id' => 'AddTaskForm' ,  'enctype'=>'multipart/form-data')) }}                                  
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Task Title <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="task_title">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Due Date<span class="text-danger">*</span></label>
                                             <div class="cal-icon">
-                                                <input class="form-control datetimepicker" type="text">
+                                                <input class="form-control datetimepicker" type="text" name="due_date">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Task Description<span class="text-danger">*</span></label>
-                                           <textarea class="form-control" placeholder="Description"></textarea>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-6">
+                                   <div class="col-sm-6">
+				                        <div class="form-group">
+				                           <label>Projects<span class="text-danger">*</span></label>
+				                           <select class="select" name="project_id">
+				                             @foreach($projects as $project)
+				                                 <option  value="{{$project->id}}">{{ucwords($project->project_title)}}</option>
+				                              @endforeach
+				                          
+				                           </select>
+				                        </div>
+				                     </div>
+				                          <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Assign To <span class="text-danger">*</span></label>
                                             <!--<input class="form-control floating" type="email">-->
@@ -553,12 +561,20 @@
                                         </div>
                                     </div>
 								</div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Task Description<span class="text-danger">*</span></label>
+                                           <textarea class="form-control" placeholder="Description" name="description"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                               
 		                    </div>
                                 
                                 <div class="submit-section">
-                                    <a class="btn btn-primary submit-btn" onClick="openNav()" >Submit</a>
+                                    <a class="btn btn-primary submit-btn" onClick="addTask()" >Submit</a>
                                 </div>
-                            </form>
+                           {{ Form::close() }}
                         </div>
                     </div>
                 </div>
@@ -590,7 +606,7 @@
 										<div class="chat-wrap-inner">
 											<div class="chat-box">
 												<div class="chats">
-													<h4>Doctor Available Module</h4>
+													<h4>Task Title</h4>
 													<div class="task-header">
 														<div class="assignee-info">
 															<a href="#" data-toggle="modal" data-target="#assignee">
@@ -615,7 +631,7 @@
 																</div>
 																<div class="due-info">
 																	<div class="task-head-title">Due Date</div>
-																	<div class="due-date">Mar 26, 2019</div>
+																	<div class="due-date">25 Sept</div>
 																</div> 
 
 															<div id="due-date"></div>
@@ -634,6 +650,7 @@
 
 																  <span class="caret"></span></button>
 																  <ul class="dropdown-menu">
+																  	 <li><a href="#" >Admin Review</a></li>
 																    <li><a href="#" >In-Progress</a></li>
 																    <li><a href="#" >Pending</a></li>
 																    <li><a href="#" >Cancelled</a></li>
@@ -820,9 +837,41 @@
 		<!-- /Main Wrapper -->
 
 <script>
-function openNav() {
+$(".rotate").click(function(){
+ $(this).toggleClass("down")  ; 
+})
+
+$(".span-rotate").click(function(){
+ $('.fa-chevron-right').toggleClass("down")  ; 
+})
+
+</script>
+
+<script>
+
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+  this.classList.toggle("active");
+  var dropdownContent = this.nextElementSibling;
+  if (dropdownContent.style.display === "block") {
+  dropdownContent.style.display = "none";
+  } else {
+  dropdownContent.style.display = "block";
+  }
+  });
+}
+</script>
+
+
+<script>
+function openTask() {
+  
   document.getElementById("task_window").style.width = "675px";
   document.getElementById("main").style.marginLeft = "0px";
+  
 }
 
 function closeNav() {
@@ -871,6 +920,44 @@ function closeNav() {
       });
 
       </script>
+
+      <script type="text/javascript">
+
+            function addTask() {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addtasks' : '#') }}";  
+                var form = $('#AddTaskForm').get(0);
+                var formData = new FormData(form);
+                           
+                var team_members = Object.keys(added_team_members);
+
+                console.log(team_members);
+                             
+               formData.append('team_members', team_members);
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+            }
+
+        </script>
+
 @endsection
 
 

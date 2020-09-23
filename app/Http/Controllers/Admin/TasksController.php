@@ -23,6 +23,8 @@ use App\Employees;
 use App\Roles;
 use App\Projects;
 use App\Project_members;
+use App\Tasks;
+use App\Task_members;
 
 
 class TasksController extends CommonController
@@ -34,6 +36,14 @@ class TasksController extends CommonController
      */
     public function index()
     {
+      
+       $projects = Projects::where('deleted','0')->get();
+
+      
+       $tasks = Tasks::where('deleted', '0')->get();
+       
+       //dd($tasks);
+                   
         $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
 
        
@@ -55,7 +65,7 @@ class TasksController extends CommonController
 
         }
 
-        return view('admin.projects.tasks', compact('employees'));
+        return view('admin.projects.tasks', compact('employees', 'projects','tasks'));
     }
 
     /**
@@ -63,9 +73,117 @@ class TasksController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function addTask(Request $request)
     {
-        //
+       
+     //  $data = $request->all();
+
+     //  dd($data);
+
+        $rules = [
+
+            'task_title'   => 'required|string|min:2|max:50',
+            'description'  => 'required',
+            'due_date'   => 'required',
+            'project_id'   => 'required',
+            'team_members' => 'required',
+           
+            
+        ];
+
+         $validator = Validator::make($request->all(),$rules);
+
+         if (!$validator->fails()) 
+        {
+
+            $taskData =  $request->all();
+            $mydetail = $request->user();   
+            $task_title = strtolower($taskData['task_title']);
+
+          $is_task_exists = Tasks::where(['task_title' => strtolower($taskData['task_title']) ,"deleted" => '0'])->first(); 
+
+           if(empty( $is_task_exists)) {
+
+                 $task_data = array(
+                'task_title' => strtolower($taskData['task_title']),
+                'project_id' => $taskData['project_id'],
+                'description'   => strip_tags($taskData['description']),
+                'due_date'    => $taskData['due_date'],
+                'status'  => 'assigned',
+                'deleted'  => '0',
+                'added_by' => (int) $mydetail['id'],
+                
+             );
+
+             $add_task =  Tasks::create($task_data);
+
+             if($add_task){
+
+               $task_id = Tasks::where(['task_title' => strtolower($taskData['task_title']) ,"deleted" => '0'])->first();
+
+             // dd($task_id);
+
+                $members = explode(",",$taskData['team_members']);
+               if(!empty($members)){
+            
+               for($i=0; $i<sizeof($members); $i++ ){              
+
+              // dd($members[$i]);
+
+               $task_members = array(
+                   
+                   'task_id' => $task_id->id,
+                   'user_id' => $members[$i],
+                   'is_members' => '1',
+                   'is_leaders' => '0',
+                   'deleted'  => '0',
+                   'status'   => '1',
+
+                  );
+
+                //dd($task_members);
+
+                     $add_members = Task_members::create($task_members);
+                       }
+                 }
+
+               $status   = 200;
+               $response = array(
+               'status'  => 'SUCCESS',
+               'message' => trans('messages.task_add_success'),
+               'ref'     => 'task_add_success',
+               );
+
+             }
+             
+             }else
+                {
+                     $status = 400;
+                        $response = array(
+                            'status'  => 'FAILED',
+                            'message' => trans('messages.error_task_exists'),
+                            'ref'     => 'error_task_exists'
+                        );  
+                }
+
+        }else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+
     }
 
     /**
@@ -74,9 +192,19 @@ class TasksController extends CommonController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function getTask(Request $request)
     {
-        //
+        
+        $task_id = $request->id;
+
+      //  dd($task_id);
+
+        $project_tasks = Tasks::where(['id' => $task_id , 'deleted' =>'0'])->first();
+
+       // dd($project_tasks->task_title);
+
+        return view('admin.projects.tasks', compact('project_tasks'));
+
     }
 
     /**
