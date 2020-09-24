@@ -73,9 +73,14 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('tasks', array('uses' => 'TasksController@index'));
         Route::post('addtasks', array('uses' => 'TasksController@addTask'));
         Route::post('gettask', array('uses' => 'TasksController@getTask'));
-  
-         
-           
+        Route::post('updatetaskstatus', array('uses' => 'TasksController@updateTaskStatus'));
+
+        Route::get('task-board', array('uses' => 'TaskBoardController@getTaskboard'));
+        Route::post('addtaskboard', array('uses' => 'TaskBoardController@addTaskboard'));
+
+        Route::get('task-settings', array('uses' => 'TaskBoardController@defaultSettings'));
+        Route::post('updatecolor', array('uses' => 'TaskBoardController@updateColor'));
+               
     });
 
     Route::group(
@@ -93,6 +98,10 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
        });
 //});
+
+
+
+
 
 
 
@@ -158,9 +167,7 @@ Route::get('/admin/project-view', function () {
         return view('admin.projects.project-view');
     });
 
-Route::get('/admin/task-board', function () {
-        return view('admin.projects.task-board');
-    });
+
 Route::get('/admin/tickets', function () {
         return view('admin.tickets.index');
     });

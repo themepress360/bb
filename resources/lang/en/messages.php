@@ -36,6 +36,8 @@ return [
   'project_add_success' => "Project Created succfully",
   'error_project_exists' => 'Project Already Exists',
   'task_add_success'  => 'Task Added Successfully',
-  'error_task_exists' => 'Task Already Exists'
+  'error_task_exists' => 'Task Already Exists',
+  'task_board_add_success' => 'Task board added successfully',
+  'error_task_board_exists' => 'Task board already exists'
 
 ];

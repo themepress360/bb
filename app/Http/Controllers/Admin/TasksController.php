@@ -25,6 +25,7 @@ use App\Projects;
 use App\Project_members;
 use App\Tasks;
 use App\Task_members;
+use App\Task_boards;
 
 
 class TasksController extends CommonController
@@ -41,6 +42,8 @@ class TasksController extends CommonController
 
       
        $tasks = Tasks::where('deleted', '0')->get();
+
+       $task_status = Task_boards::where('deleted', '0')->get();
        
        //dd($tasks);
                    
@@ -65,7 +68,7 @@ class TasksController extends CommonController
 
         }
 
-        return view('admin.projects.tasks', compact('employees', 'projects','tasks'));
+        return view('admin.projects.tasks', compact('employees', 'projects','tasks','task_status'));
     }
 
     /**
@@ -213,9 +216,10 @@ class TasksController extends CommonController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function updateTaskStatus(Request $request)
     {
-        //
+        $status = $request->all();
+        dd(strtolower(trim($status['status'])));
     }
 
     /**
