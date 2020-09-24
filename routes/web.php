@@ -96,6 +96,9 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('profile', array('uses' => 'ProfileController@index'));
         Route::post('updateprofile', array('uses' => 'ProfileController@updateprofile'));
 
+
+        Route::get('tasks', array('uses' => 'TasksController@index'));
+
        });
 //});
 
@@ -231,9 +234,7 @@ Route::get('/employee/projects-list', function () {
 Route::get('/employee/project-view', function () {
         return view('employees.projects.project-view');
     });
-Route::get('/employee/tasks', function () {
-        return view('employees.projects.tasks');
-    });
+
 Route::get('/employee/task-board', function () {
         return view('employees.projects.task-board');
     });
