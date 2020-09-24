@@ -29,8 +29,8 @@
         <a  href="{{ url('notifications-settings') }}"><i class="la la-globe"></i><span>Notifications</span>  </a></li>
         <li class="{{ Request::is('change-password') ? 'active' : '' }}">
         <a  href="{{ url('change-password') }}"><i class="la la-lock"></i><span>Change Password</span>  </a></li>
-        <li class="{{ Request::is('leave-type') ? 'active' : '' }}">
-        <a  href="{{ url('leave-type') }}"><i class="la la-cogs"></i> <span>Leave Type </span>  </a></li>   
+        <li class="{{ Request::is('task-settings') ? 'active' : '' }}">
+        <a  href="{{ url('admin/task-settings') }}"><i class="la la-cogs"></i> <span>Task Settings </span>  </a></li>   
                         </ul>
                     </div>
                 </div>

@@ -504,14 +504,27 @@
                                    <div class="col-sm-6">
 				                        <div class="form-group">
 				                           <label>Projects<span class="text-danger">*</span></label>
+				                            
 				                           <select class="select" name="project_id">
 				                             @foreach($projects as $project)
-				                                 <option  value="{{$project->id}}">{{ucwords($project->project_title)}}</option>
+				                         <option  value="{{$project->id}}">{{ucwords($project->project_title)}}</option>
 				                              @endforeach
 				                          
 				                           </select>
 				                        </div>
 				                     </div>
+				                     <div class="col-md-6">
+				                       <div class="form-group">
+                                <label>Task Priority</label>
+                                <select class="form-control select" name="priority">
+                                    <option >Select</option>
+                                    <option value="1">High</option>
+                                    <option value="2">Normal</option>
+                                    <option value="3">Low</option>
+                                </select>
+                            </div>
+                        </div>
+
 				                          <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Assign To <span class="text-danger">*</span></label>
@@ -561,6 +574,7 @@
                                         </div>
                                     </div>
 								</div>
+
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="col-form-label">Task Description<span class="text-danger">*</span></label>
@@ -645,19 +659,18 @@
 															  <div class="assignee-info dropdown-toggle" data-toggle="dropdown">
 															  	<div class="assigned-info">
 															  	<div class="task-head-title">Status</div>
-																	<div class="task-assignee">Assigned</div>
+
+																	<div class="task-assignee" id="status-current">Assigned</div>
 																</div>
 
 																  <span class="caret"></span></button>
-																  <ul class="dropdown-menu">
-																  	 <li><a href="#" >Admin Review</a></li>
-																    <li><a href="#" >In-Progress</a></li>
-																    <li><a href="#" >Pending</a></li>
-																    <li><a href="#" >Cancelled</a></li>
-																    <li><a href="#" >On-Hold</a></li>
-																     <li><a href="#">Complete</a></li>
-
-																  </ul>
+																  <ul class="dropdown-menu" id="status">
+																  	@foreach($task_status as $task_status)
+											<li   value="{{$task_status->id}}" >
+											<a href="#" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a>
+										    </li>
+																  	 @endforeach
+																    </ul>
 															</div>
 														</div>
 													</div>
@@ -957,6 +970,56 @@ function closeNav() {
             }
 
         </script>
+
+        <script>
+        	$("#status li").on("click",function() {
+                	    			  
+                $('#status-current').text($(this).text());
+			});
+
+        </script>
+
+        <script>
+        	$("#status li").on("click",function() {
+              
+              $.ajaxSetup({
+			    headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    }
+			});
+        		
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/updatetaskstatus' : '#') }}";  
+              
+                var status = $(this).text();
+                console.log(status);
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                   
+                    data: {status:status},
+                    
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+           
+              
+			});
+
+        </script>
+
+
 
 @endsection
 
