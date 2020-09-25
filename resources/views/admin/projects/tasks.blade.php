@@ -59,7 +59,7 @@
 								<div class="dropdown task-wrapper">	
 								
 									@foreach($projects as $project)	
-								
+									
 				<a href="#" class="dropdown-btn" style="display:block;" value="{{$project->id}}"><span  class="span-rotate">{{ucwords($project->project_title)}}</span> <i class="fa fa fa-chevron-down rotate m-l-10"></i> </a>
 									 
 
@@ -67,10 +67,13 @@
 												<div class="task-wrapper" >
 													<div class="task-list-container">
 														<div class="task-list-body">
-      		     											 <ul id="task-list" onClick="openTask()">
+      		     											 <ul id="task-list">
 															     @foreach($tasks as $task)														 
 																@if($task->project_id == $project->id)
-																<li class="task"  value="{{$task->id}}" >
+																<li class="task"  value="{{$task->id}}" onClick="openTask('{{$task->id}}')">
+																	<form id="GetTaskWindowForm">
+																		
+																	</form>
 																	<div class="task-container">
 																		<span class="task-action-btn task-check">
 																			<span class="action-circle large complete-btn" title="Mark Complete">
@@ -596,6 +599,7 @@
             <!-- /Add Task Modal -->
 				
             <div class="col-lg-5 message-view task-chat-view task-right-sidebar sidenav" id="task_window">
+
 							<div class="chat-window">
 								<div class="fixed-header">
 									<div class="navbar">
@@ -840,6 +844,10 @@
 							</div>
 						</div> 
 
+							
+			</div> 
+
+
 
 
 
@@ -880,11 +888,39 @@ for (i = 0; i < dropdown.length; i++) {
 
 
 <script>
-function openTask() {
-  
-  document.getElementById("task_window").style.width = "675px";
-  document.getElementById("main").style.marginLeft = "0px";
-  
+function openTask(task_id) {
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
+	$("#GetTaskWindowForm").html('');
+  	var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/gettaskwindow' : '#') }}";  
+    var input = $("<input type=\"hidden\" name=\"task_id\" value=\""+task_id+"\"/>");
+    $("#GetTaskWindowForm").append(input);
+    var form = $('#GetTaskWindowForm').get(0);
+    var formData = new FormData(form);
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response)
+        {
+            if(response.status == "SUCCESS")
+            {
+            	$("#task_window").html('');
+            	$("#task_window").append(response.data.gettaskwindowhtml);
+            	document.getElementById("task_window").style.width = "675px";
+  				document.getElementById("main").style.marginLeft = "0px";
+            }
+            else
+            {
+                toastr['error'](response.message);
+            }    
+        }            
+    });  
 }
 
 function closeNav() {
@@ -1038,4 +1074,3 @@ function closeNav() {
 
 
                                                 
-                                            
