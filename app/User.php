@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Storage;
 use File;
 use Image;
+use Roles;
 
 class User extends Authenticatable
 {
@@ -65,4 +66,17 @@ class User extends Authenticatable
         }
         return $filename;
     }
+
+
+public function employee() {
+      
+       return $this->hasOne('App\Employees');
+
+   }
+
+
+
+
+
+   
 }

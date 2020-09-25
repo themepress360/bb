@@ -65,7 +65,7 @@
 				                     </div>
 				                 </div>
 				            
-
+				               
 
 				                     <div class="dropdown">
 				                        <div class="assignee-info dropdown-toggle" data-toggle="dropdown">
@@ -75,11 +75,24 @@
 				                           </div>
 				                           <span class="caret"></span>
 				                           <ul class="dropdown-menu" id="status">
-				                              @foreach($task_statuses as $task_status)
-				                              <li   value="{{$task_status->id}}" >
-				                                 <a href="#" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a>
-				                              </li>
-				                              @endforeach
+				                             @if($employee_role->role_name == "employee")
+																  	@foreach($task_status as $task_status)	
+																      @if($task_status->task_board_name == "assigned")
+																<li><a href="{{$task_status->id}}" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a> </li>
+																     @endif
+
+																       @if($task_status->task_board_name == "admin review")
+																       <li><a href="{{$task_status->id}}" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a></li>
+																       	@endif
+																       @endforeach
+																@else
+																															   
+																  	@foreach($task_status as $task_status)				  	 
+																		<li   value="{{$task_status->id}}" >
+																		<a href="#" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a>
+																	    </li>
+																	  @endforeach	
+																@endif
 				                           </ul>
 				                        </div>
 				                     </div>

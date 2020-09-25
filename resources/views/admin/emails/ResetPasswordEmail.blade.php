@@ -3,7 +3,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description"><meta name="author">
 	<title>Business Box</title> 
-	<link rel="stylesheet" href="email.css">
+	<link rel="stylesheet" href="{{asset('email.css')}}">
 	 <!--[if mso]><style type="text/css">body,table,td{font-family:Arial,Helvetica,sans-serif!important}a{text-decoration:none}</style><![endif]--> </head> 
 	 <body style="margin:0;padding:0;background-color:#ffffff;">
 

@@ -8,4 +8,9 @@ class Roles extends Model
 {
    	protected $table = 'roles';
     protected $fillable = [ 'role_name','status','deleted'];
+
+ 	public function employees()
+    {
+        return $this->belongsToMany('App\Empoyees');
+    }
 }

@@ -35,25 +35,34 @@ class TasksController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function gettasks($id)
     {
       
       // $emp = Auth::user();
 
-     //  dd($emp);
+       //dd($id);
 
-        $projects = Projects::where('deleted','0')->get();
+        $projects = Project_members::join('projects', 'projects.id','=', 'project_members.project_id')->where(['user_id' => $id, 'project_members.deleted' =>'0'])->get();
+
+       // dd($projects);
 
       
-       $tasks = Tasks::where('deleted', '0')->get();
+       $tasks = Task_members::join('tasks', 'tasks.id', '=', 'task_members.task_id')->where(['user_id'=> $id, 'task_members.deleted' =>'0'])->get();
 
        $task_status = Task_boards::where('deleted', '0')->get();
        
-       //dd($tasks);
+      // dd($tasks);
                    
         $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
+        
+       // $user = auth()->user()->employee->user_id;
+  
+       // dd($user);
+        
+        $employee_role = employees::join('roles' , 'roles.id' , '=' , 'employees.role_id')->where(['user_id' => $id ,'employees.deleted' =>'0' ])->first();
 
-       
+        //dd($employee_role);
+
          if(!empty($employees) )
         {
 
@@ -72,7 +81,7 @@ class TasksController extends CommonController
 
         }
 
-        return view('employees.projects.tasks', compact('employees', 'projects','tasks','task_status'));
+        return view('employees.projects.tasks', compact('employees', 'projects','tasks','task_status','employee_role'));
     }
 
     /**
@@ -232,6 +241,57 @@ class TasksController extends CommonController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
+     public function gettaskwindow(Request $request)
+    {
+        $requestData =  $request->all();
+        $id = $request->user()->id;
+        $task_status = Task_boards::where('deleted', '0')->get();
+        //dd($id);
+        $window_data['task_statuses'] = Task_boards::where('deleted', '0')->get();
+        $task = Tasks::where(['deleted' => '0', "id" => (int)$requestData['task_id'] ])->first();
+        $window_data['project'] = Projects::where(['deleted' => '0', "id" => (int)$task['project_id'] ])->first();
+
+        $window_data['project']['task'] = $task;
+        
+        $employee_role = employees::join('roles' , 'roles.id' , '=' , 'employees.role_id')->where(['user_id' => $id ,'employees.deleted' =>'0' ])->first();
+
+        $task_added_by = User::where(['deleted' => '0', "id" => (int) $task['added_by'] ])->first();
+        if(!empty($task_added_by['profile_image']))
+            $window_data['project']['task']['assignee_profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$task_added_by['profile_image']);
+        else
+            $window_data['project']['task']['assignee_profile_image_url'] = '';
+
+        $window_data['project']['task']['assignee_name'] = $task_added_by['name'];
+
+        $task_members = Task_members::where(['deleted' => '0','status'=> '1', "task_id" => (int) $requestData['task_id'] ])->get()->toArray();
+        $project_leaders = Project_members::where(['is_leaders' => '1' ,'deleted' => '0','status'=> '1', "project_id" => (int) $task['project_id'] ])->get()->toArray();
+        $window_data['project']['task']['followers'] = Tasks::getFollowers($task_members,$project_leaders);
+        // print_r("<pre>");
+        // print_r($window_data['project']['task']['followers']);
+        // exit();
+        $data['gettaskwindowhtml'] = view('employees.projects.gettaskwindow',$window_data, compact('employee_role','task_status'))->render();
+        $status   = 200;
+        $response = array(
+            'status'  => 'SUCCESS',
+            'message' => trans('messages.task_add_success'),
+            'ref'     => 'task_add_success',
+            'data'    => $data
+        );
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+    }
+
+
+
+
     public function edit($id)
     {
         //

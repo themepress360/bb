@@ -70,7 +70,7 @@
       		     											 <ul id="task-list">
 															     @foreach($tasks as $task)														 
 																@if($task->project_id == $project->id)
-																<li class="task"  value="{{$task->id}}" onClick="openTask('{{$task->id}}')">
+														<li class="task"  value="{{$task->id}}" onClick="openTask('{{$task->id}}')">
 																	<form id="GetTaskWindowForm">
 																		
 																	</form>

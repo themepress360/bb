@@ -98,33 +98,36 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('updateprofile', array('uses' => 'ProfileController@updateprofile'));
 
 
-        Route::get('tasks', array('uses' => 'TasksController@index'));
+        Route::get('tasks/{id}', array('uses' => 'TasksController@gettasks'));
+        Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
+        
 
        });
 //});
 
-
-
-
-
-
-
-Route::get('/admin/addprojectemail', function () {
-        return view('admin.emails.AddProjectEmail');
-    });
-
-
-Route::get('/admin/client/registration', function () {
-        return view('admin.emails.ClientRegistration');
-    });
-
-
 Route::get('/admin/addtask', function () {
         return view('admin.emails.AddTaskEmail');
     });
+Route::get('/admin/taskadminreview', function () {
+        return view('admin.emails.TaskAdminReviewEmail');
+    });
+Route::get('/admin/taskadminreview', function () {
+        return view('admin.emails.TaskAdminReviewEmail');
+    });
+
+Route::get('/admin/addtaskfollowers', function () {
+        return view('admin.emails.AddTaskFollowersEmail');
+    });
+
+
 Route::get('/admin/taskcomplete', function () {
         return view('admin.emails.TaskCompleteEmail');
     });
+
+Route::get('/admin/taskcompletefollowers', function () {
+        return view('admin.emails.TaskCompleteFollowersEmail');
+    });
+
 Route::get('/admin/passwordreset', function () {
         return view('admin.emails.ResetPasswordEmail');
     });

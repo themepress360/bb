@@ -73,10 +73,13 @@
 												<div class="task-wrapper" >
 													<div class="task-list-container">
 														<div class="task-list-body">
-      		     											 <ul id="task-list" onClick="openTask()">
+      		     											 <ul id="task-list">
 															     @foreach($tasks as $task)														 
 																@if($task->project_id == $project->id)
-																<li class="task"  value="{{$task->id}}" >
+														<li class="task"  value="{{$task->id}}" onClick="getTask('{{$task->id}}')" >
+															<form id="GetTaskWindowForm" style="display:none">
+																		
+																	</form>
 																	<div class="task-container">
 																		<span class="task-action-btn task-check">
 																			<span class="action-circle large complete-btn" title="Mark Complete">
@@ -658,6 +661,8 @@
 																<i class="fa fa-close"></i>
 															</span>
 														</div>
+														
+
 														 <div class="dropdown">
 															  <div class="assignee-info dropdown-toggle" data-toggle="dropdown">
 															  	<div class="assigned-info">
@@ -666,15 +671,29 @@
 																	<div class="task-assignee" id="status-current">Assigned</div>
 																</div>
 
+																
+
 																  <span class="caret"></span></button>
 																  <ul class="dropdown-menu" id="status">
 																
+																@if($employee_role->role_name == "employee")
+																  	@foreach($task_status as $task_status)	
+																      @if($task_status->task_board_name == "assigned")
+																<li><a href="{{$task_status->id}}" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a> </li>
+																     @endif
+
+																       @if($task_status->task_board_name == "admin review")
+																       <li><a href="{{$task_status->id}}" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a></li>
+																       	@endif
+																       @endforeach
+																@else
 																															   
 																  	@foreach($task_status as $task_status)				  	 
 																		<li   value="{{$task_status->id}}" >
 																		<a href="#" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a>
 																	    </li>
 																	  @endforeach	
+																@endif
 
 																   </ul>
 																   
@@ -867,6 +886,25 @@ $(".span-rotate").click(function(){
 
 </script>
 
+
+<script>
+        	$("#status li").on("click",function() {
+                	    			  
+                $('#status-current').text($(this).text());
+                              
+                var color =  $(this).children('a').attr('style');
+               console.log(color);
+  			                
+                $('#status-current').attr('style',color);
+
+            
+           });
+
+        	
+        </script>
+
+
+
 <script>
 
 var dropdown = document.getElementsByClassName("dropdown-btn");
@@ -887,6 +925,46 @@ for (i = 0; i < dropdown.length; i++) {
 
 
 <script>
+
+function getTask(task_id) {
+
+	console.log("Function Called");
+
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
+	$("#GetTaskWindowForm").html('');
+  	var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/gettaskwindow' : '#') }}";  
+    var input = $("<input type=\"hidden\" name=\"task_id\" value=\""+task_id+"\"/>");
+    $("#GetTaskWindowForm").append(input);
+    var form = $('#GetTaskWindowForm').get(0);
+    var formData = new FormData(form);
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response)
+        {
+            if(response.status == "SUCCESS")
+            {
+            	$("#task_window").html('');
+            	$("#task_window").append(response.data.gettaskwindowhtml);
+            	document.getElementById("task_window").style.width = "675px";
+  				document.getElementById("main").style.marginLeft = "0px";
+            }
+            else
+            {
+                toastr['error'](response.message);
+            }    
+        }            
+    });  
+}
+
+
 function openTask() {
   
   document.getElementById("task_window").style.width = "675px";
