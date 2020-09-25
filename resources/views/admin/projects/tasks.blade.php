@@ -660,14 +660,14 @@
 															  	<div class="assigned-info">
 															  	<div class="task-head-title">Status</div>
 
-																	<div class="task-assignee" id="status-current">Assigned</div>
+													<div class="task-assignee" id="status-current" style="">Assigned</div>
 																</div>
 
-																  <span class="caret"></span></button>
+																  <span class="caret"></span>
 																  <ul class="dropdown-menu" id="status">
 																  	@foreach($task_status as $task_status)
 											<li   value="{{$task_status->id}}" >
-											<a href="#" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a>
+											<a id="style" href="#" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a>
 										    </li>
 																  	 @endforeach
 																    </ul>
@@ -975,9 +975,22 @@ function closeNav() {
         	$("#status li").on("click",function() {
                 	    			  
                 $('#status-current').text($(this).text());
-			});
 
+                //var color = $('#style').attr("style");
+                
+                var color =  $(this).children('a').attr('style');
+  			   //console.log(value)
+              
+                $('#status-current').attr('style',color);
+
+               // alert(dataId);
+
+           });
+
+        	
         </script>
+
+
 
         <script>
         	$("#status li").on("click",function() {

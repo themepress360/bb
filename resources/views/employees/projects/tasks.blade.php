@@ -668,12 +668,16 @@
 
 																  <span class="caret"></span></button>
 																  <ul class="dropdown-menu" id="status">
+																
+																															   
 																  	@foreach($task_status as $task_status)				  	 
 																		<li   value="{{$task_status->id}}" >
 																		<a href="#" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a>
 																	    </li>
 																	  @endforeach	
-																    </ul>
+
+																   </ul>
+																   
 															</div>
 														</div>
 													</div>

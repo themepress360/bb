@@ -90,6 +90,7 @@ class TasksController extends CommonController
             'due_date'   => 'required',
             'project_id'   => 'required',
             'team_members' => 'required',
+            'priority' => 'required',
            
             
         ];
@@ -111,6 +112,7 @@ class TasksController extends CommonController
                 'task_title' => strtolower($taskData['task_title']),
                 'project_id' => $taskData['project_id'],
                 'description'   => strip_tags($taskData['description']),
+                'priority'   => strip_tags($taskData['priority']),
                 'due_date'    => $taskData['due_date'],
                 'status'  => 'assigned',
                 'deleted'  => '0',

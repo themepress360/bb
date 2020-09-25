@@ -38,6 +38,10 @@ class TasksController extends CommonController
     public function index()
     {
       
+      // $emp = Auth::user();
+
+     //  dd($emp);
+
         $projects = Projects::where('deleted','0')->get();
 
       
