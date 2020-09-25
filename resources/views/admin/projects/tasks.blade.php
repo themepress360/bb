@@ -1006,67 +1006,7 @@ function closeNav() {
             }
 
         </script>
-
-        <script>
-        	$("#status li").on("click",function() {
-                	    			  
-                $('#status-current').text($(this).text());
-
-                //var color = $('#style').attr("style");
-                
-                var color =  $(this).children('a').attr('style');
-  			   //console.log(value)
-              
-                $('#status-current').attr('style',color);
-
-               // alert(dataId);
-
-           });
-
-        	
-        </script>
-
-
-
-        <script>
-        	$("#status li").on("click",function() {
-              
-              $.ajaxSetup({
-			    headers: {
-			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			    }
-			});
-        		
-                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/updatetaskstatus' : '#') }}";  
-              
-                var status = $(this).text();
-                console.log(status);
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                   
-                    data: {status:status},
-                    
-                    success: function(response)
-                    {
-                        if(response.status == "SUCCESS")
-                        {
-                            toastr['success'](response.message);
-                            window.location = "";
-                        }
-                        else
-                        {
-                            toastr['error'](response.message);
-                        }    
-                    }
-                    
-                }); 
-           
-              
-			});
-
-        </script>
+          
 
 
 

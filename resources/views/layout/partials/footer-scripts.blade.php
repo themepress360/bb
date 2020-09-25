@@ -17,6 +17,7 @@
 		<script src="{{asset('js/moment.min.js')}}" type='application/javascript'></script>
 		<script src="{{asset('js/bootstrap-datetimepicker.min.js')}}" type='application/javascript'></script>
 		
+		
 		<!-- Calendar JS -->
 		<script src="{{asset('js/jquery-ui.min.js')}}" type='application/javascript'></script>
         <script src="{{asset('js/fullcalendar.min.js')}}" type='application/javascript'></script>

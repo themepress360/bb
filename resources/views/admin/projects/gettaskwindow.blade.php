@@ -1,3 +1,8 @@
+@push('styles')
+<!-- Datetimepicker CSS -->
+		<link rel="stylesheet" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
+@endpush		
+
 <div class="chat-window">
 	<div class="fixed-header">
 		<div class="navbar">
@@ -30,7 +35,7 @@
 				                              <img alt="{{ !empty($project['task']['assignee_name']) ? ucwords($project['task']['assignee_name']) : '-' }}" src="{{ !empty($project['task']['assignee_profile_image_url']) ? $project['task']['assignee_profile_image_url'] : '-' }}">
 				                           </div>
 				                           <div class="assigned-info">
-				                              <div class="task-head-title">Assignee To</div>
+				                              <div class="task-head-title">Assignee </div>
 				                              <div class="task-assignee">{{ !empty($project['task']['assignee_name']) ? ucwords($project['task']['assignee_name']) : '-' }}</div>
 				                           </div>
 				                        </a>
@@ -38,7 +43,9 @@
 				                        <i class="fa fa-close"></i>
 				                        </span>
 				                     </div>
-				                     <div class="task-due-date">
+				                    
+				                    <div class="dropdown">
+				                     <div class="task-due-date" data-toggle="dropdown" id="date-picker">
 				                        <a href="#">
 				                           <div class="due-icon">
 				                              <span>
@@ -46,22 +53,27 @@
 				                              </span>
 				                           </div>
 				                           <div class="due-info">
-				                              <div class="task-head-title">Due Date</div>
-				                              <div class="due-date">{{ !empty($project['task']['due_date']) ? date("M j",strtotime(str_replace('/', '-', $project['task']['due_date']))) : '-' }}</div>
+				                              <div class="task-head-title due-date-title">Due Date</div>
+				                              <div class="due-date" id="due-date" style="">{{ !empty($project['task']['due_date']) ? date("M j",strtotime(str_replace('/', '-', $project['task']['due_date']))) : '-' }}</div>
+	 <input type="text" name='due_date' class="form-control datetimepicker" id="datepicker" style="display:none;" 
+	 value ="{{ !empty($project['task']['due_date']) ? date("M j",strtotime(str_replace('/', '-', $project['task']['due_date']))) : '-' }}">
 				                           </div>
-				                           <div id="due-date"></div>
+				                            
+				                           <div ></div>
 				                        </a>
-				                        <span class="remove-icon">
-				                        <i class="fa fa-close"></i>
-				                        </span>
+				                       
 				                     </div>
+				                 </div>
+				            
+
+
 				                     <div class="dropdown">
 				                        <div class="assignee-info dropdown-toggle" data-toggle="dropdown">
 				                           <div class="assigned-info">
 				                              <div class="task-head-title">Status</div>
-				                              <div class="task-assignee" id="status-current">Assigned</div>
+				                              <div class="task-assignee" id="status-current" style="">Assigned</div>
 				                           </div>
-				                           <span class="caret"></span></button>
+				                           <span class="caret"></span>
 				                           <ul class="dropdown-menu" id="status">
 				                              @foreach($task_statuses as $task_status)
 				                              <li   value="{{$task_status->id}}" >
@@ -71,6 +83,7 @@
 				                           </ul>
 				                        </div>
 				                     </div>
+				                     
 				                  </div>
 				                  <hr class="task-line">
 				                  <div class="task-textarea">
@@ -223,13 +236,42 @@
 				      </div>
 				   </div>
 				</div>
-				<script>
+
+@push('scripts')
+
+<!-- Bootstrap Core JS -->
+        <script src="{{asset('js/popper.min.js')}}" type='application/javascript'></script>
+        <script src="{{asset('js/bootstrap.min.js')}}" type='application/javascript'></script>
+		
+		<script src="{{asset('js/jquery-ui.min.js')}}" type='application/javascript'></script>
+		<script src="{{asset('js/jquery.ui.touch-punch.min.js')}}" type='application/javascript'></script>
+		
+		<!-- Datetimepicker JS -->
+		<script src="{{asset('js/moment.min.js')}}" type='application/javascript'></script>
+		<script src="{{asset('js/bootstrap-datetimepicker.min.js')}}" type='application/javascript'></script>
+
+		
+@endpush
+
+
+
+				 <script>
         	$("#status li").on("click",function() {
                 	    			  
                 $('#status-current').text($(this).text());
-			});
+                              
+                var color =  $(this).children('a').attr('style');
+               console.log(color);
+  			                
+                $('#status-current').attr('style',color);
 
+            
+           });
+
+        	
         </script>
+
+			
 
         <script>
         	$("#status li").on("click",function() {
@@ -270,3 +312,35 @@
 			});
 
         </script>
+      
+
+<script>
+
+
+//$("#date-picker").on("click",function() {
+
+//$('#datepicker').attr('style','');
+
+//});
+
+</script>
+
+<script>
+	
+$("#date-picker").on("click",function() {
+
+$('.due-date-title').attr('style','display:none');
+$("#due-date").attr('style','display:none');
+
+$('#datepicker').attr('style','display:block;width:125px;height:25px');
+
+
+
+//$('.task-datetimepicker').datepicker({
+  //  format: 'mm/dd/yyyy',
+    
+//});
+
+});
+
+</script>
