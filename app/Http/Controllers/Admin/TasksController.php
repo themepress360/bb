@@ -210,6 +210,47 @@ class TasksController extends CommonController
 
     }
 
+    public function gettaskwindow(Request $request)
+    {
+        $requestData =  $request->all();
+        $window_data['task_statuses'] = Task_boards::where('deleted', '0')->get();
+        $task = Tasks::where(['deleted' => '0', "id" => (int)$requestData['task_id'] ])->first();
+        $window_data['project'] = Projects::where(['deleted' => '0', "id" => (int)$task['project_id'] ])->first();
+        $window_data['project']['task'] = $task;
+
+        $task_added_by = User::where(['deleted' => '0', "id" => (int) $task['added_by'] ])->first();
+        if(!empty($task_added_by['profile_image']))
+            $window_data['project']['task']['assignee_profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$task_added_by['profile_image']);
+        else
+            $window_data['project']['task']['assignee_profile_image_url'] = '';
+
+        $window_data['project']['task']['assignee_name'] = $task_added_by['name'];
+
+        $task_members = Task_members::where(['deleted' => '0','status'=> '1', "task_id" => (int) $requestData['task_id'] ])->get()->toArray();
+        $project_leaders = Project_members::where(['is_leaders' => '1' ,'deleted' => '0','status'=> '1', "project_id" => (int) $task['project_id'] ])->get()->toArray();
+        $window_data['project']['task']['followers'] = Tasks::getFollowers($task_members,$project_leaders);
+        // print_r("<pre>");
+        // print_r($window_data['project']['task']['followers']);
+        // exit();
+        $data['gettaskwindowhtml'] = view('admin.projects.gettaskwindow',$window_data)->render();
+        $status   = 200;
+        $response = array(
+            'status'  => 'SUCCESS',
+            'message' => trans('messages.task_add_success'),
+            'ref'     => 'task_add_success',
+            'data'    => $data
+        );
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+    }
+
     /**
      * Display the specified resource.
      *
