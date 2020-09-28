@@ -65,5 +65,60 @@ class ExperienceController extends CommonController
         array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
         return \Response::json($data,200);
     }
+
+     public function saveEmpExperience(Request $request)
+    {
+       
+         $user = $request->emp_id;
+         ($user);
+        $rules = [
+            'expirences'      => 'required|Array'
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if (!$validator->fails()) 
+        {
+            $requestData = $request->all();
+            $user = $request->emp_id;
+            $experiences_exists = Experiences::where(['user_id' =>  $user,'deleted' => '0'])->get()->toArray();
+            if(!empty($experiences_exists))
+            {
+                $delete_experiences = Experiences::where('user_id',  $user)->update(['deleted' => '1']);
+            }
+            foreach($requestData['expirences'] as $key => $experience)
+            {
+                $data['company_name'] = trim(strtolower($experience['company_name']));
+                $data['location']   = trim(strtolower($experience['location']));
+                $data['job_position'] = trim(strtolower($experience['job_position']));
+                $data['period_from'] = trim(strtolower($experience['period_from']));
+                $data['period_to'] = trim(strtolower($experience['period_to']));
+                $data['deleted'] = '0';
+                $data['status']   = '1';
+                $data['user_id'] = (int) $user;
+                $add_experience_information = Experiences::create($data);
+                $status   = 200;
+                $response = array(
+                    'status'  => 'SUCCESS',
+                    'message' => trans('messages.experience_add_success'),
+                    'ref'     => 'experience_add_success',
+                );
+            }
+        } else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+    }
 }
 

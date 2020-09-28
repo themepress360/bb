@@ -89,7 +89,7 @@
                         <div class="kanban-cont" >
                                               
                           
-
+                            
                             <div class="kanban-list kanban-success">
                                  
                                    <div class="kanban-header" style="background-color:{{$task_boards[0]['task_board_color']}}">
@@ -142,6 +142,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                  
                                    </div>
                                                         
                                 </div>

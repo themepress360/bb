@@ -8355,3 +8355,57 @@ ul.comment-list li ul.children {
     cursor: inherit;
     background-color: #fff !important;
 }
+
+.add_follower{
+ 
+	width: max-content;
+}
+
+.follower-tag{
+
+	background-color:#EEF0F8;
+	border-radius:5px;
+	margin-left:2px;
+	margin-right:2px;
+	padding-right: 5px;
+	padding-left: 5px;
+	padding-top: 3px;
+	display: inline-flex;
+	align-items: center;
+	height: 35px
+}
+
+.tag-control{
+	
+	max-width:500px;
+	height:55px;
+	padding: .375rem .75rem;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	    border-top-color: rgb(206, 212, 218);
+	    border-right-color: rgb(206, 212, 218);
+	    border-bottom-color: rgb(206, 212, 218);
+	    border-left-color: rgb(206, 212, 218);
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.tag-input {
+
+    overflow-y:hidden;
+	overflow-x: auto;
+}
+
+
+.scrollbars::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* Chrome/Safari/Webkit */
+}
+
+
+
+.scrollbars{
+
+	 scrollbar-width: thin;
+
+}

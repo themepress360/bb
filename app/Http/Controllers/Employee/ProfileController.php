@@ -26,7 +26,14 @@ class ProfileController extends CommonController
 	public function index(Request $request)
 	{
 		
-        $data['employee'] = User::Select('users.*','departments.prefix', 'departments.name as deptartment_name', 'designations.name as designation_name', 'role_name as role')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->first();
+      $id = Auth::user()->id;
+
+     // dd($id);
+
+        $data['employee'] = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['users.id'=> $id, 'type' => 'employee','users.deleted' => '0'])->first();
+
+
+     //   $data['employee'] = User::Select('users.*','departments.prefix', 'departments.name as deptartment_name', 'designations.name as designation_name', 'role_name as role')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->first();
 
        // dd($data['employee']);
 

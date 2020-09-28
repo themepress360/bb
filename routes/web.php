@@ -66,6 +66,9 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('editemployee', array('uses' => 'EmployeeController@editEmployee'));
         Route::get('employees-list', array('uses' => 'EmployeeController@employeelist'));
 
+        Route::post('saveEmpEducation', array('uses' => 'EducationInformationController@saveEmpEducation'));
+        Route::post('saveEmpExperience', array('uses' => 'ExperienceController@saveEmpExperience'));
+
 
         Route::get('projects',  array('uses' => 'ProjectsController@index'));
         Route::post('addprojects',  array('uses' => 'ProjectsController@addprojects'));
@@ -98,7 +101,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('updateprofile', array('uses' => 'ProfileController@updateprofile'));
 
 
-        Route::get('tasks/{id}', array('uses' => 'TasksController@gettasks'));
+        Route::get('tasks', array('uses' => 'TasksController@gettasks'));
         Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
         
 

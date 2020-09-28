@@ -359,7 +359,7 @@
 							</div>
 							<div class="modal-body">
 								<div class="input-group m-b-30">
-									<input placeholder="Search to add" class="form-control search-input" type="text">
+						<input placeholder="Add Followers" class="form-control search-input" type="text">
 									<span class="input-group-append">
 										<button class="btn btn-primary">Search</button>
 									</span>
@@ -421,22 +421,26 @@
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
+								
 							</div>
 							<div class="modal-body">
-								<div class="input-group m-b-30">
-									<input placeholder="Search to add" class="form-control search-input" type="text">
-									<span class="input-group-append">
+								<div class="m-b-30 tag-control tag-input scrollbars">
+									<div class="add_follower d-flex " id="add_followers">
+				
+				<input placeholder="Add Follower" type="hidden" name="add_followers">
+								</div>
+									<!--<span class="input-group-append">
 										<button class="btn btn-primary">Search</button>
-									</span>
+									</span> -->
 								</div>
 								<div>
-									<ul class="chat-user-list">
+									<ul class="chat-user-list" id="followers">
 										<li>
 											<a href="#">
 												<div class="media">
 													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
 													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Jeffery Lalor</div>
+														<div class="user-name f-name">Jeffery Lalor</div>
 														<span class="designation">Team Leader</span>
 													</div>
 												</div>
@@ -447,7 +451,7 @@
 												<div class="media">
 													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
 													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Catherine Manseau</div>
+														<div class="user-name f-name">Catherine Manseau</div>
 														<span class="designation">Android Developer</span>
 													</div>
 												</div>
@@ -458,7 +462,7 @@
 												<div class="media">
 													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
 													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Wilmer Deluna</div>
+														<div class="user-name f-name">Wilmer Deluna</div>
 														<span class="designation">Team Leader</span>
 													</div>
 												</div>
@@ -856,6 +860,31 @@
 			<!-- /Page Wrapper -->
 			</div>
 		<!-- /Main Wrapper -->
+
+<script>
+
+	$('#followers li').on('click', function(){
+
+		var follower =  $(this).find("div.f-name").text();
+
+$('#add_followers').append('<span id="name" align="center" class="follower-tag">' + follower + '<i class="fa fa-close" id="close" aria-hidden="true"></i></span>');
+
+	//	$('#add_followers').val(follower);
+
+		console.log(follower);
+
+	});
+</script>
+
+<script>
+
+	$(document).on('click', '#close', function(){
+
+		 $(this).closest('#name').remove();
+
+	});
+</script>
+
 
 <script>
 $(".rotate").click(function(){
