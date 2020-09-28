@@ -75,8 +75,11 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('gettask', array('uses' => 'TasksController@getTask'));
         Route::post('updatetaskstatus', array('uses' => 'TasksController@updateTaskStatus'));
         Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
+        Route::post('addfollowers', array('uses' => 'TasksController@addfollowers'));
 
         Route::get('task-board', array('uses' => 'TaskBoardController@getTaskboard'));
+        Route::post('getprojecttaskboard', array('uses' => 'TaskBoardController@getprojecttaskboard'));
+        
         Route::post('addtaskboard', array('uses' => 'TaskBoardController@addTaskboard'));
 
         Route::get('task-settings', array('uses' => 'TaskBoardController@defaultSettings'));
@@ -98,7 +101,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('updateprofile', array('uses' => 'ProfileController@updateprofile'));
 
 
-        Route::get('tasks/{id}', array('uses' => 'TasksController@gettasks'));
+        Route::get('tasks', array('uses' => 'TasksController@gettasks'));
         Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
         
 

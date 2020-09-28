@@ -36,7 +36,7 @@
 								<a href="#"><i class="la la-rocket"></i> <span> Projects</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a href="projects">Projects</a></li>
-									<li><a href="tasks/{{auth()->user()->employee->user_id}}">Tasks</a></li>
+									<li><a href="tasks">Tasks</a></li>
 									<li><a href="task-board">Task Board</a></li>
 								</ul>
 							</li>

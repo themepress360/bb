@@ -32,11 +32,13 @@
 				                     <div class="assignee-info">
 				                        <a href="#" data-toggle="modal" data-target="#assignee">
 				                           <div class="avatar">
-				                              <img alt="{{ !empty($project['task']['assignee_name']) ? ucwords($project['task']['assignee_name']) : '-' }}" src="{{ !empty($project['task']['assignee_profile_image_url']) ? $project['task']['assignee_profile_image_url'] : '-' }}">
+				                              @if(!empty($project['task']['assign_to_profile_image_url']))
+				                              <img alt="{{ !empty($project['task']['assign_to_name']) ? ucwords($project['task']['assign_to_name']) : '-' }}" src="{{ !empty($project['task']['assign_to_profile_image_url']) ? $project['task']['assign_to_profile_image_url'] : '-' }}">
+				                           		@endif
 				                           </div>
 				                           <div class="assigned-info">
-				                              <div class="task-head-title">Assignee </div>
-				                              <div class="task-assignee">{{ !empty($project['task']['assignee_name']) ? ucwords($project['task']['assignee_name']) : '-' }}</div>
+				                              <div class="task-head-title">Assign To </div>
+				                              <div class="task-assignee">{{ !empty($project['task']['assign_to_name']) ? ucwords($project['task']['assign_to_name']) : '-' }}</div>
 				                           </div>
 				                        </a>
 				                        <span class="remove-icon">
@@ -237,6 +239,60 @@
 				   </div>
 				</div>
 
+				<!-- Task Followers Modal -->
+				<div id="task_followers" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered" role="document"> 
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Add followers to this task</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="m-b-30 tag-control tag-input scrollbars">
+									<div class="add_follower d-flex" id="add_followers" style="width: max-content;">
+				
+									<input placeholder="Add Follower" type="hidden" name="add_followers">
+								</div>
+									<!--<span class="input-group-append">
+										<button class="btn btn-primary">Search</button>
+									</span> -->
+								</div>
+								
+								<div>
+									<ul class="chat-user-list" id="followers">
+										@if($project['members'])
+										<form id="GetAddFollowerForm">
+											
+										</form>
+										@foreach($project['members'] as $key => $member)
+										<li>
+											<!-- {{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$member['id'] : '#') }} -->
+											<a href="" onclick="return false;">
+												<div class="media">
+													<span class="avatar"><img alt="" src="{{!empty($member['profile_image_url']) ? $member['profile_image_url'] : '-'}}"></span>
+													<div class="media-body media-middle text-nowrap">
+														<input type="hidden" name="user_id" class="f-id" value="{{!empty($member['id']) ? $member['id'] : '-'}}">
+														<div class="user-name f-name">{{!empty($member['name']) ? ucwords($member['name']) : '-'}}</div>
+														<span class="designation">{{!empty($member['designation_name']) ? ucwords($member['designation_name']) : '-'}}</span>
+													</div>
+												</div>
+											</a>
+										</li>
+										@endforeach
+										@endif
+									</ul>
+								</div>
+								<div class="submit-section">
+									<a onClick="AddFollowers()" class="btn btn-primary submit-btn">Add to Follow</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Task Followers Modal -->
+
 @push('scripts')
 
 <!-- Bootstrap Core JS -->
@@ -253,8 +309,43 @@
 		
 @endpush
 
+<script>
+	
+$('#task_followers').insertAfter($('body'));
 
+</script>
 
+<script>
+	jQuery('#datepicker').html('');
+	jQuery('#datepicker').datetimepicker({ format: 'DD/MM/YY' });
+	var added_followers = [];
+	$('#followers li').on('click', function(){
+		var follower =  $(this).find("div.f-name").text();
+		var id = $(this).find("input.f-id").val();
+		if(typeof  added_followers[id] === 'undefined') 
+      	{
+        	added_followers[id] = id;
+        	// console.log(added_followers);
+        	// console.log("-----------------");
+			$('#add_followers').append('<span id="name" align="center" class="follower-tag">' + follower + '<i class="fa fa-close" id="close" aria-hidden="true"><input class="remove-id" type="hidden" value="'+id+'" id="remove_'+id+'"></i></span>');
+		}
+		else
+      	{
+        	toastr['error']( follower + " Already Added" );
+      	}
+	});
+	
+	$(document).on('click', '#close', function(){
+		$(this).closest('#name').remove();
+		var id = $(this).find("input.remove-id").val();
+		const index = added_followers.indexOf(added_followers[id]);
+		if (index > -1) {
+  			added_followers.splice(index, 1);
+  			// console.log("+++++++++++++");
+  			// console.log(added_followers);
+		}
+	});
+</script>
 				 <script>
         	$("#status li").on("click",function() {
                 	    			  
@@ -274,8 +365,9 @@
 			
 
         <script>
+        	var task_id = "{{$project['task']['id']}}";
         	$("#status li").on("click",function() {
-              
+			console.log(task_id);             
               $.ajaxSetup({
 			    headers: {
 			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -291,7 +383,7 @@
                     type: "POST",
                     url: url,
                    
-                    data: {status:status},
+                    data: {status:status,task_id:task_id},
                     
                     success: function(response)
                     {
@@ -313,7 +405,46 @@
 
         </script>
       
-
+<script type="text/javascript">
+	function AddFollowers()
+	{
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		$("#GetAddFollowerForm").html('');
+  		var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addfollowers' : '#') }}";  
+    	var input = $("<input type=\"hidden\" name=\"task_id\" value=\""+task_id+"\"/>");
+    	//var added_followers = Object.keys(added_followers);                     
+        
+    	$("#GetAddFollowerForm").append(input);
+    	var form = $('#GetAddFollowerForm').get(0);
+    	var formData = new FormData(form);	
+    	var follows = Object.keys(added_followers);
+	    formData.append('followers', follows);
+	    $.ajax({
+	        type: "POST",
+	        url: url,
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        success: function(response)
+	        {
+	            if(response.status == "SUCCESS")
+	            {
+	            	toastr['success'](response.message);
+                    window.location = "";
+	            }
+	            else
+	            {
+	                toastr['error'](response.message);
+	            }    
+	        }            
+	    }); 
+		// alert("here");
+	}
+</script>
 <script>
 
 

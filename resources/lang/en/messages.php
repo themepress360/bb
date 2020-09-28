@@ -38,6 +38,11 @@ return [
   'task_add_success'  => 'Task Added Successfully',
   'error_task_exists' => 'Task Already Exists',
   'task_board_add_success' => 'Task board added successfully',
-  'error_task_board_exists' => 'Task board already exists'
+  'error_task_board_exists' => 'Task board already exists',
+  'error_task_id_invalid' => "Task id is invalid",
+  "error_task_board_status_invalid" => "Task board have not this status",
+  "updateTaskStatus_edit_success" => "Task status update successfully.",
+  "addfollower_success" => "Follower added successfully",
+  "error_task_member_exists" => "Already added this followers"
 
 ];
