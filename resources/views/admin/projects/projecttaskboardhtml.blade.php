@@ -1,4 +1,4 @@
-@extends('layout.mainlayout')
+
 <div class="row board-view-header">
                     <div class="col-4">
                         <div class="pro-teams" style="display:inline-flex">
@@ -64,7 +64,7 @@
                             @foreach ($task_boards as $task_board)
                            
 
-                            <div class="kanban-list kanban-success">
+                            <div class="kanban-list kanban-success" >
                               
                                 <div class="kanban-header" style="background-color:{{$task_board['task_board_color']}}">
                                 <span class="status-title">{{ucwords($task_board['task_board_name'])}}</span>
@@ -78,9 +78,11 @@
                                      </div>
                                   </div>
                                </div>
-                                 @if(!empty($task_board['tasks']))
-                                @foreach($task_board['tasks'] as $task)                                                        
-                                   <div class="kanban-wrap">
+                                                                                         
+                                 
+                                   <div class="kanban-wrap connectedSortable">
+                                    @if(!empty($task_board['tasks']))
+                                @foreach($task_board['tasks'] as $task)
                                       <div class="card panel">
                                          <div class="kanban-box">
                                             <div class="task-board-header">
@@ -116,9 +118,11 @@
                                             </div>
                                          </div>
                                       </div>
-                                   </div>
-                                   @endforeach
+                                      @endforeach
                                    @endif
+                                   </div>
+                                
+                                   
                                <div class="add-new-task">
                                   <a href="javascript:void(0);" data-toggle="modal" data-target="#add_task_modal">Add New Task</a>
                                </div>
@@ -130,3 +134,12 @@
                         </div>
                     </div>
                 </div>
+
+  <script>
+ $( function() {
+    $( ".kanban-wrap" ).sortable({
+      connectWith: ".connectedSortable"
+    }).disableSelection();
+  } );
+    
+</script>
