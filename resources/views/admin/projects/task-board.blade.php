@@ -10,7 +10,7 @@
                 <div class="page-header">
                     <div class="row">
                         <div class="col-sm-12">
-                            <label class="page-title">Task Board</lable>
+                            <label class="page-title">Task Board</label>
                                  <select class="form-control select">
                                    <option value="selected">Select</option>
                                    @foreach($projects as $project) 
@@ -26,63 +26,12 @@
                     </div>
                 </div>
                 <!-- /Page Header -->
-                
-                <div class="row board-view-header">
-                    <div class="col-4">
-                        <div class="pro-teams" style="display:none">
-                            <div class="pro-team-lead">
-                                <h4>Lead</h4>
-                                <div class="avatar-group">
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-11.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-01.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-16.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <a href="" class="avatar-title rounded-circle border border-white" data-toggle="modal" data-target="#assign_leader"><i class="fa fa-plus"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="pro-team-members">
-                                <h4>Team</h4>
-                                <div class="avatar-group">
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-02.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-09.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-12.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <a href="" class="avatar-title rounded-circle border border-white" data-toggle="modal" data-target="#assign_user"><i class="fa fa-plus"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-8 text-right">
-                        <a href="#" class="btn btn-white float-right ml-2" data-toggle="modal" data-target="#add_task_board"><i class="fa fa-plus"></i> Create List</a>
-                        <a href="project-view" class="btn btn-white float-right" title="View Board"><i class="fa fa-link"></i></a>
-                    </div>
+                <form id="GetTaskBoardForm">                                                        
+                </form>
+                <div id="getprojecttaskboard">
 
-                    <div class="col-12">
-                        <div class="pro-progress" style="display:none">
-                            <div class="pro-progress-bar">
-                                <h4>Progress</h4>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 20%"></div>
-                                </div>
-                                <span>20%</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+
                 
                 <div class="kanban-board card mb-0" style="display:none">
                     <div class="card-body" >
@@ -208,32 +157,10 @@
                             </div>
                             <div class="form-group task-board-color">
                                 <label>Task Board Color</label>
-                                <div class="board-color-list">
-                                    <label class="board-control board-primary">
-                                        <input name="radio" type="radio" class="board-control-input" value="primary" checked="">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-success">
-                                        <input name="radio" type="radio" class="board-control-input" value="success">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-info">
-                                        <input name="radio" type="radio" class="board-control-input" value="info">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-purple">
-                                        <input name="radio" type="radio" class="board-control-input" value="purple">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-warning">
-                                        <input name="radio" type="radio" class="board-control-input" value="warning">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-danger">
-                                        <input name="radio" type="radio" class="board-control-input" value="danger">
-                                        <span class="board-indicator"></span>
-                                    </label>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend bfh-colorpicker" data-name="task_board_color">
                                 </div>
+                               </div>
                             </div>
                             <div class="m-t-20 text-center">
                                 <button class="btn btn-primary btn-lg">Submit</button>
@@ -526,20 +453,50 @@
 $(document).ready(function(){
     $("select.select").change(function(){
         var selectedProject = $(this).children("option:selected").val();
-    //    alert("You have selected the country - " + selectedCountry);
-
-        if( selectedProject != 'selected'){
-            $('.pro-teams').css('display','inline-flex');
-            $('.pro-progress').css('display','block');
-              $('.kanban-board').css('display','block');
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $("#GetTaskBoardForm").html('');
+        var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/getprojecttaskboard' : '#') }}";  
+        var input = $("<input type=\"hidden\" name=\"project_id\" value=\""+selectedProject+"\"/>");
+        $("#GetTaskBoardForm").append(input);
+        var form = $('#GetTaskBoardForm').get(0);
+        var formData = new FormData(form);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response)
+            {
+                if(response.status == "SUCCESS")
+                {
+                    $("#getprojecttaskboard").html('');
+                    $("#getprojecttaskboard").append(response.data.projecttaskboardhtml);
+                }
+                else
+                {
+                    toastr['error'](response.message);
+                }    
+            }            
+        });
+        // alert("You have selected the country - " + selectedProject);
+        // if( selectedProject != 'selected'){
+        //     $('.pro-teams').css('display','inline-flex');
+        //     $('.pro-progress').css('display','block');
+        //       $('.kanban-board').css('display','block');
                 
               
-        }else{
+        // }else{
 
-              $('.pro-teams').css('display','none');
-              $('.pro-progress').css('display','none');
-              $('.kanban-board').css('display','none');
-        }
+        //       $('.pro-teams').css('display','none');
+        //       $('.pro-progress').css('display','none');
+        //       $('.kanban-board').css('display','none');
+        // }
 
 
     });

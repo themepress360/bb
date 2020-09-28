@@ -18,9 +18,10 @@ class CreateTasksTable extends Migration
             $table->bigInteger('project_id');
             $table->string('task_title');
             $table->string('description');
-            $table->bigInteger('priority');
+            $table->enum('priority',['high','low','normal']);
             $table->string('due_date');
             $table->bigInteger('added_by');
+            $table->bigInteger('assign_to');
             $table->string('status');
             $table->enum('deleted',['1','0']);
             $table->timestamps();

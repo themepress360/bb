@@ -270,4 +270,51 @@ class TaskBoardController extends CommonController
     {
         //
     }
+
+    public function getprojecttaskboard(Request $request)
+    {
+        $requestData =  $request->all();
+        $window_data = [];
+        
+        $window_data['task_boards'] = Task_boards::where(['deleted' => '0'])->get()->toArray();
+
+        if(!empty($window_data['task_boards']))
+        {
+            foreach($window_data['task_boards'] as $key => $task_boards)
+            {
+                $window_data['task_boards'][$key]['tasks'] = Tasks::where(['status' => '1','deleted' => '0','status' => $task_boards['task_board_name'],'project_id' => (int) $requestData['project_id']])->get()->toArray();
+                if(!empty($window_data['task_boards'][$key]['tasks']))
+                {
+                    foreach ($window_data['task_boards'][$key]['tasks'] as $key1 => $task) 
+                    {
+                        $task_added_by = User::where(['deleted' => '0', "id" => (int) $task['assign_to'] ])->first();
+                        if(!empty($task_added_by['profile_image']))
+                            $window_data['task_boards'][$key]['tasks'][$key1]['assign_to_profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$task_added_by['profile_image']);
+                        else
+                            $window_data['task_boards'][$key]['tasks'][$key1]['assign_to_profile_image_url'] = '';
+                        $window_data['task_boards'][$key]['tasks'][$key1]['name'] = !empty($task_added_by['name']) ? $task_added_by['name'] : '-';
+                    }
+                }
+            }
+        }
+
+        $data['projecttaskboardhtml'] = view('admin.projects.projecttaskboardhtml',$window_data)->render();
+        
+        $status   = 200;
+        $response = array(
+            'status'  => 'SUCCESS',
+            'message' => '',
+            'ref'     => 'task_board_success',
+            'data'    => $data
+        );
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+    }
 }

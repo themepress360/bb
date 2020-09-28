@@ -38,9 +38,55 @@ class TasksController extends CommonController
     public function gettasks()
     {
       
+
        $is = Auth::user()->id;
 
        //dd($emp);
+
+       $id = Auth::user()->id;
+
+       //dd($emp);
+
+       $is_leader = Project_members::where(['user_id' => $id, 'is_leaders' => '1'])->first();
+
+      // dd($is_leader->is_leaders);
+
+       if($is_leader){
+
+             $projects = Projects::where('deleted','0')->get();
+
+      
+       $tasks = Tasks::where('deleted', '0')->get();
+
+       $task_status = Task_boards::where('deleted', '0')->get();
+       
+       //dd($tasks);
+                   
+        $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
+
+       
+         if(!empty($employees) )
+        {
+
+            foreach( $employees as $key => $employee){
+
+             //   dd($employee->profile_image);
+
+               if(!empty($employee->profile_image))
+
+                $employee->profile_image = User::image_url(config('app.profileimagesfolder'),$employee->profile_image);
+            
+             else
+                     $employee->profile_image = '';
+
+            }
+
+        }
+
+        return view('admin.projects.tasks', compact('employees', 'projects','tasks','task_status'));
+
+       }
+
 
        $is_leader = Project_members::where(['user_id' => $is, 'is_leaders' => '1'])->first();
 
@@ -85,7 +131,7 @@ class TasksController extends CommonController
        
         $projects = Project_members::join('projects', 'projects.id','=', 'project_members.project_id')->where(['user_id' => $is, 'project_members.deleted' =>'0'])->get();
 
-       // dd($projects);
+      //  dd($projects);
 
     
       
