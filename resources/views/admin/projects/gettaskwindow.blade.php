@@ -76,13 +76,13 @@
 				                        <div class="assignee-info dropdown-toggle" data-toggle="dropdown">
 				                           <div class="assigned-info">
 				                              <div class="task-head-title">Status</div>
-				                              <div class="task-assignee" id="status-current" style="">Assigned</div>
+				                              <div class="task-assignee" id="status-current" style="color:{{$task_status_color->task_board_color}}">{{ !empty($project['task']['status']) ? ucwords($project['task']['status']) : '-' }}</div>
 				                           </div>
 				                           <span class="caret"></span>
 				                           <ul class="dropdown-menu" id="status">
 				                              @foreach($task_statuses as $task_status)
 				                              <li   value="{{$task_status->id}}" >
-				                                 <a href="#" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a>
+				                                 <a href="#" class="dropdown-item" style="color:{{$task_status->task_board_color}}">{{ucwords($task_status->task_board_name)}}</a>
 				                              </li>
 				                              @endforeach
 				                           </ul>
@@ -364,15 +364,11 @@ $('#task_followers').insertAfter($('body'));
 </script>
 				 <script>
         	$("#status li").on("click",function() {
-                	    			  
                 $('#status-current').text($(this).text());
-                              
-                var color =  $(this).children('a').attr('style');
+                          var color =  $(this).children('a').attr('style');
                console.log(color);
-  			                
-                $('#status-current').attr('style',color);
-
-            
+  	                $('#status-current').attr('style',color);
+           
            });
 
         	
@@ -382,9 +378,13 @@ $('#task_followers').insertAfter($('body'));
 
         <script>
         	var task_id = "{{$project['task']['id']}}";
-        	$("#status li").on("click",function() {
+        
+        	$("#status li").on("click",function(e) {
+		      
+		      e.preventDefault();
+
 			console.log(task_id);             
-              $.ajaxSetup({
+            $.ajaxSetup({
 			    headers: {
 			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			    }
@@ -397,6 +397,7 @@ $('#task_followers').insertAfter($('body'));
 
                 $.ajax({
                     type: "POST",
+                    async: false,
                     url: url,
                    
                     data: {status:status,task_id:task_id},
@@ -406,8 +407,10 @@ $('#task_followers').insertAfter($('body'));
                         if(response.status == "SUCCESS")
                         {
                             toastr['success'](response.message);
-                            window.location = "";
-                        }
+                            $('#status-current').text(status);
+                            //window.location = "";
+
+                            }
                         else
                         {
                             toastr['error'](response.message);
@@ -415,8 +418,8 @@ $('#task_followers').insertAfter($('body'));
                     }
                     
                 }); 
-           
-              
+             
+           			
 			});
 
         </script>
