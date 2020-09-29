@@ -11,7 +11,7 @@
 					<i class="material-icons">check</i> Mark Complete
 				</a>
 			</div>
-			<ul class="nav float-right custom-menu">
+			<!--<ul class="nav float-right custom-menu">
 				<li class="dropdown dropdown-action">
 				    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 				    <div class="dropdown-menu dropdown-menu-right">
@@ -19,7 +19,10 @@
 				        <a class="dropdown-item" href="javascript:void(0)">Settings</a>
 				    </div>
 				</li>
-			</ul>
+			</ul> -->
+			<div>
+			<i class="fa fa-chevron-right" aria-hidden="true" onClick="closeTask()"></i>
+			</div>
 		</div>
 				   </div>
 				   <div class="chat-contents task-chat-contents">
@@ -308,6 +311,19 @@
 
 		
 @endpush
+
+
+<script>
+
+function closeTask() {
+	console.log('Clicked 123')
+  $("#task_window").removeClass("left-task-window");
+  $("#main").removeClass("all-task-list");
+ // $("#task_window").addClass("closeTask");
+  
+}	
+
+</script>
 
 <script>
 	

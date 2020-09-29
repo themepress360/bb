@@ -707,8 +707,8 @@ function openTask(task_id) {
             {
             	$("#task_window").html('');
             	$("#task_window").append(response.data.gettaskwindowhtml);
-            	document.getElementById("task_window").style.width = "675px";
-  				document.getElementById("main").style.marginLeft = "0px";
+            	$("#task_window").addClass("left-task-window");
+  				$("#main").addClass("all-task-list");
             }
             else
             {
@@ -718,10 +718,7 @@ function openTask(task_id) {
     });  
 }
 
-function closeNav() {
-  document.getElementById("task_window").style.width = "0";
-  document.getElementById("main").style.marginLeft= "auto";
-}
+
 </script>
 
 <script>

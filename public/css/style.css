@@ -8409,3 +8409,143 @@ ul.comment-list li ul.children {
 	 scrollbar-width: thin;
 
 }
+
+.left-task-window{
+
+width: 675px;
+}
+
+.all-task-list{
+	margin-left:0px;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 374px) {
+  /* Styles */
+.left-task-window{
+width: 655px;
+}
+.sidenav {
+
+padding-top:0px;
+	}
+.chat-window{
+
+	width:350px !important;
+}
+
+.task-window {
+width: 100%;
+}
+.task-main-wrapper {
+
+	width:100%;
+}
+
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
+  /* Styles */
+.left-task-window{
+width: 655px;
+}
+.sidenav {
+
+padding-top:0px;
+	}
+.chat-window{
+
+	width:350px !important;
+}
+
+.task-window {
+width: 100%;
+}
+.task-main-wrapper {
+
+	width:100%;
+}
+
+}
+
+@media only screen and (min-device-width: 414px) and (max-device-width: 767px){
+  /* Styles */
+.left-task-window{
+width: 650px;
+}
+.sidenav {
+
+padding-top:0px;
+	}
+.chat-window{
+
+	width:350px !important;
+}
+
+.task-window {
+width: 100%;
+}
+.task-main-wrapper {
+
+	width:100%;
+}
+
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px){
+  /* Styles */
+.left-task-window{
+width: 650px;
+}
+.sidenav {
+
+padding-top:0px;
+	}
+.chat-window{
+
+	width:350px !important;
+}
+
+.task-window {
+width: 100%;
+}
+.task-main-wrapper {
+
+	width:100%;
+}
+
+}
+
+
+@media only screen and (min-device-width: 1200px) and (max-device-width: 1339px) {
+
+    .left-task-window{
+
+width: 420px;
+}
+
+.task-header .assignee-info {
+
+	flex: 0 1 147px !important;
+}
+
+}
+
+@media only screen and (min-device-width: 1440px) and (max-device-width: 1450px) {
+
+.left-task-window{
+
+width: 485px;
+}
+
+.task-header .assignee-info {
+
+	flex: 0 1 147px !important;
+}
+
+}
+
+
+}
+
+
+
