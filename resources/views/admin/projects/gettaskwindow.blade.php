@@ -20,9 +20,10 @@
 				    </div>
 				</li>
 			</ul> -->
-			<div>
-			<i class="fa fa-chevron-right" aria-hidden="true" onClick="closeTask()"></i>
-			</div>
+			
+			<a href="#" class="followers-add"><i class="material-icons" onClick="closeTask()">close</i></a>
+			
+			
 		</div>
 				   </div>
 				   <div class="chat-contents task-chat-contents">
