@@ -92,7 +92,7 @@
 				                  </div>
 				                  <hr class="task-line">
 				                  <div class="task-textarea">
-				                     Project : {{ !empty($project['project_title']) ? ucwords($project['project_title']) : '-' }}
+				                     Project : {{ !empty($project['project_title']) ? ucwords($project['project_title']) : '-' }}</span>
 				                  </div>
 				                  <div class="task-desc">
 				                     <!--<div class="task-desc-icon">
