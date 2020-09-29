@@ -64,7 +64,7 @@
                             @foreach ($task_boards as $task_board)
                            
 
-                            <div class="kanban-list kanban-success" >
+                            <div class="kanban-list kanban-success drag_parent_{{$task_board['task_board_name']}}">
                               
                                 <div class="kanban-header" style="background-color:{{$task_board['task_board_color']}}">
                                 <span class="status-title">{{ucwords($task_board['task_board_name'])}}</span>
@@ -83,7 +83,7 @@
                                    <div class="kanban-wrap connectedSortable">
                                     @if(!empty($task_board['tasks']))
                                 @foreach($task_board['tasks'] as $task)
-                                      <div class="card panel">
+                                      <div class="card panel drag_task_{{$task['id']}}">
                                          <div class="kanban-box">
                                             <div class="task-board-header">
                                                <span class="status-title"><a href="task-view">{{ucwords($task['task_title'])}}</a></span>
@@ -135,11 +135,51 @@
                     </div>
                 </div>
 
-  <script>
- $( function() {
+<script>
+$( function() {
     $( ".kanban-wrap" ).sortable({
       connectWith: ".connectedSortable"
     }).disableSelection();
-  } );
-    
+} );
+
+$( ".kanban-wrap" ).sortable({
+  beforeStop: function( event, ui ) {      
+    // console.log($(ui.item).attr('class'));
+    // console.log($(ui.item).parent().parent().attr('class').split("drag_parent_")[1]);
+    var status = $(ui.item).parent().parent().attr('class').split("drag_parent_")[1];
+    var task = $(ui.item).attr('class').split("drag_task_")[1];
+    var task_id = task.replace(" ui-sortable-handle", "");
+    // console.log(task.replace(" ui-sortable-handle", ""));
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });            
+      var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/updatetaskstatus' : '#') }}";            
+      $.ajax({
+        type: "POST",
+        url: url,             
+        data: {status:status,task_id:task_id},              
+        success: function(response)
+        {
+          if(response.status == "SUCCESS")
+          {
+            toastr['success'](response.message);
+            //window.location = "";
+          }
+          else
+          {
+            toastr['error'](response.message);
+          }    
+        }                    
+      }); 
+    }
+});
+// $( ".kanban-wrap" ).sortable({
+//   activate: function( event, ui ) {  
+//     console.log(event);
+//   console.log($(ui.item).attr('class'));
+//   console.log($(ui.item).parent().parent().attr('class'));
+// }
+// });
 </script>

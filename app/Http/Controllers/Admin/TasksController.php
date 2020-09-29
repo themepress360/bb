@@ -213,10 +213,18 @@ class TasksController extends CommonController
     public function gettaskwindow(Request $request)
     {
         $requestData =  $request->all();
+
+        //dd($requestData);
         $window_data['task_statuses'] = Task_boards::where('deleted', '0')->get();
+      
+              
         $task = Tasks::where(['deleted' => '0', "id" => (int)$requestData['task_id'] ])->first();
         $window_data['project'] = Projects::where(['deleted' => '0', "id" => (int)$task['project_id'] ])->first();
         $window_data['project']['task'] = $task;
+
+        $task_status_color = Task_boards::where(["task_board_name"=> $task->status, 'deleted' => '0'])->first();
+
+         // dd($task_status_color->task_board_color);
 
         if($task['assign_to'] != 0 )
         {
@@ -233,7 +241,7 @@ class TasksController extends CommonController
             $window_data['project']['task']['assign_to_name'] = '';
             $window_data['project']['task']['assign_to_profile_image_url'] = '';
         }
-
+        
         $task_members = Task_members::where(['deleted' => '0','status'=> '1', "task_id" => (int) $requestData['task_id'] ])->get()->toArray();
         $project_leaders = Project_members::where(['is_leaders' => '1' ,'deleted' => '0','status'=> '1', "project_id" => (int) $task['project_id'] ])->get()->toArray();
         $window_data['project']['task']['followers'] = Tasks::getFollowers($task_members,$project_leaders);
@@ -256,7 +264,7 @@ class TasksController extends CommonController
         $window_data['project']['members'] = $members;
         /* To get the all project employee which are exists in this department end */
 
-        $data['gettaskwindowhtml'] = view('admin.projects.gettaskwindow',$window_data)->render();
+        $data['gettaskwindowhtml'] = view('admin.projects.gettaskwindow',$window_data,compact('task_status_color'))->render();
         $status   = 200;
         $response = array(
             'status'  => 'SUCCESS',
