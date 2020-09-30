@@ -43,6 +43,7 @@ return [
   "error_task_board_status_invalid" => "Task board have not this status",
   "updateTaskStatus_edit_success" => "Task status update successfully.",
   "addfollower_success" => "Follower added successfully",
-  "error_task_member_exists" => "Already added this followers"
+  "error_task_member_exists" => "Already added this followers",
+  "update_due_date_success" => "Due Date Updated"
 
 ];

@@ -79,6 +79,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('updatetaskstatus', array('uses' => 'TasksController@updateTaskStatus'));
         Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
         Route::post('addfollowers', array('uses' => 'TasksController@addfollowers'));
+         Route::post('updatetaskduedate', array('uses' => 'TasksController@updateDueDate'));
 
         Route::get('task-board', array('uses' => 'TaskBoardController@getTaskboard'));
         Route::post('getprojecttaskboard', array('uses' => 'TaskBoardController@getprojecttaskboard'));

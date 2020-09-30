@@ -4,9 +4,11 @@
 		<!-- Bootstrap Core JS -->
         <script src="{{asset('js/popper.min.js')}}" type='application/javascript'></script>
         <script src="{{asset('js/bootstrap.min.js')}}" type='application/javascript'></script>
-		
+				
 		<!-- Slimscroll JS -->
 		<script src="{{asset('js/jquery.slimscroll.min.js')}}" type='application/javascript'></script>
+		 
+
 		<!-- Select2 JS -->
 		<script src="{{asset('js/select2.min.js')}}" type='application/javascript'></script>
 
@@ -16,6 +18,7 @@
 		<!-- Datetimepicker JS -->
 		<script src="{{asset('js/moment.min.js')}}" type='application/javascript'></script>
 		<script src="{{asset('js/bootstrap-datetimepicker.min.js')}}" type='application/javascript'></script>
+		
 		
 		
 		<!-- Calendar JS -->

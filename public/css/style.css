@@ -6734,6 +6734,7 @@ ul.comment-list li ul.children {
     font-size: 14px;
     font-weight: 500;
     padding: 15px 15px 5px;
+    justify-content: space-between;
 }
 .task-header a {
 	color: #1f1f1f;
@@ -8506,7 +8507,8 @@ padding-top:0px;
 }
 
 .task-window {
-width: 100%;
+width: 54%;
+margin: auto;
 }
 .task-main-wrapper {
 
@@ -8520,7 +8522,11 @@ width: 100%;
 
     .left-task-window{
 
-width: 420px;
+width: 500px;
+}
+
+.task-window {
+width: 70%;
 }
 
 .task-header .assignee-info {

@@ -53,7 +53,9 @@
         
         <link rel="stylesheet" href="https://bootstrapformhelpers.com/assets/css/bootstrap-formhelpers.min.css">
 
-        <script src="{{asset('js/jquery-3.2.1.min.js')}}" type='application/javascript'></script>   	
+        
+        <script src="{{asset('js/jquery-3.2.1.min.js')}}" type='application/javascript'></script> 
+
 
         
     </head>

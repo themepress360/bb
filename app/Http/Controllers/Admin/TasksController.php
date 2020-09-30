@@ -452,4 +452,74 @@ class TasksController extends CommonController
         return \Response::json($data,200);
     }
 
+    public function updateDueDate(Request $request){
+
+      //  $data =  $request->all();
+       // dd($data['task_id']);
+
+        $rules = [
+            'task_id'    => 'required',
+            'due_date'  => 'required',
+        ];
+
+        $validator = Validator::make($request->all(),$rules);
+
+        if (!$validator->fails()) 
+        {
+            $requestData =  $request->all();
+
+            $update_due_date = Tasks::where(['id' => $requestData['task_id'], 'deleted'=> '0'])->first();
+            //dd($update_due_date->due_date);
+
+            if($update_due_date){
+                 
+
+                $due_date['due_date'] = $requestData['due_date'];
+
+                //dd($due_date['due_date']);
+
+                $dueDateUpdate = Tasks::where(['id' => $requestData['task_id'], 'deleted'=> '0'])->update($due_date);
+
+                if($dueDateUpdate)
+                {
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.update_due_date_success'),
+                        'ref'     => 'addfollower_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+
+            }
+
+
+        } else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+    }
+
 }

@@ -1,7 +1,7 @@
 @push('styles')
 <!-- Datetimepicker CSS -->
 		<link rel="stylesheet" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
-@endpush		
+@endpush	
 
 <div class="chat-window">
 	<div class="fixed-header">
@@ -50,19 +50,19 @@
 				                        </span>
 				                     </div>
 				                    
-				                    <div class="dropdown">
-				                     <div class="task-due-date" data-toggle="dropdown" id="date-picker">
-				                        <a href="#">
+				                    <div class="dropdown" id="updateduedate" >
+				                     <div class="task-due-date" data-toggle="" id="date-picker">
+				                       <a href="#">
 				                           <div class="due-icon">
 				                              <span>
 				                              <i class="material-icons">date_range</i>
 				                              </span>
 				                           </div>
-				                           <div class="due-info">
+				                           <div class="due-info" >
 				                              <div class="task-head-title due-date-title">Due Date</div>
 				                              <div class="due-date" id="due-date" style="">{{ !empty($project['task']['due_date']) ? date("M j",strtotime(str_replace('/', '-', $project['task']['due_date']))) : '-' }}</div>
 	 <input type="text" name='due_date' class="form-control datetimepicker" id="datepicker" style="display:none;" 
-	 value ="{{ !empty($project['task']['due_date']) ? date("M j",strtotime(str_replace('/', '-', $project['task']['due_date']))) : '-' }}">
+	 value ="">
 				                           </div>
 				                            
 				                           <div ></div>
@@ -297,7 +297,7 @@
 				</div>
 				<!-- /Task Followers Modal -->
 
-@push('scripts')
+  @push('scripts')
 
 <!-- Bootstrap Core JS -->
         <script src="{{asset('js/popper.min.js')}}" type='application/javascript'></script>
@@ -317,7 +317,7 @@
 <script>
 
 function closeTask() {
-	console.log('Clicked 123')
+	//console.log('Clicked 123')
   $("#task_window").removeClass("left-task-window");
   $("#main").removeClass("all-task-list");
  // $("#task_window").addClass("closeTask");
@@ -333,8 +333,9 @@ $('#task_followers').insertAfter($('body'));
 </script>
 
 <script>
-	jQuery('#datepicker').html('');
-	jQuery('#datepicker').datetimepicker({ format: 'DD/MM/YY' });
+		
+
+
 	var added_followers = [];
 	$('#followers li').on('click', function(){
 		var follower =  $(this).find("div.f-name").text();
@@ -424,6 +425,11 @@ $('#task_followers').insertAfter($('body'));
 			});
 
         </script>
+
+
+         
+
+
       
 <script type="text/javascript">
 	function AddFollowers()
@@ -465,33 +471,111 @@ $('#task_followers').insertAfter($('body'));
 		// alert("here");
 	}
 </script>
-<script>
 
-
-//$("#date-picker").on("click",function() {
-
-//$('#datepicker').attr('style','');
-
-//});
-
-</script>
 
 <script>
 	
-$("#date-picker").on("click",function() {
+$("#updateduedate").on("click",function() {
 
+
+  //console.log("Date Picker Clicked")
 $('.due-date-title').attr('style','display:none');
 $("#due-date").attr('style','display:none');
 
-$('#datepicker').attr('style','display:block;width:125px;height:25px;color:red');
+$('#datepicker').attr('style','display:block;width:125px;height:30px;color:red;font-size:13px');
+
+$('#datepicker').datetimepicker({
+
+	format: 'DD/MM/YYYY', debug:true,
+	
+});
+
+//selectedDate = $("#datepicker").data().date;
+//console.log(selectedDate);
 
 
-
-//$('.task-datetimepicker').datepicker({
-  //  format: 'mm/dd/yyyy',
-    
-//});
+//var selectedDate1 = $(".datepicker").find(".active").data("day");
+//console.log(selectedDate1)
 
 });
 
+//    $('#datepicker').html('');
+
+$('.datetimepicker').on("dp.show",function(){
+
+$("td.day").on("click", function(){
+
+//var due_date = e.date.format('DD/MM/YYYY');
+var date = $(this).attr("data-day");
+//date = format('DD/MM/YYYY', Something);
+
+ var due_date = moment(date, "MM/DD/YYYY").format("DD/MM/YYYY");
+
+console.log(due_date);
+
+$.ajaxSetup({
+			    headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    }
+			});
+        		
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/updatetaskduedate' : '#') }}";  
+              
+               // var status = $(this).text();
+               // console.log(status);
+
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: url,
+                   
+                    data: {due_date:due_date, task_id:task_id},
+                    
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            //$('#status-current').text(status);
+                            //window.location = "";
+                            $('.due-date-title').attr('style','display:block');
+							$("#due-date").attr('style','display:block');
+							$('#datepicker').attr('style','display:none;width:125px;height:25px;color:red');
+						    
+						    //console.log(d);
+
+							var changed_date = moment(date, "MM/DD/YYYY").format("MMM D");
+						   // console.log(new_date);
+
+						   $('#due-date').text(changed_date);
+
+						     
+
+                            }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+
+
+
+});
+
+
+
+});
+
+
+
+
+//$("#datepicker").on("dp.change", function (e) {
+//console.log(e.date.format('DD/MM/YYYY'));
+//});
+
+
+
 </script>
+

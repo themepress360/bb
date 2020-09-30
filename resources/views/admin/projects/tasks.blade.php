@@ -27,7 +27,7 @@
 				<div class="chat-main-row">
 					<div id= "main" class="task-main-wrapper">
 						<div class="col-lg-7 message-view task-view task-left-sidebar">
-							<div class="task-window">
+							<div class="task-window" style="">
 								<div class="fixed-header">
 									<div class="navbar">
 										<div class="float-left mr-auto">
@@ -622,11 +622,11 @@
 			</div>
 		<!-- /Main Wrapper -->
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<script>
-
-	
-</script>
 <script>
 
 	$('#followers li').on('click', function(){
@@ -684,6 +684,10 @@ for (i = 0; i < dropdown.length; i++) {
 
 <script>
 function openTask(task_id) {
+	
+	//$("#datepicker").datepicker('destroy');
+	//$("#datepicker").datepicker('update');
+
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -708,7 +712,8 @@ function openTask(task_id) {
             	$("#task_window").html('');
             	$("#task_window").append(response.data.gettaskwindowhtml);
             	$("#task_window").addClass("left-task-window");
-  				$("#main").addClass("all-task-list");
+            	$("#main").addClass("all-task-list");
+  				
             }
             else
             {
@@ -716,6 +721,7 @@ function openTask(task_id) {
             }    
         }            
     });  
+    
 }
 
 
