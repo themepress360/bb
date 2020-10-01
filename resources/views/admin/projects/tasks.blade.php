@@ -53,7 +53,7 @@
 								</div>
 								<div class="chat-contents">
 									<div class="chat-content-wrap">
-										<div class="chat-wrap-inner">
+										<div class="chat-wrap-inner scrollbars">
 											<div class="chat-box">
 							
 								<div class="dropdown task-wrapper">	
@@ -81,8 +81,10 @@
 																				<i class="material-icons">check</i>
 																			</span>
 																		</span>
-																		<span class="task-label" contenteditable="true">{{$task->task_title}}</span>
+										<span class="task-label" contenteditable="true">{{$task->task_title}} </span>
+						
 																		<span class="task-action-btn task-btn-right">
+																			
 																			<span class="action-circle large" title="Assign">
 																				<i class="material-icons">person_add</i>
 																			</span>
@@ -595,7 +597,7 @@
 		                    </div>
                                 
                                 <div class="submit-section">
-                                    <a class="btn btn-primary submit-btn" onClick="addTask()" >Submit</a>
+                                    <a href="#" class="btn btn-primary submit-btn" onClick="addTask()" >Submit</a>
                                 </div>
                            {{ Form::close() }}
                         </div>

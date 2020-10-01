@@ -357,6 +357,9 @@ table.dataTable thead > tr > td.sorting {
 .m-r-10 {
 	margin-right: 10px !important;
 }
+.m-r-15 {
+	margin-right: 15px !important;
+}
 .m-l-5 {
 	margin-left: 5px !important;
 }
@@ -472,7 +475,7 @@ table.dataTable thead > tr > td.sorting {
 }
 .bg-success,
 .badge-success {
-	background-color: #55ce63 !important;
+	background-color: #1BC5BD !important;
 }
 .bg-info,
 .badge-info {
@@ -495,7 +498,7 @@ table.dataTable thead > tr > td.sorting {
 }
 .text-success,
 .dropdown-menu > li > a.text-success {
-	color: #55ce63 !important;
+	color: #1BC5BD !important;
 }
 .text-danger,
 .dropdown-menu > li > a.text-danger {
@@ -549,16 +552,16 @@ justify-content: space-between !important;
 	border: 1px solid #482fe9;
 }
 .btn-primary {
-	background-color: #f43b48;
-	border: 1px solid #f43b48;
+	background-color: #3699FF;
+	border: 1px solid #3699FF;
 }
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary.active,
 .btn-primary:active,
 .open > .dropdown-toggle.btn-primary {
-	background-color: #f10e1d;
-	border: 1px solid #f10e1d;
+	background-color: #187DE4;
+	border: 1px solid #187DE4;
 }
 .btn-primary.active.focus,
 .btn-primary.active:focus,
@@ -4463,9 +4466,9 @@ html.menu-opened body {
 .due-icon span {
     align-items: center;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid #f62d51;
     border-radius: 50%;
-    color: #ccc;
+    color: #f62d51;
     display: flex;
     height: 30px;
     justify-content: center;
@@ -8281,6 +8284,21 @@ ul.comment-list li ul.children {
     background-color: #FFF4DE;
 }
 
+.label.label-danger {
+    color: #ffffff;
+    background-color: #F64E60;
+}
+
+.pill{
+	padding: 0.2rem 0.35rem;
+}
+.bordered-pill-danger{
+
+	border-radius:5px;
+	border: 1px solid #F64E60;
+	color: #F64E60;
+}
+
 .sidenav {
   height: 100%;
   width: 0;
@@ -8410,6 +8428,8 @@ ul.comment-list li ul.children {
 	 scrollbar-width: thin;
 
 }
+
+
 
 .left-task-window{
 
@@ -8553,5 +8573,28 @@ width: 485px;
 
 }
 
+.date-text{
 
 
+}
+.btn-sm-date {
+    padding: .25rem .5rem !important;
+    font-size: .7rem !important;
+    line-height: 1.5 !important;
+    border-radius: .2rem !important;
+}
+
+.btn.btn-light-danger {
+    color: #F64E60;
+    background-color: #FFE2E5;
+    border-color: transparent;
+}
+
+.btn.btn-light-danger:hover{
+	color:#fff;
+	background-color:#F64E60;
+	 border-color: transparent;
+}
+.project-description{
+height:50px;
+}

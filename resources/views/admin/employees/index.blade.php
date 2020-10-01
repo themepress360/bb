@@ -236,7 +236,7 @@
                                 </div>
                                 
                                 <div class="submit-section">
-                                    <a onClick="addEmployee()" class="btn btn-primary submit-btn">Submit</a>
+                                    <a href="#" onClick="addEmployee()" class="btn btn-primary submit-btn">Submit</a>
                                 </div>
                             {{ Form::close() }}
                         </div>

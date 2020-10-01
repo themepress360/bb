@@ -176,7 +176,7 @@
 					               <div class="input-group">
 					                  <textarea class="form-control" placeholder="Type message..." name="description"></textarea>
 					                  <span class="input-group-append">
-					                  <a onClick="AddTaskHistory()" class="btn btn-primary" ><i class="fa fa-send"></i></a>
+					                  <a href="#" onClick="AddTaskHistory()" class="btn btn-primary" ><i class="fa fa-send"></i></a>
 					                  </span>
 					               </div>
 					            </div>
@@ -246,7 +246,7 @@
 									</ul>
 								</div>
 								<div class="submit-section">
-									<a onClick="AddFollowers()" class="btn btn-primary submit-btn">Add to Follow</a>
+									<a href="#" onClick="AddFollowers()" class="btn btn-success submit-btn">Add to Follow</a>
 								</div>
 							</div>
 						</div>
@@ -270,6 +270,15 @@
 		
 @endpush
 
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#task_followers").appendTo("body");
+
+
+        });
+</script>
 
 <script>
 

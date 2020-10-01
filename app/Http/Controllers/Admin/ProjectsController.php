@@ -37,6 +37,8 @@ class ProjectsController extends CommonController
    public function index()
     {
         
+          $projects = Projects::where('deleted', '0')->get();
+         //   dd($projects);
           $clients = Client::where("deleted" , '0' )->get()->all();        
           $departments = Department::where('deleted', '0')->get()->all();
          
@@ -65,7 +67,7 @@ class ProjectsController extends CommonController
 
         }
     
-          return view('admin.projects.index', compact('employees','clients' , 'departments'));
+          return view('admin.projects.index', compact('projects','employees','clients' , 'departments'));
    }
 
    
