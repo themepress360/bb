@@ -7,9 +7,16 @@
 	<div class="fixed-header">
 		<div class="navbar">
 			<div class="task-assign">
-				<a class="task-complete-btn" id="task_complete" href="javascript:void(0);">
+				 @if( $task->status == "completed")
+
+				 <a class="task-complete-btn task-completed" id="task_completed" href="javascript:void(0);">
+					<i class="material-icons">check</i>Completed
+				</a>
+				@else
+				<a class="task-complete-btn" id="task_completed" href="javascript:void(0);">
 					<i class="material-icons">check</i> Mark Complete
 				</a>
+				@endif				
 			</div>
 			<!--<ul class="nav float-right custom-menu">
 				<li class="dropdown dropdown-action">
@@ -381,11 +388,83 @@ $('#task_followers').insertAfter($('body'));
         <script>
         	var task_id = "{{$project['task']['id']}}";
         
+        	$("#task_completed").on('click',function(e){
+
+        		
+        		var txt = $(this).text();
+        		
+        		var task_status = txt.replace("check", "");
+        		
+        		var task_status = task_status.trim();
+
+        		
+        		if (task_status === "Mark Complete"){
+
+        			console.log("Task Not Complete");
+
+        		var status ="completed";
+
+        		 e.preventDefault();
+
+			//console.log(task_id);             
+            $.ajaxSetup({
+			    headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    }
+			});
+        		
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/completetask' : '#') }}";  
+              
+               // var status = $(this).text();
+               // console.log(status);
+
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: url,
+                   
+                    data: {status:status,task_id:task_id},
+                    
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            var html = '';
+           					 html +='<i class="material-icons">check</i>'
+                            $('#status-current').text(status);
+                           // $("#task_complete").addClass("task-complete-btn");
+                            $("#task_completed").addClass("task-completed");
+                            $("#task_completed").html('<i class="material-icons">check</i>Completed');
+                            
+                            
+                            }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+
+            }else {
+
+            	toastr['error']("Task Already Completed");
+            }
+
+
+        		}) 
+        
+
+        		
+        	
+
+
         	$("#status li").on("click",function(e) {
 		      
 		      e.preventDefault();
 
-			console.log(task_id);             
+			//console.log(task_id);             
             $.ajaxSetup({
 			    headers: {
 			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -394,9 +473,11 @@ $('#task_followers').insertAfter($('body'));
         		
                 var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/updatetaskstatus' : '#') }}";  
               
-                var status = $(this).text();
-                console.log(status);
+                var status = $(this).text().trim();
+                
+                //var status = status;
 
+                
                 $.ajax({
                     type: "POST",
                     async: false,
@@ -411,7 +492,19 @@ $('#task_followers').insertAfter($('body'));
                             toastr['success'](response.message);
                             $('#status-current').text(status);
                             //window.location = "";
+                            console.log(status);
+                            if(status === "Completed"){
 
+                           	    $("#task_completed").addClass("task-completed");
+                     			$("#task_completed").html('<i class="material-icons">check</i>Completed');
+                     			console.log(status);
+                            }else{
+
+	                            $("#task_completed").removeClass("task-completed");
+	                            $("#task_completed").html('<i class="material-icons">check</i>Mark Complete');                    
+	                           
+	                            	console.log(status);
+	                            }
                             }
                         else
                         {

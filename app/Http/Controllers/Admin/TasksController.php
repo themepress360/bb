@@ -264,7 +264,9 @@ class TasksController extends CommonController
         $window_data['project']['members'] = $members;
         /* To get the all project employee which are exists in this department end */
 
-        $data['gettaskwindowhtml'] = view('admin.projects.gettaskwindow',$window_data,compact('task_status_color'))->render();
+       // dd($task);
+
+        $data['gettaskwindowhtml'] = view('admin.projects.gettaskwindow',$window_data,compact('task_status_color','task'))->render();
         $status   = 200;
         $response = array(
             'status'  => 'SUCCESS',
@@ -520,6 +522,120 @@ class TasksController extends CommonController
 
         array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
         return \Response::json($data,200);
+    }
+
+    public function completeTask(Request $request){
+
+        $data = $request->all();
+       // dd($data);
+
+        $rules = [
+            'status'    => 'required',
+            'task_id'  => 'required',
+        ];
+
+        $validator = Validator::make($request->all(),$rules);
+
+        if (!$validator->fails()) 
+        {
+
+            $status['status'] = $request['status'];
+           // dd($status['status']);
+            $task_board_exists = Task_boards::where(['task_board_name' =>  $request['status'] ,"deleted" => "0" ])->first();
+           
+            //dd($task_board_exists['task_board_name']);
+           
+            if($task_board_exists['task_board_name']){
+
+               // dd("Task Board Exists");
+            
+            $mark_complete = Tasks::where(['id' => $request['task_id'], "deleted" => "0"])->update($status);
+
+           // dd($mark_complete);
+
+                 if($mark_complete)
+                {
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.task_completed_success'),
+                        'ref'     => 'task_completed_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+
+             }else{
+
+              
+              $task_board = array(
+
+                    'task_board_name' => $request['status'],
+                    'task_board_color' => "#35ba67",
+                    'deleted' => "0",
+                    'status' => "1",
+
+                );
+                
+                $create_task_board = Task_boards::create($task_board);
+
+                if($create_task_board)
+                {
+                 //  dd($request['task_id']);
+                  $status['status'] = $request['status'];
+                 // dd($status);
+                 $mark_complete = Tasks::where(['id' => $request['task_id'], "deleted" => "0"])->update($status);
+
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.task_completed_success'),
+                        'ref'     => 'task_completed_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+
+            }
+
+
+           
+          
+        }else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+
+
+
     }
 
 }

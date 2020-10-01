@@ -83,8 +83,9 @@
                                    <div class="kanban-wrap connectedSortable">
                                     @if(!empty($task_board['tasks']))
                                 @foreach($task_board['tasks'] as $task)
-                                      <div class="card panel drag_task_{{$task['id']}}">
-                                         <div class="kanban-box">
+                                      <div class="card panel drag_task_{{$task['id']}}" style="border-left: 6px solid {{$task_board['task_board_color']}}">
+                                         <div class="kanban-box" >
+                                           
                                             <div class="task-board-header">
                                                <span class="status-title"><a href="task-view">{{ucwords($task['task_title'])}}</a></span>
                                                <div class="dropdown kanban-task-action">
@@ -96,14 +97,15 @@
                                                      <a class="dropdown-item" href="#">Delete</a>
                                                   </div>
                                                </div>
-                                            </div>
+                                             </div>
+                                           
                                             <div class="task-board-body">
-                                               <div class="kanban-info">
+                                               <!--<div class="kanban-info">
                                                   <div class="progress progress-xs">
                                                      <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                                   </div>
                                                   <span>70%</span>
-                                               </div>
+                                               </div> -->
                                                <div class="kanban-footer">
                                                   <span class="task-info-cont">
                                                   <span class="task-date"><i class="fa fa-clock-o"></i> {{ !empty($task['due_date']) ? date("M j",strtotime(str_replace('/', '-', $task['due_date']))) : '-' }}</span>
