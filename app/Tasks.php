@@ -71,6 +71,7 @@ class Tasks extends Model
       $validate['ref']     = "error_task_id_invalid";
       return $validate;
     }
+    $validate['task'] = $task;
     $task_board = Task_boards::where(['task_board_name' => strtolower(trim($requestData['status'])), "deleted" => '0'])->first();
     if(empty($task_board))
     {

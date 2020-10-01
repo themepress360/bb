@@ -279,6 +279,36 @@ class TasksController extends CommonController
         
         /* Task History Start */
         $task_histories = TaskHistory::where(['task_id' => (int)$requestData['task_id'] ,'deleted' => '0','status'=> '1', "project_id" => (int) $task['project_id'] ])->get()->toArray();
+        if(!empty($task_histories))
+        {
+            foreach ($task_histories as $key => $task_history) {
+                if($task_history['type'] == "comment" || $task_history['type'] == "attachment")
+                {
+                    $user_history = User::where(['deleted' => '0', "id" => (int) $task_history['user_id'] ])->first();
+                    $task_histories[$key]['name'] = $user_history['name'];
+                    if(!empty($user_history['profile_image']))
+                    {
+                        $task_histories[$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$user_history['profile_image']);
+                    }
+                    else
+                        $task_histories[$key]['profile_image_url'] = '';
+                    if($task_history['is_attachment'] || !empty($task_history['attachment_name'] ))
+                    {
+                        $task_histories[$key]['attachment_url'] = TaskHistory::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$task_history['attachment_name']);
+                    }
+                    else
+                    {
+                        $task_histories[$key]['attachment_url'] = "";
+                    }
+                }
+                else
+                {
+                    $task_histories[$key]['attachment_url'] = "";
+                    $task_histories[$key]['profile_image_url'] = "";
+                    $task_histories[$key]['name'] = "";
+                }
+            }
+        }
         $window_data['project']['task']['task_histories'] = $task_histories;
         /* Task History End */
 
@@ -343,6 +373,7 @@ class TasksController extends CommonController
         if (!$validator->fails()) 
         {
             $requestData = $request->all();
+            $mydetail = $request->user();
             $custom_validation = Tasks::updateTaskStatusValidation($requestData);
             if($custom_validation['status'])
             {
@@ -350,6 +381,20 @@ class TasksController extends CommonController
                 $edit_task_status = Tasks::where('id', (int) $requestData['task_id'])->update($data);
                 if($edit_task_status)
                 {
+
+                    /* Task History Start */
+                    $task_data = array(
+                        'task_id' => (int) $requestData['task_id'], 
+                        'project_id' => (int) $custom_validation['task']['project_id'],
+                        'user_id' => (int) $mydetail['id'],
+                        'attachment_name' => "",
+                        'is_attachment' => '0',
+                        'description' => $mydetail['name']." change thier task status.",
+                        'type' => 'change_task',  
+                    );
+                    TaskHistory::addtaskhistory($task_data);
+                    /* Task History End */
+
                     $status   = 200;
                     $response = array(
                         'status'  => 'SUCCESS',
@@ -583,6 +628,7 @@ class TasksController extends CommonController
     public function completeTask(Request $request){
 
         $data = $request->all();
+        $mydetail = $request->user(); 
        // dd($data);
 
         $rules = [
@@ -595,12 +641,14 @@ class TasksController extends CommonController
         if (!$validator->fails()) 
         {
 
+            $is_task_exists = Tasks::where(['id' => (int) $request['task_id'],"deleted" => '0'])->first(); 
+            $project = Projects::where(['id' => (int) $is_task_exists['project_id'] ,"deleted" => '0'])->first();
             $status['status'] = $request['status'];
            // dd($status['status']);
             $task_board_exists = Task_boards::where(['task_board_name' =>  $request['status'] ,"deleted" => "0" ])->first();
            
             //dd($task_board_exists['task_board_name']);
-           
+            
             if($task_board_exists['task_board_name']){
 
                // dd("Task Board Exists");
@@ -609,8 +657,22 @@ class TasksController extends CommonController
 
            // dd($mark_complete);
 
-                 if($mark_complete)
+                if($mark_complete)
                 {
+                     
+                    /* Task History Start */
+                    $task_data = array(
+                        'task_id' => (int) $request['task_id'], 
+                        'project_id' => (int) $project['id'],
+                        'user_id' => (int) $mydetail['id'],
+                        'attachment_name' => "",
+                        'is_attachment' => '0',
+                        'description' => $mydetail['name']." complete thier task.",
+                        'type' => 'complete_status',  
+                    );
+                    TaskHistory::addtaskhistory($task_data);
+                    /* Task History End */
+
                     $status   = 200;
                     $response = array(
                         'status'  => 'SUCCESS',
@@ -648,6 +710,21 @@ class TasksController extends CommonController
                   $status['status'] = $request['status'];
                  // dd($status);
                  $mark_complete = Tasks::where(['id' => $request['task_id'], "deleted" => "0"])->update($status);
+                    $project = Projects::where(['id' => (int) $is_task_exists['project_id'] ,"deleted" => '0'])->first();
+                   
+                    /* Task History Start */
+                    $task_data = array(
+                        'task_id' => (int) $request['task_id'], 
+                        'project_id' => (int) $project['id'],
+                        'user_id' => (int) $mydetail['id'],
+                        'attachment_name' => "",
+                        'is_attachment' => '0',
+                        'description' => $mydetail['name']." complete thier task.",
+                        'type' => 'complete_status',  
+                    );
+                    TaskHistory::addtaskhistory($task_data);
+                    /* Task History End */
+
 
                     $status   = 200;
                     $response = array(

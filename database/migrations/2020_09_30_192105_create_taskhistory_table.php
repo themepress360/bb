@@ -21,7 +21,7 @@ class CreateTaskhistoryTable extends Migration
             $table->enum('is_attachment',['1','0']);
             $table->string('attachment_name');
             $table->string('description');
-            $table->enum('type',['create_task','added_task','comment','incomplete_task','complete_status','assign_task','due_date','added_user']);
+            $table->enum('type',['attachment','create_task','added_task','comment','incomplete_task','complete_status','assign_task','due_date','added_user','change_task']);
             $table->enum('deleted',['1','0']);
             $table->enum('status',['1','0']);
             $table->timestamps();
