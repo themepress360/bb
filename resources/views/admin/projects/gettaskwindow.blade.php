@@ -113,53 +113,56 @@
 				                  <hr class="task-line">
 				                  @if($project['task']['task_histories'])
 				                  	@foreach($project['task']['task_histories'] as $history_key => $history)
-				                  		@if($history['type'] == "create_task" || $history['type'] == "due_date" || $history['type'] == "assign_task" || $history['type'] == "added_user" || $history['type'] == "incomplete_task")
+				                  		@if($history['type'] == "create_task" || $history['type'] == "due_date" || $history['type'] == "assign_task" || $history['type'] == "added_user" || $history['type'] == "incomplete_task" || $history['type'] == "change_task" )
 				                  			<div class="task-information">
 				                     			<span class="task-info-line"><a class="task-user" href="#">{{ !empty($history['description']) ? $history['description'] : '-' }}</a></span>
 				                     			<div class="task-time">{{ !empty($history['created_at']) ? date("M d, Y",strtotime($history['created_at'])) : '-' }}</div>
 				                  			</div>		
-				                  		@elseif( $history['type'] == "complete_task")
+				                  		@elseif( $history['type'] == "complete_status")
 				                  			<div class="completed-task-msg">
 				                  				<span class="task-success"><a href="#">{{ !empty($history['description']) ? $history['description'] : '-' }}</a></span> <span class="task-time">{{ !empty($history['created_at']) ? date("M d, Y",strtotime($history['created_at'])) : '-' }}</span>
+				                  			</div>
+				                  		@elseif($history['type'] == "comment")
+				                  			<div class="chat chat-left">
+				                     			<div class="chat-avatar">
+				                        			<a href="profile" class="avatar">
+				                        				<img alt="{{ !empty($history['name']) ? $history['name'] : '-' }}" src="{{ !empty($history['profile_image_url']) ? $history['profile_image_url'] : '-' }}">
+				                        			</a>
+				                     			</div>
+				                     			<div class="chat-body">
+				                        			<div class="chat-bubble">
+				                           				<div class="chat-content">
+				                              				<span class="task-chat-user">{{ !empty($history['name']) ? $history['name'] : '-' }} </span><span class="chat-time">{{ !empty($history['created_at']) ? date("M d, Y",strtotime($history['created_at'])) : '-' }}</span>
+				                              				<p>{{ !empty($history['description']) ? $history['description'] : '-' }}</p>
+				                           				</div>
+				                        			</div>
+				                     			</div>
+				                  			</div>
+				                  		@elseif($history['type'] == "attachment")
+				                  			<div class="chat chat-left">
+				                     			<div class="chat-avatar">
+				                        			<a href="profile" class="avatar">
+				                        				<img alt="{{ !empty($history['name']) ? $history['name'] : '-' }}" src="{{ !empty($history['profile_image_url']) ? $history['profile_image_url'] : '-' }}">
+				                        			</a>
+				                     			</div>
+				                     			<div class="chat-body">
+				                        			<div class="chat-bubble">
+				                           				<div class="chat-content">
+				                              				<span class="task-chat-user">{{ !empty($history['name']) ? $history['name'] : '-' }}</span> 
+				                              				<span class="file-attached">attached file <i class="fa fa-paperclip"></i></span> <span class="chat-time">{{ !empty($history['created_at']) ? date("M d, Y",strtotime($history['created_at'])) : '-' }}</span>
+				                              				<p>{{ !empty($history['description']) ? $history['description'] : '-' }}</p>
+				                              				<ul class="attach-list">
+				                                 				<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">{{ !empty($history['attachment_name']) ? $history['attachment_name'] : '-' }}</a></li>
+				                              				</ul>
+				                           				</div>
+				                        			</div>
+				                     			</div>
 				                  			</div>			
 				                  		@endif		
 				                  	@endforeach	
 				                  @endif
-				                  <div class="chat chat-left">
-				                     <div class="chat-avatar">
-				                        <a href="profile" class="avatar">
-				                        <img alt="" src="img/profiles/avatar-02.jpg">
-				                        </a>
-				                     </div>
-				                     <div class="chat-body">
-				                        <div class="chat-bubble">
-				                           <div class="chat-content">
-				                              <span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span>
-				                              <p>I'm just looking around.</p>
-				                              <p>Will you tell me something about yourself? </p>
-				                           </div>
-				                        </div>
-				                     </div>
+				                  <div id="comment_append">
 				                  </div>
-				                  
-				                  <div class="chat chat-left">
-				                     <div class="chat-avatar">
-				                        <a href="profile" class="avatar">
-				                        <img alt="" src="img/profiles/avatar-16.jpg">
-				                        </a>
-				                     </div>
-				                     <div class="chat-body">
-				                        <div class="chat-bubble">
-				                           <div class="chat-content">
-				                              <span class="task-chat-user">Jeffery Lalor</span> <span class="file-attached">attached file <i class="fa fa-paperclip"></i></span> <span class="chat-time">Yesterday at 9:16pm</span>
-				                              <ul class="attach-list">
-				                                 <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">Document_2016.pdf</a></li>
-				                              </ul>
-				                           </div>
-				                        </div>
-				                     </div>
-				                  </div>
-
 				               </div>
 				            </div>
 				         </div>
@@ -170,11 +173,11 @@
 				         <form id="GetAddTaskHistoryForm" style="display: contents;">
 					         <div class="message-inner">
 					            <a class="link attach-icon" href="#">
-					            <span class="btn-file"><input type="file" class="upload"><img  type="file" src="{{asset('img/attachment.png')}}" alt=""></span>
+					            <span class="btn-file"><input type="file" class="upload" name="attachment" id="attachment" ><img  type="file" src="{{asset('img/attachment.png')}}" alt=""></span>
 					            </a>
 					            <div class="message-area">
 					               <div class="input-group">
-					                  <textarea class="form-control" placeholder="Type message..." name="description"></textarea>
+					                  <textarea class="form-control" id="description" placeholder="Type message..." name="description"></textarea>
 					                  <span class="input-group-append">
 					                  <a onClick="AddTaskHistory()" class="btn btn-primary" ><i class="fa fa-send"></i></a>
 					                  </span>
@@ -272,6 +275,22 @@
 
 
 <script>
+	
+$('#task_followers').insertAfter($('body'));
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#task_followers").appendTo("body");
+
+
+        });
+</script>
+
+<script>
 
 function closeTask() {
 	//console.log('Clicked 123')
@@ -283,11 +302,7 @@ function closeTask() {
 
 </script>
 
-<script>
-	
-$('#task_followers').insertAfter($('body'));
 
-</script>
 
 <script>
 		
@@ -502,6 +517,17 @@ $('#task_followers').insertAfter($('body'));
 	        {
 	            if(response.status == "SUCCESS")
 	            {
+
+	            	$("#description").val('');
+	            	if(response.data.comment.type == "comment")
+	            	{
+	            		$('#comment_append').append('<div class="chat chat-left"><div class="chat-avatar"><a href="profile" class="avatar"><img alt="" src="'+response.data.comment.profile_image_url+'"></a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content"><span class="task-chat-user">'+response.data.comment.name+'</span><span class="chat-time"> Just now</span><p>'+response.data.comment.description+'</p></div></div></div></div>');
+	            	}
+	            	else if(response.data.comment.type == "attachment")
+	            	{
+	            		$("#attachment").val(null);
+	            		$('#comment_append').append('<div class="chat chat-left"><div class="chat-avatar"><a href="profile" class="avatar"><img alt="'+response.data.comment.name+'" src="'+response.data.comment.profile_image_url+'"></a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content"><span class="task-chat-user">'+response.data.comment.name+'</span> <span class="file-attached">attached file <i class="fa fa-paperclip"></i></span> <span class="chat-time">Just now</span><p>'+response.data.comment.description+'</p><ul class="attach-list"><li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+response.data.comment.attachment_name+'</a></li></ul></div></div></div></div>');
+	            	}
 	            	toastr['success'](response.message);
                     // window.location = "";
 	            }

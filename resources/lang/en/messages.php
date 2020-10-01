@@ -45,6 +45,7 @@ return [
   "addfollower_success" => "Follower added successfully",
   "error_task_member_exists" => "Already added this followers",
   "update_due_date_success" => "Due Date Updated",
-  "task_completed_success" => "Task Completed Succfully"
+  "task_completed_success" => "Task Completed Succfully",
+  "comment_add_success" => "Comment Added successfully"
 
 ];
