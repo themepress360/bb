@@ -76,24 +76,47 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                  @foreach($projects as $project)
                                     <tr>
                                         <td>
-                                            <a href="project-view">Office Management</a>
+                                            <a href="project-view">{{ucwords($project->project_title)}}</a>
                                         </td>
-                                        <td>PRO-0001</td>
+                                        <td>PRO-{{sprintf("%04d",$project->id)}}</td>
                                         <td>
+
+                                             
+
                                             <ul class="team-members">
+                               @foreach($employees as $employee)
+                        @if($employee->id  == $project->user_id)
                                                 <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
+                 <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"><img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                    <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"></a>
                                                 </li>
+                          @endif
+                        @endforeach
                                             </ul>
+                                             
                                         </td>
                                         <td>
                                             <ul class="team-members text-nowrap">
+                                               @foreach($project_members as $key => $members)
+                      @if($members['project_id'] == $project->project_id) 
+                      
+                        @foreach($employees as $employee)
+                        @if($employee->id  == $members['user_id'])   
                                                 <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
+                    <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                        <img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                           <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                       </a>
                                                 </li>
-                                                <li>
+                                                @endif
+                        @endforeach
+
+                         @endif
+                     @endforeach
+                                              <!--  <li>
                                                     <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
                                                 </li>
                                                 <li>
@@ -153,10 +176,10 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                         </td>
-                                        <td>17 Apr 2019 </td>
+                                        <td class="text-danger">{{date("j M, y",strtotime(str_replace('/', '-',$project->end_date)))}}</td>
                                         <td>
                                             <div class="dropdown action-label">
                                                 <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
@@ -169,7 +192,11 @@
                                         </td>
                                         <td>
                                             <div class="dropdown action-label">
+                                               @if($project->status == "1")
                                                 <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
+                                                @else
+                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
+                                                @endif
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
                                                     <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
@@ -186,616 +213,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Project Management</a>
-                                        </td>
-                                        <td>PRO-0002</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-warning"></i> Medium </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> Inactive </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Video Calling App</a>
-                                        </td>
-                                        <td>PRO-0003</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Low </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Hospital Administration</a>
-                                        </td>
-                                        <td>PRO-0004</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Office Management</a>
-                                        </td>
-                                        <td>PRO-0005</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Project Management</a>
-                                        </td>
-                                        <td>PRO-0006</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Video Calling App</a>
-                                        </td>
-                                        <td>PRO-0007</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Hospital Administration</a>
-                                        </td>
-                                        <td>PRO-0008</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Office Management</a>
-                                        </td>
-                                        <td>PRO-0009</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Project Management</a>
-                                        </td>
-                                        <td>PRO-0010</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="project-view">Video Calling App</a>
-                                        </td>
-                                        <td>PRO-0011</td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul class="team-members">
-                                                <li>
-                                                    <a href="#" title="John Doe" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-02.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Richard Miles" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-09.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="John Smith" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-10.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="Mike Litorus" data-toggle="tooltip"><img alt="" src="img/profiles/avatar-05.jpg"></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="all-users">+15</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>17 Apr 2019 </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> High</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-warning"></i> Medium</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown action-label">
-                                                <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                   @endforeach
                                 </tbody>
                             </table>
                         </div>

@@ -3802,7 +3802,7 @@ border-color: transparent;
 .team-members > li > a {
 	border: 2px solid #fff;
 	border-radius: 100%;
-	display: block;
+	display: flex;
 	height: 30px;
 	overflow: hidden;
 	width: 30px;
@@ -8597,4 +8597,10 @@ width: 485px;
 }
 .project-description{
 height:50px;
+}
+.text-primary {
+    color: #3699FF !important;
+}
+.text-danger{
+color: #F64E60 !important;
 }

@@ -37,7 +37,53 @@ class ProjectsController extends CommonController
    public function index()
     {
         
-          $projects = Projects::where('deleted', '0')->get();
+ $projects = Projects::join('project_members', 'project_members.project_id','=', 'projects.id')->where('is_leaders','1')->where('projects.deleted', '0')->get();
+         // dd($projects);
+         
+  $project_members = Projects::join('project_members', 'project_members.project_id','=', 'projects.id')->where('is_members','1')->where('projects.deleted', '0')->get()->toArray();
+         // dd($project_members);
+         
+          
+          $clients = Client::where("deleted" , '0' )->get()->all();        
+          $departments = Department::where('deleted', '0')->get()->all();
+         
+         // $roles = Roles::where('deleted', '0')->get()->all();
+
+       //   $team_lead = Employees::join('roles' , 'roles.id', '=' , 'employees.role_id' )->where('role_name' , 'team lead')->get();
+     
+ $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
+
+       
+         if(!empty($employees) )
+        {
+
+            foreach( $employees as $key => $employee){
+
+             //   dd($employee->profile_image);
+
+               if(!empty($employee->profile_image))
+
+                $employee->profile_image = User::image_url(config('app.profileimagesfolder'),$employee->profile_image);
+
+           //   dd($employee->profile_image);
+            
+            else
+                     $employee->profile_image = '';
+           
+
+        }
+      }
+    
+          return view('admin.projects.index', compact('projects','employees','clients' , 'departments','project_members'));
+   }
+
+
+public function projectlist(){
+
+     $projects = Projects::join('project_members', 'project_members.project_id','=', 'projects.id')->where('is_leaders','1')->where('projects.deleted', '0')->get();
+         // dd($projects);
+         
+  $project_members = Projects::join('project_members', 'project_members.project_id','=', 'projects.id')->where('is_members','1')->where('projects.deleted', '0')->get()->toArray();
          //   dd($projects);
           $clients = Client::where("deleted" , '0' )->get()->all();        
           $departments = Department::where('deleted', '0')->get()->all();
@@ -67,8 +113,13 @@ class ProjectsController extends CommonController
 
         }
     
-          return view('admin.projects.index', compact('projects','employees','clients' , 'departments'));
+          return view('admin.projects.projects-list', compact('projects','employees','clients' , 'departments','project_members'));
+
+          
+
+      
    }
+
 
    
 

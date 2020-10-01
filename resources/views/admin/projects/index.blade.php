@@ -67,7 +67,7 @@
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                      </div>
                   </div>
-                  <h4 class="project-title"><a href="project-view">{{$project->project_title}}</a></h4>
+                  <h4 class="project-title"><a href="project-view">{{strtoUpper($project->project_title)}}</a></h4>
                   <small class="block text-ellipsis m-b-15">
                   <span class="text-xs">1</span> <span class="text-muted">open tasks, </span>
                   <span class="text-xs">9</span> <span class="text-muted">tasks completed</span>
@@ -92,21 +92,49 @@
                      </div>
                   </div>
                </div>
+               
                   <div class="project-members m-b-15">
                      <div>Project Leader :</div>
+                                       
                      <ul class="team-members">
+                          @foreach($employees as $employee)
+                        @if($employee->id  == $project->user_id)              
                         <li>
-                           <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="img/profiles/avatar-16.jpg"></a>
+                  <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"><img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                                          <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"></a>
                         </li>
+                        @endif
+                        @endforeach
                      </ul>
+                     
                   </div>
+                  
                   <div class="project-members m-b-15">
                      <div>Team :</div>
+                  
+                    
+
+                      
+
+                     
                      <ul class="team-members">
+                         @foreach($project_members as $key => $members)
+                      @if($members['project_id'] == $project->project_id) 
+                      
+                        @foreach($employees as $employee)
+                        @if($employee->id  == $members['user_id'])   
+
                         <li>
-                           <a href="#" data-toggle="tooltip" title="John Doe"><img alt="" src="{{asset('img/profiles/avatar-02.jpg')}}"></a>
+                           <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"><img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                           <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                        </a>
                         </li>
-                        <li>
+                          @endif
+                        @endforeach
+
+                         @endif
+                     @endforeach
+                       <!-- <li>
                            <a href="#" data-toggle="tooltip" title="Richard Miles"><img alt="" src="{{asset('img/profiles/avatar-09.jpg')}}"></a></a>
                         </li>
                         <li>
@@ -166,7 +194,7 @@
                                  </ul>
                               </div>
                            </div>
-                        </li>
+                        </li> -->
                      </ul>
                   </div>
                   <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>
