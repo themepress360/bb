@@ -26,6 +26,7 @@ use App\Project_members;
 use App\Tasks;
 use App\Task_members;
 use App\Task_boards;
+use App\TaskHistory;
 
 
 class TasksController extends CommonController
@@ -120,12 +121,32 @@ class TasksController extends CommonController
                 'added_by' => (int) $mydetail['id'],
                 'assign_to' => !empty($members[0]) ? (int) $members[0] : 0 
              );
-                
+            $project = Projects::where(['id' => (int) $taskData['project_id'] ,"deleted" => '0'])->first();
+            if (!file_exists(config('app.folder').'/'.$project['project_title'])) {
+                $project_folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'], 777, true, true);
+            }
+            $folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'].'/'.strtolower($taskData['task_title']), 777, true, true);
+            
              $add_task =  Tasks::create($task_data);
 
-             if($add_task){
+            if($add_task){
+                
+                /* Task History Start */
+                $task_data = array(
+                      'task_id' => (int) $add_task['id'], 
+                      'project_id' => (int) $taskData['project_id'],
+                      'user_id' => (int) $mydetail['id'],
+                      'attachment_name' => "",
+                      'is_attachment' => '0',
+                      'description' => $mydetail['name']." created task",
+                      'type' => 'create_task',  
+                );
 
-               $task_id = Tasks::where(['task_title' => strtolower($taskData['task_title']) ,"deleted" => '0'])->first();
+                TaskHistory::addtaskhistory($task_data);
+                /* Task History End */
+
+
+                $task_id = Tasks::where(['task_title' => strtolower($taskData['task_title']) ,"deleted" => '0'])->first();
 
              // dd($task_id);
 
@@ -133,7 +154,21 @@ class TasksController extends CommonController
             
                for($i=0; $i<sizeof($members); $i++ ){              
 
-              // dd($members[$i]);
+                $assign_user = User::where(['id' => (int) $members[$i] ,"deleted" => '0'])->first();
+
+                /* Task History Start */
+                $task_data = array(
+                      'task_id' => (int) $add_task['id'], 
+                      'project_id' => (int) $taskData['project_id'],
+                      'user_id' => (int) $mydetail['id'],
+                      'attachment_name' => "",
+                      'is_attachment' => '0',
+                      'description' => $mydetail['name']." assigned to ".$assign_user['name'],
+                      'type' => 'assign_task',  
+                );
+
+                TaskHistory::addtaskhistory($task_data);
+                /* Task History End */
 
                $task_members = array(
                    
@@ -242,6 +277,11 @@ class TasksController extends CommonController
             $window_data['project']['task']['assign_to_profile_image_url'] = '';
         }
         
+        /* Task History Start */
+        $task_histories = TaskHistory::where(['task_id' => (int)$requestData['task_id'] ,'deleted' => '0','status'=> '1', "project_id" => (int) $task['project_id'] ])->get()->toArray();
+        $window_data['project']['task']['task_histories'] = $task_histories;
+        /* Task History End */
+
         $task_members = Task_members::where(['deleted' => '0','status'=> '1', "task_id" => (int) $requestData['task_id'] ])->get()->toArray();
         $project_leaders = Project_members::where(['is_leaders' => '1' ,'deleted' => '0','status'=> '1', "project_id" => (int) $task['project_id'] ])->get()->toArray();
         $window_data['project']['task']['followers'] = Tasks::getFollowers($task_members,$project_leaders);
@@ -403,7 +443,8 @@ class TasksController extends CommonController
             $custom_validation = Tasks::addfollowersValidation($requestData);
             if($custom_validation['status'])
             {
-                $add_followers = Tasks::addfollowers($requestData);
+                $mydetail = $request->user();
+                $add_followers = Tasks::addfollowers($requestData,$custom_validation['task'],$mydetail);
                 if($add_followers)
                 {
                     $status   = 200;
@@ -467,7 +508,7 @@ class TasksController extends CommonController
         if (!$validator->fails()) 
         {
             $requestData =  $request->all();
-
+            $mydetail = $request->user();  
             $update_due_date = Tasks::where(['id' => $requestData['task_id'], 'deleted'=> '0'])->first();
             //dd($update_due_date->due_date);
 
@@ -482,6 +523,21 @@ class TasksController extends CommonController
 
                 if($dueDateUpdate)
                 {
+
+                    /* Task History Start */
+                    $task_data = array(
+                      'task_id' => (int) $request['task_id'], 
+                      'project_id' => (int) $update_due_date['project_id'],
+                      'user_id' => (int) $mydetail['id'],
+                      'attachment_name' => "",
+                      'is_attachment' => '0',
+                      'description' => $mydetail['name']." changed the due date to ".date('M d, Y'),
+                      'type' => 'due_date',  
+                    );
+
+                    TaskHistory::addtaskhistory($task_data);
+                    /* Task History End */
+
                     $status   = 200;
                     $response = array(
                         'status'  => 'SUCCESS',

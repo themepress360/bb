@@ -104,27 +104,20 @@
 				                     </div>
 				                  </div>
 				                  <hr class="task-line">
-				                  <div class="task-information">
-				                     <span class="task-info-line"><a class="task-user" href="#">Lesley Grauer</a> <span class="task-info-subject">created task</span></span>
-				                     <div class="task-time">Jan 20, 2019</div>
-				                  </div>
-				                  <div class="task-information">
-				                     <span class="task-info-line"><a class="task-user" href="#">Lesley Grauer</a> <span class="task-info-subject">added to Hospital Administration</span></span>
-				                     <div class="task-time">Jan 20, 2019</div>
-				                  </div>
-				                  <div class="task-information">
-				                     <span class="task-info-line"><a class="task-user" href="#">Lesley Grauer</a> <span class="task-info-subject">assigned to John Doe</span></span>
-				                     <div class="task-time">Jan 20, 2019</div>
-				                  </div>
-				                  <hr class="task-line">
-				                  <div class="task-information">
-				                     <span class="task-info-line"><a class="task-user" href="#">John Doe</a> <span class="task-info-subject">changed the due date to Sep 28</span> </span>
-				                     <div class="task-time">9:09pm</div>
-				                  </div>
-				                  <div class="task-information">
-				                     <span class="task-info-line"><a class="task-user" href="#">John Doe</a> <span class="task-info-subject">assigned to you</span></span>
-				                     <div class="task-time">9:10pm</div>
-				                  </div>
+				                  @if($project['task']['task_histories'])
+				                  	@foreach($project['task']['task_histories'] as $history_key => $history)
+				                  		@if($history['type'] == "create_task" || $history['type'] == "due_date" || $history['type'] == "assign_task" || $history['type'] == "added_user" || $history['type'] == "incomplete_task")
+				                  			<div class="task-information">
+				                     			<span class="task-info-line"><a class="task-user" href="#">{{ !empty($history['description']) ? $history['description'] : '-' }}</a></span>
+				                     			<div class="task-time">{{ !empty($history['created_at']) ? date("M d, Y",strtotime($history['created_at'])) : '-' }}</div>
+				                  			</div>		
+				                  		@elseif( $history['type'] == "complete_task")
+				                  			<div class="completed-task-msg">
+				                  				<span class="task-success"><a href="#">{{ !empty($history['description']) ? $history['description'] : '-' }}</a></span> <span class="task-time">{{ !empty($history['created_at']) ? date("M d, Y",strtotime($history['created_at'])) : '-' }}</span>
+				                  			</div>			
+				                  		@endif		
+				                  	@endforeach	
+				                  @endif
 				                  <div class="chat chat-left">
 				                     <div class="chat-avatar">
 				                        <a href="profile" class="avatar">
@@ -141,26 +134,7 @@
 				                        </div>
 				                     </div>
 				                  </div>
-				                  <div class="completed-task-msg"><span class="task-success"><a href="#">John Doe</a> completed this task.</span> <span class="task-time">Today at 9:27am</span></div>
-				                  <div class="chat chat-left">
-				                     <div class="chat-avatar">
-				                        <a href="profile" class="avatar">
-				                        <img alt="" src="img/profiles/avatar-02.jpg">
-				                        </a>
-				                     </div>
-				                     <div class="chat-body">
-				                        <div class="chat-bubble">
-				                           <div class="chat-content">
-				                              <span class="task-chat-user">John Doe</span> <span class="file-attached">attached 3 files <i class="fa fa-paperclip"></i></span> <span class="chat-time">Feb 17, 2019 at 4:32am</span>
-				                              <ul class="attach-list">
-				                                 <li><i class="fa fa-file"></i> <a href="#">project_document.avi</a></li>
-				                                 <li><i class="fa fa-file"></i> <a href="#">video_conferencing.psd</a></li>
-				                                 <li><i class="fa fa-file"></i> <a href="#">landing_page.psd</a></li>
-				                              </ul>
-				                           </div>
-				                        </div>
-				                     </div>
-				                  </div>
+				                  
 				                  <div class="chat chat-left">
 				                     <div class="chat-avatar">
 				                        <a href="profile" class="avatar">
@@ -178,33 +152,7 @@
 				                        </div>
 				                     </div>
 				                  </div>
-				                  <div class="chat chat-left">
-				                     <div class="chat-avatar">
-				                        <a href="profile" class="avatar">
-				                        <img alt="" src="img/profiles/avatar-16.jpg">
-				                        </a>
-				                     </div>
-				                     <div class="chat-body">
-				                        <div class="chat-bubble">
-				                           <div class="chat-content">
-				                              <span class="task-chat-user">Jeffery Lalor</span> <span class="file-attached">attached file <i class="fa fa-paperclip"></i></span> <span class="chat-time">Today at 12:42pm</span>
-				                              <ul class="attach-list">
-				                                 <li class="img-file">
-				                                    <div class="attach-img-download"><a href="#">avatar-1.jpg</a></div>
-				                                    <div class="task-attach-img"><img src="img/user.jpg" alt=""></div>
-				                                 </li>
-				                              </ul>
-				                           </div>
-				                        </div>
-				                     </div>
-				                  </div>
-				                  <div class="task-information">
-				                     <span class="task-info-line">
-				                     <a class="task-user" href="#">John Doe</a>
-				                     <span class="task-info-subject">marked task as incomplete</span>
-				                     </span>
-				                     <div class="task-time">1:16pm</div>
-				                  </div>
+
 				               </div>
 				            </div>
 				         </div>
@@ -212,19 +160,21 @@
 				   </div>
 				   <div class="chat-footer">
 				      <div class="message-bar">
-				         <div class="message-inner">
-				            <a class="link attach-icon" href="#">
-				            <span class="btn-file"><input type="file" class="upload"><img  type="file" src="{{asset('img/attachment.png')}}" alt=""></span>
-				            </a>
-				            <div class="message-area">
-				               <div class="input-group">
-				                  <textarea class="form-control" placeholder="Type message..."></textarea>
-				                  <span class="input-group-append">
-				                  <button class="btn btn-primary" type="button"><i class="fa fa-send"></i></button>
-				                  </span>
-				               </div>
-				            </div>
-				         </div>
+				         <form id="GetAddTaskHistoryForm" style="display: contents;">
+					         <div class="message-inner">
+					            <a class="link attach-icon" href="#">
+					            <span class="btn-file"><input type="file" class="upload"><img  type="file" src="{{asset('img/attachment.png')}}" alt=""></span>
+					            </a>
+					            <div class="message-area">
+					               <div class="input-group">
+					                  <textarea class="form-control" placeholder="Type message..." name="description"></textarea>
+					                  <span class="input-group-append">
+					                  <a onClick="AddTaskHistory()" class="btn btn-primary" ><i class="fa fa-send"></i></a>
+					                  </span>
+					               </div>
+					            </div>
+					         </div>
+					    </form>
 				      </div>
 				      <div class="row">
 				         <div class="col-md-6">
@@ -432,6 +382,42 @@ $('#task_followers').insertAfter($('body'));
 
       
 <script type="text/javascript">
+	function AddTaskHistory()
+	{
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		$("#task_id_history").remove();
+  		var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addtaskhistory' : '#') }}";  
+    	var input = $("<input id='task_id_history' type=\"hidden\" name=\"task_id\" value=\""+task_id+"\"/>");
+    	//var added_followers = Object.keys(added_followers);                     
+        
+    	$("#GetAddTaskHistoryForm").append(input);
+    	var form = $('#GetAddTaskHistoryForm').get(0);
+    	var formData = new FormData(form);	
+    	$.ajax({
+	        type: "POST",
+	        url: url,
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        success: function(response)
+	        {
+	            if(response.status == "SUCCESS")
+	            {
+	            	toastr['success'](response.message);
+                    // window.location = "";
+	            }
+	            else
+	            {
+	                toastr['error'](response.message);
+	            }    
+	        }            
+	    }); 
+	}
+
 	function AddFollowers()
 	{
 		$.ajaxSetup({

@@ -97,6 +97,7 @@ class Tasks extends Model
       $validate['ref']     = "error_task_id_invalid";
       return $validate;
     }
+    $validate['task'] = $task;
     $followers =  explode(',',$requestData['followers']);
     foreach ($followers as $key => $follower) 
     {
@@ -112,11 +113,26 @@ class Tasks extends Model
     return $validate;
   }
 
-  static function addfollowers($requestData)
+  static function addfollowers($requestData,$task,$mydetail)
   {
+     
     $followers =  explode(',',$requestData['followers']);
+    //$is_project_exists = Projects::where(['id' => (int) $task['project_id'] ,"deleted" => '0'])->first(); 
     foreach ($followers as $key => $follower) 
     {
+      /* Task History Start */
+      $task_data = array(
+          'task_id' => (int) $requestData['task_id'], 
+          'project_id' => (int) $taskData['project_id'],
+          'user_id' => (int) $mydetail['id'],
+          'attachment_name' => "",
+          'is_attachment' => '0',
+          'description' => $mydetail['name']."added to ".$task['task_title'],
+          'type' => 'added_user',  
+      );
+      TaskHistory::addtaskhistory($task_data);
+      /* Task History End */
+
       $task_members = array(              
         'task_id' => (int) $requestData['task_id'],
         'user_id' => $follower,
