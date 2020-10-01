@@ -321,16 +321,15 @@ $('#task_followers').insertAfter($('body'));
 		}
 	});
 </script>
-				 <script>
+			 <script>
         	$("#status li").on("click",function() {
                 $('#status-current').text($(this).text());
                           var color =  $(this).children('a').attr('style');
-               console.log(color);
+             			  console.log(color);
   	                $('#status-current').attr('style',color);
            
            });
-
-        	
+       	
         </script>
 
 			
@@ -382,7 +381,10 @@ $('#task_followers').insertAfter($('body'));
                             toastr['success'](response.message);
                             var html = '';
            					 html +='<i class="material-icons">check</i>'
-                            $('#status-current').text(status);
+                            var comp_status = status.charAt(0).toUpperCase() + status.slice(1)
+                            $('#status-current').text(comp_status);
+
+                            $('#status-current').attr('style','color:#35ba67');
                            // $("#task_complete").addClass("task-complete-btn");
                             $("#task_completed").addClass("task-completed");
                             $("#task_completed").html('<i class="material-icons">check</i>Completed');
