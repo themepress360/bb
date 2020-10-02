@@ -173,7 +173,9 @@
 				         <form id="GetAddTaskHistoryForm" style="display: contents;">
 					         <div class="message-inner">
 					            <a class="link attach-icon" href="#">
-					            <span class="btn-file"><input type="file" class="upload" name="attachment" id="attachment" ><img  type="file" src="{{asset('img/attachment.png')}}" alt=""></span>
+			<span class="btn-file">
+				<input type="file" class="upload" name="attachment" id="attachment" >
+				<img  type="file" src="{{asset('img/attachment.png')}}" alt=""></span>
 					            </a>
 					            <div class="message-area">
 					               <div class="input-group">
@@ -199,6 +201,11 @@
 				               <a href="#" class="followers-add" data-toggle="modal" data-target="#task_followers"><i class="material-icons">add</i></a>
 				            </div>
 				         </div>
+				      </div>
+				      <div id="preview" class="file-preview" style="display:none">
+				     	<div id="display-images">
+				     	</div>
+				     	 <a href="#" class="followers-add"><i class="material-icons" onclick="deleteImage()">close</i></a>
 				      </div>
 				   </div>
 				</div>
@@ -680,18 +687,84 @@ $.ajaxSetup({
 
 });
 
-
-
 });
-
-
-
-
-//$("#datepicker").on("dp.change", function (e) {
-//console.log(e.date.format('DD/MM/YYYY'));
-//});
-
-
 
 </script>
 
+<!--<script>
+   $(function() {
+    // Multiple images preview in browser
+    var imagesPreview = function(input, placeToInsertImagePreview) {
+
+    	$('#preview').attr('style','display:flex');
+
+        if (input.files) {
+            var filesAmount = input.files.length;
+
+            for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+                    $($.parseHTML('<li style="display:inline-block;"><img width="25px" height="25px" style="margin:5px"><i class="fa fa-close" id="remove_file" aria-hidden="true"></i><li>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                }
+
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+
+    };
+
+    $('#attachment').on('change', function() {
+        imagesPreview(this, '#display-images');
+    });
+});
+</script> -->
+
+<script>
+	$(function() {
+    // Multiple images preview in browser
+    var imagesPreview = function(input, placeToInsertImagePreview) {
+
+        $('#preview').attr('style','display:flex');
+
+          var filename = input.files[0].name;
+          console.log(filename);
+          var data = $('#description').val();
+          console.log(data);
+          if( filename != data){
+
+         $("#description").text(data+filename+'\n');
+
+         }
+
+
+        if (input.files) {
+            var filesAmount = input.files.length;
+              for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+                    $($.parseHTML('<img style="width:30px;height:30px;margin-right:5px">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                }
+
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+
+    };
+
+    $('#attachment').on('change', function() {
+        imagesPreview(this, '#display-images');
+
+      
+    });
+});
+</script>
+<script>
+
+	$("#remove_file").on('click', function() {
+
+		$(this).remove();
+
+	});
+</script>
