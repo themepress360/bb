@@ -820,5 +820,6 @@ $.ajaxSetup({
 	function deleteImage(){
 
 		$('#preview').attr('style','display:none');
+		$('#result').empty()
 	}
 </script>
