@@ -389,7 +389,7 @@ class TasksController extends CommonController
                         'user_id' => (int) $mydetail['id'],
                         'attachment_name' => "",
                         'is_attachment' => '0',
-                        'description' => $mydetail['name']." change thier task status.",
+                        'description' => $mydetail['name']." change the ".ucwords(trim($requestData['status']))." status.",
                         'type' => 'change_task',  
                     );
                     TaskHistory::addtaskhistory($task_data);

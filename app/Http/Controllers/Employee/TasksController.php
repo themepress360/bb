@@ -26,6 +26,7 @@ use App\Project_members;
 use App\Tasks;
 use App\Task_members;
 use App\Task_boards;
+use App\TaskHistory;
 
 
 class TasksController extends CommonController
@@ -319,8 +320,82 @@ class TasksController extends CommonController
      */
     public function updateTaskStatus(Request $request)
     {
-        $status = $request->all();
-        dd(strtolower(trim($status['status'])));
+        $rules = [
+            'task_id'   => 'required',
+            'status'  => 'required',
+        ];
+
+        $validator = Validator::make($request->all(),$rules);
+
+        if (!$validator->fails()) 
+        {
+            $requestData = $request->all();
+            $mydetail = $request->user();
+            $custom_validation = Tasks::updateTaskStatusValidation($requestData);
+            if($custom_validation['status'])
+            {
+                $data['status']   = strtolower(trim($requestData['status']));
+                $edit_task_status = Tasks::where('id', (int) $requestData['task_id'])->update($data);
+                if($edit_task_status)
+                {
+
+                    /* Task History Start */
+                    $task_data = array(
+                        'task_id' => (int) $requestData['task_id'], 
+                        'project_id' => (int) $custom_validation['task']['project_id'],
+                        'user_id' => (int) $mydetail['id'],
+                        'attachment_name' => "",
+                        'is_attachment' => '0',
+                        'description' => $mydetail['name']." change the ".ucwords(trim($requestData['status']))." status.",
+                        'type' => 'change_task',  
+                    );
+                    TaskHistory::addtaskhistory($task_data);
+                    /* Task History End */
+
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.updateTaskStatus_edit_success'),
+                        'ref'     => 'updateTaskStatus_edit_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+            }
+            else
+            {
+                $status = 400;
+                $response = array(
+                    'status'  => 'FAILED',
+                    'message' => $custom_validation['message'],
+                    'ref'     => $custom_validation['ref']
+                );
+            }
+        }
+        else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
     }
 
     /**
@@ -330,35 +405,98 @@ class TasksController extends CommonController
      * @return \Illuminate\Http\Response
      */
     
-     public function gettaskwindow(Request $request)
+    public function gettaskwindow(Request $request)
     {
         $requestData =  $request->all();
-        $id = $request->user()->id;
-        $task_status = Task_boards::where('deleted', '0')->get();
-        //dd($id);
+
+        //dd($requestData);
         $window_data['task_statuses'] = Task_boards::where('deleted', '0')->get();
+      
+              
         $task = Tasks::where(['deleted' => '0', "id" => (int)$requestData['task_id'] ])->first();
         $window_data['project'] = Projects::where(['deleted' => '0', "id" => (int)$task['project_id'] ])->first();
-
         $window_data['project']['task'] = $task;
-        
-        $employee_role = employees::join('roles' , 'roles.id' , '=' , 'employees.role_id')->where(['user_id' => $id ,'employees.deleted' =>'0' ])->first();
 
-        $task_added_by = User::where(['deleted' => '0', "id" => (int) $task['added_by'] ])->first();
-        if(!empty($task_added_by['profile_image']))
-            $window_data['project']['task']['assignee_profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$task_added_by['profile_image']);
+        $task_status_color = Task_boards::where(["task_board_name"=> $task->status, 'deleted' => '0'])->first();
+
+         // dd($task_status_color->task_board_color);
+
+        if($task['assign_to'] != 0 )
+        {
+            $task_added_by = User::where(['deleted' => '0', "id" => (int) $task['assign_to'] ])->first();
+            if(!empty($task_added_by['profile_image']))
+                $window_data['project']['task']['assign_to_profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$task_added_by['profile_image']);
+            else
+                $window_data['project']['task']['assign_to_profile_image_url'] = '';
+
+            $window_data['project']['task']['assign_to_name'] = $task_added_by['name'];
+        }
         else
-            $window_data['project']['task']['assignee_profile_image_url'] = '';
-
-        $window_data['project']['task']['assignee_name'] = $task_added_by['name'];
+        {
+            $window_data['project']['task']['assign_to_name'] = '';
+            $window_data['project']['task']['assign_to_profile_image_url'] = '';
+        }
+        
+        /* Task History Start */
+        $task_histories = TaskHistory::where(['task_id' => (int)$requestData['task_id'] ,'deleted' => '0','status'=> '1', "project_id" => (int) $task['project_id'] ])->get()->toArray();
+        if(!empty($task_histories))
+        {
+            foreach ($task_histories as $key => $task_history) {
+                if($task_history['type'] == "comment" || $task_history['type'] == "attachment")
+                {
+                    $user_history = User::where(['deleted' => '0', "id" => (int) $task_history['user_id'] ])->first();
+                    $task_histories[$key]['name'] = $user_history['name'];
+                    if(!empty($user_history['profile_image']))
+                    {
+                        $task_histories[$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$user_history['profile_image']);
+                    }
+                    else
+                        $task_histories[$key]['profile_image_url'] = '';
+                    if($task_history['is_attachment'] || !empty($task_history['attachment_name'] ))
+                    {
+                        $task_histories[$key]['attachment_url'] = TaskHistory::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$task_history['attachment_name']);
+                    }
+                    else
+                    {
+                        $task_histories[$key]['attachment_url'] = "";
+                    }
+                }
+                else
+                {
+                    $task_histories[$key]['attachment_url'] = "";
+                    $task_histories[$key]['profile_image_url'] = "";
+                    $task_histories[$key]['name'] = "";
+                }
+            }
+        }
+        $window_data['project']['task']['task_histories'] = $task_histories;
+        /* Task History End */
 
         $task_members = Task_members::where(['deleted' => '0','status'=> '1', "task_id" => (int) $requestData['task_id'] ])->get()->toArray();
         $project_leaders = Project_members::where(['is_leaders' => '1' ,'deleted' => '0','status'=> '1', "project_id" => (int) $task['project_id'] ])->get()->toArray();
         $window_data['project']['task']['followers'] = Tasks::getFollowers($task_members,$project_leaders);
-        // print_r("<pre>");
-        // print_r($window_data['project']['task']['followers']);
-        // exit();
-        $data['gettaskwindowhtml'] = view('employees.projects.gettaskwindow',$window_data, compact('employee_role','task_status'))->render();
+        
+        /* To get the all project employee which are exists in this department start */
+        $members = Employees::select(['designations.name as designation_name','users.*'])->where(['employees.department_id' => (int) $window_data['project']['department'] ])->join('users', 'users.id', '=', 'employees.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->get()->toArray();
+        
+        if(!empty($members))
+        {
+            foreach($members as $key => $member)
+            {
+                if(!empty($member['profile_image']))
+                {
+                    $members[$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$member['profile_image']);
+                }
+                else
+                    $members[$key]['profile_image_url'] = '';
+            }
+        }
+        $window_data['project']['members'] = $members;
+        /* To get the all project employee which are exists in this department end */
+
+       // dd($task);
+
+        $data['gettaskwindowhtml'] = view('admin.projects.gettaskwindow',$window_data,compact('task_status_color','task'))->render();
         $status   = 200;
         $response = array(
             'status'  => 'SUCCESS',
@@ -406,5 +544,150 @@ class TasksController extends CommonController
     public function destroy($id)
     {
         //
+    }
+
+    public function completeTask(Request $request)
+    {
+
+        $data = $request->all();
+        $mydetail = $request->user(); 
+        $rules = [
+            'status'    => 'required',
+            'task_id'  => 'required',
+        ];
+
+        $validator = Validator::make($request->all(),$rules);
+
+        if (!$validator->fails()) 
+        {
+
+            $is_task_exists = Tasks::where(['id' => (int) $request['task_id'],"deleted" => '0'])->first(); 
+            $project = Projects::where(['id' => (int) $is_task_exists['project_id'] ,"deleted" => '0'])->first();
+            $status['status'] = $request['status'];
+           // dd($status['status']);
+            $task_board_exists = Task_boards::where(['task_board_name' =>  $request['status'] ,"deleted" => "0" ])->first();
+           
+            //dd($task_board_exists['task_board_name']);
+            
+            if($task_board_exists['task_board_name']){
+
+               // dd("Task Board Exists");
+            
+            $mark_complete = Tasks::where(['id' => $request['task_id'], "deleted" => "0"])->update($status);
+
+           // dd($mark_complete);
+
+                if($mark_complete)
+                {
+                     
+                    /* Task History Start */
+                    $task_data = array(
+                        'task_id' => (int) $request['task_id'], 
+                        'project_id' => (int) $project['id'],
+                        'user_id' => (int) $mydetail['id'],
+                        'attachment_name' => "",
+                        'is_attachment' => '0',
+                        'description' => $mydetail['name']." complete thier task.",
+                        'type' => 'complete_status',  
+                    );
+                    TaskHistory::addtaskhistory($task_data);
+                    /* Task History End */
+
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.task_completed_success'),
+                        'ref'     => 'task_completed_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+
+             }else{
+
+              
+              $task_board = array(
+
+                    'task_board_name' => $request['status'],
+                    'task_board_color' => "#35ba67",
+                    'deleted' => "0",
+                    'status' => "1",
+
+                );
+                
+                $create_task_board = Task_boards::create($task_board);
+
+                if($create_task_board)
+                {
+                 //  dd($request['task_id']);
+                  $status['status'] = $request['status'];
+                 // dd($status);
+                 $mark_complete = Tasks::where(['id' => $request['task_id'], "deleted" => "0"])->update($status);
+                    $project = Projects::where(['id' => (int) $is_task_exists['project_id'] ,"deleted" => '0'])->first();
+                   
+                    /* Task History Start */
+                    $task_data = array(
+                        'task_id' => (int) $request['task_id'], 
+                        'project_id' => (int) $project['id'],
+                        'user_id' => (int) $mydetail['id'],
+                        'attachment_name' => "",
+                        'is_attachment' => '0',
+                        'description' => $mydetail['name']." complete thier task.",
+                        'type' => 'complete_status',  
+                    );
+                    TaskHistory::addtaskhistory($task_data);
+                    /* Task History End */
+
+
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.task_completed_success'),
+                        'ref'     => 'task_completed_success',
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+
+            }
+
+
+           
+          
+        }else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+
+
+
     }
 }

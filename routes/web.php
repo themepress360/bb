@@ -110,8 +110,10 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
 
         Route::get('tasks', array('uses' => 'TasksController@gettasks'));
+        Route::post('updatetaskstatus', array('uses' => 'TasksController@updateTaskStatus'));
         Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
-        
+        Route::post('addtaskhistory', array('uses' => 'TaskHistoryController@addtaskhistory'));
+        Route::post('completetask', array('uses' => 'TasksController@completeTask'));
 
        });
 //});
