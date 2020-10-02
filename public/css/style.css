@@ -2595,6 +2595,7 @@ border-color: transparent;
 	background-color: #fff;
 	border-top: 1px solid #eaeaea;
 	padding: 15px;
+
 }
 .message-bar {
 	display: table;
@@ -8611,7 +8612,7 @@ color: #F64E60 !important;
 	background-color: #fff;
 	display: flex;
 	flex-wrap: wrap;
-	padding: 5px;
+	padding: 10px;
 	box-shadow: 0 1px 6px rgba(57,73,76,.35);
 	margin: 5px 2px;
 	border-radius: 2px;
@@ -8627,12 +8628,15 @@ color: #F64E60 !important;
 
 }
 .list-style{
-	display:flex;
+	width: 100%;
 	list-style: none;
+	height:100px;
+	overflow-x:hidden;
+	overflow-y:auto;
 }
 .thumbnail{
 
 	width:30px;
     height: 30px;
-    margin: 10px;    
+   
 }

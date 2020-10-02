@@ -202,13 +202,17 @@
 				            </div>
 				         </div>
 				      </div>
-				      <div id="preview" class="file-preview" style="display:none">
-				     	<div id="display-images">
+				    
+				      <div id="preview"  style="display:none">
+				     								
 							<ul id="result" class="list-style">
-				     	</div>
-				     	
-				     	 <a href="#" class="followers-add"><i class="material-icons" onclick="deleteImage()">close</i></a>
-				      </div>
+
+							</ul>
+						</div>
+				     				     	
+				     	<!-- <a href="#" class="followers-add"><i class="material-icons" onclick="deleteImage()">close</i></a>-->
+				      
+				  
 				   </div>
 				</div>
 
@@ -738,63 +742,98 @@ $.ajaxSetup({
 
             var files = event.target.files; //FileList object
             
-            console.log(files[0].type);
+            console.log (files);
+             for(var i = 0; i<files.length; i++){
 
-            var fname = files[0].name,
-            fextension = fname.substring(fname.lastIndexOf('.')+1);
-            console.log(fextension);
+             	var fname = files[i].name;
+             	console.log(fname);
+             	fextension = fname.substring(fname.lastIndexOf('.')+1);
+                console.log(fextension);
 
-            Extensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx","txt","zip","rar","gzip"];
+                 Extensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx","txt","zip","rar","gzip"];
 
-            var output = document.getElementById("result");
+                 img_ext = ["jpg","png","jpeg","gif","svg"];
 
-             if(fextension.match('pdf')){
+                 code_ext = ["php","html","css"]
 
-                    $("<li><i class='fa fa-file-pdf-o fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+                if(fextension.match('pdf')){
+
+                    $("<li class='file-preview'><i class='fa fa-file-pdf-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
 
                 }
                 if(fextension.match('docx')){
                     console.log('This is Doc File');
-                    $("<li><i class='fa fa-file-word-o fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+                    $("<li class='file-preview'><i class='fa fa-file-word-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
 
                 }
                 if(fextension.match('xlsx')){
 
-                    $("<li><i class='fa fa-file-excel-o fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+                    $("<li class='file-preview'><i class='fa fa-file-excel-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
 
                 }
                 if(fextension.match('csv')){
 
                     $("<li><i class='fa fa-file fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
 
+                     
                 }
-            
-            for(var i = 0; i< files.length; i++)
-            {
-                var file = files[i];
-          
                 //Only pics
-                if(!file.type.match('image'))
-                  continue;               
-                             
-                var picReader = new FileReader();
-                
-                picReader.addEventListener("load",function(event){
-                    
-                    var picFile = event.target;
-                    
-                    var div = document.createElement("li");
-                    
-                    div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
-                            "title='" + picFile.name + "'/> <i class='fa fa-times close' id='remove_file' aria-hidden='true'></i>";
-                    
-                    output.insertBefore(div,null);            
-                
-                });
-                
-                 //Read the image
-                picReader.readAsDataURL(file);
-            }                               
+                if(img_ext.includes(fextension)){
+                	                     
+               img_src = window.URL.createObjectURL(files[i]);
+                                  
+         	  $("<li class='file-preview'><img class='thumbnail' src='" + img_src + "'" +  "title='" + fname + "'/> " + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+                 
+                }
+                 if(fextension.match('zip')){
+
+                    $("<li><i class='fa fa-file-archive-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+
+                     
+                }
+               if(fextension.match('zip')){
+
+                    $("<li class='file-preview'><i class='fa fa-file-archive-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+
+                     
+                }
+                if(fextension.match('mp4')){
+
+                    $("<li class='file-preview'><i class='fa fa-file-video-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+
+                     
+                }
+                if(fextension.match('ppt')){
+
+                    $("<li class='file-preview'><i class='fa fa-file-powerpoint-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+
+                     
+                }
+                 if(fextension.match('txt')){
+
+                    $("<li class='file-preview'><i class='fa fa-file-text-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+
+                     
+                }
+                 if(code_ext.includes(fextension)){
+
+                    $("<li class='file-preview'><i class='fa fa-file-code-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+
+                     
+                }
+
+               
+                        
+             }
+
+               
+            
+
+            var output = document.getElementById("result");
+
+             
+            
+                   
            
         });
     }
@@ -814,12 +853,15 @@ $.ajaxSetup({
 		console.log("Function Called");
 		$(this).closest('li').remove();
 
+		if (!$(".list-style").find('li').length) {
+    		$('#preview').hide()
+  }
+		
+
 	});
 </script>
 <script>
-	function deleteImage(){
-
-		$('#preview').attr('style','display:none');
-		$('#result').empty()
-	}
+	if(!$('#previews').find('ul:visible').length){
+    $('#preview').hide();
+}
 </script>
