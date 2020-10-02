@@ -174,7 +174,7 @@
 					         <div class="message-inner">
 					            <a class="link attach-icon" href="#">
 			<span class="btn-file">
-				<input type="file" class="upload" name="attachment" id="attachment" >
+				<input multiple type="file" class="upload" name="attachment" id="attachment" >
 				<img  type="file" src="{{asset('img/attachment.png')}}" alt=""></span>
 					            </a>
 					            <div class="message-area">
@@ -204,7 +204,9 @@
 				      </div>
 				      <div id="preview" class="file-preview" style="display:none">
 				     	<div id="display-images">
+							<ul id="result" class="list-style">
 				     	</div>
+				     	
 				     	 <a href="#" class="followers-add"><i class="material-icons" onclick="deleteImage()">close</i></a>
 				      </div>
 				   </div>
@@ -721,50 +723,102 @@ $.ajaxSetup({
 </script> -->
 
 <script>
-	$(function() {
-    // Multiple images preview in browser
-    var imagesPreview = function(input, placeToInsertImagePreview) {
+	
+	$(function(){
+        
+    //Check File API support
+    if(window.File && window.FileList && window.FileReader)
+    {
+        var filesInput = document.getElementById("attachment");
 
-        $('#preview').attr('style','display:flex');
+        
+        filesInput.addEventListener("change", function(event){
+            
+             $('#preview').attr('style','display:flex');
 
-          var filename = input.files[0].name;
-          console.log(filename);
-          var data = $('#description').val();
-          console.log(data);
-          if( filename != data){
+            var files = event.target.files; //FileList object
+            
+            console.log(files[0].type);
 
-         $("#description").text(data+filename+'\n');
+            var fname = files[0].name,
+            fextension = fname.substring(fname.lastIndexOf('.')+1);
+            console.log(fextension);
 
-         }
+            Extensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx","txt","zip","rar","gzip"];
 
+            var output = document.getElementById("result");
 
-        if (input.files) {
-            var filesAmount = input.files.length;
-              for (i = 0; i < filesAmount; i++) {
-                var reader = new FileReader();
+             if(fextension.match('pdf')){
 
-                reader.onload = function(event) {
-                    $($.parseHTML('<img style="width:30px;height:30px;margin-right:5px">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                    $("<li><i class='fa fa-file-pdf-o fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+
                 }
+                if(fextension.match('docx')){
+                    console.log('This is Doc File');
+                    $("<li><i class='fa fa-file-word-o fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
 
-                reader.readAsDataURL(input.files[i]);
-            }
-        }
+                }
+                if(fextension.match('xlsx')){
 
-    };
+                    $("<li><i class='fa fa-file-excel-o fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
 
-    $('#attachment').on('change', function() {
-        imagesPreview(this, '#display-images');
+                }
+                if(fextension.match('csv')){
 
-      
-    });
+                    $("<li><i class='fa fa-file fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+
+                }
+            
+            for(var i = 0; i< files.length; i++)
+            {
+                var file = files[i];
+          
+                //Only pics
+                if(!file.type.match('image'))
+                  continue;               
+                             
+                var picReader = new FileReader();
+                
+                picReader.addEventListener("load",function(event){
+                    
+                    var picFile = event.target;
+                    
+                    var div = document.createElement("li");
+                    
+                    div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
+                            "title='" + picFile.name + "'/> <i class='fa fa-times close' id='remove_file' aria-hidden='true'></i>";
+                    
+                    output.insertBefore(div,null);            
+                
+                });
+                
+                 //Read the image
+                picReader.readAsDataURL(file);
+            }                               
+           
+        });
+    }
+    else
+    {
+        console.log("Your browser does not support File API");
+    }
 });
+
+
+
 </script>
 <script>
 
-	$("#remove_file").on('click', function() {
+	$("#result").on('click', '#remove_file' , function() {
 
-		$(this).remove();
+		console.log("Function Called");
+		$(this).closest('li').remove();
 
 	});
+</script>
+<script>
+	function deleteImage(){
+
+		$('#preview').attr('style','display:none');
+	}
 </script>

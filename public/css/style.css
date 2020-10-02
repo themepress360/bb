@@ -8626,3 +8626,13 @@ color: #F64E60 !important;
 	overflow: auto;
 
 }
+.list-style{
+	display:flex;
+	list-style: none;
+}
+.thumbnail{
+
+	width:30px;
+    height: 30px;
+    margin: 10px;    
+}
