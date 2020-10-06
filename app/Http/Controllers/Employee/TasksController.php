@@ -27,7 +27,7 @@ use App\Tasks;
 use App\Task_members;
 use App\Task_boards;
 use App\TaskHistory;
-
+use App\TaskHistoryFileUploads;
 
 class TasksController extends CommonController
 {
@@ -398,13 +398,6 @@ class TasksController extends CommonController
         return \Response::json($data,200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    
     public function gettaskwindow(Request $request)
     {
         $requestData =  $request->all();
@@ -442,7 +435,7 @@ class TasksController extends CommonController
         if(!empty($task_histories))
         {
             foreach ($task_histories as $key => $task_history) {
-                if($task_history['type'] == "comment" || $task_history['type'] == "attachment")
+                if($task_history['type'] == "comment" || $task_history['type'] == "attachment" || $task_history['type'] == "attachment_comment")
                 {
                     $user_history = User::where(['deleted' => '0', "id" => (int) $task_history['user_id'] ])->first();
                     $task_histories[$key]['name'] = $user_history['name'];
@@ -452,18 +445,38 @@ class TasksController extends CommonController
                     }
                     else
                         $task_histories[$key]['profile_image_url'] = '';
-                    if($task_history['is_attachment'] || !empty($task_history['attachment_name'] ))
+                    if($task_history['is_attachment'])
                     {
-                        $task_histories[$key]['attachment_url'] = TaskHistory::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$task_history['attachment_name']);
+                      $files = TaskHistoryFileUploads::where(['task_history_id' => (int)$task_history['id'] ,'deleted' => '0','status'=> '1'])->get()->toArray();
+                      if(!empty($files))
+                      {
+                        $attachments = [];
+                        foreach ($files as $file_key => $file_value) 
+                        {
+                          $attachments[] = array(
+                            "attachment_name"     => $file_value['attachment_name'],
+                            "attachment_name_url" => TaskHistoryFileUploads::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$file_value['attachment_name']),
+                          );
+                        }
+                        $task_histories[$key]['attachments'] = $attachments; 
+                      }
+                      else
+                      {
+                        $task_histories[$key]['attachments'] = [];
+                      }
                     }
-                    else
-                    {
-                        $task_histories[$key]['attachment_url'] = "";
-                    }
+                    // if($task_history['is_attachment'] || !empty($task_history['attachment_name'] ))
+                    // {
+                    //     $task_histories[$key]['attachment_url'] = TaskHistory::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$task_history['attachment_name']);
+                    // }
+                    // else
+                    // {
+                    //     $task_histories[$key]['attachment_url'] = "";
+                    // }
                 }
                 else
                 {
-                    $task_histories[$key]['attachment_url'] = "";
+                    $task_histories[$key]['attachments'] = [];
                     $task_histories[$key]['profile_image_url'] = "";
                     $task_histories[$key]['name'] = "";
                 }
@@ -496,7 +509,7 @@ class TasksController extends CommonController
 
        // dd($task);
 
-        $data['gettaskwindowhtml'] = view('admin.projects.gettaskwindow',$window_data,compact('task_status_color','task'))->render();
+        $data['gettaskwindowhtml'] = view('employees.projects.gettaskwindow',$window_data,compact('task_status_color','task'))->render();
         $status   = 200;
         $response = array(
             'status'  => 'SUCCESS',

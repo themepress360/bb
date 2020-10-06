@@ -46,6 +46,10 @@ return [
   "error_task_member_exists" => "Already added this followers",
   "update_due_date_success" => "Due Date Updated",
   "task_completed_success" => "Task Completed Succfully",
-  "comment_add_success" => "Comment Added successfully"
+  "comment_add_success" => "Comment Added successfully",
+  'error_project_id_invalid' => "Project id is invalid",
+  "error_start_date_invalid" => "Project start date is less as comapre to due date",
+  "error_end_date_invalid" => "Project end date is greater as comapre to due date",
+  "error_empty_task_description_and_attachement" => "Atleast Comment or attachment one field is required"
 
 ];

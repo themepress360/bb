@@ -55,6 +55,40 @@ class Tasks extends Model
 
   		return $followers;
   	}
+  static function addTaskValidation($requestData)
+  {
+    $validate = array(
+      "status"   => true,
+      "message"  => "",
+      "ref"      => "",
+    );
+    $project = Projects::where(['id' => (int) $requestData['project_id'], "deleted" => '0'])->first();
+    if(empty($project))
+    {
+      $validate['status']  = false;
+      $validate['message'] = trans('messages.error_project_id_invalid');
+      $validate['ref']     = "error_project_id_invalid";
+      return $validate;
+    }
+    $due_date = strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $requestData['due_date']))));
+    $start_date = strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $project['start_date']))));
+    $end_date = strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $project['end_date']))));
+    if($start_date > $due_date)
+    {
+      $validate['status']  = false;
+      $validate['message'] = trans('messages.error_start_date_invalid');
+      $validate['ref']     = "error_start_date_invalid";
+      return $validate;
+    }
+    if($end_date < $due_date)
+    {
+      $validate['status']  = false;
+      $validate['message'] = trans('messages.error_end_date_invalid');
+      $validate['ref']     = "error_end_date_invalid";
+      return $validate;
+    }
+    return $validate;
+  }
 
   static function updateTaskStatusValidation($requestData)
   {
