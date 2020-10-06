@@ -17,7 +17,6 @@ class TaskHistory extends Model
       'task_id' => (int) $data['task_id'], 
       'project_id' => (int) $data['project_id'],
       'user_id' => (int) $data['user_id'],
-      'attachment_name' => $data['attachment_name'],
       'is_attachment' => $data['is_attachment'],
       'description' => $data['description'],
       'deleted' => '0',
@@ -39,6 +38,14 @@ class TaskHistory extends Model
       "message"  => "",
       "ref"      => "",
     );
+    if(empty($requestData['description']) && empty($requestData['attachment']))
+    {
+      $validate['status']  = false;
+      $validate['message'] = trans('messages.error_empty_task_description_and_attachement');
+      $validate['ref']     = "error_empty_task_description_and_attachement";
+      return $validate;
+    }
+
     $task = Tasks::where(['id' => (int) $requestData['task_id'], "deleted" => '0'])->first();
     if(empty($task))
     {

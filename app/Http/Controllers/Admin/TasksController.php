@@ -27,7 +27,7 @@ use App\Tasks;
 use App\Task_members;
 use App\Task_boards;
 use App\TaskHistory;
-
+use App\TaskHistoryFileUploads;
 
 class TasksController extends CommonController
 {
@@ -79,38 +79,28 @@ class TasksController extends CommonController
      */
     public function addTask(Request $request)
     {
-       
-     //  $data = $request->all();
-
-     //  dd($data);
-
-        $rules = [
-
-            'task_title'   => 'required|string|min:2|max:50',
-            'description'  => 'required',
-            'due_date'   => 'required',
-            'project_id'   => 'required',
-            'team_members' => 'required',
-            'priority' => 'required',
-           
-            
-        ];
-
-         $validator = Validator::make($request->all(),$rules);
-
-         if (!$validator->fails()) 
-        {
-
-            $taskData =  $request->all();
+      $rules = [
+        'task_title'   => 'required|string|min:2|max:50',
+        'description'  => 'required',
+        'due_date'   => 'required',
+        'project_id'   => 'required',
+        'team_members' => 'required',
+        'priority' => 'required'    
+      ];
+      $validator = Validator::make($request->all(),$rules);
+      if (!$validator->fails()) 
+      {
+        $taskData =  $request->all();
+        $custom_validation = Tasks::addTaskValidation($taskData);
+        if($custom_validation['status'])
+        {    
             $mydetail = $request->user();   
             $task_title = strtolower($taskData['task_title']);
-
-          $is_task_exists = Tasks::where(['task_title' => strtolower($taskData['task_title']) ,"deleted" => '0'])->first(); 
-
-           if(empty( $is_task_exists)) {
-                $members = explode(",",$taskData['team_members']);
-                
-                $task_data = array(
+            $is_task_exists = Tasks::where(['task_title' => strtolower($taskData['task_title']) ,"deleted" => '0'])->first(); 
+            if(empty( $is_task_exists)) 
+            {
+              $members = explode(",",$taskData['team_members']);    
+              $task_data = array(
                 'task_title' => strtolower($taskData['task_title']),
                 'project_id' => $taskData['project_id'],
                 'description'   => strip_tags($taskData['description']),
@@ -120,44 +110,35 @@ class TasksController extends CommonController
                 'deleted'  => '0',
                 'added_by' => (int) $mydetail['id'],
                 'assign_to' => !empty($members[0]) ? (int) $members[0] : 0 
-             );
-            $project = Projects::where(['id' => (int) $taskData['project_id'] ,"deleted" => '0'])->first();
-            if (!file_exists(config('app.folder').'/'.$project['project_title'])) {
-                $project_folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'], 777, true, true);
-            }
-            $folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'].'/'.strtolower($taskData['task_title']), 777, true, true);
-            
-             $add_task =  Tasks::create($task_data);
-
-            if($add_task){
-                
+              );
+              $project = Projects::where(['id' => (int) $taskData['project_id'] ,"deleted" => '0'])->first();
+              if (!file_exists(config('app.folder').'/'.$project['project_title'])) {
+                  $project_folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'], 777, true, true);
+              }
+              $folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'].'/'.strtolower($taskData['task_title']), 777, true, true);
+              $add_task =  Tasks::create($task_data);
+              if($add_task)
+              {    
                 /* Task History Start */
                 $task_data = array(
-                      'task_id' => (int) $add_task['id'], 
-                      'project_id' => (int) $taskData['project_id'],
-                      'user_id' => (int) $mydetail['id'],
-                      'attachment_name' => "",
-                      'is_attachment' => '0',
-                      'description' => $mydetail['name']." created task",
-                      'type' => 'create_task',  
+                  'task_id' => (int) $add_task['id'], 
+                  'project_id' => (int) $taskData['project_id'],
+                  'user_id' => (int) $mydetail['id'],
+                  'attachment_name' => "",
+                  'is_attachment' => '0',
+                  'description' => $mydetail['name']." created task",
+                  'type' => 'create_task',  
                 );
-
                 TaskHistory::addtaskhistory($task_data);
                 /* Task History End */
-
-
                 $task_id = Tasks::where(['task_title' => strtolower($taskData['task_title']) ,"deleted" => '0'])->first();
-
-             // dd($task_id);
-
-               if(!empty($members)){
-            
-               for($i=0; $i<sizeof($members); $i++ ){              
-
-                $assign_user = User::where(['id' => (int) $members[$i] ,"deleted" => '0'])->first();
-
-                /* Task History Start */
-                $task_data = array(
+                if(!empty($members))
+                {
+                  for($i=0; $i<sizeof($members); $i++ )
+                  {              
+                    $assign_user = User::where(['id' => (int) $members[$i] ,"deleted" => '0'])->first();
+                    /* Task History Start */
+                    $task_data = array(
                       'task_id' => (int) $add_task['id'], 
                       'project_id' => (int) $taskData['project_id'],
                       'user_id' => (int) $mydetail['id'],
@@ -165,45 +146,47 @@ class TasksController extends CommonController
                       'is_attachment' => '0',
                       'description' => $mydetail['name']." assigned to ".$assign_user['name'],
                       'type' => 'assign_task',  
-                );
-
-                TaskHistory::addtaskhistory($task_data);
-                /* Task History End */
-
-               $task_members = array(
-                   
-                   'task_id' => $task_id->id,
-                   'user_id' => $members[$i],
-                   'is_members' => '1',
-                   'is_leaders' => '0',
-                   'deleted'  => '0',
-                   'status'   => '1',
-
-                  );
-
-                     $add_members = Task_members::create($task_members);
-                       }
-                 }
-
-               $status   = 200;
-               $response = array(
-               'status'  => 'SUCCESS',
-               'message' => trans('messages.task_add_success'),
-               'ref'     => 'task_add_success',
-               );
-
-             }
-             
-             }else
-                {
-                     $status = 400;
-                        $response = array(
-                            'status'  => 'FAILED',
-                            'message' => trans('messages.error_task_exists'),
-                            'ref'     => 'error_task_exists'
-                        );  
+                    );
+                    TaskHistory::addtaskhistory($task_data);
+                    /* Task History End */
+                    $task_members = array( 
+                     'task_id' => $task_id->id,
+                     'user_id' => $members[$i],
+                     'is_members' => '1',
+                     'is_leaders' => '0',
+                     'deleted'  => '0',
+                     'status'   => '1',
+                    );
+                    $add_members = Task_members::create($task_members);
+                  }
                 }
-
+                $status   = 200;
+                $response = array(
+                 'status'  => 'SUCCESS',
+                 'message' => trans('messages.task_add_success'),
+                 'ref'     => 'task_add_success',
+                );
+              }
+            }
+            else
+            {
+              $status = 400;
+              $response = array(
+                'status'  => 'FAILED',
+                'message' => trans('messages.error_task_exists'),
+                'ref'     => 'error_task_exists'
+              );  
+            }
+          }
+          else
+          {
+            $status = 400;
+                $response = array(
+                    'status'  => 'FAILED',
+                    'message' => $custom_validation['message'],
+                    'ref'     => $custom_validation['ref']
+                );
+          }
         }else {
             $status = 400;
             $response = array(
@@ -282,7 +265,7 @@ class TasksController extends CommonController
         if(!empty($task_histories))
         {
             foreach ($task_histories as $key => $task_history) {
-                if($task_history['type'] == "comment" || $task_history['type'] == "attachment")
+                if($task_history['type'] == "comment" || $task_history['type'] == "attachment" || $task_history['type'] == "attachment_comment")
                 {
                     $user_history = User::where(['deleted' => '0', "id" => (int) $task_history['user_id'] ])->first();
                     $task_histories[$key]['name'] = $user_history['name'];
@@ -292,18 +275,38 @@ class TasksController extends CommonController
                     }
                     else
                         $task_histories[$key]['profile_image_url'] = '';
-                    if($task_history['is_attachment'] || !empty($task_history['attachment_name'] ))
+                    if($task_history['is_attachment'])
                     {
-                        $task_histories[$key]['attachment_url'] = TaskHistory::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$task_history['attachment_name']);
+                      $files = TaskHistoryFileUploads::where(['task_history_id' => (int)$task_history['id'] ,'deleted' => '0','status'=> '1'])->get()->toArray();
+                      if(!empty($files))
+                      {
+                        $attachments = [];
+                        foreach ($files as $file_key => $file_value) 
+                        {
+                          $attachments[] = array(
+                            "attachment_name"     => $file_value['attachment_name'],
+                            "attachment_name_url" => TaskHistoryFileUploads::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$file_value['attachment_name']),
+                          );
+                        }
+                        $task_histories[$key]['attachments'] = $attachments; 
+                      }
+                      else
+                      {
+                        $task_histories[$key]['attachments'] = [];
+                      }
                     }
-                    else
-                    {
-                        $task_histories[$key]['attachment_url'] = "";
-                    }
+                    // if($task_history['is_attachment'] || !empty($task_history['attachment_name'] ))
+                    // {
+                    //     $task_histories[$key]['attachment_url'] = TaskHistory::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$task_history['attachment_name']);
+                    // }
+                    // else
+                    // {
+                    //     $task_histories[$key]['attachment_url'] = "";
+                    // }
                 }
                 else
                 {
-                    $task_histories[$key]['attachment_url'] = "";
+                    $task_histories[$key]['attachments'] = [];
                     $task_histories[$key]['profile_image_url'] = "";
                     $task_histories[$key]['name'] = "";
                 }

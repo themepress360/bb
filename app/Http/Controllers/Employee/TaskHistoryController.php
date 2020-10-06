@@ -18,7 +18,7 @@ use Mail;
 use Storage;
 use App\TaskHistory;
 use App\Projects;
-
+use App\TaskHistoryFileUploads;
 
 class TaskHistoryController extends CommonController
 {
@@ -29,16 +29,16 @@ class TaskHistoryController extends CommonController
      */
     public function addtaskhistory(Request $request)
     {
+        $requestData =  $request->all();
         $rules = [
-            'description'  => 'required',
             'task_id'      => 'required',
-            'attachment'   => 'file|max:5128',
         ];
         $validator = Validator::make($request->all(),$rules);
 
         if (!$validator->fails()) 
         {
             $requestData =  $request->all();
+
             $mydetail = $request->user();  
             $custom_validation = TaskHistory::addTaskHistoryValidation($requestData);
             if($custom_validation['status'])
@@ -46,24 +46,28 @@ class TaskHistoryController extends CommonController
                 $is_attachment = '0';
                 $filename = "";
                 
-                if(!empty($requestData['attachment']))
+                if(!empty($requestData['attachment_array']) && empty($requestData['description']))
                 {
                     $project =  Projects::where(['id' => (int) $custom_validation['task']['project_id'], "deleted" => '0'])->first();
                     $is_attachment = '1';
-                    $filename = TaskHistory::uploadFile(config('app.folder').'/'.$project['project_title'].'/'.$custom_validation['task']['task_title'],$requestData['attachment']);
                     $type = 'attachment';
+                }
+                elseif(!empty($requestData['attachment_array']) && !empty($requestData['description']))
+                {
+                    $type = 'attachment_comment';
+                    $project =  Projects::where(['id' => (int) $custom_validation['task']['project_id'], "deleted" => '0'])->first();
+                    $is_attachment = '1';
                 }
                 else
                 {
                     $type = 'comment';
                 }
-
+                
                 /* Task History Start */
                 $task_data = array(
                     'task_id' => (int) $requestData['task_id'], 
                     'project_id' => (int) $custom_validation['task']['project_id'],
                     'user_id' => (int) $mydetail['id'],
-                    'attachment_name' => $filename,
                     'is_attachment' => $is_attachment,
                     'description' => $requestData['description'],
                     'type' => $type,  
@@ -71,15 +75,29 @@ class TaskHistoryController extends CommonController
 
                 $add_task_history = TaskHistory::addtaskhistory($task_data);
                 /* Task History End */
-
                 if($add_task_history)
                 {
-                    $add_task_history['attachement_url'] = "";
-                    if($add_task_history['is_attachment'])
+                    $add_task_history['attachments'] = [];
+                    if(!empty($requestData['attachment_array']))
                     {
-                        $add_task_history['attachement_url'] = TaskHistory::file_url($project['project_title'].'/'.$custom_validation['task']['task_title'],$filename);
-                    }   
-
+                        $task_history_file_upload_data = array(
+                            'task_history_id' => (int) $add_task_history['id'], 
+                            'task_id'         => (int) $task_data['task_id'],
+                            'project_id'      => (int) $task_data['project_id'],
+                            'status'          =>  '1',
+                            'deleted'         => '0'
+                        );
+                        foreach ($requestData['attachment_array'] as $key => $file) {
+                            $filename = TaskHistoryFileUploads::uploadFile(config('app.folder').'/'.$project['project_title'].'/'.$custom_validation['task']['task_title'],$file,$task_data);
+                            $task_history_file_upload_data['attachment_name'] = $filename;
+                            TaskHistoryFileUploads::create($task_history_file_upload_data);
+                            $attachments[] = array(
+                                "attachement_name" => $filename,
+                                "attachement_url" => TaskHistoryFileUploads::file_url($project['project_title'].'/'.$custom_validation['task']['task_title'],$filename),
+                            );
+                        }
+                        $add_task_history['attachments'] = $attachments;
+                    }
                     $user_history = User::where(['deleted' => '0', "id" => (int) $mydetail['id'] ])->first();
                     $add_task_history['name'] = $user_history['name'];
                     if(!empty($user_history['profile_image']))
@@ -90,7 +108,6 @@ class TaskHistoryController extends CommonController
                     {
                         $add_task_history['profile_image_url'] = '';
                     }
-
                     $data['comment'] = $add_task_history;
                     $status   = 200;
                     $response = array(
