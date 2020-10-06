@@ -63,7 +63,7 @@
 																
 									@foreach($projects as $project)	
 									
-				<a href="#" class="dropdown-btn" style="display:block;" value="{{$project->id}}"><span  class="span-rotate">{{ucwords($project->project_title)}}</span> <i class="fa fa fa-chevron-down rotate m-l-10"></i> </a>
+				<a href="#" class="dropdown-btn" style="display:block;" value="{{$project->id}}"><span  class="span-rotate">{{ucwords($project->project_title)}} <i id="arrow" class="fa fa fa-chevron-down rotate m-l-10"></i></span> </a>
 									 
 
 									  <div class="dropdown-container">
@@ -624,10 +624,6 @@
 			</div>
 		<!-- /Main Wrapper -->
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script>
 
@@ -653,18 +649,6 @@ $('#add_followers').append('<span id="name" align="center" class="follower-tag">
 	});
 </script>
 
-
-<script>
-$(".rotate").click(function(){
- $(this).toggleClass("down")  ; 
-})
-
-$(".span-rotate").click(function(){
- $('.fa-chevron-right').toggleClass("down")  ; 
-})
-
-</script>
-
 <script>
 
 var dropdown = document.getElementsByClassName("dropdown-btn");
@@ -673,15 +657,30 @@ var i;
 for (i = 0; i < dropdown.length; i++) {
   dropdown[i].addEventListener("click", function() {
   this.classList.toggle("active");
-  var dropdownContent = this.nextElementSibling;
-  if (dropdownContent.style.display === "block") {
-  dropdownContent.style.display = "none";
-  } else {
+  $(this).find('#arrow').toggleClass('down');
+    var dropdownContent = this.nextElementSibling;
+  if (dropdownContent.style.display === "none") {
   dropdownContent.style.display = "block";
+  $('#arrow').removeClass("down");
+
+  } else {
+  dropdownContent.style.display = "none";
+    
   }
+  
+
+
   });
 }
+
 </script>
+
+
+
+
+
+
+
 
 
 <script>

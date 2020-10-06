@@ -92,7 +92,12 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
         Route::get('task-settings', array('uses' => 'TaskBoardController@defaultSettings'));
         Route::post('updatecolor', array('uses' => 'TaskBoardController@updateColor'));
-               
+
+        Route::get('inbox', array('uses' => 'EmailController@index'));
+        Route::get('mail-view/{id}', array('uses' => 'EmailController@showMessage'));
+         Route::post('nextmessages', array('uses' => 'EmailController@listmessages'));
+       
+                        
     });
 
     Route::group(
@@ -152,9 +157,7 @@ Route::get('/admin/chat', function () {
         return view('admin.apps.chat.index');
     });
 
-Route::get('/admin/inbox', function () {
-        return view('admin.apps.email.index');
-    });
+
 
 Route::get('/admin/voice-call', function () {
         return view('admin.apps.calls.voice-call');
