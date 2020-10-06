@@ -66,11 +66,38 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('editemployee', array('uses' => 'EmployeeController@editEmployee'));
         Route::get('employees-list', array('uses' => 'EmployeeController@employeelist'));
 
+        Route::post('saveEmpEducation', array('uses' => 'EducationInformationController@saveEmpEducation'));
+        Route::post('saveEmpExperience', array('uses' => 'ExperienceController@saveEmpExperience'));
+
 
         Route::get('projects',  array('uses' => 'ProjectsController@index'));
-        Route::post('addmembers',  array('uses' => 'ProjectsController@addmembers'));
-         
-           
+        Route::get('project-list',  array('uses' => 'ProjectsController@projectlist'));
+        Route::post('addprojects',  array('uses' => 'ProjectsController@addprojects'));
+
+        Route::get('tasks', array('uses' => 'TasksController@index'));
+        Route::post('addtasks', array('uses' => 'TasksController@addTask'));
+        Route::post('gettask', array('uses' => 'TasksController@getTask'));
+        Route::post('updatetaskstatus', array('uses' => 'TasksController@updateTaskStatus'));
+        Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
+        Route::post('addtaskhistory', array('uses' => 'TaskHistoryController@addtaskhistory'));
+        Route::post('addfollowers', array('uses' => 'TasksController@addfollowers'));
+         Route::post('updatetaskduedate', array('uses' => 'TasksController@updateDueDate'));
+
+         Route::post('completetask', array('uses' => 'TasksController@completeTask'));
+
+        Route::get('task-board', array('uses' => 'TaskBoardController@getTaskboard'));
+        Route::post('getprojecttaskboard', array('uses' => 'TaskBoardController@getprojecttaskboard'));
+        
+        Route::post('addtaskboard', array('uses' => 'TaskBoardController@addTaskboard'));
+
+        Route::get('task-settings', array('uses' => 'TaskBoardController@defaultSettings'));
+        Route::post('updatecolor', array('uses' => 'TaskBoardController@updateColor'));
+
+        Route::get('inbox', array('uses' => 'EmailController@index'));
+        Route::get('mail-view/{id}', array('uses' => 'EmailController@showMessage'));
+         Route::post('nextmessages', array('uses' => 'EmailController@listmessages'));
+       
+                        
     });
 
     Route::group(
@@ -86,28 +113,39 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('profile', array('uses' => 'ProfileController@index'));
         Route::post('updateprofile', array('uses' => 'ProfileController@updateprofile'));
 
+
+        Route::get('tasks', array('uses' => 'TasksController@gettasks'));
+        Route::post('updatetaskstatus', array('uses' => 'TasksController@updateTaskStatus'));
+        Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
+        Route::post('addtaskhistory', array('uses' => 'TaskHistoryController@addtaskhistory'));
+        Route::post('completetask', array('uses' => 'TasksController@completeTask'));
+
        });
 //});
 
-
-
-
-
-
-
-Route::get('/admin/client/registration', function () {
-        return view('admin.emails.ClientRegistration');
-    });
-
-Route::get('/admin/addproject', function () {
-        return view('admin.emails.AddProjectEmail');
-    });
 Route::get('/admin/addtask', function () {
         return view('admin.emails.AddTaskEmail');
     });
+Route::get('/admin/taskadminreview', function () {
+        return view('admin.emails.TaskAdminReviewEmail');
+    });
+Route::get('/admin/taskadminreview', function () {
+        return view('admin.emails.TaskAdminReviewEmail');
+    });
+
+Route::get('/admin/addtaskfollowers', function () {
+        return view('admin.emails.AddTaskFollowersEmail');
+    });
+
+
 Route::get('/admin/taskcomplete', function () {
         return view('admin.emails.TaskCompleteEmail');
     });
+
+Route::get('/admin/taskcompletefollowers', function () {
+        return view('admin.emails.TaskCompleteFollowersEmail');
+    });
+
 Route::get('/admin/passwordreset', function () {
         return view('admin.emails.ResetPasswordEmail');
     });
@@ -119,9 +157,7 @@ Route::get('/admin/chat', function () {
         return view('admin.apps.chat.index');
     });
 
-Route::get('/admin/inbox', function () {
-        return view('admin.apps.email.index');
-    });
+
 
 Route::get('/admin/voice-call', function () {
         return view('admin.apps.calls.voice-call');
@@ -144,21 +180,15 @@ Route::get('/admin/leads', function () {
 
 
 
-Route::get('/admin/project-list', function () {
-        return view('admin.projects.projects-list');
-    });
+
 Route::get('/admin/projects-list', function () {
         return view('admin.projects.projects-list');
     });
 Route::get('/admin/project-view', function () {
         return view('admin.projects.project-view');
     });
-Route::get('/admin/tasks', function () {
-        return view('admin.projects.tasks');
-    });
-Route::get('/admin/task-board', function () {
-        return view('admin.projects.task-board');
-    });
+
+
 Route::get('/admin/tickets', function () {
         return view('admin.tickets.index');
     });
@@ -222,9 +252,7 @@ Route::get('/employee/projects-list', function () {
 Route::get('/employee/project-view', function () {
         return view('employees.projects.project-view');
     });
-Route::get('/employee/tasks', function () {
-        return view('employees.projects.tasks');
-    });
+
 Route::get('/employee/task-board', function () {
         return view('employees.projects.task-board');
     });

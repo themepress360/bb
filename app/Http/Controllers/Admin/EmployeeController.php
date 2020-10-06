@@ -20,6 +20,8 @@ use App\Roles;
 use App\Department;
 use App\Designation;
 use App\Employees;
+use App\Experiences;
+use App\EducationInformation as EducationInformation;
 
 
 class EmployeeController extends CommonController
@@ -178,7 +180,7 @@ class EmployeeController extends CommonController
                     $response = array(
                         'status'  => 'SUCCESS',
                         'message' => trans('messages.employee_add_success'),
-                        'ref'     => 'client_add_success',
+                        'ref'     => 'project_add_success',
                     );
                 }
                 else
@@ -223,6 +225,12 @@ class EmployeeController extends CommonController
   public function getprofile($id)
     {
      
+      $data['mydetail']['id'] = $id;
+
+      $data['educations_informations'] = EducationInformation::where(['user_id' => (int) $data['mydetail']['id'],'deleted' => '0'])->get()->toArray();
+
+     //dd($data['educations_informations']);
+
       //  dd($id);
       //  $data['employee'] = User::where(['id' => (int) $id,'type' => 'employee',"deleted" => '0'])->first();
 
@@ -251,6 +259,10 @@ $data['employee'] = User::Select('users.*','departments.prefix', 'departments.na
             else
                 
                 $data['employee']['profile_image_url'] = '';
+
+
+
+     $data['experiences'] = Experiences::where(['user_id' => (int) $data['mydetail']['id'],'deleted' => '0'])->get()->toArray();
                
                 return view('admin.employees.profile',$data , compact('roles','departments','designations'));
                

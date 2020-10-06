@@ -10,7 +10,7 @@
 								<a href="{{url('/admin/dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
 							</li>
 							<li class="active"> 
-								<a href="inbox">Inbox <span class="mail-count">(21)</span></a>
+								<a href="inbox">Inbox <span class="mail-count">({{count($unread)}})</span></a>
 							</li>
 							<li> 
 								<a href="#">Starred</a>
@@ -39,7 +39,25 @@
                 </div>
             </div>
 			<!-- /Sidebar -->
-			
+@php
+
+									$mbox = imap_open("{imap.gmail.com:993/imap/ssl}INBOX", "themepress360@gmail.com", "Master@81");
+
+											// get information about the current mailbox (INBOX in this case)
+											$mboxCheck = imap_check($mbox);
+
+											// get the total amount of messages
+											$totalMessages = $mboxCheck->Nmsgs;
+											
+											//echo($totalMessages);
+
+											// select how many messages you want to see
+											$showMessages = 10;
+
+											// get those messages    
+								$result = array_reverse(imap_fetch_overview($mbox,($totalMessages-$showMessages+1).":".$totalMessages));
+
+											@endphp 			
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
 			
@@ -129,7 +147,7 @@
 													<button type="button" title="Refresh" data-toggle="tooltip" class="btn btn-white d-none d-md-inline-block"><i class="fa fa-refresh"></i></button>
 													<div class="btn-group">
 														<a class="btn btn-white"><i class="fa fa-angle-left"></i></a>
-														<a class="btn btn-white"><i class="fa fa-angle-right"></i></a>
+									<a href="#" class="btn btn-white" onClick="NextMsgs()"><i class="fa fa-angle-right" ></i></a>
 													</div>
 												</div>
 												<div class="text-right">
@@ -149,106 +167,41 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr class="unread clickable-row" data-href="mail-view">
+												
+												@foreach ($result as $mail)
+													@if($mail->seen == 1)
+													<tr class="unread clickable-row seen" data-href="mail-view/{{$mail->msgno}}">
 														<td>
 															<input type="checkbox" class="checkmail">
 														</td>
 														<td><span class="mail-important"><i class="fa fa-star starred"></i></span></td>
-														<td class="name">John Doe</td>
-														<td class="subject">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</td>
-														<td><i class="fa fa-paperclip"></i></td>
-														<td class="mail-date">13:14</td>
+														<td class="name">{{$mail->from}}</td>
+																				
+														<td class="subject">{{imap_utf8($mail->subject)}}</td>
+																								
+													  <td><i class="fa fa-paperclip"></i></td>
+													 
+													<td class="mail-date">{{$mail->date}}</td>
 													</tr>
-													<tr class="unread clickable-row" data-href="mail-view">
-														<td>
-															<input type="checkbox" class="checkmail">
-														</td>
-														<td><span class="mail-important"><i class="fa fa-star-o"></i></span></td>
-														<td class="name">Envato Account</td>
-														<td class="subject">Important account security update from Envato</td>
-														<td></td>
-														<td class="mail-date">8:42</td>
-													</tr>
-													<tr class="clickable-row" data-href="mail-view">
-														<td>
-															<input type="checkbox" class="checkmail">
-														</td>
-														<td><span class="mail-important"><i class="fa fa-star-o"></i></span></td>
-														<td class="name">Twitter</td>
-														<td class="subject">HRMS Bootstrap Admin Template</td>
-														<td></td>
-														<td class="mail-date">30 Nov</td>
-													</tr>
-													<tr class="unread clickable-row" data-href="mail-view">
-														<td>
-															<input type="checkbox" class="checkmail">
-														</td>
-														<td><span class="mail-important"><i class="fa fa-star-o"></i></span></td>
-														<td class="name">Richard Parker</td>
-														<td class="subject">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</td>
-														<td></td>
-														<td class="mail-date">18 Sep</td>
-													</tr>
-													<tr class="clickable-row" data-href="mail-view">
-														<td>
-															<input type="checkbox" class="checkmail">
-														</td>
-														<td><span class="mail-important"><i class="fa fa-star-o"></i></span></td>
-														<td class="name">John Smith</td>
-														<td class="subject">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</td>
-														<td></td>
-														<td class="mail-date">21 Aug</td>
-													</tr>
-													<tr class="clickable-row" data-href="mail-view">
-														<td>
-															<input type="checkbox" class="checkmail">
-														</td>
-														<td><span class="mail-important"><i class="fa fa-star-o"></i></span></td>
-														<td class="name">me, Robert Smith (3)</td>
-														<td class="subject">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</td>
-														<td></td>
-														<td class="mail-date">1 Aug</td>
-													</tr>
-													<tr class="unread clickable-row" data-href="mail-view">
-														<td>
-															<input type="checkbox" class="checkmail">
-														</td>
-														<td><span class="mail-important"><i class="fa fa-star-o"></i></span></td>
-														<td class="name">Codecanyon</td>
-														<td class="subject">Welcome To Codecanyon</td>
-														<td></td>
-														<td class="mail-date">Jul 13</td>
-													</tr>
-													<tr class="clickable-row" data-href="mail-view">
-														<td>
-															<input type="checkbox" class="checkmail">
-														</td>
-														<td><span class="mail-important"><i class="fa fa-star-o"></i></span></td>
-														<td class="name">Richard Miles</td>
-														<td class="subject">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</td>
-														<td><i class="fa fa-paperclip"></i></td>
-														<td class="mail-date">May 14</td>
-													</tr>
-													<tr class="unread clickable-row" data-href="mail-view">
-														<td>
-															<input type="checkbox" class="checkmail">
-														</td>
-														<td><span class="mail-important"><i class="fa fa-star-o"></i></span></td>
-														<td class="name">John Smith</td>
-														<td class="subject">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</td>
-														<td></td>
-														<td class="mail-date">11/11/16</td>
-													</tr>
-													<tr class="clickable-row" data-href="mail-view">
+													@else
+													<tr class="unread clickable-row" data-href="mail-view/{{$mail->msgno}}">
 														<td>
 															<input type="checkbox" class="checkmail">
 														</td>
 														<td><span class="mail-important"><i class="fa fa-star starred"></i></span></td>
-														<td class="name">Mike Litorus</td>
-														<td class="subject">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</td>
-														<td></td>
-														<td class="mail-date">10/31/16</td>
+														<td class="name">{{$mail->from}}</td>
+														
+														<td class="subject ">{{imap_utf8($mail->subject)}}</td>
+													 													
+													 	 <td><i class="fa fa-paperclip"></i></td>
+													 													
+														<td class="mail-date">{{$mail->date}}</td>
 													</tr>
+													@endif
+													@endforeach
+													{{$mail->msgno}}
+													{{Session::put('lastmsgNo', $mail->msgno) }}
+												
 												</tbody>
 											</table>
 										</div>
@@ -265,7 +218,39 @@
 			<!-- /Page Wrapper -->
 	
 			</div>
-		<!-- /Main Wrapper -->
+			<!-- /Main Wrapper -->
+<script>
+			function NextMsgs()
+	{
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
 		
-		
+  		var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/nextmessages' : '#') }}";  
+    
+	    $.ajax({
+	        type: "POST",
+	        url: url,
+	       // data: formData,
+	       // processData: false,
+	       // contentType: false,
+	        success: function(response)
+	        {
+	            if(response.status == "SUCCESS")
+	            {
+	            	toastr['success'](response.message);
+                    window.location = "";
+	            }
+	            else
+	            {
+	                toastr['error'](response.message);
+	            }    
+	        }            
+	    }); 
+		// alert("here");
+	}
+</script>
+
 @endsection

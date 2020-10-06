@@ -31,6 +31,7 @@
 		<!-- Datetimepicker CSS -->
 		<link rel="stylesheet" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
 		
+		
 		<!-- Calendar CSS -->
 		<link rel="stylesheet" href="{{asset('css/fullcalendar.min.css')}}">
 
@@ -49,6 +50,12 @@
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
-        <script src="{{asset('js/jquery-3.2.1.min.js')}}" type='application/javascript'></script>
+        
+        <link rel="stylesheet" href="https://bootstrapformhelpers.com/assets/css/bootstrap-formhelpers.min.css">
+
+        
+        <script src="{{asset('js/jquery-3.2.1.min.js')}}" type='application/javascript'></script> 
+
+
         
     </head>

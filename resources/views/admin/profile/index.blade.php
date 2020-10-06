@@ -1119,8 +1119,10 @@
             html +='</div>'
             html +='<div class="col-md-6">'
             html +='<div class="form-group form-focus">'
-            html +='<input type="text" class="form-control floating datetimepicker" value="" id="start_date'+image_row+'" name="education_informations['+image_row+'][start_date]">'
+             html +='<div class="cal-icon">'
+            html +='<input type="text" class="form-control floating datetimepicker start_date" value="" id="start_date'+image_row+'" name="education_informations['+image_row+'][start_date]">'
             html +='<label class="focus-label">Starting Date</label>'
+            html +='</div>'
             html +='</div>'
             html +='</div>'
             html +='<div class="col-md-6">'
@@ -1133,17 +1135,17 @@
             html +='</div>'
             html +='<div class="col-md-6">'
             html +='<div class="form-group form-focus">'
-            html +='<div class="cal-icon">'
+           
             html +='<input type="text" class="form-control floating" value="" id="degree'+image_row+'" name="education_informations['+image_row+'][degree]">'
-            html +='</div>'
+           
             html +='<label class="focus-label">Degree</label>'                                                    
             html +='</div>'
             html +='</div>'
             html +='<div class="col-md-6">'
             html +='<div class="form-group form-focus">'
-            html +='<div class="cal-icon">'
+           
             html +='<input type="text" class="form-control floating" value="" id="grade'+image_row+'" name="education_informations['+image_row+'][grade]">'
-            html +='</div>'
+           
             html +='<label class="focus-label">Grade</label>'                                                    
             html +='</div>'
             html +='</div>'
@@ -1158,7 +1160,16 @@
             html +='</div>'
             html +='</div>';
             $('#card_body_education').append(html);
+             //var row = $('#complete_date'+image_row); 
+             $('#start_date'+image_row).datetimepicker({ format: 'DD/MM/YY' });
+             $('#complete_date'+image_row).datetimepicker({ format: 'DD/MM/YY' }); 
+           // console.log(row);
+
             image_row++;
+        
+           ;
+            
+
           });
         // remove Form
         $(document).on('click', '#removeEduForm', function () {
@@ -1190,6 +1201,18 @@
             }); 
         }
         </script>
+     
+
+
+
+      <script>
+     
+     //   $(document).on('click', '#complete_date1', function () {
+     //       $('#complete_date1').datetimepicker({ format: 'DD/MM/YY' });
+     //       console.log("Start Date Input Clicked");
+    //    });               
+      </script>
+
         <script type="text/javascript">
         // add Form
         $(document).on('click', '#addMoreExperience', function () {
@@ -1248,6 +1271,9 @@
             html +='</div>'
             html +='</div>';
             $('#card_body_experience').append(html);
+            $('#period_from'+experience_row).datetimepicker({ format: 'DD/MM/YY' });
+            $('#period_to'+experience_row).datetimepicker({ format: 'DD/MM/YY' }); 
+
             experience_row++;
         });
 

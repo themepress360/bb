@@ -96,7 +96,7 @@
 
 
 
-                                                <a href="profile">{{$employee->name}}<span>{{ucwords($employee->designation_name)}}</span></a>
+                                                <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'. $employee['id'] : '#') }}">{{$employee->name}}<span>{{ucwords($employee->designation_name)}}</span></a>
                                             </h2>
                                         </td>
                                         <td>{{strtoupper($employee->prefix)}}-{{sprintf("%04d",$employee->id)}}</td>

@@ -24,26 +24,29 @@ class MailConfigServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $emailServices =EmailSetting::where(['status' => '1' ,'deleted' => '0'])->latest()->first()->toArray();
+        if(\Schema::hasTable('emailsetting'))
+        {
+            $emailServices =EmailSetting::where(['status' => '1' ,'deleted' => '0'])->latest()->first()->toArray();
 
-        if ($emailServices) {
-            $emailconfigure = json_decode($emailServices['data']);
-            
-            $config = array(
+            if ($emailServices) {
+                $emailconfigure = json_decode($emailServices['data']);
+                
+                $config = array(
 
-                'driver'     => $emailconfigure->smtp_authentication_domain,
-                'host'       => $emailconfigure->smtp_host,
-                'port'       => $emailconfigure->smtp_port,
-                'username'   => $emailconfigure->smtp_user,
-                'password'   => $emailconfigure->smtp_password,
-                'encryption' => $emailconfigure->smtp_security,
-                'from'       => array('address' => $emailconfigure->smtp_from_email, 'name' => $emailconfigure->smtp_from_name),
-                'sendmail'   => '/usr/sbin/sendmail -bs',
-                'pretend'    => false,
+                    'driver'     => $emailconfigure->smtp_authentication_domain,
+                    'host'       => $emailconfigure->smtp_host,
+                    'port'       => $emailconfigure->smtp_port,
+                    'username'   => $emailconfigure->smtp_user,
+                    'password'   => $emailconfigure->smtp_password,
+                    'encryption' => $emailconfigure->smtp_security,
+                    'from'       => array('address' => $emailconfigure->smtp_from_email, 'name' => $emailconfigure->smtp_from_name),
+                    'sendmail'   => '/usr/sbin/sendmail -bs',
+                    'pretend'    => false,
 
-      
-            );
-            \Config::set('mail', $config);
+          
+                );
+                \Config::set('mail', $config);
+            }
         }
     }
 }

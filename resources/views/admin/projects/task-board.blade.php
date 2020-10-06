@@ -10,285 +10,41 @@
                 <div class="page-header">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 class="page-title">Hospital Admin</h3>
-                            <ul class="breadcrumb">
+                            <label class="page-title">Task Board</label>
+                                 <select class="form-control select">
+                                   <option value="selected">Select</option>
+                                   @foreach($projects as $project) 
+                                    <option value="{{$project->id}}"> {{ucwords($project->project_title)}}</option>
+                                   @endforeach
+                                </select>
+
+                            <!--<ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Task Board</li>
-                            </ul>
+                            </ul> -->
                         </div>
                     </div>
                 </div>
                 <!-- /Page Header -->
-                
-                <div class="row board-view-header">
-                    <div class="col-4">
-                        <div class="pro-teams">
-                            <div class="pro-team-lead">
-                                <h4>Lead</h4>
-                                <div class="avatar-group">
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-11.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-01.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-16.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <a href="" class="avatar-title rounded-circle border border-white" data-toggle="modal" data-target="#assign_leader"><i class="fa fa-plus"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="pro-team-members">
-                                <h4>Team</h4>
-                                <div class="avatar-group">
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-02.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-09.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-12.jpg">
-                                    </div>
-                                    <div class="avatar">
-                                        <a href="" class="avatar-title rounded-circle border border-white" data-toggle="modal" data-target="#assign_user"><i class="fa fa-plus"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-8 text-right">
-                        <a href="#" class="btn btn-white float-right ml-2" data-toggle="modal" data-target="#add_task_board"><i class="fa fa-plus"></i> Create List</a>
-                        <a href="project-view" class="btn btn-white float-right" title="View Board"><i class="fa fa-link"></i></a>
-                    </div>
+                <form id="GetTaskBoardForm">                                                        
+                </form>
+                <div id="getprojecttaskboard">
 
-                    <div class="col-12">
-                        <div class="pro-progress">
-                            <div class="pro-progress-bar">
-                                <h4>Progress</h4>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 20%"></div>
-                                </div>
-                                <span>20%</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+
                 
-                <div class="kanban-board card mb-0">
-                    <div class="card-body">
-                        <div class="kanban-cont">
-                            <div class="kanban-list kanban-danger">
-                                <div class="kanban-header">
-                                    <span class="status-title">Pending</span>
-                                    <div class="dropdown kanban-action">
-                                        <a href="" data-toggle="dropdown">
-                                            <i class="fa fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_board">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="kanban-wrap">
-                                    <div class="card panel">
-                                        <div class="kanban-box">
-                                            <div class="task-board-header">
-                                                <span class="status-title"><a href="task-view">Website redesign</a></span>
-                                                <div class="dropdown kanban-task-action">
-                                                    <a href="" data-toggle="dropdown">
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal">Edit</a></li>
-                                                        <a class="dropdown-item" href="#">Delete</a></li>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="task-board-body">
-                                                <div class="kanban-info">
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <span>70%</span>
-                                                </div>
-                                                <div class="kanban-footer">
-                                                    <span class="task-info-cont">
-                                                        <span class="task-date"><i class="fa fa-clock-o"></i> Sep 26</span>
-                                                        <span class="task-priority badge bg-inverse-danger">High</span>
-                                                    </span>
-                                                    <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card panel">
-                                        <div class="kanban-box">
-                                            <div class="task-board-header">
-                                                <span class="status-title"><a href="task-view">Make a wireframe</a></span>
-                                                <div class="dropdown kanban-task-action">
-                                                    <a href="" data-toggle="dropdown">
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal">Edit</a></li>
-                                                        <a class="dropdown-item" href="#">Delete</a></li>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="task-board-body">
-                                                <div class="kanban-info">
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <span>70%</span>
-                                                </div>
-                                                <div class="kanban-footer">
-                                                    <span class="task-info-cont">
-                                                        <span class="task-date"><i class="fa fa-clock-o"></i> Sep 26</span>
-                                                        <span class="task-priority badge bg-inverse-success">Low</span>
-                                                    </span>
-                                                    <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                        <span class="task-user-count">+2</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card panel">
-                                        <div class="kanban-box">
-                                            <div class="task-board-header">
-                                                <span class="status-title"><a href="task-view">Website redesign</a></span>
-                                                <div class="dropdown kanban-task-action">
-                                                    <a href="" data-toggle="dropdown">
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal">Edit</a></li>
-                                                        <a class="dropdown-item" href="#">Delete</a></li>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="task-board-body">
-                                                <div class="kanban-info">
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <span>70%</span>
-                                                </div>
-                                                <div class="kanban-footer">
-                                                    <span class="task-info-cont">
-                                                        <span class="task-date"><i class="fa fa-clock-o"></i> Sep 26</span>
-                                                        <span class="task-priority badge bg-inverse-warning">Normal</span>
-                                                    </span>
-                                                    <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                        <span class="task-user-count">+2</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="add-new-task">
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#add_task_modal">Add New Task</a>
-                                </div>
-                            </div>
-                            <div class="kanban-list kanban-info">
-                                <div class="kanban-header">
-                                    <span class="status-title">Progress</span>
-                                    <div class="dropdown kanban-action">
-                                        <a href="" data-toggle="dropdown">
-                                            <i class="fa fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_board">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="kanban-wrap">
-                                    <div class="card panel">
-                                        <div class="kanban-box">
-                                            <div class="task-board-header">
-                                                <span class="status-title"><a href="task-view">Website redesign</a></span>
-                                                <div class="dropdown kanban-task-action">
-                                                    <a href="" data-toggle="dropdown">
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal">Edit</a></li>
-                                                        <a class="dropdown-item" href="#">Delete</a></li>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="task-board-body">
-                                                <div class="kanban-info">
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <span>70%</span>
-                                                </div>
-                                                <div class="kanban-footer">
-                                                    <span class="task-info-cont">
-                                                        <span class="task-date"><i class="fa fa-clock-o"></i> Sep 26</span>
-                                                        <span class="task-priority badge bg-inverse-warning">Normal</span>
-                                                    </span>
-                                                    <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card panel">
-                                        <div class="kanban-box">
-                                            <div class="task-board-header">
-                                                <span class="status-title"><a href="task-view">Website redesign</a></span>
-                                                <div class="dropdown kanban-task-action">
-                                                    <a href="" data-toggle="dropdown">
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal">Edit</a></li>
-                                                        <a class="dropdown-item" href="#">Delete</a></li>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="task-board-body">
-                                                <div class="kanban-info">
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <span>70%</span>
-                                                </div>
-                                                <div class="kanban-footer">
-                                                    <span class="task-info-cont">
-                                                        <span class="task-date"><i class="fa fa-clock-o"></i> Sep 26</span>
-                                                        <span class="task-priority badge bg-inverse-danger">High</span>
-                                                    </span>
-                                                    <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                        <span class="task-user-count">+2</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="add-new-task">
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#add_task_modal">Add New Task</a>
-                                </div>
-                            </div>
+                <div class="kanban-board card mb-0" style="display:none">
+                    <div class="card-body" >
+                        <div class="kanban-cont" >
+                                              
+                          
+                            
                             <div class="kanban-list kanban-success">
-                                <div class="kanban-header">
-                                    <span class="status-title">Completed</span>
+                                 
+                                   <div class="kanban-header" style="background-color:{{$task_boards[0]['task_board_color']}}">
+                                        
+                                     <span class="status-title">{{ucwords($task_boards[0]['task_board_name'])}}</span>
+                                    
                                     <div class="dropdown kanban-action">
                                         <a href="" data-toggle="dropdown">
                                             <i class="fa fa-ellipsis-v"></i>
@@ -299,85 +55,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="kanban-wrap ks-empty">
-                                </div>
-                                <div class="add-new-task">
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#add_task_modal">Add New Task</a>
-                                </div>
-                            </div>
-                            
-                            <div class="kanban-list kanban-warning">
-                                <div class="kanban-header">
-                                    <span class="status-title">Inprogress</span>
-                                    <div class="dropdown kanban-action">
-                                        <a href="" data-toggle="dropdown">
-                                            <i class="fa fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
+                               
+                                @foreach($tasks as $task)                                                        
+                                    
                                 <div class="kanban-wrap">
                                     <div class="card panel">
                                         <div class="kanban-box">
                                             <div class="task-board-header">
-                                                <span class="status-title"><a href="task-view">Website redesign</a></span>
-                                                <div class="dropdown kanban-task-action">
-                                                    <a href="" data-toggle="dropdown">
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal">Edit</a></li>
-                                                        <a class="dropdown-item" href="#">Delete</a></li>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="task-board-body">
-                                                <div class="kanban-info">
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <span>70%</span>
-                                                </div>
-                                                <div class="kanban-footer">
-                                                    <span class="task-info-cont">
-                                                        <span class="task-date"><i class="fa fa-clock-o"></i> Sep 26</span>
-                                                        <span class="task-priority badge bg-inverse-success">Low</span>
-                                                    </span>
-                                                    <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                        <span class="task-user-count">+2</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="add-new-task">
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#add_task_modal">Add New Task</a>
-                                </div>
-                            </div>
-                            
-                            <div class="kanban-list kanban-purple">
-                                <div class="kanban-header">
-                                    <span class="status-title">On Hold</span>
-                                    <div class="dropdown kanban-action">
-                                        <a href="" data-toggle="dropdown">
-                                            <i class="fa fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_board">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="kanban-wrap">
-                                    <div class="card panel">
-                                        <div class="kanban-box">
-                                            <div class="task-board-header">
-                                                <span class="status-title"><a href="task-view">Website redesign</a></span>
+                                                <span class="status-title"><a href="task-view">{{$task->task_title}}</a></span>
                                                 <div class="dropdown kanban-task-action">
                                                     <a href="" data-toggle="dropdown">
                                                         <i class="fa fa-angle-down"></i>
@@ -402,76 +87,26 @@
                                                     </span>
                                                     <span class="task-users">
                                                         <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                        <span class="task-user-count">+2</span>
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                  
+                                   </div>
+                                                        
                                 </div>
+                               
+                                @endforeach
                                 <div class="add-new-task">
                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#add_task_modal">Add New Task</a>
                                 </div>
                             </div>
-                            
-                            <div class="kanban-list kanban-primary">
-                                <div class="kanban-header">
-                                    <span class="status-title">Review</span>
-                                    <div class="dropdown kanban-action">
-                                        <a href="" data-toggle="dropdown">
-                                            <i class="fa fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_board">Edit</a>
-                                            <a class="dropdown-item" href="#">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="kanban-wrap">
-                                    <div class="card panel">
-                                        <div class="kanban-box">
-                                            <div class="task-board-header">
-                                                <span class="status-title"><a href="task-view">Website redesign</a></span>
-                                                <div class="dropdown kanban-task-action">
-                                                    <a href="" data-toggle="dropdown">
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal">Edit</a></li>
-                                                        <a class="dropdown-item" href="#">Delete</a></li>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="task-board-body">
-                                                <div class="kanban-info">
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <span>70%</span>
-                                                </div>
-                                                <div class="kanban-footer">
-                                                    <span class="task-info-cont">
-                                                        <span class="task-date"><i class="fa fa-clock-o"></i> Sep 26</span>
-                                                        <span class="task-priority badge bg-inverse-danger">High</span>
-                                                    </span>
-                                                    <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                        <span class="task-user-count">+2</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="add-new-task">
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#add_task_modal">Add New Task</a>
-                                </div>
-                            </div>
+                           
 
                         </div>
                     </div>
                 </div>
-                
+                  
             </div>
             <!-- /Page Content -->
             
@@ -483,44 +118,25 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                       {{ Form::open(array( 'id' => 'AddTaskBoard' ,  'enctype'=>'multipart/form-data')) }}   
                             <div class="form-group">
                                 <label>Task Board Name</label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" name="task_board_name">
                             </div>
                             <div class="form-group task-board-color">
                                 <label>Task Board Color</label>
-                                <div class="board-color-list">
-                                    <label class="board-control board-primary">
-                                        <input name="radio" type="radio" class="board-control-input" value="primary" checked="">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-success">
-                                        <input name="radio" type="radio" class="board-control-input" value="success">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-info">
-                                        <input name="radio" type="radio" class="board-control-input" value="info">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-purple">
-                                        <input name="radio" type="radio" class="board-control-input" value="purple">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-warning">
-                                        <input name="radio" type="radio" class="board-control-input" value="warning">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-danger">
-                                        <input name="radio" type="radio" class="board-control-input" value="danger">
-                                        <span class="board-indicator"></span>
-                                    </label>
+                               
+                            </div>
+                            
+                            <div class="input-group mb-3">
+                                  <div class="input-group-prepend bfh-colorpicker" data-name="task_board_color">
                                 </div>
-                            </div>
+                               </div>
+
                             <div class="m-t-20 text-center">
-                                <button class="btn btn-primary btn-lg">Submit</button>
+                                <a onClick = "addTaskboard()" class="btn btn-primary btn-lg">Submit</a>
                             </div>
-                        </form>
+                        {{ Form::close() }}
                     </div>
                 </div>
             </div>
@@ -541,32 +157,10 @@
                             </div>
                             <div class="form-group task-board-color">
                                 <label>Task Board Color</label>
-                                <div class="board-color-list">
-                                    <label class="board-control board-primary">
-                                        <input name="radio" type="radio" class="board-control-input" value="primary" checked="">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-success">
-                                        <input name="radio" type="radio" class="board-control-input" value="success">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-info">
-                                        <input name="radio" type="radio" class="board-control-input" value="info">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-purple">
-                                        <input name="radio" type="radio" class="board-control-input" value="purple">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-warning">
-                                        <input name="radio" type="radio" class="board-control-input" value="warning">
-                                        <span class="board-indicator"></span>
-                                    </label>
-                                    <label class="board-control board-danger">
-                                        <input name="radio" type="radio" class="board-control-input" value="danger">
-                                        <span class="board-indicator"></span>
-                                    </label>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend bfh-colorpicker" data-name="task_board_color">
                                 </div>
+                               </div>
                             </div>
                             <div class="m-t-20 text-center">
                                 <button class="btn btn-primary btn-lg">Submit</button>
@@ -851,4 +445,94 @@
             
         </div>
         <!-- /Page Wrapper -->
+
+        <script src=" https://bootstrapformhelpers.com/assets/js/bootstrap-formhelpers.min.js"></script>
+        <script src=" https://bootstrapformhelpers.com/assets/js/jquery-1.10.2.min.js"></script>
+
+        <script>
+$(document).ready(function(){
+    $("select.select").change(function(){
+        var selectedProject = $(this).children("option:selected").val();
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $("#GetTaskBoardForm").html('');
+        var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/getprojecttaskboard' : '#') }}";  
+        var input = $("<input type=\"hidden\" name=\"project_id\" value=\""+selectedProject+"\"/>");
+        $("#GetTaskBoardForm").append(input);
+        var form = $('#GetTaskBoardForm').get(0);
+        var formData = new FormData(form);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response)
+            {
+                if(response.status == "SUCCESS")
+                {
+                    $("#getprojecttaskboard").html('');
+                    $("#getprojecttaskboard").append(response.data.projecttaskboardhtml);
+                }
+                else
+                {
+                    toastr['error'](response.message);
+                }    
+            }            
+        });
+        // alert("You have selected the country - " + selectedProject);
+        // if( selectedProject != 'selected'){
+        //     $('.pro-teams').css('display','inline-flex');
+        //     $('.pro-progress').css('display','block');
+        //       $('.kanban-board').css('display','block');
+                
+              
+        // }else{
+
+        //       $('.pro-teams').css('display','none');
+        //       $('.pro-progress').css('display','none');
+        //       $('.kanban-board').css('display','none');
+        // }
+
+
+    });
+});
+</script>
+
+<script type="text/javascript">
+
+            function addTaskboard() {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addtaskboard' : '#') }}";  
+                var form = $('#AddTaskBoard').get(0);
+                var formData = new FormData(form);
+                       
+                 $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+            }
+
+        </script>
+
+
 @endsection

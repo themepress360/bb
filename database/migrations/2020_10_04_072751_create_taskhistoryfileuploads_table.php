@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProjectsTable extends Migration
+class CreateTaskhistoryfileuploadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,12 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('taskhistoryfileuploads', function (Blueprint $table) {
             $table->id();
-            $table->text('project_title');
-            $table->string('description');
-            $table->bigInteger('clients');
-            $table->bigInteger('department');
-            $table->bigInteger('added_by');
-            $table->string('priority');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->bigInteger('task_history_id');
+            $table->bigInteger('task_id');
+            $table->bigInteger('project_id');
+            $table->string('attachment_name');
             $table->enum('deleted',['1','0']);
             $table->enum('status',['1','0']);
             $table->timestamps();
@@ -36,6 +32,6 @@ class CreateProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('taskhistoryfileuploads');
     }
 }

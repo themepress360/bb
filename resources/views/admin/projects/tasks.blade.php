@@ -2,30 +2,24 @@
 @section('content')
     
 <!-- Sidebar -->
-<div class="sidebar" id="sidebar">
+<!--<div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
 					<div class="sidebar-menu">
 						<ul>
+					
 							<li> 
 								<a href="{{url('/admin/dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
 							</li>
-							<li class="menu-title">Projects <a href="#" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i></a></li>
-							<li> 
-								<a href="tasks">Project Management</a>
+							<a href="#" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i></a>
 							</li>
-							<li class="active"> 
-								<a href="tasks">Hospital Administration</a>
-							</li>
-							<li> 
-								<a href="tasks">Video Calling App</a>
-							</li>
-							<li> 
-								<a href="tasks">Office Management</a>
-							</li>
+								@foreach($projects as $project)
+							<li class="menu-title" value="{{$project->id}}">{{ucwords($project->project_title)}}
+
+							@endforeach
 						</ul>
 					</div>
                 </div>
-            </div>
+            </div> -->
 			<!-- /Sidebar -->
 			
 			<!-- Page Wrapper -->
@@ -33,7 +27,7 @@
 				<div class="chat-main-row">
 					<div id= "main" class="task-main-wrapper">
 						<div class="col-lg-7 message-view task-view task-left-sidebar">
-							<div class="task-window">
+							<div class="task-window" style="">
 								<div class="fixed-header">
 									<div class="navbar">
 										<div class="float-left mr-auto">
@@ -59,20 +53,79 @@
 								</div>
 								<div class="chat-contents">
 									<div class="chat-content-wrap">
-										<div class="chat-wrap-inner">
+										<div class="chat-wrap-inner scrollbars">
 											<div class="chat-box">
-												<div class="task-wrapper">
+							
+								<div class="dropdown task-wrapper">	
+									 <form id="GetTaskWindowForm">
+																		
+									</form>
+																
+									@foreach($projects as $project)	
+									
+				<a href="#" class="dropdown-btn" style="display:block;" value="{{$project->id}}"><span  class="span-rotate">{{ucwords($project->project_title)}} <i id="arrow" class="fa fa fa-chevron-down rotate m-l-10"></i></span> </a>
+									 
+
+									  <div class="dropdown-container">
+												<div class="task-wrapper" >
 													<div class="task-list-container">
 														<div class="task-list-body">
-															<ul id="task-list">
-																<li class="task">
+      		     											 <ul id="task-list">
+      		     											 		
+      		     											 	 @foreach($tasks as $index => $task)								 
+																@if($task->project_id == $project->id)
+														<li class="task"  value="{{$task->id}}" onClick="openTask('{{$task->id}}')">
 																	<div class="task-container">
 																		<span class="task-action-btn task-check">
 																			<span class="action-circle large complete-btn" title="Mark Complete">
 																				<i class="material-icons">check</i>
 																			</span>
 																		</span>
-																		<span class="task-label" contenteditable="true">Patient appointment booking</span>
+										<span class="task-label" contenteditable="true">{{$task->task_title}} </span>
+						
+																		<span class="task-action-btn task-btn-right">
+																			
+																			<span class="action-circle large" title="Assign">
+																				<i class="material-icons">person_add</i>
+																			</span>
+																			<span class="action-circle large delete-btn" title="Delete Task">
+																				<i class="material-icons">delete</i>
+																			</span>
+																		</span>
+																	</div>
+																</li>
+																  @endif
+																   @endforeach
+																
+															</ul>
+														</div>
+													</div>
+												</div>
+										  </div>
+										     									  
+										@endforeach
+									</div>
+
+
+		
+			@foreach($projects as $project)	
+	<!--	<div class="dropdown task-wrapper keep-open">
+			 <a href="#" value="{{$project->id}}" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				<span class="span-rotate">{{ucwords($project->project_title)}}</span><i class="fa fa-chevron-right m-l-10 rotate"></i></a>
+								<div class="dropdown-menu task-wrapper" aria-labelledby="task-dropdown">
+    										<div class="task-wrapper" >
+													<div class="task-list-container">
+														<div class="task-list-body">
+															<ul id="task-list" onClick="openTask()">
+																@foreach($tasks as $task)
+																<li class="task"  value="{{$task->id}}" >
+																	<div class="task-container">
+																		<span class="task-action-btn task-check">
+																			<span class="action-circle large complete-btn" title="Mark Complete">
+																				<i class="material-icons">check</i>
+																			</span>
+																		</span>
+																		<span class="task-label" contenteditable="true">{{$task->task_title}}</span>
 																		<span class="task-action-btn task-btn-right">
 																			<span class="action-circle large" title="Assign">
 																				<i class="material-icons">person_add</i>
@@ -83,96 +136,8 @@
 																		</span>
 																	</div>
 																</li>
-																<li class="task">
-																	<div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<span class="action-circle large complete-btn" title="Mark Complete">
-																				<i class="material-icons">check</i>
-																			</span>
-																		</span>
-																		<span class="task-label" contenteditable="true">Appointment booking with payment gateway</span>
-																		<span class="task-action-btn task-btn-right">
-																			<span class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
-																			</span>
-																			<span class="action-circle large delete-btn" title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-																	</div>
-																</li>
-																<li class="completed task">
-																	<div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<span class="action-circle large complete-btn" title="Mark Complete">
-																				<i class="material-icons">check</i>
-																			</span>
-																		</span>
-																		<span class="task-label">Doctor available module</span>
-																		<span class="task-action-btn task-btn-right">
-																			<span class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
-																			</span>
-																			<span class="action-circle large delete-btn" title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-																	</div>
-																</li>
-																<li class="task">
-																	<div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<span class="action-circle large complete-btn" title="Mark Complete">
-																				<i class="material-icons">check</i>
-																			</span>
-																		</span>
-																		<span class="task-label" contenteditable="true">Patient and Doctor video conferencing</span>
-																		<span class="task-action-btn task-btn-right">
-																			<span class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
-																			</span>
-																			<span class="action-circle large delete-btn" title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-																	</div>
-																</li>
-																<li class="task">
-																	<div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<span class="action-circle large complete-btn" title="Mark Complete">
-																				<i class="material-icons">check</i>
-																			</span>
-																		</span>
-																		<span class="task-label" contenteditable="true">Private chat module</span>
-																		<span class="task-action-btn task-btn-right">
-																			<span class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
-																			</span>
-																			<span class="action-circle large delete-btn" title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-																	</div>
-																</li>
-																<li class="task">
-																	<div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<span class="action-circle large complete-btn" title="Mark Complete">
-																				<i class="material-icons">check</i>
-																			</span>
-																		</span>
-																		<span class="task-label" contenteditable="true">Patient Profile add</span>
-																		<span class="task-action-btn task-btn-right">
-																			<span class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
-																			</span>
-																			<span class="action-circle large delete-btn" title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-																	</div>
-																</li>
+																@endforeach
+																
 															</ul>
 														</div>
 														<div class="task-list-footer">
@@ -184,7 +149,53 @@
 															</div>
 														</div>
 													</div>
+													
 												</div>
+  									</div>
+							</div>
+							    
+							@endforeach
+
+						<!--	<div class="task-wrapper" >
+									
+													<div class="task-list-container">
+														<div class="task-list-body">
+															<ul id="task-list">
+																@foreach($tasks as $task)
+																<li class="task"  value="{{$task->id}}" >
+																	<div class="task-container">
+																		<span class="task-action-btn task-check">
+																			<span class="action-circle large complete-btn" title="Mark Complete">
+																				<i class="material-icons">check</i>
+																			</span>
+																		</span>
+																		<span class="task-label" contenteditable="true">{{$task->task_title}}</span>
+																		<span class="task-action-btn task-btn-right">
+																			<span class="action-circle large" title="Assign">
+																				<i class="material-icons">person_add</i>
+																			</span>
+																			<span class="action-circle large delete-btn" title="Delete Task">
+																				<i class="material-icons">delete</i>
+																			</span>
+																		</span>
+																	</div>
+																</li>
+																@endforeach
+																
+															</ul>
+														</div>
+														<div class="task-list-footer">
+															<div class="new-task-wrapper">
+																<textarea  id="new-task" placeholder="Enter new task here. . ."></textarea>
+																<span class="error-message hidden">You need to enter a task first</span>
+																<span class="add-new-task-btn btn" id="add-task">Add Task</span>
+																<span class="btn" id="close-task-panel">Close</span>
+															</div>
+														</div>
+													</div>
+													
+												</div> 
+											
 												<div class="notification-popup hide">
 													<p>
 														<span class="task"></span>
@@ -199,7 +210,7 @@
 						</div>
 						
 					</div>
-				</div>
+				</div> -->
 				
 				<!-- Create Project Modal -->
 				<div id="create_project" class="modal custom-modal fade" role="dialog">
@@ -351,7 +362,7 @@
 							</div>
 							<div class="modal-body">
 								<div class="input-group m-b-30">
-									<input placeholder="Search to add" class="form-control search-input" type="text">
+						<input placeholder="Add Followers" class="form-control search-input" type="text">
 									<span class="input-group-append">
 										<button class="btn btn-primary">Search</button>
 									</span>
@@ -404,6 +415,7 @@
 				</div>
 				<!-- /Assignee Modal -->
 				
+
 				<!-- Task Followers Modal -->
 				<div id="task_followers" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered" role="document">
@@ -413,22 +425,26 @@
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
+								
 							</div>
 							<div class="modal-body">
-								<div class="input-group m-b-30">
-									<input placeholder="Search to add" class="form-control search-input" type="text">
-									<span class="input-group-append">
+								<div class="m-b-30 tag-control tag-input scrollbars">
+									<div class="add_follower d-flex " id="add_followers">
+				
+				<input placeholder="Add Follower" type="hidden" name="add_followers">
+								</div>
+									<!--<span class="input-group-append">
 										<button class="btn btn-primary">Search</button>
-									</span>
+									</span> -->
 								</div>
 								<div>
-									<ul class="chat-user-list">
+									<ul class="chat-user-list" id="followers">
 										<li>
 											<a href="#">
 												<div class="media">
 													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
 													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Jeffery Lalor</div>
+														<div class="user-name f-name">Jeffery Lalor</div>
 														<span class="designation">Team Leader</span>
 													</div>
 												</div>
@@ -439,7 +455,7 @@
 												<div class="media">
 													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
 													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Catherine Manseau</div>
+														<div class="user-name f-name">Catherine Manseau</div>
 														<span class="designation">Android Developer</span>
 													</div>
 												</div>
@@ -450,7 +466,7 @@
 												<div class="media">
 													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
 													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Wilmer Deluna</div>
+														<div class="user-name f-name">Wilmer Deluna</div>
 														<span class="designation">Team Leader</span>
 													</div>
 												</div>
@@ -479,32 +495,48 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
-                                  
+                  {{ Form::open(array( 'id' => 'AddTaskForm' ,  'enctype'=>'multipart/form-data')) }}                                  
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Task Title <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" name="task_title">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Due Date<span class="text-danger">*</span></label>
                                             <div class="cal-icon">
-                                                <input class="form-control datetimepicker" type="text">
+                                                <input class="form-control datetimepicker" type="text" name="due_date">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Task Description<span class="text-danger">*</span></label>
-                                           <textarea class="form-control" placeholder="Description"></textarea>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-6">
+                                   <div class="col-sm-6">
+				                        <div class="form-group">
+				                           <label>Projects<span class="text-danger">*</span></label>
+				                            
+				                           <select class="select" name="project_id">
+				                             @foreach($projects as $project)
+				                         <option  value="{{$project->id}}">{{ucwords($project->project_title)}}</option>
+				                              @endforeach
+				                          
+				                           </select>
+				                        </div>
+				                     </div>
+				                     <div class="col-md-6">
+				                       <div class="form-group">
+                                <label>Task Priority</label>
+                                <select class="form-control select" name="priority">
+                                    <option >Select</option>
+                                    <option value="high">High</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+
+				                          <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Assign To <span class="text-danger">*</span></label>
                                             <!--<input class="form-control floating" type="email">-->
@@ -512,70 +544,62 @@
 											    <a href="#" class="followers-add" data-toggle="dropdown" style=" margin-right:10px;"><i class="material-icons">add</i></a>
 											    <div class="dropdown-menu">
 											      <div>
-												<ul class="chat-user-list">
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Jeffery Lalor</div>
-														<span class="designation">Team Leader</span>
-													</div>
-												</div>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-08.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Catherine Manseau</div>
-														<span class="designation">Android Developer</span>
-													</div>
-												</div>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar"><img alt="" src="img/profiles/avatar-26.jpg"></span>
-													<div class="media-body media-middle text-nowrap">
-														<div class="user-name">Wilmer Deluna</div>
-														<span class="designation">Team Leader</span>
-													</div>
-												</div>
-											</a>
-										</li>
+												<ul class="chat-user-list" id="assign">
+									 @foreach($employees as $employee)
+                                       @if($employee->role == "employee")
+										 <li   id="{{{$employee->id}}}">
+                                          
+                                             <div class="media">
+                                                @if(!empty($employee->profile_image))
+                                          <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" id="TeamMember">
+                                          <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" >
+                                          @else
+                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest">
+                                          {{ mb_substr($employee['name'], 0, 1) }}
+                                          </span>
+                                          </div>
+                                          @endif
+                                          </a>
+                                          <div class="media-body media-middle text-nowrap">
+                                          <div class="user-name">{{$employee->name}}</div>
+                                          <span class="designation">{{ucwords($employee->designation_name)}}</span>
+                                          </div>
+                                          </div>
+                                       </li>
+										@endif
+									 @endforeach
 													</ul>
 												</div>
-											    </div>
-											    <div class="project-members">
+										  </div>
+										  <div class="d-flex align-items-center">
+											    <div class="project-members"  id="assigned-to" >
                                                 
-												<a href="#" data-toggle="tooltip" title="John Doe" class="avatar">
-                                                   <img src="img/profiles/avatar-16.jpg" alt="">
-                                                </a>
-                                                <a href="#" data-toggle="tooltip" title="Richard Miles" class="avatar">
-                                                    <img src="img/profiles/avatar-09.jpg" alt="">
-                                                </a>
-                                                <a href="#" data-toggle="tooltip" title="John Smith" class="avatar">
-                                                    <img src="{{asset('img/profiles/avatar-10.jpg')}}" alt="">
-                                                </a>                                              
-                                               
+												                                    
+                                               <div>
+					                          	 <span class="all-team" id="total_members">+0</span>
+					                          </div>
                                             </div>
-											  </div>
-											  
+                                        </div>		  
 
                                         </div>
                                     </div>
+								</div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Task Description<span class="text-danger">*</span></label>
+                                           <textarea class="form-control" placeholder="Description" name="description"></textarea>
+                                        </div>
+                                    </div>
                                     
-                                    
-                                                                      
-                                </div>
+                               
+		                    </div>
                                 
                                 <div class="submit-section">
-                                    <a class="btn btn-primary submit-btn" onClick="openNav()" >Submit</a>
+                                    <a href="#" class="btn btn-primary submit-btn" onClick="addTask()" >Submit</a>
                                 </div>
-                            </form>
+                           {{ Form::close() }}
                         </div>
                     </div>
                 </div>
@@ -583,247 +607,13 @@
             <!-- /Add Task Modal -->
 				
             <div class="col-lg-5 message-view task-chat-view task-right-sidebar sidenav" id="task_window">
-							<div class="chat-window">
-								<div class="fixed-header">
-									<div class="navbar">
-										<div class="task-assign">
-											<a class="task-complete-btn" id="task_complete" href="javascript:void(0);">
-												<i class="material-icons">check</i> Mark Complete
-											</a>
-										</div>
-										<ul class="nav float-right custom-menu">
-											<li class="dropdown dropdown-action">
-												<a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-												<div class="dropdown-menu dropdown-menu-right">
-													<a class="dropdown-item" href="javascript:void(0)">Delete Task</a>
-													<a class="dropdown-item" href="javascript:void(0)">Settings</a>
-												</div>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="chat-contents task-chat-contents">
-									<div class="chat-content-wrap">
-										<div class="chat-wrap-inner">
-											<div class="chat-box">
-												<div class="chats">
-													<h4>Doctor Available Module</h4>
-													<div class="task-header">
-														<div class="assignee-info">
-															<a href="#" data-toggle="modal" data-target="#assignee">
-																<div class="avatar">
-																	<img alt="" src="img/profiles/avatar-02.jpg">
-																</div>
-																<div class="assigned-info">
-																	<div class="task-head-title">Assigned To</div>
-																	<div class="task-assignee">John Doe</div>
-																</div>
-															</a>
-															<span class="remove-icon">
-																<i class="fa fa-close"></i>
-															</span>
-														</div>
-														<div class="task-due-date">
-															<a href="#" data-toggle="modal" data-target="#assignee">
-																<div class="due-icon">
-																	<span>
-																		<i class="material-icons">date_range</i>
-																	</span>
-																</div>
-																<div class="due-info">
-																	<div class="task-head-title">Due Date</div>
-																	<div class="due-date">Mar 26, 2019</div>
-																</div>
-																
-															</a>
-															<span class="remove-icon">
-																<i class="fa fa-close"></i>
-															</span>
-														</div>
-														 <div class="dropdown">
-															  <div class="assignee-info dropdown-toggle" data-toggle="dropdown">
-															  	<div class="assigned-info">
-															  	<div class="task-head-title">Status</div>
-																	<div class="task-assignee">Assigned</div>
-																</div>
 
-																  <span class="caret"></span></button>
-																  <ul class="dropdown-menu">
-																    <li><a href="#" >In-Progress</a></li>
-																    <li><a href="#" >Pending</a></li>
-																    <li><a href="#" >Cancelled</a></li>
-																    <li><a href="#" >On-Hold</a></li>
-																     <li><a href="#">Complete</a></li>
+							
+			</div> 
 
-																  </ul>
-															</div>
-														</div>
-													</div>
-													<hr class="task-line">
-													<div class="task-textarea">
-															Project : Hospital Management
-													</div>
+							
+			</div> 
 
-													<div class="task-desc">
-														<!--<div class="task-desc-icon">
-															<i class="material-icons">subject</i>
-														</div> -->
-														
-														<div class="task-textarea">
-															Description
-														</div>
-													</div>
-													<hr class="task-line">
-													<div class="task-information">
-														<span class="task-info-line"><a class="task-user" href="#">Lesley Grauer</a> <span class="task-info-subject">created task</span></span>
-														<div class="task-time">Jan 20, 2019</div>
-													</div>
-													<div class="task-information">
-														<span class="task-info-line"><a class="task-user" href="#">Lesley Grauer</a> <span class="task-info-subject">added to Hospital Administration</span></span>
-														<div class="task-time">Jan 20, 2019</div>
-													</div>
-													<div class="task-information">
-														<span class="task-info-line"><a class="task-user" href="#">Lesley Grauer</a> <span class="task-info-subject">assigned to John Doe</span></span>
-														<div class="task-time">Jan 20, 2019</div>
-													</div>
-													<hr class="task-line">
-													<div class="task-information">
-														<span class="task-info-line"><a class="task-user" href="#">John Doe</a> <span class="task-info-subject">changed the due date to Sep 28</span> </span>
-														<div class="task-time">9:09pm</div>
-													</div>
-													<div class="task-information">
-														<span class="task-info-line"><a class="task-user" href="#">John Doe</a> <span class="task-info-subject">assigned to you</span></span>
-														<div class="task-time">9:10pm</div>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="img/profiles/avatar-02.jpg">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span>
-																	<p>I'm just looking around.</p>
-																	<p>Will you tell me something about yourself? </p>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="completed-task-msg"><span class="task-success"><a href="#">John Doe</a> completed this task.</span> <span class="task-time">Today at 9:27am</span></div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="img/profiles/avatar-02.jpg">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">John Doe</span> <span class="file-attached">attached 3 files <i class="fa fa-paperclip"></i></span> <span class="chat-time">Feb 17, 2019 at 4:32am</span>
-																	<ul class="attach-list">
-																		<li><i class="fa fa-file"></i> <a href="#">project_document.avi</a></li>
-																		<li><i class="fa fa-file"></i> <a href="#">video_conferencing.psd</a></li>
-																		<li><i class="fa fa-file"></i> <a href="#">landing_page.psd</a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="img/profiles/avatar-16.jpg">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">Jeffery Lalor</span> <span class="file-attached">attached file <i class="fa fa-paperclip"></i></span> <span class="chat-time">Yesterday at 9:16pm</span>
-																	<ul class="attach-list">
-																		<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">Document_2016.pdf</a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="img/profiles/avatar-16.jpg">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">Jeffery Lalor</span> <span class="file-attached">attached file <i class="fa fa-paperclip"></i></span> <span class="chat-time">Today at 12:42pm</span>
-																	<ul class="attach-list">
-																		<li class="img-file">
-																			<div class="attach-img-download"><a href="#">avatar-1.jpg</a></div>
-																			<div class="task-attach-img"><img src="img/user.jpg" alt=""></div>
-																		</li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="task-information">
-														<span class="task-info-line">
-															<a class="task-user" href="#">John Doe</a>
-															<span class="task-info-subject">marked task as incomplete</span>
-														</span>
-														<div class="task-time">1:16pm</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="chat-footer">
-									<div class="message-bar">
-										<div class="message-inner">
-											<a class="link attach-icon" href="#">
-												<span class="btn-file"><input type="file" class="upload"><img  type="file" src="{{asset('img/attachment.png')}}" alt=""></span>
-												
-											</a>
-											<div class="message-area">
-												<div class="input-group">
-													<textarea class="form-control" placeholder="Type message..."></textarea>
-													<span class="input-group-append">
-														<button class="btn btn-primary" type="button"><i class="fa fa-send"></i></button>
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-6">
-									<div class="project-members task-followers">
-										<span class="followers-title">Followers</span>
-										<a class="avatar" href="#" data-toggle="tooltip" title="Jeffery Lalor">
-											<img alt="" src="img/profiles/avatar-16.jpg">
-										</a>
-										<a class="avatar" href="#" data-toggle="tooltip" title="Richard Miles">
-											<img alt="" src="img/profiles/avatar-09.jpg">
-										</a>
-										<a class="avatar" href="#" data-toggle="tooltip" title="John Smith">
-											<img alt="" src="img/profiles/avatar-10.jpg">
-										</a>
-										<a class="avatar" href="#" data-toggle="tooltip" title="Mike Litorus">
-											<img alt="" src="img/profiles/avatar-05.jpg">
-										</a>
-										<a href="#" class="followers-add" data-toggle="modal" data-target="#task_followers"><i class="material-icons">add</i></a>
-										
-									</div>
-								</div>
-												
-										
-									
-								</div>
-								</div>
-							</div>
-						</div> 
 
 
 
@@ -834,17 +624,192 @@
 			</div>
 		<!-- /Main Wrapper -->
 
+
 <script>
-function openNav() {
-  document.getElementById("task_window").style.width = "675px";
-  document.getElementById("main").style.marginLeft = "0px";
+
+	$('#followers li').on('click', function(){
+
+		var follower =  $(this).find("div.f-name").text();
+
+$('#add_followers').append('<span id="name" align="center" class="follower-tag">' + follower + '<i class="fa fa-close" id="close" aria-hidden="true"></i></span>');
+
+	//	$('#add_followers').val(follower);
+
+		console.log(follower);
+
+	});
+</script>
+
+<script>
+
+	$(document).on('click', '#close', function(){
+
+		 $(this).closest('#name').remove();
+
+	});
+</script>
+
+<script>
+
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+  this.classList.toggle("active");
+  $(this).find('#arrow').toggleClass('down');
+    var dropdownContent = this.nextElementSibling;
+  if (dropdownContent.style.display === "none") {
+  dropdownContent.style.display = "block";
+  $('#arrow').removeClass("down");
+
+  } else {
+  dropdownContent.style.display = "none";
+    
+  }
+  
+
+
+  });
 }
 
-function closeNav() {
-  document.getElementById("task_window").style.width = "0";
-  document.getElementById("main").style.marginLeft= "auto";
-}
 </script>
 
 
-		@endsection
+
+
+
+
+
+
+
+<script>
+function openTask(task_id) {
+	
+	//$("#datepicker").datepicker('destroy');
+	//$("#datepicker").datepicker('update');
+
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
+	$("#GetTaskWindowForm").html('');
+  	var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/gettaskwindow' : '#') }}";  
+    var input = $("<input type=\"hidden\" name=\"task_id\" value=\""+task_id+"\"/>");
+    $("#GetTaskWindowForm").append(input);
+    var form = $('#GetTaskWindowForm').get(0);
+    var formData = new FormData(form);
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response)
+        {
+            if(response.status == "SUCCESS")
+            {
+            	$("#task_window").html('');
+            	$("#task_window").append(response.data.gettaskwindowhtml);
+            	$("#task_window").addClass("left-task-window");
+            	$("#main").addClass("all-task-list");
+  				
+            }
+            else
+            {
+                toastr['error'](response.message);
+            }    
+        }            
+    });  
+    
+}
+
+
+</script>
+
+<script>
+   function search(id){
+      var employees = <?php echo json_encode($employees); ?>;
+      for (var i=0; i < employees.length; i++) {
+         if (employees[i].id == id) {
+            return employees[i];
+         }
+      }
+   }
+   var total_members = 0 ;
+  
+   var added_team_members = [];
+
+   	$(document).on('click','#assign li', function() {
+     	added_team_members = [];
+     	total_members = 0 ;
+    	var id = $(this).attr('id');
+      	if(typeof  added_team_members[id] === 'undefined') 
+      	{
+      		$('#assigned-to').html('');
+        	var employeeObject = search(id);
+        	added_team_members[employeeObject.id] = employeeObject;
+        	var html = '';
+         	html +='<a href="#" data-toggle="tooltip" value = "'+id+'"  title="'+employeeObject.name+'"  class="avatar"">'
+         	html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'  
+         	$('#assigned-to').append(html);
+         	total_members = total_members + 1;
+         	$('#total_members').html('+'+total_members); 
+      }
+      else
+      {
+         var employeeObject = search(id);
+         added_team_members[employeeObject.id] = employeeObject;
+         toastr['error']( employeeObject.name + " Already Added" );
+      }
+      
+                
+      });
+
+      </script>
+
+      <script type="text/javascript">
+
+            function addTask() {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addtasks' : '#') }}";  
+                var form = $('#AddTaskForm').get(0);
+                var formData = new FormData(form);
+                           
+                var team_members = Object.keys(added_team_members);
+
+                console.log(team_members);
+                             
+               formData.append('team_members', team_members);
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+            }
+
+        </script>
+          
+
+
+
+@endsection
+
+
+                                                

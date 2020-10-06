@@ -32,6 +32,24 @@ return [
   'role_update_success' => 'Role Updated Successfully',
   'employee_add_success' => 'Employee Addedd Sucessfully',
   'error_employee_email_exists' =>  'Employee Email already exists',
-  'employee_edit_success' => "Employee edit succussfully"
+  'employee_edit_success' => "Employee edit succussfully",
+  'project_add_success' => "Project Created succfully",
+  'error_project_exists' => 'Project Already Exists',
+  'task_add_success'  => 'Task Added Successfully',
+  'error_task_exists' => 'Task Already Exists',
+  'task_board_add_success' => 'Task board added successfully',
+  'error_task_board_exists' => 'Task board already exists',
+  'error_task_id_invalid' => "Task id is invalid",
+  "error_task_board_status_invalid" => "Task board have not this status",
+  "updateTaskStatus_edit_success" => "Task status update successfully.",
+  "addfollower_success" => "Follower added successfully",
+  "error_task_member_exists" => "Already added this followers",
+  "update_due_date_success" => "Due Date Updated",
+  "task_completed_success" => "Task Completed Succfully",
+  "comment_add_success" => "Comment Added successfully",
+  'error_project_id_invalid' => "Project id is invalid",
+  "error_start_date_invalid" => "Project start date is less as comapre to due date",
+  "error_end_date_invalid" => "Project end date is greater as comapre to due date",
+  "error_empty_task_description_and_attachement" => "Atleast Comment or attachment one field is required"
 
 ];

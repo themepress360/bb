@@ -1267,8 +1267,10 @@
             html +='</div>'
             html +='<div class="col-md-6">'
             html +='<div class="form-group form-focus">'
+            html +='<div class="cal-icon">'
             html +='<input type="text" class="form-control floating datetimepicker" value="" id="start_date'+image_row+'" name="education_informations['+image_row+'][start_date]">'
             html +='<label class="focus-label">Starting Date</label>'
+            html +='</div>'
             html +='</div>'
             html +='</div>'
             html +='<div class="col-md-6">'
@@ -1281,17 +1283,17 @@
             html +='</div>'
             html +='<div class="col-md-6">'
             html +='<div class="form-group form-focus">'
-            html +='<div class="cal-icon">'
+           
             html +='<input type="text" class="form-control floating" value="" id="degree'+image_row+'" name="education_informations['+image_row+'][degree]">'
-            html +='</div>'
+          
             html +='<label class="focus-label">Degree</label>'                                                    
             html +='</div>'
             html +='</div>'
             html +='<div class="col-md-6">'
             html +='<div class="form-group form-focus">'
-            html +='<div class="cal-icon">'
+          
             html +='<input type="text" class="form-control floating" value="" id="grade'+image_row+'" name="education_informations['+image_row+'][grade]">'
-            html +='</div>'
+          
             html +='<label class="focus-label">Grade</label>'                                                    
             html +='</div>'
             html +='</div>'
@@ -1306,6 +1308,8 @@
             html +='</div>'
             html +='</div>';
             $('#card_body_education').append(html);
+            $('#start_date'+image_row).datetimepicker({ format: 'DD/MM/YY' });
+             $('#complete_date'+image_row).datetimepicker({ format: 'DD/MM/YY' });
             image_row++;
           });
         // remove Form
@@ -1314,9 +1318,24 @@
         });
         function EducationInformation()
         {
-            var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/saveeducationinformation' : '#') }}";  
+           
+          $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+            var url =  window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            
+
+            var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/saveEmpEducation' : '#') }}";  
             var form = $('#EducationInformationForm').get(0);
+           // console.log(id);
             var formData = new FormData(form);
+
+             formData.append('emp_id', id);
+
             $.ajax({
                 type: "POST",
                 url: url,
@@ -1338,4 +1357,107 @@
             }); 
         }
         </script>
+
+            <script type="text/javascript">
+        // add Form
+        $(document).on('click', '#addMoreExperience', function () {
+            var html = '';
+            html +='<div class="card" id="inputExpForm">'
+            html +='<div class="card-body">'
+            html +='<h3 class="card-title">Experience Informations'
+            html +='<a href="javascript:void(0);" class="delete-icon" id="removeExpForm">'
+            html +='<i class="fa fa-trash-o">'
+            html +='</i>'
+            html +='</a>'
+            html +='</h3>'
+            html +='<div class="row">'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<input type="text" class="form-control floating" value="" id="company_name'+experience_row+'" name="expirences['+experience_row+'][company_name]">'
+            html +='<label class="focus-label">Company Name</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<input type="text" class="form-control floating" value="" id="location'+experience_row+'" name="expirences['+experience_row+'][location]">'
+            html +='<label class="focus-label">Location</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<input type="text" class="form-control floating" value="" id="job_position'+experience_row+'" name="expirences['+experience_row+'][job_position]">'
+            html +='<label class="focus-label">Job Position</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<div class="cal-icon">'
+            html +='<input type="text" class="form-control floating datetimepicker" value="" id="period_from'+experience_row+'" name="expirences['+experience_row+'][period_from]">'
+            html +='</div>'
+            html +='<label class="focus-label">Period From</label>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="col-md-6">'
+            html +='<div class="form-group form-focus">'
+            html +='<div class="cal-icon">'
+            html +='<input type="text" class="form-control floating datetimepicker" value="" id="period_to'+experience_row+'" name="expirences['+experience_row+'][period_to]">'
+            html +='</div>'
+            html +='<label class="focus-label">Period To</label>'                                                    
+            html +='</div>'
+            html +='</div>'
+            html +='</div>'
+            html +='<div class="add-more">'
+            html +='<a href="javascript:void(0);" id="addMoreExperience">'
+            html +='<i class="fa fa-plus-circle">'
+            html +='</i>'
+            html +='Add More'
+            html +='</a>'
+            html +='</div>'
+            html +='</div>'
+            html +='</div>';
+            $('#card_body_experience').append(html);
+            $('#period_from'+experience_row).datetimepicker({ format: 'DD/MM/YY' });
+            $('#period_to'+experience_row).datetimepicker({ format: 'DD/MM/YY' }); 
+            experience_row++;
+        });
+
+        // remove Form
+        $(document).on('click', '#removeExpForm', function () {
+            $(this).closest('#inputExpForm').remove();
+        });
+
+        function addExperience()
+        {
+            var url =  window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+                     
+
+            var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/saveEmpExperience' : '#') }}";  
+            var form = $('#ExperienceForm').get(0);
+            var formData = new FormData(form);
+            formData.append('emp_id', id);
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response)
+                {
+                    if(response.status == "SUCCESS")
+                    {
+                        toastr['success'](response.message);
+                        window.location = "";
+                    }
+                    else
+                    {
+                        toastr['error'](response.message);
+                    }    
+                }
+            }); 
+        }
+    </script>
+
+        
 @endsection
