@@ -35,7 +35,7 @@ class FilemanagerController extends CommonController
     public function index()
     {
          
-         $path = 'public/FileManager';
+         $path = 'public/FileManager/';
 
          $projects = Projects::where('deleted', '0')->get();
          $tasks = Tasks::where('deleted','0')->get();
@@ -46,7 +46,7 @@ class FilemanagerController extends CommonController
          
          //dd($task_folders);
 
-         return view('admin.apps.filemanager.index', compact('projects','directories','files','tasks'));
+         return view('admin.apps.filemanager.index', compact('projects','directories','files','tasks','path'));
     }
 
     /**
@@ -97,10 +97,12 @@ class FilemanagerController extends CommonController
 
        // dd($folder_name);
 
-        $directories = Storage::directories('public/FileManager/'.$folder['folder_name']);
+        $directories = Storage::directories('public/FileManager/'. rtrim($folder['path']) .strtolower($folder['folder_name']).'/');
         
-        //$path = "public/FileManager/".$folder['folder_name'] . "/";
-      //  dd($path);
+       // dd($directories);
+
+        //$path = "public/FileManager/". strtolower($folder['folder_name']) . "/";
+       // dd($path);
 
         //$directories = str_replace( $path , "" , $directories);
             
@@ -141,9 +143,66 @@ class FilemanagerController extends CommonController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function createFolder(Request $request)
     {
-        //
+       $data = $request->all();
+       //dd($data);
+        $rules = [
+
+            'folder_name'   => 'required|string|min:2|max:20',
+
+        ];
+
+         $validator = Validator::make($request->all(),$rules);
+
+         if (!$validator->fails()) 
+        {
+
+            $folder_path = $data['path'] . $data['folder_name'];
+
+            //   dd($folder_path);
+
+               if(!Storage::exists($folder_path)) {
+
+                $create_folder = Storage::makeDirectory($folder_path , 0775, true); //creates directory
+
+                $status   = 200;
+               $response = array(
+               'status'  => 'SUCCESS',
+               'message' => trans('messages.folder_created_success'),
+               'ref'     => 'folder_created_success',
+               );
+               
+             }else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.error_folder_exists'),
+                        'ref'     => 'error_folder_exists'
+                    );
+                }
+
+        }else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+       
+
+      
     }
 
     /**

@@ -1,5 +1,8 @@
 						<div class="file-content-inner"  style="display:block;" id="task-folders">
+							<div class="d-flex" style="justify-content: space-between;">
 														<h4>Task Folders</h4>
+														<a href="#" class="followers-add" data-toggle="modal" data-target="#create_folder_project"><i class="material-icons">add</i></a>
+							</div>
 														<div class="row row-sm">
 															@for($i=0; $i< sizeof($directories); $i++)
 															<div class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
@@ -238,6 +241,43 @@
 													</div>
 
 	
+<!-- Task Followers Modal -->
+<div id="create_folder_project" class="modal custom-modal fade" role="dialog">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Create Folder</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+                           {{ Form::open(array( 'id' => 'CreateFolder' ,  'enctype'=>'multipart/form-data')) }}  
+                              	<div class="form-group">
+                                            <label class="col-form-label">Folder Name <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="folder_name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label">Folder Path <span class="text-danger">*</span></label>
+                                            <input class="form-control" readonly type="text" name="path" placeholder="{{$path}}" value="{{$path}}">
+                                        </div>
+                              {{ Form::close() }}
+            <div>
+               
+            </div>
+            <div class="submit-section">
+               <a href="#" onClick="createFolder()" class="btn btn-success submit-btn">Create Folder</a>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- /Task Followers Modal -->
+
+
+
+
+
 	<script>
 
 				

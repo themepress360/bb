@@ -39,9 +39,9 @@ use Illuminate\Support\Facades\Storage;
 							
 											</div>
 												<div class="dropdown-container" style="display:none">
-													@php $path = 'public/FileManager/' . str_replace("public/FileManager/","", $directories[$i]);
+													@php $path_new = $path . str_replace("public/FileManager/","", $directories[$i]);
 												
-													   $task_folders = Storage::directories($path);
+													    $task_folders = Storage::directories($path_new);
 													
 													  @endphp 
 													<ul class="folder-menu">
@@ -49,7 +49,7 @@ use Illuminate\Support\Facades\Storage;
 														<li id="getTaskFiles" >
 											 <i class="fa fa-folder folder-icon" aria-hidden="true"></i>
 											
-							 <a href="#" class="m-r-10"  id="folder_name">{{ucwords(str_replace($path.'/', "" , $task_folder) )}}</a>
+							 <a href="#" class="m-r-10"  id="folder_name">{{ucwords(str_replace($path_new.'/', "" , $task_folder) )}}</a>
 							 <input type="hidden" id="path" value="{{str_replace('public/FileManager/','', $directories[$i] . '/')}}">
 														</li>
 														@endforeach
@@ -91,7 +91,11 @@ use Illuminate\Support\Facades\Storage;
 											<div class="file-body">
 												<div class="file-scroll">
 													<div class="file-content-inner"  style="display:block;" id="all-files-tab">
+													<div class="d-flex" style="justify-content: space-between;">
 														<h4>Project Folders</h4>
+								<a href="#" class="followers-add" data-toggle="modal" data-target="#create_folder"><i class="material-icons">add</i></a>
+							</div>
+														
 														<div class="row row-sm">
 															@for($i=0; $i< sizeof($directories); $i++)
 															<div class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
@@ -448,7 +452,77 @@ use Illuminate\Support\Facades\Storage;
             </div>
 			<!-- /Page Wrapper -->
 
-		
+<!-- Task Followers Modal -->
+<div id="create_folder" class="modal custom-modal fade" role="dialog">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Create Folder</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+                           {{ Form::open(array( 'id' => 'CreateFolder' ,  'enctype'=>'multipart/form-data')) }}  
+                              	<div class="form-group">
+                                            <label class="col-form-label">Folder Name <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="folder_name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label">Folder Path <span class="text-danger">*</span></label>
+                                            <input class="form-control" readonly type="text" name="path" placeholder="{{$path}}" value="{{$path}}">
+                                        </div>
+                              {{ Form::close() }}
+            <div>
+               
+            </div>
+            <div class="submit-section">
+               <a href="#" onClick="createFolder()" class="btn btn-success submit-btn">Create Folder</a>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- /Task Followers Modal -->
+	
+<script type="text/javascript">
+
+            function createFolder() {
+                var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/createfolder' : '#') }}";  
+                var form = $('#CreateFolder').get(0);
+                var formData = new FormData(form);
+           
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+            }
+
+        </script>
+          
+
+
+
+
+
+
+
 		
 			<script>
 				var links = [];

@@ -51,6 +51,8 @@ return [
   "error_start_date_invalid" => "Project start date is less as comapre to due date",
   "error_end_date_invalid" => "Project end date is greater as comapre to due date",
   "error_empty_task_description_and_attachement" => "Atleast Comment or attachment one field is required",
-  'getfolders_add_success' => 'Loading'
+  'getfolders_add_success' => 'Loading',
+  'folder_created_success' => 'Folder Created Successfully',
+  'error_folder_exists' => 'Folder Already Exists'
 
 ];

@@ -100,6 +100,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('file-manager', array('uses' => 'FilemanagerController@index'));
         Route::post('gettaskfolders', array('uses' => 'FilemanagerController@gettaskfolders'));
         Route::post('gettaskfiles', array('uses' => 'FilemanagerController@gettaskfiles'));
+        Route::post('createfolder', array('uses' => 'FilemanagerController@createFolder'));
               
                         
     });
