@@ -455,7 +455,7 @@ class TasksController extends CommonController
                         {
                           $attachments[] = array(
                             "attachment_name"     => $file_value['attachment_name'],
-                            "attachment_name_url" => TaskHistoryFileUploads::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$file_value['attachment_name']),
+                            "attachment_name_url" => TaskHistoryFileUploads::file_url(config('app.filemanagerfolder').'/'.$window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$file_value['attachment_name']),
                           );
                         }
                         $task_histories[$key]['attachments'] = $attachments; 
