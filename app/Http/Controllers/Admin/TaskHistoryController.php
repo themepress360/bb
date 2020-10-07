@@ -89,12 +89,12 @@ class TaskHistoryController extends CommonController
                             'deleted'         => '0'
                         );
                         foreach ($requestData['attachment_array'] as $key => $file) {
-                            $filename = TaskHistoryFileUploads::uploadFile(config('app.folder').'/'.$project['project_title'].'/'.$custom_validation['task']['task_title'],$file,$task_data);
+                            $filename = TaskHistoryFileUploads::uploadFile(config('app.folder').'/'.config('app.filemanagerfolder').'/'.$project['project_title'].'/'.$custom_validation['task']['task_title'],$file,$task_data);
                             $task_history_file_upload_data['attachment_name'] = $filename;
                             TaskHistoryFileUploads::create($task_history_file_upload_data);
                             $attachments[] = array(
                                 "attachement_name" => $filename,
-                                "attachement_url" => TaskHistoryFileUploads::file_url($project['project_title'].'/'.$custom_validation['task']['task_title'],$filename),
+                                "attachement_url" => TaskHistoryFileUploads::file_url(config('app.filemanagerfolder').'/'.$project['project_title'].'/'.$custom_validation['task']['task_title'],$filename),
                             );
                         }
                         $add_task_history['attachments'] = $attachments;

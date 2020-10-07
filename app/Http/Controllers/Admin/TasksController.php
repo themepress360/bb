@@ -112,10 +112,12 @@ class TasksController extends CommonController
                 'assign_to' => !empty($members[0]) ? (int) $members[0] : 0 
               );
               $project = Projects::where(['id' => (int) $taskData['project_id'] ,"deleted" => '0'])->first();
-              if (!file_exists(config('app.folder').'/'.$project['project_title'])) {
-                  $project_folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'], 777, true, true);
+              if (!file_exists(config('app.folder').'/'.config('app.filemanagerfolder').'/'.$project['project_title'])) {
+                  $project_folder_create = Storage::makeDirectory(config('app.folder').'/'.config('app.filemanagerfolder').'/'.$project['project_title'], 777, true, true);
+                 
               }
-              $folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'].'/'.strtolower($taskData['task_title']), 777, true, true);
+              $folder_create = Storage::makeDirectory(config('app.folder').'/'.config('app.filemanagerfolder').'/'.$project['project_title'].'/'.strtolower($taskData['task_title']), 777, true, true);
+
               $add_task =  Tasks::create($task_data);
               if($add_task)
               {    
@@ -285,7 +287,7 @@ class TasksController extends CommonController
                         {
                           $attachments[] = array(
                             "attachment_name"     => $file_value['attachment_name'],
-                            "attachment_name_url" => TaskHistoryFileUploads::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$file_value['attachment_name']),
+                            "attachment_name_url" => TaskHistoryFileUploads::file_url(config('app.filemanagerfolder').'/'.$window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$file_value['attachment_name']),
                           );
                         }
                         $task_histories[$key]['attachments'] = $attachments; 
