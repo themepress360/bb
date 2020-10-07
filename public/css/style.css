@@ -8663,3 +8663,19 @@ color: #F64E60 !important;
 .excel-icon{
 	color:#008000;
 }
+.folder-menu{
+
+	list-style: none;
+}
+.svg-icon{
+	color: #1BC5BD;
+}
+.zip-icon{
+	color: #FFA800;
+}
+.ppt-icon{
+	color:#D04423
+}
+.chat-you{
+	background-color: #E1F0FF !important;
+}

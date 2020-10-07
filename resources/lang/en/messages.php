@@ -50,6 +50,7 @@ return [
   'error_project_id_invalid' => "Project id is invalid",
   "error_start_date_invalid" => "Project start date is less as comapre to due date",
   "error_end_date_invalid" => "Project end date is greater as comapre to due date",
-  "error_empty_task_description_and_attachement" => "Atleast Comment or attachment one field is required"
+  "error_empty_task_description_and_attachement" => "Atleast Comment or attachment one field is required",
+  'getfolders_add_success' => 'Loading'
 
 ];

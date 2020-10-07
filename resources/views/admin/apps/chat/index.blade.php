@@ -139,19 +139,20 @@
 											<div class="chat-box">
 												<div class="chats">
 													<div class="chat chat-right">
+														
+														<div class="chat-avatar">
+
+															<a href="profile" class="avatar">
+																	 <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
+															</a>
+														</div>
 														<div class="chat-body">
 															<div class="chat-bubble">
 																<div class="chat-content">
-																	<p>Hello. What can I do for you?</p>
+																	<p> Hello. What can I do for you?</p>
 																	<span class="chat-time">8:30 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 														</div>
 													</div>
@@ -171,56 +172,37 @@
 																	<p>Will you tell me something about yourself? </p>
 																	<span class="chat-time">8:35 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 															<div class="chat-bubble">
 																<div class="chat-content">
 																	<p>Are you there? That time!</p>
 																	<span class="chat-time">8:40 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 														</div>
 													</div>
 													<div class="chat chat-right">
+														<div class="chat-avatar">
+															<a href="profile" class="avatar">
+																<img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
+															</a>
+														</div>
 														<div class="chat-body">
 															<div class="chat-bubble">
 																<div class="chat-content">
 																	<p>Where?</p>
 																	<span class="chat-time">8:35 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 															<div class="chat-bubble">
 																<div class="chat-content">
 																	<p>OK, my name is Limingqiang. I like singing, playing basketballand so on.</p>
 																	<span class="chat-time">8:42 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 														</div>
 													</div>
@@ -236,39 +218,21 @@
 																	<p>You wait for notice.</p>
 																	<span class="chat-time">8:30 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 															<div class="chat-bubble">
 																<div class="chat-content">
 																	<p>Consectetuorem ipsum dolor sit?</p>
 																	<span class="chat-time">8:50 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 															<div class="chat-bubble">
 																<div class="chat-content">
 																	<p>OK?</p>
 																	<span class="chat-time">8:55 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 															<div class="chat-bubble">
 																<div class="chat-content img-content">
@@ -297,30 +261,23 @@
 																	</div>
 																	<span class="chat-time">9:00 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 														</div>
 													</div>
 													<div class="chat chat-right">
+														<div class="chat-avatar">
+															<a href="profile" class="avatar">
+																<img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
+															</a>
+														</div>
 														<div class="chat-body">
 															<div class="chat-bubble">
 																<div class="chat-content">
 																	<p>OK!</p>
 																	<span class="chat-time">9:00 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 														</div>
 													</div>
@@ -340,13 +297,7 @@
 																		<li><i class="fa fa-file"></i> <a href="#">example.psd</a></li>
 																	</ul>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 															<div class="chat-bubble">
 																<div class="chat-content">
@@ -366,13 +317,7 @@
 																	<p>OK?</p>
 																	<span class="chat-time">8:55 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 														</div>
 													</div>
@@ -426,13 +371,7 @@
 																	</div>
 																	<span class="chat-time">9:00 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 														</div>
 													</div>
@@ -450,17 +389,16 @@
 																	</ul>
 																	<span class="chat-time">9:00 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 														</div>
 													</div>	
 													<div class="chat chat-right">
+														<div class="chat-avatar">
+															<a href="profile" class="avatar">
+																<img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
+															</a>
+														</div>
 														<div class="chat-body">
 															<div class="chat-bubble">
 																<div class="chat-content">
@@ -469,13 +407,7 @@
 																	</ul>
 																	<span class="chat-time">9:00 am</span>
 																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
+																
 															</div>
 														</div>
 													</div>
@@ -506,7 +438,7 @@
 												<div class="input-group">
 													<textarea class="form-control" placeholder="Type message..."></textarea>
 													<span class="input-group-append">
-														<button class="btn btn-custom" type="button"><i class="fa fa-send"></i></button>
+														<button class="btn btn-primary" type="button"><i class="fa fa-send"></i></button>
 													</span>
 												</div>
 											</div>
@@ -518,7 +450,7 @@
 						<!-- /Chats View -->
 						
 						<!-- Chat Right Sidebar -->
-						<div class="col-lg-3 message-view chat-profile-view chat-sidebar" id="task_window">
+						<div class="col-lg-3 message-view chat-profile-view chat-sidebar" id="task_window" style="display:none">
 							<div class="chat-window video-window">
 								<div class="fixed-header">
 									<ul class="nav nav-tabs nav-tabs-bottom">

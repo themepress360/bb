@@ -35,11 +35,16 @@ class FilemanagerController extends CommonController
     public function index()
     {
          
+         $path = 'public/FileManager';
+
          $projects = Projects::where('deleted', '0')->get();
          $tasks = Tasks::where('deleted','0')->get();
-         $directories = Storage::directories('public');
-         $files = Storage::files('public');
-         //dd($files);
+         $directories = Storage::directories($path);
+        // dd($directories);
+         $files = Storage::files($path);
+         //$task_folders = Storage::directories('public/FileManager/aws fargate deploymenet');
+         
+         //dd($task_folders);
 
          return view('admin.apps.filemanager.index', compact('projects','directories','files','tasks'));
     }
@@ -49,9 +54,85 @@ class FilemanagerController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function gettaskfolders(Request $request)
+
     {
-        //
+        $folder = $request->all();
+        //dd($folder['folder_name']);
+        $directories = Storage::directories('public/FileManager/'. strtolower($folder['folder_name']));
+        
+        $path = "public/FileManager/". strtolower(rtrim($folder['folder_name'])) . "/";
+        //dd($path);
+
+        $directories = str_replace( $path , "" , $directories);
+        
+         $files = Storage::files('public/FileManager/'.strtolower($folder['folder_name']));
+
+        $data['gettaskfoldershtml'] = view('admin.apps.filemanager.taskfolders', compact('directories','files','path'))->render();
+        $status   = 200;
+        $response = array(
+            'status'  => 'SUCCESS',
+            'message' => trans('messages.getfolders_add_success'),
+            'ref'     => 'getfolders_add_success',
+            'data'    => $data
+        );
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+
+        
+    }
+
+     public function gettaskfiles(Request $request)
+
+    {
+        $folder = $request->all();
+        $folder_name = $folder['folder_name'];
+
+       // dd($folder_name);
+
+        $directories = Storage::directories('public/FileManager/'.$folder['folder_name']);
+        
+        //$path = "public/FileManager/".$folder['folder_name'] . "/";
+      //  dd($path);
+
+        //$directories = str_replace( $path , "" , $directories);
+            
+            $file_path = 'public/FileManager/'. rtrim($folder['path']) . rtrim(strtolower($folder['folder_name'])) ;
+
+          //  dd($file_path);
+
+         $files = Storage::files($file_path );
+         
+         // $files = Storage::files('public/FileManager/aws fargate deploymenet/create docker container');
+         
+        //   dd($files);
+
+        $data['gettaskfileshtml'] = view('admin.apps.filemanager.taskfiles', compact('directories','files','file_path','folder_name'))->render();
+        $status   = 200;
+        $response = array(
+            'status'  => 'SUCCESS',
+            'message' => trans('messages.getfolders_add_success'),
+            'ref'     => 'getfolders_add_success',
+            'data'    => $data
+        );
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+
+        
     }
 
     /**

@@ -98,6 +98,8 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('nextmessages', array('uses' => 'EmailController@listmessages'));
 
         Route::get('file-manager', array('uses' => 'FilemanagerController@index'));
+        Route::post('gettaskfolders', array('uses' => 'FilemanagerController@gettaskfolders'));
+        Route::post('gettaskfiles', array('uses' => 'FilemanagerController@gettaskfiles'));
               
                         
     });
