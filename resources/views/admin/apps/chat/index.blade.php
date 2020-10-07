@@ -433,7 +433,10 @@
 								<div class="chat-footer">
 									<div class="message-bar">
 										<div class="message-inner">
-											<a class="link attach-icon" href="#" data-toggle="modal" data-target="#drag_files"><img src="img/attachment.png" alt=""></a>
+											<a class="link attach-icon" href="#">
+												<span class="btn-file">
+               <input multiple type="file" class="upload" name="attachment[]" id="attachment">
+												<img type="file" src="{{asset('img/attachment.png')}}" alt=""></span></a>
 											<div class="message-area">
 												<div class="input-group">
 													<textarea class="form-control" placeholder="Type message..."></textarea>
@@ -444,6 +447,10 @@
 											</div>
 										</div>
 									</div>
+									<div id="preview"  style="display:none">
+         <ul id="result" class="list-style">
+         </ul>
+      </div>
 								</div>
 							</div>
 						</div>
@@ -886,4 +893,144 @@
 				
             </div>
 			<!-- /Page Wrapper -->
+
+
+			<script>
+	var attachment_array = [];
+    var attachment_index = 0;
+    var div_id = 0;
+   $(function(){
+        
+      //Check File API support
+      if(window.File && window.FileList && window.FileReader)
+      {
+          var filesInput = document.getElementById("attachment");
+          filesInput.addEventListener("change", function(event){
+              $('#result').show();
+               $('#preview').attr('style','display:flex');
+   
+              var files = event.target.files; //FileList object
+               for(var i = 0; i<files.length; i++){
+                  attachment_array[attachment_index] = files[i];
+                  attachment_index++;
+               	var fname = files[i].name;
+               	fextension = fname.substring(fname.lastIndexOf('.')+1);
+                
+                   Extensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx","txt","zip","rar","gzip"];
+   
+                   img_ext = ["jpg","png","jpeg","gif","svg"];
+   
+                   code_ext = ["php","html","css"]
+   
+                  if(fextension.match('pdf')){
+   
+                      $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-pdf-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                  }
+                  if(fextension.match('docx')){
+                      $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-word-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                  }
+                  if(fextension.match('xlsx')){
+   
+                      $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-excel-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                  }
+                  if(fextension.match('csv')){
+   
+                      $("<li id = '"+div_id+"' ><i class='fa fa-file fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                       
+                  }
+                  //Only pics
+                  if(img_ext.includes(fextension)){
+                  	                     
+                 img_src = window.URL.createObjectURL(files[i]);
+                                    
+           	  $("<li id = '"+div_id+"' class='file-preview'><img class='thumbnail' src='" + img_src + "'" +  "title='" + fname + "'/> " + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+                   
+                  }
+                   if(fextension.match('zip')){
+   
+                      $("<li id = '"+div_id+"' ><i class='fa fa-file-archive-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                       
+                  }
+                 if(fextension.match('zip')){
+   
+                      $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-archive-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                       
+                  }
+                  if(fextension.match('mp4')){
+   
+                      $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-video-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                       
+                  }
+                  if(fextension.match('ppt')){
+   
+                      $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-powerpoint-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                       
+                  }
+                   if(fextension.match('txt')){
+   
+                      $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-text-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                       
+                  }
+                   if(code_ext.includes(fextension)){
+   
+                      $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-code-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+   
+                       
+                  }
+   
+                  div_id++;
+                          
+               }
+              var output = document.getElementById("result");
+   
+               
+              
+                     
+             
+          });
+      }
+      else
+      {
+          console.log("Your browser does not support File API");
+      }
+   });
+     
+   
+</script>
+
+<script>
+   var deleted_attachment_array = [];
+   var deleted_attachment_key = 0;
+   $("#result").on('click', '#remove_file' , function() {
+   
+   	
+   	$(this).closest('li').remove();
+
+      
+      var id=$(this).closest('li').attr("id");
+      deleted_attachment_array[deleted_attachment_key] = parseInt(id);
+      deleted_attachment_key++;
+      // files.splice(id,1);
+         
+      if (!$(".list-style").find('li').length) {
+      		$('#preview').hide()
+    }
+   	
+   
+   });
+</script>
+<script>
+   if(!$('#previews').find('ul:visible').length){
+      $('#preview').hide();
+   }
+</script>
 			@endsection
