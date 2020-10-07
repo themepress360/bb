@@ -81,9 +81,9 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
         Route::post('addtaskhistory', array('uses' => 'TaskHistoryController@addtaskhistory'));
         Route::post('addfollowers', array('uses' => 'TasksController@addfollowers'));
-         Route::post('updatetaskduedate', array('uses' => 'TasksController@updateDueDate'));
+        Route::post('updatetaskduedate', array('uses' => 'TasksController@updateDueDate'));
 
-         Route::post('completetask', array('uses' => 'TasksController@completeTask'));
+        Route::post('completetask', array('uses' => 'TasksController@completeTask'));
 
         Route::get('task-board', array('uses' => 'TaskBoardController@getTaskboard'));
         Route::post('getprojecttaskboard', array('uses' => 'TaskBoardController@getprojecttaskboard'));
@@ -95,8 +95,10 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
         Route::get('inbox', array('uses' => 'EmailController@index'));
         Route::get('mail-view/{id}', array('uses' => 'EmailController@showMessage'));
-         Route::post('nextmessages', array('uses' => 'EmailController@listmessages'));
-       
+        Route::post('nextmessages', array('uses' => 'EmailController@listmessages'));
+
+        Route::get('file-manager', array('uses' => 'FilemanagerController@index'));
+              
                         
     });
 
@@ -208,9 +210,7 @@ Route::get('/admin/contacts', function () {
 Route::get('/admin/events', function () {
         return view('admin.apps.calender.index');
     });
-Route::get('/admin/file-manager', function () {
-        return view('admin.apps.filemanager.index');
-    });
+
 
 
 

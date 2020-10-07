@@ -7477,6 +7477,7 @@ ul.comment-list li ul.children {
 .file-wrap .file-content .file-body .file-content-inner {
     padding: 15px;
     width: 100%;
+    
 }
 .file-wrap.file-sidebar-toggle .file-sidebar {
     left: -331px;
@@ -7489,7 +7490,9 @@ ul.comment-list li ul.children {
     flex-wrap: wrap;
     margin-left: 300px;
 	transition: 0.4s ease-in-out;
+	width: 100%;
 }
+
 .file-wrap .file-cont-wrap .file-cont-inner {
 	flex: 0 0 100%;
 	max-width: 100%;
@@ -8643,4 +8646,20 @@ color: #F64E60 !important;
 
 .seen{
 	background-color:#F0F0F0;
+}
+
+.folder-icon{
+	color:#FFA800;
+}
+.pdf-icon{
+
+	color:#F64E60
+}
+
+.word-icon{
+
+	color:#3699FF;
+}
+.excel-icon{
+	color:#008000;
 }
