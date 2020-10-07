@@ -218,7 +218,7 @@
 																	@endif
 																	
 																<div class="card-body" id="task-file-name" >
-															<h6 ><a  href="" >{{str_replace("$file_path/","", $files[$i]) }}</a></h6>
+															<h6 ><a  download href="{{Storage::url($files[$i])}}" >{{str_replace("$file_path/","", $files[$i]) }}</a></h6>
 																		<span>{{round(Storage::size($files[$i])/1020,2)}}KB</span>
 																	</div>
 														

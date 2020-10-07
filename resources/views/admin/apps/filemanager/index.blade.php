@@ -314,7 +314,7 @@ use Illuminate\Support\Facades\Storage;
 																	
 
 																<div class="card-body" id="file-name" >
-															<h6 ><a  href="" >{{str_replace("public/FileManager/","", $files[$i]) }}</a></h6>
+											<h6 ><a download href="{{Storage::url($files[$i])}}" >{{str_replace("public/FileManager/","", $files[$i]) }}</a></h6>
 																		<span>{{round(Storage::size($files[$i])/1020,2)}}KB</span>
 																	</div>
 														
