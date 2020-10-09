@@ -46,38 +46,42 @@
             </li>
             <li class="menu-title">Direct Chats <a href="#" data-toggle="modal" data-target="#add_chat_user"><i class="fa fa-plus"></i></a></li>
             <ul class="direct-chat-list" id="direct-chat-list">
-            <li>
-               <a href="chat">
-               <span class="chat-avatar-sm user-img">
-               <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-02.jpg')}}"><span class="status online"></span>
-               </span> 
-               <span class="chat-user">John Doe</span> <span class="badge badge-pill bg-danger">1</span>
-               </a>
-            </li>
-            <li>
-               <a href="chat">
-               <span class="chat-avatar-sm user-img">
-               <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-09.jpg')}}"><span class="status offline"></span>
-               </span> 
-               <span class="chat-user">Richard Miles</span> <span class="badge badge-pill bg-danger">7</span>
-               </a>
-            </li>
-            <li>
-               <a href="chat">
-               <span class="chat-avatar-sm user-img">
-               <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-10.jpg')}}"><span class="status away"></span>
-               </span> 
-               <span class="chat-user">John Smith</span>
-               </a>
-            </li>
-            <li class="active">
-               <a href="chat">
-               <span class="chat-avatar-sm user-img">
-               <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-05.jpg')}}"><span class="status online"></span>
-               </span> 
-               <span class="chat-user">Mike Litorus</span> <span class="badge badge-pill bg-danger">2</span>
-               </a>
-            </li>
+               @if(!empty($chat_lists))
+                  @foreach($chat_lists as $key => $chat_list)
+                     <li>
+                        <a href="chat">
+                        <span class="chat-avatar-sm user-img">
+                        <img class="rounded-circle" alt="{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}" src="{{!empty($chat_list['profile_image_url']) ? $chat_list['profile_image_url'] : '-'}}"><span class="status online"></span>
+                        </span> 
+                        <span class="chat-user">{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}</span> <span class="badge badge-pill bg-danger">1</span>
+                        </a>
+                     </li>
+                  @endforeach
+               @endif
+               <li>
+                  <a href="chat">
+                  <span class="chat-avatar-sm user-img">
+                  <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-09.jpg')}}"><span class="status offline"></span>
+                  </span> 
+                  <span class="chat-user">Richard Miles</span> <span class="badge badge-pill bg-danger">7</span>
+                  </a>
+               </li>
+               <li>
+                  <a href="chat">
+                  <span class="chat-avatar-sm user-img">
+                  <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-10.jpg')}}"><span class="status away"></span>
+                  </span> 
+                  <span class="chat-user">John Smith</span>
+                  </a>
+               </li>
+               <li class="active">
+                  <a href="chat">
+                  <span class="chat-avatar-sm user-img">
+                  <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-05.jpg')}}"><span class="status online"></span>
+                  </span> 
+                  <span class="chat-user">Mike Litorus</span> <span class="badge badge-pill bg-danger">2</span>
+                  </a>
+               </li>
             </ul>
          </ul>
       </div>
@@ -1053,14 +1057,16 @@
    var socket = io('http://'+document.domain+':2020');
    //var socket = io('http://107.22.52.19:2020');
    var my_user_id = '{{isset(Auth::user()->id) ? Auth::user()->id : "0"}}';
-   console.log(socket);
-   function setUserid(user_id) {
+   //var chat_ids = {{$chat_ids}};
+   var chat_ids = JSON.parse('{{$chat_ids}}');
+   //var chat_ids = "";
+   function setUserid(user_id,chat_ids) {
       if (user_id && user_id != "0") {
-         var data =  {user_id : user_id ,chat_ids:[]};
+         var data =  {user_id : user_id ,chat_ids:chat_ids};
          socket.emit('add_user_id', data);
       }
    }
-   setUserid(my_user_id);
+   setUserid(my_user_id,chat_ids);
    //Socket Working End
 </script>
 

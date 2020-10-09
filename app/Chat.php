@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Storage;
 use File;
+use DB;
 
 class Chat extends Model
 {
@@ -27,7 +28,14 @@ class Chat extends Model
       return $validate;
     }
     $validate['user'] = $user;
-    $is_chat_exist = ChatMessages::select('chat_id')->where(['sender_user_id' => (int) $requestData['start_conversation_user_id'],'receiver_user_id' => (int) $mydetail['id'], "deleted" => '0'])->orwhere(['sender_user_id' => (int) $mydetail['id'],'receiver_user_id' => (int) $requestData['start_conversation_user_id'], "deleted" => '0'])->first();
+    // $is_chat_exist = ChatMessages::select('chat_id')->where(['sender_user_id' => (int) $requestData['start_conversation_user_id'],'receiver_user_id' => (int) $mydetail['id'], "deleted" => '0'])->orwhere(['sender_user_id' => (int) $mydetail['id'],'receiver_user_id' => (int) $requestData['start_conversation_user_id'], "deleted" => '0'])->first();
+
+    $is_chat_exist = ChatMessages::select('chat_id')->where(function ($query) use($requestData,$mydetail) {
+    	$query->where('sender_user_id', (int) $requestData['start_conversation_user_id'])
+        ->where('receiver_user_id', (int) $mydetail['id'])->where('deleted', '0');})->orwhere(function ($query) use($requestData,$mydetail){
+    	$query->where('sender_user_id', (int) $mydetail['id'])
+        ->where('receiver_user_id', (int) $requestData['start_conversation_user_id'])->where('deleted', '0');})->first();
+
     if(!empty($is_chat_exist))
     {
     	$validate['status']  = false;

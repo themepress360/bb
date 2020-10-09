@@ -19,6 +19,7 @@ use Storage;
 use App\Chat as Chat;
 use App\ChatMembers as ChatMembers;
 use App\ChatMessages as ChatMessages;
+use DB;
 
 class ChatController extends CommonController
 {
@@ -30,8 +31,9 @@ class ChatController extends CommonController
     public function getchats(Request $request)
     {
         $data['employees_list'] = [];
-        $data['chat_list'] = [];
+        $data['chat_lists'] = [];
         $data['clients_list'] = [];
+        $data['chat_ids'] = [];
         $mydetail = $request->user(); 
         /* To get all employee which are active and not deleted START */
         $data['employees_list'] = User::select(['designations.name as designation_name','users.*'])->where(['users.deleted' => '0','users.status' => '1' ])->join('employees', 'users.id', '=', 'employees.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->get()->toArray();
@@ -60,11 +62,40 @@ class ChatController extends CommonController
         /* To get all employee which are active and not deleted end */
 
         /* To get the chat list Start */
-        $data['chat_list'] = ChatMembers::join('users', 'users.id', '=', 'user_id')->where(['user_id' => (int) $mydetail['id'] ,'chatmembers.deleted' => '0','chatmembers.status'=> '1'])->get()->toArray();
+        $chats  = ChatMessages::select('chat_id','sender_user_id','receiver_user_id')->distinct('chat_id')->where(function ($query) use($mydetail) {
+        $query->where('receiver_user_id', (int) $mydetail['id'])
+        ->where('deleted', '0');})->orwhere(function ($query) use($mydetail){
+        $query->where('sender_user_id', (int) $mydetail['id'])
+        ->where('deleted', '0');})->get()->toArray();
+        //$chats = ChatMessages::select('chat_id','sender_user_id','receiver_user_id')->distinct('chat_id')->where(['receiver_user_id' => (int) $mydetail['id'], "deleted" => '0'])->orwhere(['sender_user_id' => (int) $mydetail['id'], "deleted" => '0'])->get()->toArray();
 
-        print_r("<pre>");
-        print_r($data['chat_list']);
-        exit();
+        if(!empty($chats))
+        {
+            foreach ($chats as $key => $chat_list) {
+                $profile_image_url = "";
+                if($chat_list['sender_user_id'] == $mydetail['id'])
+                {
+                    $user_id = $chat_list['receiver_user_id'];
+                }
+                else
+                {
+                    $user_id = $chat_list['sender_user_id'];
+                }
+                $user = User::where(['deleted' => '0', "id" => (int) $user_id ])->first();
+                if(!empty($user['profile_image']))
+                    $profile_image_url = User::image_url(config('app.profileimagesfolder'),$user['profile_image']);
+                $chat_lists[] = array(
+                    'name' => $user['name'],
+                    'profile_image_url' => $profile_image_url,
+                    'user_id' => $user['id'],
+                    'chat_id' => $chat_list['chat_id']
+                );
+                $chat_ids[] = $chat_list['chat_id'];
+            }
+            $data['chat_lists'] = $chat_lists;
+            $data['chat_ids']   = json_encode($chat_ids);
+        }
+
         /* To get the chat list End */
 
         return view('admin.apps.chat.index',$data);
