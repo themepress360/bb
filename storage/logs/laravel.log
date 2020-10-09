@@ -8109,3 +8109,36 @@
 #39 C:\\laragon\\www\\bb\\server.php(21): require_once('C:\\\\laragon\\\\www\\\\...')
 #40 {main}
 "} 
+[2020-10-09 20:58:41] local.ERROR: syntax error, unexpected '<<' (T_SL) {"exception":"[object] (ParseError(code: 0): syntax error, unexpected '<<' (T_SL) at C:\\laragon\\www\\bb\outes\\web.php:104)
+[stacktrace]
+#0 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(417): Illuminate\\Routing\\RouteFileRegistrar->register('C:\\\\laragon\\\\www\\\\...')
+#1 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(374): Illuminate\\Routing\\Router->loadRoutes('C:\\\\laragon\\\\www\\\\...')
+#2 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\RouteRegistrar.php(134): Illuminate\\Routing\\Router->group(Array, 'C:\\\\laragon\\\\www\\\\...')
+#3 C:\\laragon\\www\\bb\\app\\Providers\\RouteServiceProvider.php(63): Illuminate\\Routing\\RouteRegistrar->group('C:\\\\laragon\\\\www\\\\...')
+#4 C:\\laragon\\www\\bb\\app\\Providers\\RouteServiceProvider.php(47): App\\Providers\\RouteServiceProvider->mapWebRoutes()
+#5 [internal function]: App\\Providers\\RouteServiceProvider->map()
+#6 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(37): call_user_func_array(Array, Array)
+#7 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(37): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#8 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#9 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(39): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#10 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(596): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#11 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider.php(87): Illuminate\\Container\\Container->call(Array)
+#12 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider.php(36): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->loadRoutes()
+#13 C:\\laragon\\www\\bb\\app\\Providers\\RouteServiceProvider.php(35): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->boot()
+#14 [internal function]: App\\Providers\\RouteServiceProvider->boot()
+#15 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(37): call_user_func_array(Array, Array)
+#16 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(37): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#17 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#18 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(39): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#19 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(596): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#20 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(867): Illuminate\\Container\\Container->call(Array)
+#21 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(850): Illuminate\\Foundation\\Application->bootProvider(Object(App\\Providers\\RouteServiceProvider))
+#22 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}(Object(App\\Providers\\RouteServiceProvider), 23)
+#23 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(851): array_walk(Array, Object(Closure))
+#24 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#25 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(230): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#26 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(310): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#27 C:\\laragon\\www\\bb\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(127): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#28 C:\\laragon\\www\\bb\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#29 {main}
+"} 
