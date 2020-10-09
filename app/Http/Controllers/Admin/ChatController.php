@@ -181,6 +181,153 @@ class ChatController extends CommonController
     }
 
     /**
+     * To get the chats window of this user.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function chattingwindow(Request $request)
+    {
+        $rules = [
+            'chat_id'   => 'required',
+            'user_id'   => 'required'
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if (!$validator->fails()) 
+        {
+            $requestData =  $request->all();
+            $mydetail = $request->user(); 
+            $custom_validation = Chat::ChatWindowValidation($requestData,$mydetail);
+            if($custom_validation['status'])
+            {
+                $window_data = [];
+                $window_data['chat_id'] = $requestData['chat_id'];
+                $window_data['user'] = $custom_validation['user'];
+                $window_data['mydetail'] = $mydetail;
+                if(!empty($custom_validation['user']['profile_image']))
+                    $window_data['user']['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$custom_validation['user']['profile_image']);
+                else
+                    $window_data['user']['profile_image_url'] = "";
+                if(!empty($window_data['mydetail']['profile_image']))
+                    $window_data['mydetail']['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$window_data['mydetail']['profile_image']);
+                else
+                    $window_data['mydetail']['profile_image_url'] = "";
+                $data['getchatwindowhtml'] = view('admin.apps.chat.chattingwindow',$window_data)->render();
+                $status   = 200;
+                $response = array(
+                    'status'  => 'SUCCESS',
+                    'message' => trans('messages.chatting_window_success'),
+                    'ref'     => 'chatting_window_success',
+                    'data'    => $data
+                );
+            }
+            else
+            {
+                $status = 400;
+                $response = array(
+                    'status'  => 'FAILED',
+                    'message' => $custom_validation['message'],
+                    'ref'     => $custom_validation['ref']
+                );
+            }
+        }else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+    }
+
+    /**
+     * To send the chats message to this user.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function sendmessage(Request $request)
+    {
+        $rules = [
+            'chat_id'   => 'required',
+            'message'   => 'required'
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if (!$validator->fails()) 
+        {
+            $requestData =  $request->all();
+            $mydetail = $request->user(); 
+            $custom_validation = Chat::ChatMessageValidation($requestData,$mydetail);
+            if($custom_validation['status'])
+            {
+                $is_attachment = '0';
+                $receive_user = ChatMembers::where('user_id', '!=' , $mydetail['id'])->where(['chat_id' => (int) $requestData['chat_id'],"status" => '1', "deleted" => '0'])->first();
+                $chat_message = array(
+                    'chat_id'          => (int) $requestData['chat_id'],
+                    'sender_user_id'   => (int) $mydetail['id'],
+                    'receiver_user_id' => (int) $receive_user['id'],
+                    'message'          => $requestData['message'],
+                    'is_attachemnt'    => $is_attachment,
+                    'status'           => '1',
+                    'deleted'          => '0'
+                );
+                $message_create =  ChatMessages::create($chat_message);
+                if($message_create)
+                {
+                    $status   = 200;
+                    $response = array(
+                        'status'  => 'SUCCESS',
+                        'message' => trans('messages.chat_message_success'),
+                        'ref'     => 'chat_message_success',
+                        'data'    => $chat_message
+                    );
+                }
+                else
+                {
+                    $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.server_error'),
+                        'ref'     => 'server_error'
+                    );
+                }
+            }
+            else
+            {
+                $status = 400;
+                $response = array(
+                    'status'  => 'FAILED',
+                    'message' => $custom_validation['message'],
+                    'ref'     => $custom_validation['ref']
+                );
+            }
+        }else {
+            $status = 400;
+            $response = array(
+                'status'  => 'FAILED',
+                'message' => $validator->messages()->first(),
+                'ref'     => 'missing_parameters',
+            );
+        }
+        $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+    }
+
+    /**
      * To get the chats list of the user.
      *
      * @return \Illuminate\Http\Response

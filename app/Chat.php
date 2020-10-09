@@ -45,4 +45,74 @@ class Chat extends Model
     }
     return $validate;
   }
+
+  static function ChatWindowValidation($requestData,$mydetail)
+  {
+    $validate = array(
+      "status"   => true,
+      "message"  => "",
+      "ref"      => "",
+    );
+    $user = User::where(['id' => (int) $requestData['user_id'],"status" => '1', "deleted" => '0'])->first();
+    if(empty($user))
+    {
+      $validate['status']  = false;
+      $validate['message'] = trans('messages.error_user_id_invalid');
+      $validate['ref']     = "error_user_id_invalid";
+      return $validate;
+    }
+    $validate['user'] = $user;
+    $chat = self::where(['id' => (int) $requestData['chat_id'],"status" => '1', "deleted" => '0'])->first();
+    if(empty($chat))
+    {
+      $validate['status']  = false;
+      $validate['message'] = trans('messages.error_chat_id_invalid');
+      $validate['ref']     = "error_chat_id_invalid";
+      return $validate;
+    }
+    $chat_member = ChatMembers::where(['chat_id' => (int) $requestData['chat_id'],"user_id" => (int) $mydetail['id'],"status" => '1', "deleted" => '0'])->first();
+    if(empty($chat_member))
+    {
+      $validate['status']  = false;
+      $validate['message'] = trans('messages.error_chat_member_not_exist');
+      $validate['ref']     = "error_chat_member_not_exist";
+      return $validate;
+    }
+    return $validate;
+  }
+
+  static function ChatMessageValidation($requestData,$mydetail)
+  {
+    $validate = array(
+      "status"   => true,
+      "message"  => "",
+      "ref"      => "",
+    );
+    // $user = User::where(['id' => (int) $requestData['user_id'],"status" => '1', "deleted" => '0'])->first();
+    // if(empty($user))
+    // {
+    //   $validate['status']  = false;
+    //   $validate['message'] = trans('messages.error_user_id_invalid');
+    //   $validate['ref']     = "error_user_id_invalid";
+    //   return $validate;
+    // }
+    // $validate['user'] = $user;
+    $chat = self::where(['id' => (int) $requestData['chat_id'],"status" => '1', "deleted" => '0'])->first();
+    if(empty($chat))
+    {
+      $validate['status']  = false;
+      $validate['message'] = trans('messages.error_chat_id_invalid');
+      $validate['ref']     = "error_chat_id_invalid";
+      return $validate;
+    }
+    // $chat_member = ChatMembers::where(['chat_id' => (int) $requestData['chat_id'],"user_id" => (int) $mydetail['id'],"status" => '1', "deleted" => '0'])->first();
+    // if(empty($chat_member))
+    // {
+    //   $validate['status']  = false;
+    //   $validate['message'] = trans('messages.error_chat_member_not_exist');
+    //   $validate['ref']     = "error_chat_member_not_exist";
+    //   return $validate;
+    // }
+    return $validate;
+  }
 }

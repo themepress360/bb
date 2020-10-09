@@ -104,6 +104,8 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
         Route::get('chat', array('uses' => 'ChatController@getchats'));
         Route::post('addchat', array('uses' => 'ChatController@addchat'));
+        Route::post('chattingwindow', array('uses' => 'ChatController@chattingwindow'));
+        Route::post('sendmessage', array('uses' => 'ChatController@sendmessage'));
         // Route::get('chat', function () {
         //     return view('admin.apps.chat.index');
         // });                  
