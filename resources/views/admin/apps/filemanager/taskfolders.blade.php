@@ -1,8 +1,7 @@
 						<div class="file-content-inner"  style="display:block;" id="task-folders">
-							<div class="d-flex" style="justify-content: space-between;">
+						
 														<h4>Task Folders</h4>
-														<a href="#" class="followers-add" data-toggle="modal" data-target="#create_folder_project"><i class="material-icons">add</i></a>
-							</div>
+														
 														<div class="row row-sm">
 															@for($i=0; $i< sizeof($directories); $i++)
 															<div class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">

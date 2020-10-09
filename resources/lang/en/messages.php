@@ -53,6 +53,8 @@ return [
   "error_empty_task_description_and_attachement" => "Atleast Comment or attachment one field is required",
   'getfolders_add_success' => 'Loading',
   'folder_created_success' => 'Folder Created Successfully',
-  'error_folder_exists' => 'Folder Already Exists'
+  'error_folder_exists' => 'Folder Already Exists',
+  'file_delete_success' => 'File Deleted Successfully',
+  'error_file_not_found' => 'File Not Found'
 
 ];

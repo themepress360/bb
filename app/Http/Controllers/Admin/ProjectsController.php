@@ -179,7 +179,7 @@ public function projectlist(){
 
             if(empty( $is_project_exists)) {
 
-            $folder = Storage::makeDirectory('FileManager/' . ucwords($project_title));
+            $folder = Storage::makeDirectory('FileManager/ProjectFolders/' . ucwords($project_title));
             
             $project_data = array(
                 'project_title' => strtolower($projectData['project_title']),
@@ -284,7 +284,7 @@ public function projectlist(){
                  if (!$validator->fails()) 
                      {
                       
-                      $path = 'FileManager/' . $project_title . '/' ; 
+                      $path = 'FileManager/ProjectFolders' . $project_title . '/' ; 
                       $fileName = $request->file('project_file')->getClientOriginalName();
                       $upload = $request->file('project_file')->storeAs($path, $fileName) ;
 

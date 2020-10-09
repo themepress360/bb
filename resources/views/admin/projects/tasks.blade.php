@@ -550,15 +550,25 @@
 										 <li   id="{{{$employee->id}}}">
                                           
                                              <div class="media">
-                                                @if(!empty($employee->profile_image))
+                                      @if(!empty($employee->profile_image))
+                                                 @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
                                           <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" id="TeamMember">
                                           <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" >
                                           @else
-                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10">
+                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
                                           <span class="symbol-label font-size-h3 font-weight-boldest">
                                           {{ mb_substr($employee['name'], 0, 1) }}
                                           </span>
                                           </div>
+                                          @endif
+                                          @else
+                                            <div class="symbol symbol-sm-35 m-r-10" id="name-character">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                          
                                           @endif
                                           </a>
                                           <div class="media-body media-middle text-nowrap">
@@ -807,7 +817,7 @@ function openTask(task_id) {
         </script>
           
 
-
+<script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>
 
 @endsection
 

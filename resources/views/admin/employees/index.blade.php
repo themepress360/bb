@@ -6,12 +6,12 @@
 		
             <!-- Page Content -->
             <div class="content container-fluid">
-            
+          
                 <!-- Page Header -->
                 <div class="page-header">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="page-title">Employee</h3>
+                            <h3 class="page-title">Employee</h3>  Letters 
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Employee</li>
@@ -66,20 +66,31 @@
                                 <div class="profile-widget">
                                    <div class="d-flex">
                                     <div class="profile-img-card">
-                                       
-                            @if(!empty($employee['profile_image_url']))
+                                      
+                               @if(!empty($employee['profile_image_url']))
+                                @if( $employee['profile_image_url'] != asset('/storage/profile_images/noimage.png'))
+
                                  <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar">
 
                                 <img src="{{{$employee['profile_image_url']}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
-                            @else
-                               <div class="symbol symbol-lg-75 symbol-primary">
+                                    @else
+                                    <div class="symbol symbol-lg-75 " id="name-character">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest" id="add-letter">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                   
+                                             </span>
+                                            </div>
+                                            @endif
+
+                                             @else
+                                         <div class="symbol symbol-lg-75 " id="name-character">
                                              <span class="symbol-label font-size-h3 font-weight-boldest">
                                                 {{ mb_substr($employee['name'], 0, 1) }}
                                                    
                                              </span>
                                             </div>
-
-                            @endif
+                                            @endif
+                       
                            </a>
                                                                         
                                     </div>
@@ -602,7 +613,7 @@
 
         </script>
 
-
+<script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>
 
 
 @endsection

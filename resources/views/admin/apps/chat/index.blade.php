@@ -448,9 +448,9 @@
 										</div>
 									</div>
 									<div id="preview"  style="display:none">
-         <ul id="result" class="list-style">
-         </ul>
-      </div>
+								         <ul id="result" class="list-style">
+								         </ul>
+								      </div>
 								</div>
 							</div>
 						</div>
@@ -787,16 +787,39 @@
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
+						<div class="row ">
+							<div class="col-md-6">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="radio"> Employees
+                                                </label>
+                                            </div>
+                            </div>
+                                   <div class="col-md-6">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="radio"> Clients
+                                                </label>
+                                     </div>
+                                 </div>
+                             </div>
+                                            
 							<div class="modal-body">
-								<div class="input-group m-b-30">
+								<div class="m-b-30 tag-control tag-input scrollbars">
+						               <div class="add_follower d-flex" id="add_followers" style="width: max-content;">
+						                  <input placeholder="Add Follower" type="hidden" name="add_followers">
+						               </div>
+						               
+						            </div>
+								<!--<div class="input-group m-b-30">
 									<input placeholder="Search to start a chat" class="form-control search-input" type="text">
 									<span class="input-group-append">
 										<button class="btn btn-primary">Search</button>
 									</span>
-								</div>
+								</div> -->
 								<div>
 									<h5>Recent Conversations</h5>
-									<ul class="chat-user-list">
+									<ul class="chat-user-list" id="chat-users">
 										<li>
 											<a href="#">
 												<div class="media">
@@ -804,7 +827,7 @@
 														<img src="img/profiles/avatar-16.jpg" alt="">
 													</span>
 												<div class="media-body align-self-center text-nowrap">
-													<div class="user-name">Jeffery Lalor</div>
+													<div class="user-name f-name">Jeffery Lalor</div>
 													<span class="designation">Team Leader</span>
 												</div>
 												<div class="text-nowrap align-self-center">
@@ -1028,9 +1051,37 @@
    
    });
 </script>
+
+
 <script>
-   if(!$('#previews').find('ul:visible').length){
-      $('#preview').hide();
-   }
+   var added_followers = [];
+   $('#chat-users li').on('click', function(){
+   	var follower =  $(this).find("div.f-name").text();
+   	console.log(follower);
+  
+   	var id = $(this).find("input.f-id").val();
+   	if(typeof  added_followers[id] === 'undefined') 
+        	{
+          	added_followers[id] = id;
+          	// console.log(added_followers);
+          	// console.log("-----------------");
+   		$('#add_followers').append('<span id="name" align="center" class="follower-tag">' + follower + '<i class="fa fa-close" id="close" aria-hidden="true"><input class="remove-id" type="hidden" value="'+id+'" id="remove_'+id+'"></i></span>');
+   	}
+   	else
+        	{
+          	toastr['error']( follower + " Already Added" );
+        	}
+   });
+   
+   $(document).on('click', '#close', function(){
+   	$(this).closest('#name').remove();
+   	var id = $(this).find("input.remove-id").val();
+   	const index = added_followers.indexOf(added_followers[id]);
+   	if (index > -1) {
+    			added_followers.splice(index, 1);
+    			// console.log("+++++++++++++");
+    			// console.log(added_followers);
+   	}
+   });
 </script>
 			@endsection

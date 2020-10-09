@@ -36,7 +36,7 @@ return [
 
     'websiteimagesfolder' => env('APP_Website_Image_Folder', 'websitelogo'),
 
-    'filemanagerfolder' => env('APP_File_Manager_Folder', 'FileManager'),
+    'filemanagerfolder' => env('APP_File_Manager_Folder', 'FileManager/ProjectFolders'),
 
     'defaultstorage' => env('APP_Default_Storage', 'app'),
 
