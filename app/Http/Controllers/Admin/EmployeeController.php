@@ -287,6 +287,7 @@ $data['employee'] = User::Select('users.*','departments.prefix', 'departments.na
            $edit_user_data = array(
                         'name'  => trim($requestData['first_name'])." ".trim($requestData['last_name']),
                         'phone_no' => trim($requestData['phone_no']),
+                        'email'    => strtolower($requestData['email']),
                         'address'  => trim($requestData['address']),
                         'state'    => trim($requestData['state']),
                         'country'  => trim($requestData['country']),

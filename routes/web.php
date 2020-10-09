@@ -101,10 +101,21 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('gettaskfolders', array('uses' => 'FilemanagerController@gettaskfolders'));
         Route::post('gettaskfiles', array('uses' => 'FilemanagerController@gettaskfiles'));
         Route::post('createfolder', array('uses' => 'FilemanagerController@createFolder'));
+<<<<<<< HEAD
         Route::post('uploadfiles', array('uses' => 'FilemanagerController@uploadFiles'));
         Route::post('deletefile', array('uses' => 'FilemanagerController@deleteFile'));
               
                         
+=======
+
+        Route::get('chat', array('uses' => 'ChatController@getchats'));
+        Route::post('addchat', array('uses' => 'ChatController@addchat'));
+        Route::post('chattingwindow', array('uses' => 'ChatController@chattingwindow'));
+        Route::post('sendmessage', array('uses' => 'ChatController@sendmessage'));
+        // Route::get('chat', function () {
+        //     return view('admin.apps.chat.index');
+        // });                  
+>>>>>>> ee2f646432611cc8a6104411608faabedd153932
     });
 
     Route::group(
@@ -156,15 +167,6 @@ Route::get('/admin/taskcompletefollowers', function () {
 Route::get('/admin/passwordreset', function () {
         return view('admin.emails.ResetPasswordEmail');
     });
-
-
-
-
-Route::get('/admin/chat', function () {
-        return view('admin.apps.chat.index');
-    });
-
-
 
 Route::get('/admin/voice-call', function () {
         return view('admin.apps.calls.voice-call');
