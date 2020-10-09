@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->enum('type',['admin','client','employee']);
             $table->enum('is_login',['1','0']);
-            $table->string('login_time');
-            $table->string('logout_time');
+            $table->string('login_time')->nullable();
+            $table->string('logout_time')->nullable();
             $table->string('phone_no');
             $table->string('dob');
             $table->string('address');
