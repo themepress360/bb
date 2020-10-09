@@ -12,6 +12,7 @@ use Auth;
 use Redirect;
 use Illuminate\Http\Request;
 use  Session;
+use App\User as User;
 
 class LoginController extends BaseController
 {
@@ -53,6 +54,11 @@ class LoginController extends BaseController
 	        		// redirect them to the secure section or whatever
 	        		// return Redirect::to('secure');
 	        		// for now we'll just echo success (even though echoing in a controller is bad)
+	        		$user_data_update['login_time'] = date('Y-m-d h:i:s');
+	        		$user_data_update['is_login']   = '1';
+	        		$user_data_update['logout_time'] = "";
+	        		$user_login_time = User::where(['id' => $user['id']])->update($user_data_update);
+
 	        		if($user['type'] == "admin")
 	        			return Redirect::to('admin/dashboard');
 	        		elseif($user['type'] == "client")
@@ -78,6 +84,11 @@ class LoginController extends BaseController
 	}
 	public function doLogout(Request $request)
 	{
+		$user = Auth::user();
+		$user_data_update['login_time'] = "";
+		$user_data_update['logout_time'] = date('Y-m-d h:i:s');
+	    $user_data_update['is_login']   = '0';
+	    $user_login_time = User::where(['id' => $user['id']])->update($user_data_update);
 		//$user =  $request->user();
 		//$request->session()->flush();
 		//$request->session()->regenerate();
