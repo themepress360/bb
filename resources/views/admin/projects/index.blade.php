@@ -100,12 +100,26 @@
                           @foreach($employees as $employee)
                         @if($employee->id  == $project->user_id)              
                         <li>
-                  <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"><img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
-                                          <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"></a>
-                        </li>
-                        @endif
-                        @endforeach
-                     </ul>
+                 
+
+                     
+                          @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
+                           <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                          <img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                           <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"></a>
+                         @else
+                               <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                             @endif
+                 
+                                    </li>
+                                    @endif
+                                    @endforeach
+                                 </ul>
                      
                   </div>
                   
@@ -125,9 +139,21 @@
                         @if($employee->id  == $members['user_id'])   
 
                         <li>
-                           <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"><img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                           @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
+                           <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                              <img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                            <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                         </a>
+                       
+                            @else
+                               <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                             @endif
+
                         </li>
                           @endif
                         @endforeach
@@ -297,14 +323,16 @@
                                           <a href="#">
                                              <div class="media">
                                                 @if(!empty($employee->profile_image))
+                                                   @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
                                           <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                                           <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                                           @else
-                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10">
+                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
                                           <span class="symbol-label font-size-h3 font-weight-boldest">
                                           {{ mb_substr($employee['name'], 0, 1) }}
                                           </span>
                                           </div>
+                                          @endif
                                           @endif
                                           </a>
                                           <!--<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span> -->
@@ -356,14 +384,23 @@
                                           
                                              <div class="media">
                                                 @if(!empty($employee->profile_image))
+                                                 @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
                                           <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" id="TeamMember">
                                           <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" >
                                           @else
-                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10">
+                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
                                           <span class="symbol-label font-size-h3 font-weight-boldest">
                                           {{ mb_substr($employee['name'], 0, 1) }}
                                           </span>
                                           </div>
+                                          @endif
+                                          @else
+                                            <div class="symbol symbol-sm-35 m-r-10" id="name-character">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
                                           @endif
                                           </a>
                                           <div class="media-body media-middle text-nowrap">
@@ -658,15 +695,20 @@
      	 var id = $(this).attr('id');
       if(typeof  added_team_leaders[id] === 'undefined') 
       {
+        
+
          var employeeObject = search(id);
          added_team_leaders[employeeObject.id] = employeeObject;
-       //  console.log(added_employees);
+        
+         
          var html = '';
          html +='<a href="#" data-toggle="tooltip" value = "'+id+'"  title="'+employeeObject.name+'"  class="avatar"">'
          html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'  
          $('#team-lead').append(html);
          total_leaders = total_leaders + 1;
          $('#total_leaders').html('+'+total_leaders); 
+
+         
 
       }
       else
@@ -751,4 +793,6 @@ $.ajaxSetup({
             }
 
         </script>
+
+         <script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>
 @endsection

@@ -102,6 +102,12 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('gettaskfiles', array('uses' => 'FilemanagerController@gettaskfiles'));
         Route::post('createfolder', array('uses' => 'FilemanagerController@createFolder'));
 
+        Route::post('uploadfiles', array('uses' => 'FilemanagerController@uploadFiles'));
+        Route::post('deletefile', array('uses' => 'FilemanagerController@deleteFile'));
+              
+                        
+
+
         Route::get('chat', array('uses' => 'ChatController@getchats'));
         Route::post('addchat', array('uses' => 'ChatController@addchat'));
         Route::post('chattingwindow', array('uses' => 'ChatController@chattingwindow'));
@@ -109,6 +115,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         // Route::get('chat', function () {
         //     return view('admin.apps.chat.index');
         // });                  
+
     });
 
     Route::group(

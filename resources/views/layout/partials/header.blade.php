@@ -271,12 +271,21 @@
                                 $profile_image_url = '';
                             ?>
                             @if(!empty($profile_image_url))
+                              @if($profile_image_url != asset('/storage/profile_images/noimage.png'))
                                 <img src="{{$profile_image_url}}" alt="{{{ isset(Auth::user()->name) ? Auth::user()->name : '' }}}">
                             @else
-                              <img src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">
+                              <!--<img src="{{asset('img/profiles/avatar-21.jpg')}}" alt="No Image">-->
+                              <div class="" id="name-character">
+                                             <span class="nav-no-image letter-text">
+                                                {{ mb_substr(Auth::user()->name, 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                            @endif
                              
                             @endif
-                        <span class="status online"></span></span>
+                        <span class="status online"></span>
+                        </span>
                        
                         <span class="text-muted">Hi,<span> 
                             <span class="text-dark-50 font-weight-bolder font-size-base">{{{ isset(Auth::user()->name) ? explode(' ', trim(Auth::user()->name))[0] : '' }}}</span>
@@ -302,3 +311,4 @@
             <!-- /Mobile Menu -->
             
         </div>
+         <script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>

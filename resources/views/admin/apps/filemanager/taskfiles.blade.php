@@ -1,9 +1,7 @@
 <div class="file-content-inner"  style="display:block;" id="all-files-tab">
-	<div class="d-flex" style="justify-content: space-between;">
-														<h4>{{$folder_name}} (Folders & Files)</h4>
-							<a href="#" class="followers-add" data-toggle="modal" data-target="#create_folder_InsideTaskFolder"><i class="material-icons">add</i></a>
-							</div>
-													<!--	<div class="row row-sm">
+	
+														<h4>{{$folder_name}} (Files)</h4>
+											<!--	<div class="row row-sm">
 															@for($i=0; $i< sizeof($directories); $i++)
 															<div class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
 				

@@ -35,18 +35,30 @@ class FilemanagerController extends CommonController
     public function index()
     {
          
-         $path = 'public/FileManager/';
+         $filemanager_path = 'public/FileManager';
+
+         $projectFolders_path = 'public/FileManager/ProjectFolders/';
+
+         $myFolder_path = 'public/FileManager/MyFolders/';
+
+         $myFolders = Storage::directories($myFolder_path);
+
+       // dd($myFolders);
 
          $projects = Projects::where('deleted', '0')->get();
          $tasks = Tasks::where('deleted','0')->get();
-         $directories = Storage::directories($path);
-        // dd($directories);
-         $files = Storage::files($path);
+        
+         $directories = Storage::directories($projectFolders_path);
+        
+        //dd($directories);
+        
+         $files = Storage::files($filemanager_path);
+        
          //$task_folders = Storage::directories('public/FileManager/aws fargate deploymenet');
          
-         //dd($task_folders);
+        // dd($files);
 
-         return view('admin.apps.filemanager.index', compact('projects','directories','files','tasks','path'));
+         return view('admin.apps.filemanager.index', compact('projects','directories','files','tasks','projectFolders_path','myFolders','myFolder_path'));
     }
 
     /**
@@ -58,15 +70,17 @@ class FilemanagerController extends CommonController
 
     {
         $folder = $request->all();
-        //dd($folder['folder_name']);
-        $directories = Storage::directories('public/FileManager/'. strtolower($folder['folder_name']));
-        
-        $path = "public/FileManager/". strtolower(rtrim($folder['folder_name'])) . "/";
+       // dd($folder['folder_name']);
+        $directories = Storage::directories('public/FileManager/ProjectFolders/'. strtolower($folder['folder_name']));
+      // $directories = Storage::directories('public/FileManager/ProjectFolders/aws fargate deploymenet');
+        //dd($directories);
+       
+        $path = "public/FileManager/ProjectFolders/". strtolower(rtrim($folder['folder_name'])) . "/";
         //dd($path);
 
         $directories = str_replace( $path , "" , $directories);
         
-         $files = Storage::files('public/FileManager/'.strtolower($folder['folder_name']));
+         $files = Storage::files('public/FileManager/ProjectFolders/'.strtolower($folder['folder_name']));
 
         $data['gettaskfoldershtml'] = view('admin.apps.filemanager.taskfolders', compact('directories','files','path'))->render();
         $status   = 200;
@@ -160,7 +174,7 @@ class FilemanagerController extends CommonController
 
             $folder_path = $data['path'] . $data['folder_name'];
 
-            //   dd($folder_path);
+               dd($folder_path);
 
                if(!Storage::exists($folder_path)) {
 
@@ -211,9 +225,34 @@ class FilemanagerController extends CommonController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function uploadFiles(Request $request)
     {
-        //
+        
+         $rules = [
+
+                 'filenames' => 'required',
+                'filenames.*' => 'mimes:doc,pdf,docx,zip'
+        ];
+
+        $validator = Validator::make($request->all(),$rules);
+
+        if (!$validator->fails()) 
+        {
+
+
+        if ($request->hasfile('files')) {
+            foreach ($request->file('files') as $file) {
+                $name = $file->getClientOriginalName();
+                $path = 'public/FileManager';
+                $file->move(public_path() . '/storage/FileManager', $name);
+                $data[] = $name;
+            }
+            return back()->with('Success!','Data Added!');
+        }      
+
+    }
+     
+
     }
 
     /**
@@ -222,9 +261,38 @@ class FilemanagerController extends CommonController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function deleteFile(Request $request)
     {
-        //
+        $file_name = $request->all();
+        
+        $file_path = "public/FileManager/" . $file_name['file_name'];
+       // dd($file_path);
+
+                if(Storage::exists($file_path)){
+
+               $deleted =  Storage::delete($file_path);
+
+               if($delete){
+
+                       $status   = 200;
+                       $response = array(
+                       'status'  => 'SUCCESS',
+                       'message' => trans('messages.file_delete_success'),
+                       'ref'     => 'file_delete_success',
+                       );
+               }
+            
+        }else{
+
+            $status = 400;
+                    $response = array(
+                        'status'  => 'FAILED',
+                        'message' => trans('messages.error_file_not_found'),
+                        'ref'     => 'error_file_not_found'
+                    );
+
+        }
+
     }
 
     /**

@@ -208,12 +208,30 @@
          <div class="col-md-6">
             <div class="project-members task-followers">
                <span class="followers-title">Followers</span>
-               @forelse ($project['task']['followers'] as $follower)
+               @foreach ($project['task']['followers'] as $follower)
+                 
+               @if(!empty($follower['profile_image_url']))
+                @if( $follower['profile_image_url'] != asset('/storage/profile_images/noimage.png'))
                <a class="avatar" href="#" data-toggle="tooltip" title="{{ucwords($follower['name'])}}">
                <img alt="{{ucwords($follower['name'])}}" src="{{$follower['profile_image_url']}}">
                </a>
-               @empty
-               @endforelse
+                   @else
+         <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character" data-toggle="tooltip" title="{{ucwords($follower['name'])}}">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest">
+                                          {{ mb_substr($follower['name'], 0, 1) }}
+                                          </span>
+                                          </div>
+                                          @endif
+                                          @else
+                                            <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{ucwords($follower['name'])}}">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($follower['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                          @endif          
+               
+               @endforeach
                <a href="#" class="followers-add" data-toggle="modal" data-target="#task_followers"><i class="material-icons">add</i></a>
             </div>
          </div>
@@ -240,9 +258,7 @@
                <div class="add_follower d-flex" id="add_followers" style="width: max-content;">
                   <input placeholder="Add Follower" type="hidden" name="add_followers">
                </div>
-               <!--<span class="input-group-append">
-                  <button class="btn btn-primary">Search</button>
-                  </span> -->
+               
             </div>
             <div>
                <ul class="chat-user-list" id="followers">
@@ -321,12 +337,14 @@
    var added_followers = [];
    $('#followers li').on('click', function(){
    	var follower =  $(this).find("div.f-name").text();
+      
    	var id = $(this).find("input.f-id").val();
    	if(typeof  added_followers[id] === 'undefined') 
         	{
           	added_followers[id] = id;
           	// console.log(added_followers);
-          	// console.log("-----------------");
+          	
+
    		$('#add_followers').append('<span id="name" align="center" class="follower-tag">' + follower + '<i class="fa fa-close" id="close" aria-hidden="true"><input class="remove-id" type="hidden" value="'+id+'" id="remove_'+id+'"></i></span>');
    	}
    	else
@@ -918,3 +936,4 @@
       $('#preview').hide();
    }
 </script>
+<script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>
