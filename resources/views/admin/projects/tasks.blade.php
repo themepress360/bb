@@ -100,7 +100,7 @@
 						@if($task->added_by == $employee->id)
 					<td class="task-list-data">
 							  @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
-						<a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar">
+						<a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
 						<img src="{{$employee->profile_image}}">
 					</a>
 								@else
