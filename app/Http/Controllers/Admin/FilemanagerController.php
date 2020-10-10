@@ -174,7 +174,7 @@ class FilemanagerController extends CommonController
 
             $folder_path = $data['path'] . $data['folder_name'];
 
-               dd($folder_path);
+              // dd($folder_path);
 
                if(!Storage::exists($folder_path)) {
 
