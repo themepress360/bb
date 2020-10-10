@@ -62,11 +62,11 @@ class ChatController extends CommonController
         /* To get all employee which are active and not deleted end */
 
         /* To get the chat list Start */
-        $chats  = ChatMessages::select('chat_id','sender_user_id','receiver_user_id')->distinct('chatmessages.chat_id')->where(function ($query) use($mydetail) {
+        $chats  = ChatMessages::select('id','chat_id','sender_user_id','receiver_user_id')->where(function ($query) use($mydetail) {
         $query->where('receiver_user_id', (int) $mydetail['id'])
         ->where('deleted', '0');})->orwhere(function ($query) use($mydetail){
         $query->where('sender_user_id', (int) $mydetail['id'])
-        ->where('deleted', '0');})->get()->toArray();
+        ->where('deleted', '0');})->groupBy('chat_id')->get()->toArray();
         //$chats = ChatMessages::select('chat_id','sender_user_id','receiver_user_id')->distinct('chat_id')->where(['receiver_user_id' => (int) $mydetail['id'], "deleted" => '0'])->orwhere(['sender_user_id' => (int) $mydetail['id'], "deleted" => '0'])->get()->toArray();
 
         if(!empty($chats))
