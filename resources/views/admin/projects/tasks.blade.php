@@ -100,7 +100,9 @@
 						@if($task->added_by == $employee->id)
 					<td class="task-list-data">
 							  @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
-						<img src="{{$employee->profile_image}}"></h2>
+						<a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar">
+						<img src="{{$employee->profile_image}}">
+					</a>
 								@else
                                <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" style="display: inline-block;">
                                              <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
@@ -132,7 +134,8 @@
 						@if($task->assign_to == $employee->id)
 					<td class="task-list-data">
 							  @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
-						<img src="{{$employee->profile_image}}"></h2>
+						<a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar">
+						<img src="{{$employee->profile_image}}"></a>
 								@else
                                <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" style="display: inline-block;">
                                              <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
