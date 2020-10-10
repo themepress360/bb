@@ -328,7 +328,8 @@
    	//console.log('Clicked 123')
      $("#task_window").removeClass("left-task-window");
      $("#main").removeClass("all-task-list");
-    // $("#task_window").addClass("closeTask");
+     $(".task-window").removeAttr("style","width:80%");
+     $(".task-main-wrapper").removeAttr("style","width:75%");
      
    }	
    

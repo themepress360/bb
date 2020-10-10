@@ -64,14 +64,99 @@
 									@foreach($projects as $project)	
 									
 				<a href="#" class="dropdown-btn" style="display:block;" value="{{$project->id}}"><span  class="span-rotate">{{ucwords($project->project_title)}} <i id="arrow" class="fa fa fa-chevron-down rotate m-l-10"></i></span> </a>
-									 
+									
 
 									  <div class="dropdown-container">
 												<div class="task-wrapper" >
 													<div class="task-list-container">
 														<div class="task-list-body">
-      		     											 <ul id="task-list">
-      		     											 		
+      		     											
+      		     											<table style="width:100%">
+      		     												<thead lass="d-flex task-list-head">
+			<td></td>
+			<th class="task-list-heading">Owner</th>
+		    <th class="task-list-heading">Status</th>	
+		    <th class="task-list-heading">Due Date</th>
+		    <th class="task-list-heading">Priority</th>
+		    <th class="task-list-heading">Assigned To</th>
+			</thead>
+			<tbody>
+				@foreach($tasks as $index => $task)								 
+						@if($task->project_id == $project->id)
+				<tr id="task-list" style="background-color:#fff" value="{{$task->id}}" onClick="openTask('{{$task->id}}')">
+					
+					<td class="task">
+						<div class="task-container">
+						   <span class="task-action-btn task-check">
+							<span class="action-circle large complete-btn" title="Mark Complete">
+							  <i class="material-icons">check</i>
+									</span>
+							</span>
+					<span class="task-label" contenteditable="true">{{$task->task_title}} {{$task->added_by}} </span>
+									</div></td>
+					
+						
+					@foreach($employees as $employee)
+						@if($task->added_by == $employee->id)
+					<td class="task-list-data">
+							  @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
+						<img src="{{$employee->profile_image}}"></h2>
+								@else
+                               <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" style="display: inline-block;">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                            @endif
+                                           
+                         </td>
+					@endif
+					@endforeach
+					
+				
+					@foreach($task_status as $task_board_name)
+					 @if($task->status == $task_board_name->task_board_name)
+
+					
+					<td class="task-list-data" style="background-color:{{$task_board_name->task_board_color}};color:#fff" >{{ucwords($task->status)}}</td>
+
+					@endif
+					
+					
+					@endforeach
+					
+					<td class="task-list-data">{{date("M d, Y",strtotime($task->due_date))}}</td>
+					<td class="task-list-data data-cell" id="priority" >{{strtoupper($task->priority)}}</td>
+					@foreach($employees as $employee)
+						@if($task->assign_to == $employee->id)
+					<td class="task-list-data">
+							  @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
+						<img src="{{$employee->profile_image}}"></h2>
+								@else
+                               <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" style="display: inline-block;">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                            @endif
+
+                         </td>
+					@endif
+					@endforeach
+				</tr>
+				@endif
+		@endforeach
+			</tbody>
+		</table>
+		
+		
+
+
+
+      		     										<!--	 <ul id="task-list">
+      		     											 
       		     											 	 @foreach($tasks as $index => $task)								 
 																@if($task->project_id == $project->id)
 														<li class="task"  value="{{$task->id}}" onClick="openTask('{{$task->id}}')">
@@ -82,8 +167,7 @@
 																			</span>
 																		</span>
 										<span class="task-label" contenteditable="true">{{$task->task_title}} </span>
-						
-																		<span class="task-action-btn task-btn-right">
+						 																		<span class="task-action-btn task-btn-right">
 																			
 																			<span class="action-circle large" title="Assign">
 																				<i class="material-icons">person_add</i>
@@ -91,13 +175,13 @@
 																			<span class="action-circle large delete-btn" title="Delete Task">
 																				<i class="material-icons">delete</i>
 																			</span>
-																		</span>
+																		</span> 
 																	</div>
 																</li>
 																  @endif
 																   @endforeach
 																
-															</ul>
+															</ul> -->
 														</div>
 													</div>
 												</div>
@@ -685,14 +769,6 @@ for (i = 0; i < dropdown.length; i++) {
 
 </script>
 
-
-
-
-
-
-
-
-
 <script>
 function openTask(task_id) {
 	
@@ -724,6 +800,8 @@ function openTask(task_id) {
             	$("#task_window").append(response.data.gettaskwindowhtml);
             	$("#task_window").addClass("left-task-window");
             	$("#main").addClass("all-task-list");
+            	$(".task-window").attr("style","width:80%");
+            	$(".task-main-wrapper").attr("style","width:75%");
   				
             }
             else
@@ -819,6 +897,29 @@ function openTask(task_id) {
 
 <script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>
 
+<script>
+	
+	$("td.data-cell").each(function () {
+    // 'this' is now the raw td DOM element
+   // var txt = $(this).html();
+
+   // console.log(txt);
+
+     if ($.trim($(this).html()) == 'HIGH') {
+                    $(this).addClass('priority-danger');
+                  }
+
+                   if ($.trim($(this).html()) == 'MEDIUM') {
+                    $(this).addClass('priority-medium');
+                  }
+                   if ($.trim($(this).html()) == 'LOW') {
+                    $(this).addClass('priority-low');
+                  }
+
+
+});
+
+</script>
 @endsection
 
 
