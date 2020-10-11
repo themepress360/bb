@@ -596,8 +596,11 @@
    var socket = io('http://'+document.domain+':2020');
    //var socket = io('http://107.22.52.19:2020');
    var my_user_id = '{{isset(Auth::user()->id) ? Auth::user()->id : "0"}}';
-   //var chat_ids = {{$chat_ids}};
-   var chat_ids = JSON.parse('{{$chat_ids}}');
+   <?php if(!empty($chat_ids)) { ?>
+      var chat_ids = JSON.parse('{{$chat_ids}}');
+   <?php } else { ?>
+      var chat_ids = [];
+   <?php }?>
    //var chat_ids = "";
    function setUserid(user_id,chat_ids) {
       if (user_id && user_id != "0") {

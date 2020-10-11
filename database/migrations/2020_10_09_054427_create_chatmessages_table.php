@@ -19,7 +19,7 @@ class CreateChatmessagesTable extends Migration
             $table->bigInteger('sender_user_id');
             $table->bigInteger('receiver_user_id');
             $table->string('message');
-            $table->enum('is_attachemnt',['1','0']);
+            $table->enum('is_attachment',['1','0']);
             $table->enum('deleted',['1','0']);
             $table->enum('status',['1','0']);
             $table->timestamps();

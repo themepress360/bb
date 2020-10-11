@@ -41,276 +41,71 @@
       <div class="chat-wrap-inner">
          <div class="chat-box">
             <div class="chats" id="chats">
-               <div class="chat chat-right">
-                  <div class="chat-avatar">
-                     <a href="profile" class="avatar">
-                     <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-                     </a>
-                  </div>
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p> Hello. What can I do for you?</p>
-                           <span class="chat-time">8:30 am</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="chat-line">
-                  <span class="chat-date">October 8th, 2018</span>
-               </div>
-               <div class="chat chat-left">
-                  <div class="chat-avatar">
-                     <a href="profile" class="avatar">
-                     <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-                     </a>
-                  </div>
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>I'm just looking around.</p>
-                           <p>Will you tell me something about yourself? </p>
-                           <span class="chat-time">8:35 am</span>
-                        </div>
-                     </div>
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>Are you there? That time!</p>
-                           <span class="chat-time">8:40 am</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="chat chat-right">
-                  <div class="chat-avatar">
-                     <a href="profile" class="avatar">
-                     <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-                     </a>
-                  </div>
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>Where?</p>
-                           <span class="chat-time">8:35 am</span>
-                        </div>
-                     </div>
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>OK, my name is Limingqiang. I like singing, playing basketballand so on.</p>
-                           <span class="chat-time">8:42 am</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="chat chat-left">
-                  <div class="chat-avatar">
-                     <a href="profile" class="avatar">
-                     <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-                     </a>
-                  </div>
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>You wait for notice.</p>
-                           <span class="chat-time">8:30 am</span>
-                        </div>
-                     </div>
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>Consectetuorem ipsum dolor sit?</p>
-                           <span class="chat-time">8:50 am</span>
-                        </div>
-                     </div>
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>OK?</p>
-                           <span class="chat-time">8:55 am</span>
-                        </div>
-                     </div>
-                     <div class="chat-bubble">
-                        <div class="chat-content img-content">
-                           <div class="chat-img-group clearfix">
-                              <p>Uploaded 3 Images</p>
-                              <a class="chat-img-attach" href="#">
-                                 <img width="182" height="137" alt="" src="img/placeholder.jpg">
-                                 <div class="chat-placeholder">
-                                    <div class="chat-img-name">placeholder.jpg</div>
-                                    <div class="chat-file-desc">842 KB</div>
+               @if(!empty($chat_messages))
+                  @foreach($chat_messages as $key => $chat_message)
+                     @if(!empty($chat_message['message']) || $chat_message['is_attachment'] == 1)   
+                        @if($chat_message['sender_user_id'] == Auth::user()->id)
+                           <div class="chat chat-left">
+                              <div class="chat-avatar">
+                                 <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$chat_message['sender_user_id'] : '#') }}" class="avatar">
+                                    @if(!empty($chat_message['sender_profile_image_url']))
+                                       <img alt="{{$chat_message['sender_name']}}" src="{{$chat_message['sender_profile_image_url']}}">
+                                    @else
+                                       <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
+                                    @endif
+                                 </a>
+                              </div>
+                              <div class="chat-body">
+                                 <div class="chat-bubble">
+                                    <div class="chat-content">
+                                       @if(!empty($chat_message['message']))
+                                          <p>{{$chat_message['message']}}</p>
+                                       @endif
+                                       @if(!empty($chat_message['attachments']))
+                                          <ul class="attach-list">
+                                             @foreach($chat_message['attachments'] as $attachment_key => $attachment_value)
+                                                <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                             @endforeach
+                                          </ul>
+                                       @endif
+                                       <span class="chat-time">{{ !empty($chat_message['created_at']) ? date("M d, Y h:i:s A",strtotime($chat_message['created_at'])) : '-' }}</span>
+                                    </div>
                                  </div>
-                              </a>
-                              <a class="chat-img-attach" href="#">
-                                 <img width="182" height="137" alt="" src="img/placeholder.jpg">
-                                 <div class="chat-placeholder">
-                                    <div class="chat-img-name">842 KB</div>
-                                 </div>
-                              </a>
-                              <a class="chat-img-attach" href="#">
-                                 <img width="182" height="137" alt="" src="img/placeholder.jpg">
-                                 <div class="chat-placeholder">
-                                    <div class="chat-img-name">placeholder.jpg</div>
-                                    <div class="chat-file-desc">842 KB</div>
-                                 </div>
-                              </a>
+                              </div>
                            </div>
-                           <span class="chat-time">9:00 am</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="chat chat-right">
-                  <div class="chat-avatar">
-                     <a href="profile" class="avatar">
-                     <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-                     </a>
-                  </div>
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>OK!</p>
-                           <span class="chat-time">9:00 am</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="chat chat-left">
-                  <div class="chat-avatar">
-                     <a href="profile" class="avatar">
-                     <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-                     </a>
-                  </div>
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>Uploaded 3 files</p>
-                           <ul class="attach-list">
-                              <li><i class="fa fa-file"></i> <a href="#">example.avi</a></li>
-                              <li><i class="fa fa-file"></i> <a href="#">activity.psd</a></li>
-                              <li><i class="fa fa-file"></i> <a href="#">example.psd</a></li>
-                           </ul>
-                        </div>
-                     </div>
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>Consectetuorem ipsum dolor sit?</p>
-                           <span class="chat-time">8:50 am</span>
-                        </div>
-                        <div class="chat-action-btns">
-                           <ul>
-                              <li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-                              <li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-                              <li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-                           </ul>
-                        </div>
-                     </div>
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>OK?</p>
-                           <span class="chat-time">8:55 am</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="chat chat-right">
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content img-content">
-                           <div class="chat-img-group clearfix">
-                              <p>Uploaded 6 Images</p>
-                              <a class="chat-img-attach" href="#">
-                                 <img width="182" height="137" alt="" src="img/placeholder.jpg">
-                                 <div class="chat-placeholder">
-                                    <div class="chat-img-name">placeholder.jpg</div>
-                                    <div class="chat-file-desc">842 KB</div>
+                        @else
+                           <div class="chat chat-right">
+                              <div class="chat-avatar">
+                                 <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$chat_message['sender_user_id'] : '#') }}" class="avatar">
+                                    @if(!empty($chat_message['sender_profile_image_url']))
+                                       <img alt="{{$chat_message['sender_name']}}" src="{{$chat_message['sender_profile_image_url']}}">
+                                    @else
+                                       <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
+                                    @endif
+                                 </a>
+                              </div>
+                              <div class="chat-body">
+                                 <div class="chat-bubble">
+                                    <div class="chat-content">
+                                       @if(!empty($chat_message['message']))
+                                          <p>{{$chat_message['message']}}</p>
+                                       @endif
+                                       @if(!empty($chat_message['attachments']))
+                                          <ul class="attach-list">
+                                             @foreach($chat_message['attachments'] as $attachment_key => $attachment_value)
+                                                <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                             @endforeach
+                                          </ul>
+                                       @endif
+                                       <span class="chat-time">{{ !empty($chat_message['created_at']) ? date("M d, Y @ h:i:s A",strtotime($chat_message['created_at'])) : '-' }}</span>
+                                    </div>
                                  </div>
-                              </a>
-                              <a class="chat-img-attach" href="#">
-                                 <img width="182" height="137" alt="" src="img/placeholder.jpg">
-                                 <div class="chat-placeholder">
-                                    <div class="chat-img-name">842 KB</div>
-                                 </div>
-                              </a>
-                              <a class="chat-img-attach" href="#">
-                                 <img width="182" height="137" alt="" src="img/placeholder.jpg">
-                                 <div class="chat-placeholder">
-                                    <div class="chat-img-name">placeholder.jpg</div>
-                                    <div class="chat-file-desc">842 KB</div>
-                                 </div>
-                              </a>
-                              <a class="chat-img-attach" href="#">
-                                 <img width="182" height="137" alt="" src="img/placeholder.jpg">
-                                 <div class="chat-placeholder">
-                                    <div class="chat-img-name">placeholder.jpg</div>
-                                    <div class="chat-file-desc">842 KB</div>
-                                 </div>
-                              </a>
-                              <a class="chat-img-attach" href="#">
-                                 <img width="182" height="137" alt="" src="img/placeholder.jpg">
-                                 <div class="chat-placeholder">
-                                    <div class="chat-img-name">placeholder.jpg</div>
-                                    <div class="chat-file-desc">842 KB</div>
-                                 </div>
-                              </a>
-                              <a class="chat-img-attach" href="#">
-                                 <img width="182" height="137" alt="" src="img/placeholder.jpg">
-                                 <div class="chat-placeholder">
-                                    <div class="chat-img-name">placeholder.jpg</div>
-                                    <div class="chat-file-desc">842 KB</div>
-                                 </div>
-                              </a>
+                              </div>
                            </div>
-                           <span class="chat-time">9:00 am</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="chat chat-left">
-                  <div class="chat-avatar">
-                     <a href="profile" class="avatar">
-                     <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-                     </a>
-                  </div>
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <ul class="attach-list">
-                              <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">Document_2016.pdf</a></li>
-                           </ul>
-                           <span class="chat-time">9:00 am</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="chat chat-right">
-                  <div class="chat-avatar">
-                     <a href="profile" class="avatar">
-                     <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-                     </a>
-                  </div>
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <ul class="attach-list">
-                              <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">Document_2016.pdf</a></li>
-                           </ul>
-                           <span class="chat-time">9:00 am</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="chat chat-left">
-                  <div class="chat-avatar">
-                     <a href="profile" class="avatar">
-                     <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-                     </a>
-                  </div>
-                  <div class="chat-body">
-                     <div class="chat-bubble">
-                        <div class="chat-content">
-                           <p>Typing ...</p>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                        @endif
+                     @endif
+                  @endforeach
+               @endif
             </div>
          </div>
       </div>
@@ -326,7 +121,7 @@
          <img type="file" src="{{asset('img/attachment.png')}}" alt=""></span></a>
          <div class="message-area">
             <div class="input-group">
-               <textarea class="form-control" placeholder="Type message..." id="message"></textarea>
+               <textarea class="form-control" placeholder="Type message..." id="message" name="message"></textarea>
                <span class="input-group-append">
                <button onclick="SendMessage();" class="btn btn-primary" type="button"><i class="fa fa-send"></i></button>
                </span>
@@ -345,7 +140,8 @@
    var other_user = {
       profile_image_url : "{{$user['profile_image_url']}}",
       name : "{{$user['name']}}",
-      profile_url : "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$user['id'] : '#') }}"
+      profile_url : "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$user['id'] : '#') }}",
+      user_id : "{{$user['id']}}"
    };
    var my_user = {
       profile_image_url : "{{$mydetail['profile_image_url']}}",
@@ -392,8 +188,6 @@
                }
             }
          }
-         console.log(attachment_array);
-
          $.ajax({
             type: "POST",
             url: url,
@@ -415,10 +209,43 @@
                   $("#attachment").val('');
                   $("#result").html('');
                   $('#result').hide();
-                  if(response.data.is_attachemnt == '0')
+                  if(response.data.is_attachment == '0')
+                  {
                      $('#chats').append('<div class="chat chat-left"><div class="chat-avatar"><a href="'+my_user.profile_url+'" class="avatar"><img alt="'+my_user.name+'" src="'+my_user.profile_image_url+'"></a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content"><p>'+message+'</p><span class="chat-time">Just Now</span></div></div></div></div>');
-                  else if(response.data.is_attachemnt == '1')
-                     console.log("here");
+                  }
+                  else if(response.data.is_attachment == '1')
+                  {
+                     if(response.data.message == "")
+                     {
+                        var html = '<div class="chat chat-left"><div class="chat-avatar"><a href="'+my_user.profile_url+'" class="avatar"><img alt="'+my_user.name+'" src="'+my_user.profile_image_url+'"></a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content">';
+                        html += '<ul class="attach-list">';
+                        for(var i=0;i<response.data.attachments.length;i++)
+                        {
+                           html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+response.data.attachments[i].attachement_name+'</a></li>';
+                        }
+                        html += '</ul>';
+
+                        html += '<span class="chat-time">Just Now</span></div></div></div></div>';                   
+                        $('#chats').append(html);
+                     }
+                     else
+                     {
+                        var html = '<div class="chat chat-left"><div class="chat-avatar"><a href="'+my_user.profile_url+'" class="avatar"><img alt="'+my_user.name+'" src="'+my_user.profile_image_url+'"></a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content">';
+                        
+                        html += '<p>'+message+'</p>';
+                        html += '<ul class="attach-list">';
+                        for(var i=0;i<response.data.attachments.length;i++)
+                        {
+                           html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+response.data.attachments[i].attachement_name+'</a></li>';
+                        }
+                        html += '</ul>';
+
+                        html += '<span class="chat-time">Just Now</span></div></div></div></div>';                   
+                        $('#chats').append(html);
+                     }
+                  }
+                  var emit_data = {"user_id" : other_user.user_id,"message_data" : response.data};
+                  socket.emit('single_message_emit',emit_data);
                }
                else
                {

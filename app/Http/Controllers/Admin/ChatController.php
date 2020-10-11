@@ -83,6 +83,7 @@ class ChatController extends CommonController
                     $user_id = $chat_list['sender_user_id'];
                 }
                 $user = User::where(['deleted' => '0', "id" => (int) $user_id ])->first();
+
                 if(!empty($user['profile_image']))
                     $profile_image_url = User::image_url(config('app.profileimagesfolder'),$user['profile_image']);
                 $chat_lists[] = array(
@@ -128,7 +129,7 @@ class ChatController extends CommonController
                     $create_chat_member =  ChatMembers::create(['chat_id' => (int) $create_chat['id'],'user_id' => (int) $requestData['start_conversation_user_id'],'status' => '1' , 'deleted' => '0']);      
                     $create_chat_member =  ChatMembers::create(['chat_id' => (int) $create_chat['id'],'user_id' => (int) $mydetail['id'],'status' => '1' , 'deleted' => '0']);
 
-                    $create_chat_message =  ChatMessages::create(['chat_id' => (int) $create_chat['id'],'sender_user_id' => (int) $mydetail['id'],'receiver_user_id' => (int) $requestData['start_conversation_user_id'],'message' => '','is_attachemnt' => '0','status' => '1' , 'deleted' => '0']);
+                    $create_chat_message =  ChatMessages::create(['chat_id' => (int) $create_chat['id'],'sender_user_id' => (int) $mydetail['id'],'receiver_user_id' => (int) $requestData['start_conversation_user_id'],'message' => '','is_attachment' => '0','status' => '1' , 'deleted' => '0']);
                     $data['user'] = $custom_validation['user'];
                     if(!empty($custom_validation['user']['profile_image']))
                         $data['user']['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$custom_validation['user']['profile_image']);
@@ -212,6 +213,9 @@ class ChatController extends CommonController
                     $window_data['mydetail']['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$window_data['mydetail']['profile_image']);
                 else
                     $window_data['mydetail']['profile_image_url'] = "";
+
+                $window_data['chat_messages'] = ChatMessages::getMessages($window_data['chat_id']);                
+
                 $data['getchatwindowhtml'] = view('admin.apps.chat.chattingwindow',$window_data)->render();
                 $status   = 200;
                 $response = array(
@@ -284,9 +288,9 @@ class ChatController extends CommonController
                 $chat_message = array(
                     'chat_id'          => (int) $requestData['chat_id'],
                     'sender_user_id'   => (int) $mydetail['id'],
-                    'receiver_user_id' => (int) $receive_user['id'],
+                    'receiver_user_id' => (int) $receive_user['user_id'],
                     'message'          => $message,
-                    'is_attachemnt'    => $is_attachment,
+                    'is_attachment'    => $is_attachment,
                     'status'           => '1',
                     'deleted'          => '0'
                 );

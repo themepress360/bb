@@ -32,6 +32,19 @@ $io->on('connection', function($socket){
         $socket->addedUser = true;
     });
 
+    $socket->on('single_message_emit', function ($data)use($socket){
+        if(!empty($GLOBALS['usernames'][$data['user_id']]) && !empty($GLOBALS['usernames'][$data['user_id']]['socket_id']))
+        {
+            $socket->broadcast->to($GLOBALS['usernames'][$data['user_id']]['socket_id'])->emit("single_message_emit",$data);
+            var_dump("emit sent ".$data['user_id']);
+        }
+        else
+        {
+            var_dump("not in array");
+            var_dump($GLOBALS['usernames'][$data['user_id']]);
+        }
+    });
+
     $socket->on('Conflict_Approve_Popup', function ($data)use($socket){
         $data = json_decode($data,true);
         var_dump($data);
