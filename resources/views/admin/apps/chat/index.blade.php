@@ -53,7 +53,11 @@
                      <li class="" onclick="chatting_window('{{$chat_id}}','{{$user_id}}')" id="chat_{{$chat_id}}">
                         <a href="" onclick="return false;">
                         <span class="chat-avatar-sm user-img">
-                        <img class="rounded-circle" alt="{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}" src="{{!empty($chat_list['profile_image_url']) ? $chat_list['profile_image_url'] : '-'}}"><span class="status online"></span>
+                        @if(!empty($chat_list['profile_image_url']))
+                           <img class="rounded-circle" alt="{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}" src="{{!empty($chat_list['profile_image_url']) ? $chat_list['profile_image_url'] : '-'}}"><span class="status online"></span>
+                        @else
+                           <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-09.jpg')}}"><span class="status offline"></span>
+                        @endif
                         </span> 
                         <span class="chat-user">{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}</span> <span class="badge badge-pill bg-danger">1</span>
                         </a>

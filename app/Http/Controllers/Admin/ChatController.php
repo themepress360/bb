@@ -19,6 +19,7 @@ use Storage;
 use App\Chat as Chat;
 use App\ChatMembers as ChatMembers;
 use App\ChatMessages as ChatMessages;
+use App\ChatFileUploads as ChatFileUploads;
 use DB;
 
 class ChatController extends CommonController
@@ -255,25 +256,36 @@ class ChatController extends CommonController
     */
     public function sendmessage(Request $request)
     {
+        $requestData =  $request->all();
         $rules = [
-            'chat_id'   => 'required',
-            'message'   => 'required'
+            'chat_id'   => 'required'
         ];
         $validator = Validator::make($request->all(),$rules);
         if (!$validator->fails()) 
         {
-            $requestData =  $request->all();
+            
             $mydetail = $request->user(); 
             $custom_validation = Chat::ChatMessageValidation($requestData,$mydetail);
             if($custom_validation['status'])
             {
                 $is_attachment = '0';
+                if(!empty($requestData['attachment_array']))
+                {
+                    $is_attachment = '1';
+                }
+
+                $message = "";
+                if(!empty($requestData['message']))
+                {
+                    $message = $requestData['message'];
+                }
+
                 $receive_user = ChatMembers::where('user_id', '!=' , $mydetail['id'])->where(['chat_id' => (int) $requestData['chat_id'],"status" => '1', "deleted" => '0'])->first();
                 $chat_message = array(
                     'chat_id'          => (int) $requestData['chat_id'],
                     'sender_user_id'   => (int) $mydetail['id'],
                     'receiver_user_id' => (int) $receive_user['id'],
-                    'message'          => $requestData['message'],
+                    'message'          => $message,
                     'is_attachemnt'    => $is_attachment,
                     'status'           => '1',
                     'deleted'          => '0'
@@ -281,12 +293,33 @@ class ChatController extends CommonController
                 $message_create =  ChatMessages::create($chat_message);
                 if($message_create)
                 {
+                    $message_create['attachments'] = [];
+                    if(!empty($requestData['attachment_array']))
+                    {
+                        $chat_file_upload_data = array(
+                            'chat_message_id' => (int) $message_create['id'], 
+                            'chat_id'         => (int) $chat_message['chat_id'],
+                            'status'          =>  '1',
+                            'deleted'         => '0'
+                        );
+                        foreach ($requestData['attachment_array'] as $key => $file) {
+                            $filename = ChatFileUploads::uploadFile(config('app.folder').'/'.config('app.chatfilesfolder'),$file,$chat_message);
+                            $chat_file_upload_data['attachment_name'] = $filename;
+                            ChatFileUploads::create($chat_file_upload_data);
+                            $attachments[] = array(
+                                "attachement_name" => $filename,
+                                "attachement_url" => ChatFileUploads::file_url(config('app.chatfilesfolder'),$filename),
+                            );
+                        }
+                        $message_create['attachments'] = $attachments;
+                    }
+
                     $status   = 200;
                     $response = array(
                         'status'  => 'SUCCESS',
                         'message' => trans('messages.chat_message_success'),
                         'ref'     => 'chat_message_success',
-                        'data'    => $chat_message
+                        'data'    => $message_create
                     );
                 }
                 else

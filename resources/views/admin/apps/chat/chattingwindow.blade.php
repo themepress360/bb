@@ -318,6 +318,7 @@
 </div>
 <div class="chat-footer">
    <div class="message-bar">
+      <form id="GetSendMessageForm" style="display: contents;">
       <div class="message-inner">
          <a class="link attach-icon" href="#">
          <span class="btn-file">
@@ -332,6 +333,7 @@
             </div>
          </div>
       </div>
+      </form>
    </div>
    <div id="preview"  style="display:none">
       <ul id="result" class="list-style">
@@ -354,26 +356,69 @@
    function SendMessage()
    {
       var message = $('#message').val();
-      if(message != "")
-      {
+      
          $.ajaxSetup({
             headers: {
                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
          });
+         $("#chat_id").remove();
          var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/sendmessage' : '#') }}";
+         var input = $("<input id='chat_id' type=\"hidden\" name=\"chat_id\" value=\""+conversation_chat_id+"\"/>");
+
+         $("#GetSendMessageForm").append(input);
+         var form = $('#GetSendMessageForm').get(0);
+         var formData = new FormData(form);
+
+         var getfiles = attachment_array;
+         var post_index = 0;
+         var new_attachment = [];
+         if(getfiles.length == deleted_attachment_array.length)
+         {
+
+         }
+         else
+         {
+            for (var index = 0; index < getfiles.length; index++) {
+               if(deleted_attachment_array.indexOf(index) == -1)
+               {
+                  new_attachment[post_index] = getfiles[index];
+                  formData.append("attachment_array[]", getfiles[index]);
+                  post_index++;
+               }
+               else
+               {
+                  console.log(index+" found");
+               }
+            }
+         }
+         console.log(attachment_array);
+
          $.ajax({
             type: "POST",
-            async: false,
-            url: url,    
-            data: {chat_id:conversation_chat_id,message:message},     
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,     
             success: function(response)
             {
                if(response.status == "SUCCESS")
                {
                   $('#message').val('');
+                  deleted_attachment_array = [];
+                  new_attachment = [];
+                  attachment_array = [];
+                  attachment_index = 0;
+                  post_index = 0;
+                  deleted_attachment_key = 0;
+                  div_id = 0;
+                  $("#attachment").val('');
+                  $("#result").html('');
+                  $('#result').hide();
                   if(response.data.is_attachemnt == '0')
                      $('#chats').append('<div class="chat chat-left"><div class="chat-avatar"><a href="'+my_user.profile_url+'" class="avatar"><img alt="'+my_user.name+'" src="'+my_user.profile_image_url+'"></a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content"><p>'+message+'</p><span class="chat-time">Just Now</span></div></div></div></div>');
+                  else if(response.data.is_attachemnt == '1')
+                     console.log("here");
                }
                else
                {
@@ -381,42 +426,34 @@
                }    
             }
          });
-      }
-      else
-      {
-         toastr['error']('Empty Message not sent');
-      }
+      
    }
 </script>
 
 <script>
    var attachment_array = [];
-      var attachment_index = 0;
-      var div_id = 0;
-     $(function(){   
-        //Check File API support
-        if(window.File && window.FileList && window.FileReader)
-        {
-            var filesInput = document.getElementById("attachment");
-            filesInput.addEventListener("change", function(event){
-                $('#result').show();
-                 $('#preview').attr('style','display:flex');
-     
-                var files = event.target.files; //FileList object
-                 for(var i = 0; i<files.length; i++){
-                    attachment_array[attachment_index] = files[i];
-                    attachment_index++;
-                  var fname = files[i].name;
-                  fextension = fname.substring(fname.lastIndexOf('.')+1);
-                  
-                     Extensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx","txt","zip","rar","gzip"];
-                     img_ext = ["jpg","png","jpeg","gif","svg"];
-                     code_ext = ["php","html","css"]    
-                    if(fextension.match('pdf')){
-     
-                        $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-pdf-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                    }
+   var attachment_index = 0;
+   var div_id = 0;
+   $(function(){   
+      //Check File API support
+      if(window.File && window.FileList && window.FileReader)
+      {
+         var filesInput = document.getElementById("attachment");
+         filesInput.addEventListener("change", function(event){
+         $('#result').show();
+         $('#preview').attr('style','display:flex');
+         var files = event.target.files; //FileList object
+         for(var i = 0; i<files.length; i++){
+            attachment_array[attachment_index] = files[i];
+            attachment_index++;
+            var fname = files[i].name;
+            fextension = fname.substring(fname.lastIndexOf('.')+1);      
+            Extensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx","txt","zip","rar","gzip"];
+            img_ext = ["jpg","png","jpeg","gif","svg"];
+            code_ext = ["php","html","css"]    
+            if(fextension.match('pdf')){
+               $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-pdf-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+            }
                     if(fextension.match('docx')){
                         $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-word-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
      
@@ -499,17 +536,12 @@
 <script>
    var deleted_attachment_array = [];
    var deleted_attachment_key = 0;
-   $("#result").on('click', '#remove_file' , function() {
-   
-      
+   $("#result").on('click', '#remove_file' , function() {   
       $(this).closest('li').remove();
-   
-      
       var id=$(this).closest('li').attr("id");
       deleted_attachment_array[deleted_attachment_key] = parseInt(id);
       deleted_attachment_key++;
       // files.splice(id,1);
-         
       if (!$(".list-style").find('li').length) {
             $('#preview').hide()
     }
