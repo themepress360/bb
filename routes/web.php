@@ -138,6 +138,11 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('addtaskhistory', array('uses' => 'TaskHistoryController@addtaskhistory'));
         Route::post('completetask', array('uses' => 'TasksController@completeTask'));
 
+        Route::get('chat', array('uses' => 'ChatController@getchats'));
+        Route::post('addchat', array('uses' => 'ChatController@addchat'));
+        Route::post('chattingwindow', array('uses' => 'ChatController@chattingwindow'));
+        Route::post('sendmessage', array('uses' => 'ChatController@sendmessage'));
+
        });
 //});
 
@@ -227,9 +232,7 @@ Route::get('/admin/events', function () {
 //Route::get('/employee/profile', function () {
   //      return view('employees.profile.index');
     //});
-Route::get('/employee/chat', function () {
-        return view('employees.apps.chat.index');
-    });
+
 
 Route::get('/employee/voice-call', function () {
         return view('employees.apps.calls.voice-call');

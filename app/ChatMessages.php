@@ -19,7 +19,8 @@ class ChatMessages extends Model
   	{
   		foreach ($chat_messages as $key => $chat_message) 
   		{
-  			$is_attachment = [];
+  			//$is_attachment = [];
+        $attachment = [];
   			if($chat_message['is_attachment'] == 1)
   			{
   				$files = ChatFileUploads::where(['chat_message_id' => (int) $chat_message['id'],'deleted' => '0','status'=> '1'])->orderBy('id', 'desc')->get()->toArray();

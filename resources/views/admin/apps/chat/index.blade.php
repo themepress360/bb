@@ -660,9 +660,9 @@
                {
                   $("#chat-window").html('');
                   $("#chat-window").append(response.data.getchatwindowhtml);
-                  $('#chat-window').animate({
-                     scrollTop: $(".scroll_chat").offset().top},
-                  'slow');
+                  // $('#chat-window').animate({
+                  //    scrollTop: $(".scroll_chat").offset().top},
+                  // 'slow');
                }
                else
                {
