@@ -372,7 +372,48 @@
       if (!$(".list-style").find('li').length) {
             $('#preview').hide()
     }
-      
-   
    });
+   socket.on('single_message_emit', function (data) {
+    console.log(data);
+    addChatMessage(data);
+   });
+   
+   function addChatMessage(data)
+   {
+      if(data.message_data.is_attachment == '0')
+      {
+         $('#chats').append('<div class="chat chat-right"><div class="chat-avatar"><a href="'+my_user.profile_url+'" class="avatar"><img alt="'+other_user.name+'" src="'+other_user.profile_image_url+'"></a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content"><p>'+data.message_data.message+'</p><span class="chat-time">Just Now</span></div></div></div></div>');
+      }
+      else if(data.message_data.is_attachment == '1')
+      {
+         if(data.message_data.message == "")
+         {
+            var html = '<div class="chat chat-right"><div class="chat-avatar"><a href="'+other_user.profile_url+'" class="avatar"><img alt="'+other_user.name+'" src="'+other_user.profile_image_url+'"></a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content">';
+            html += '<ul class="attach-list">';
+            for(var i=0;i<data.message_data.attachments.length;i++)
+            {
+               html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+            }
+            html += '</ul>';
+
+            html += '<span class="chat-time">Just Now</span></div></div></div></div>';                   
+            $('#chats').append(html);
+         }
+         else
+         {
+            var html = '<div class="chat chat-right"><div class="chat-avatar"><a href="'+other_user.profile_url+'" class="avatar"><img alt="'+other_user.name+'" src="'+other_user.profile_image_url+'"></a></div><div class="chat-body"><div class="chat-bubble"><div class="chat-content">';
+                        
+            html += '<p>'+data.message_data.message+'</p>';
+            html += '<ul class="attach-list">';
+            for(var i=0;i<data.message_data.attachments.length;i++)
+            {
+               html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+            }
+            html += '</ul>';
+
+            html += '<span class="chat-time">Just Now</span></div></div></div></div>';                   
+            $('#chats').append(html);
+         }
+      }
+   }
 </script>
