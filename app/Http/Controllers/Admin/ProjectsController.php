@@ -37,8 +37,8 @@ class ProjectsController extends CommonController
    public function index()
     {
         
- $projects = Projects::join('project_members', 'project_members.project_id','=', 'projects.id')->where('is_leaders','1')->where('projects.deleted', '0')->get();
-         // dd($projects);
+ $projects = Projects::join('project_members', 'project_members.project_id','=', 'projects.id')->join('departments', 'departments.id','=',"projects.department")->where('is_leaders','1')->where('projects.deleted', '0')->get();
+       //   dd($projects);
          
   $project_members = Projects::join('project_members', 'project_members.project_id','=', 'projects.id')->where('is_members','1')->where('projects.deleted', '0')->get()->toArray();
          // dd($project_members);

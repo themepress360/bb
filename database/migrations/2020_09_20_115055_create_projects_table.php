@@ -20,7 +20,7 @@ class CreateProjectsTable extends Migration
             $table->bigInteger('clients');
             $table->bigInteger('department');
             $table->bigInteger('added_by');
-            $table->string('priority');
+            $table->enum('priority',['high','low','normal']);
             $table->string('start_date');
             $table->string('end_date');
             $table->enum('deleted',['1','0']);

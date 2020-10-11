@@ -39,13 +39,16 @@ class TasksController extends CommonController
     public function index()
     {
       
-       $projects = Projects::where('deleted','0')->get();
+      // $projects = Projects::where('deleted','0')->get();
 
+       $projects = Projects::join('departments', 'departments.id','=',"projects.department")->where('projects.deleted', '0')->get();
+
+       // dd($projects);
       
        $tasks = Tasks::where('deleted', '0')->get();
 
        $task_status = Task_boards::where('deleted', '0')->get();
-       //dd($task_status);
+     //  dd($tasks);
 
       //  $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
 

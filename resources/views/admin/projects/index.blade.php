@@ -92,7 +92,15 @@
                      </div>
                   </div>
                </div>
+               <div class="d-flex  m-b-15">
                
+                     <div>Department :
+                     <div class="btn btn-light-warning btn-sm-date">
+                        {{ucwords($project->name)}}
+                    </div>
+                    </div>
+                  
+               </div>
                   <div class="project-members m-b-15">
                      <div>Project Leader :</div>
                                        
@@ -290,9 +298,9 @@
                         <div class="form-group">
                            <label>Priority<span class="text-danger">*</span></label>
                            <select class="select" name="priority">
-                              <option value="1">High</option>
-                              <option value="2">Medium</option>
-                              <option value="3">Low</option>
+                              <option value="high">High</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="low">Low</option>
                            </select>
                         </div>
                      </div>

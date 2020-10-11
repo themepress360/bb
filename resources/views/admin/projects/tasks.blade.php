@@ -63,9 +63,11 @@
 																
 									@foreach($projects as $project)	
 									
-				<a href="#" class="dropdown-btn" style="display:block;" value="{{$project->id}}"><span  class="span-rotate">{{ucwords($project->project_title)}} <i id="arrow" class="fa fa fa-chevron-down rotate m-l-10"></i></span> </a>
+	<a href="#" class="dropdown-btn m-b-15" style="display:block;" value="{{$project->id}}">
+		<span  class="span-rotate">{{ucwords($project->project_title)}} <i id="arrow" class="fa fa fa-chevron-down rotate m-l-10"></i></span>
+		<span class="label lable-sm label-light-success m-l-15">{{ucwords($project->name)}}</span> </a>
 									
-
+	
 									  <div class="dropdown-container">
 												<div class="task-wrapper" >
 													<div class="task-list-container">
@@ -753,7 +755,8 @@ var i;
 
 for (i = 0; i < dropdown.length; i++) {
   dropdown[i].addEventListener("click", function() {
-  this.classList.toggle("active");
+  this.classList.toggle('active');
+ //  this.classList.toggle();
   $(this).find('#arrow').toggleClass('down');
     var dropdownContent = this.nextElementSibling;
   if (dropdownContent.style.display === "none") {

@@ -253,9 +253,9 @@
                         <div class="form-group">
                            <label>Priority<span class="text-danger">*</span></label>
                            <select class="select" name="priority">
-                              <option value="1">High</option>
-                              <option value="2">Medium</option>
-                              <option value="3">Low</option>
+                              <option value="high">High</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="low">Low</option>
                            </select>
                         </div>
                      </div>
