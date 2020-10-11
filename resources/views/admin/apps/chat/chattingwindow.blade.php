@@ -64,7 +64,11 @@
                                        @if(!empty($chat_message['attachments']))
                                           <ul class="attach-list">
                                              @foreach($chat_message['attachments'] as $attachment_key => $attachment_value)
-                                                <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                @if(strpos($attachment_value['attachment_name'],".jpg") != false || strpos($attachment_value['attachment_name'],".jpeg") != false || strpos($attachment_value['attachment_name'],".png" != false))
+                                                <li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                @else
+                                                   <li class="pdf-file"><i class="fa fa-file-pdf-o" ></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                @endif
                                              @endforeach
                                           </ul>
                                        @endif
@@ -93,7 +97,11 @@
                                        @if(!empty($chat_message['attachments']))
                                           <ul class="attach-list">
                                              @foreach($chat_message['attachments'] as $attachment_key => $attachment_value)
-                                                <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                @if(strpos($attachment_value['attachment_name'],".jpg") != false || strpos($attachment_value['attachment_name'],".jpeg") != false || strpos($attachment_value['attachment_name'],".png" != false))
+                                                   <li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                @else
+                                                   <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                @endif
                                              @endforeach
                                           </ul>
                                        @endif
@@ -236,7 +244,10 @@
                         html += '<ul class="attach-list">';
                         for(var i=0;i<response.data.attachments.length;i++)
                         {
-                           html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+response.data.attachments[i].attachement_name+'</a></li>';
+                           if(response.data.attachments[i].attachement_name.indexOf(".jpg") || response.data.attachments[i].attachement_name.indexOf(".jpeg") || response.data.attachments[i].attachement_name.indexOf(".png"))
+                              html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">'+response.data.attachments[i].attachement_name+'</a></li>';
+                           else
+                              html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+response.data.attachments[i].attachement_name+'</a></li>';
                         }
                         html += '</ul>';
 
@@ -392,7 +403,10 @@
             html += '<ul class="attach-list">';
             for(var i=0;i<data.message_data.attachments.length;i++)
             {
-               html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+               if(data.message_data.attachments[i].attachement_name.indexOf(".jpg") || data.message_data.attachments[i].attachement_name.indexOf(".jpeg") || data.message_data.attachments[i].attachement_name.indexOf(".png"))
+                  html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+               else
+                  html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
             }
             html += '</ul>';
 
@@ -407,7 +421,10 @@
             html += '<ul class="attach-list">';
             for(var i=0;i<data.message_data.attachments.length;i++)
             {
-               html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+               if(data.message_data.attachments[i].attachement_name.indexOf(".jpg") || data.message_data.attachments[i].attachement_name.indexOf(".jpeg") || data.message_data.attachments[i].attachement_name.indexOf(".png"))
+                  html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+               else
+                  html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
             }
             html += '</ul>';
 
