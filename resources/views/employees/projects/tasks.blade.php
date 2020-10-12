@@ -63,17 +63,109 @@
 											<div class="chat-box">
 							
 								<div class="dropdown task-wrapper">	
-								
+											<form id="GetTaskWindowForm" style="display:none">
+																		
+																	</form>
 									@foreach($projects as $project)	
-								
-				<a href="#" class="dropdown-btn" style="display:block;" value="{{$project->id}}"><span  class="span-rotate">{{ucwords($project->project_title)}}</span> <i class="fa fa fa-chevron-down rotate m-l-10"></i> </a>
-									 
-
-									  <div class="dropdown-container">
+								    
+								    
+								       
+			<a href="#" class="dropdown-btn m-b-15" style="display:block;" value="{{$project->id}}">
+		<span  class="span-rotate">{{ucwords($project->project_title)}} <i id="arrow" class="fa fa fa-chevron-down rotate m-l-10"></i></span>
+		<span class="label lable-sm label-light-success m-l-15">{{ucwords($project->department_name)}}</span> </a>
+										  <div class="dropdown-container">
 												<div class="task-wrapper" >
 													<div class="task-list-container">
 														<div class="task-list-body">
-      		     											 <ul id="task-list">
+
+																<table style="width:100%">
+      		     												<thead lass="d-flex task-list-head">
+			<td></td>
+			<th class="task-list-heading">Owner</th>
+		    <th class="task-list-heading">Status</th>	
+		    <th class="task-list-heading">Due Date</th>
+		    <th class="task-list-heading">Priority</th>
+		    <th class="task-list-heading">Assigned To</th>
+			</thead>
+			<tbody>
+				@foreach($tasks as $index => $task)								 
+						@if($task->project_id == $project->id)
+
+				<tr id="task-list" style="background-color:#fff" value="{{$task->id}}" onClick="getTask('{{$task->id}}')">
+					
+					<td class="task">
+						<div class="task-container">
+						   <span class="task-action-btn task-check">
+							<span class="action-circle large complete-btn" title="Mark Complete">
+							  <i class="material-icons">check</i>
+									</span>
+							</span>
+					<span class="task-label" contenteditable="true">{{$task->task_title}} {{$task->added_by}} </span>
+									</div></td>
+					
+						
+					@foreach($employees as $employee)
+						@if($task->added_by == $employee->id)
+					<td class="task-list-data">
+							  @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
+						<a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+						<img src="{{$employee->profile_image}}">
+					</a>
+								@else
+                               <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" style="display: inline-block;">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                            @endif
+                                           
+                         </td>
+					@endif
+					@endforeach
+					
+				
+					@foreach($task_status as $task_board_name)
+					 @if($task->status == $task_board_name->task_board_name)
+
+					
+					<td class="task-list-data" style="background-color:{{$task_board_name->task_board_color}};color:#fff" >{{ucwords($task->status)}}</td>
+
+					@endif
+					
+					
+					@endforeach
+					
+					<td class="task-list-data">{{date("M d, Y",strtotime($task->due_date))}}</td>
+					<td class="task-list-data data-cell" id="priority" >{{strtoupper($task->priority)}}</td>
+					@foreach($employees as $employee)
+						@if($task->assign_to == $employee->id)
+					<td class="task-list-data">
+							  @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
+						<a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+						<img src="{{$employee->profile_image}}"></a>
+								@else
+                               <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" style="display: inline-block;">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                            @endif
+
+                         </td>
+					@endif
+					@endforeach
+				</tr>
+
+				  
+				@endif
+			@endforeach
+			</tbody>
+		</table>
+		
+		
+      		     											<!-- <ul id="task-list">
 															     @foreach($tasks as $task)														 
 																@if($task->project_id == $project->id)
 														<li class="task"  value="{{$task->id}}" onClick="getTask('{{$task->id}}')" >
@@ -100,12 +192,13 @@
 																  @endif
 																   @endforeach
 																
-															</ul>
+															</ul> -->
 														</div>
 													</div>
 												</div>
 										  </div>
-										     									  
+										   
+										  	
 										@endforeach
 									</div>			
 			@foreach($projects as $project)	
@@ -912,13 +1005,19 @@ var i;
 
 for (i = 0; i < dropdown.length; i++) {
   dropdown[i].addEventListener("click", function() {
-  this.classList.toggle("active");
-  var dropdownContent = this.nextElementSibling;
-  if (dropdownContent.style.display === "block") {
-  dropdownContent.style.display = "none";
-  } else {
+  this.classList.toggle('active');
+ //  this.classList.toggle();
+  $(this).find('#arrow').toggleClass('down');
+    var dropdownContent = this.nextElementSibling;
+  if (dropdownContent.style.display === "none") {
   dropdownContent.style.display = "block";
+  $('#arrow').removeClass("down");
+
+  } else {
+  dropdownContent.style.display = "none";
+    
   }
+
   });
 }
 </script>
@@ -938,6 +1037,7 @@ function getTask(task_id) {
 	$("#GetTaskWindowForm").html('');
   	var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/gettaskwindow' : '#') }}";  
     var input = $("<input type=\"hidden\" name=\"task_id\" value=\""+task_id+"\"/>");
+    console.log(input);
     $("#GetTaskWindowForm").append(input);
     var form = $('#GetTaskWindowForm').get(0);
     var formData = new FormData(form);
@@ -953,8 +1053,10 @@ function getTask(task_id) {
             {
             	$("#task_window").html('');
             	$("#task_window").append(response.data.gettaskwindowhtml);
-            	document.getElementById("task_window").style.width = "675px";
-  				document.getElementById("main").style.marginLeft = "0px";
+            	$("#task_window").addClass("left-task-window");
+            	$("#main").addClass("all-task-list");
+            	$(".task-window").attr("style","width:80%");
+            	$(".task-main-wrapper").attr("style","width:75%");
             }
             else
             {
@@ -1104,5 +1206,29 @@ function closeNav() {
 
         </script>
 
+<script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>
 
+<script>
+	
+	$("td.data-cell").each(function () {
+    // 'this' is now the raw td DOM element
+   // var txt = $(this).html();
+
+   // console.log(txt);
+
+     if ($.trim($(this).html()) == 'HIGH') {
+                    $(this).addClass('priority-danger');
+                  }
+
+                   if ($.trim($(this).html()) == 'NORMAL') {
+                    $(this).addClass('priority-medium');
+                  }
+                   if ($.trim($(this).html()) == 'LOW') {
+                    $(this).addClass('priority-low');
+                  }
+
+
+});
+
+</script>
 		@endsection

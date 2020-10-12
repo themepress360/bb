@@ -42,71 +42,40 @@ class TasksController extends CommonController
 
        $is = Auth::user()->id;
 
-       //dd($emp);
+      // dd($is);
 
-       $id = Auth::user()->id;
-
-       //dd($emp);
-
-       $is_leader = Project_members::where(['user_id' => $id, 'is_leaders' => '1'])->first();
-
-      // dd($is_leader->is_leaders);
-
-       if($is_leader){
-
-             $projects = Projects::where('deleted','0')->get();
-
-      
-       $tasks = Tasks::where('deleted', '0')->get();
-
-       $task_status = Task_boards::where('deleted', '0')->get();
-       
-       //dd($tasks);
-                   
-        $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
-
-       
-         if(!empty($employees) )
-        {
-
-            foreach( $employees as $key => $employee){
-
-             //   dd($employee->profile_image);
-
-               if(!empty($employee->profile_image))
-
-                $employee->profile_image = User::image_url(config('app.profileimagesfolder'),$employee->profile_image);
-            
-             else
-                     $employee->profile_image = '';
-
-            }
-
-        }
-
-        return view('admin.projects.tasks', compact('employees', 'projects','tasks','task_status'));
-
-       }
-
-
+   
        $is_leader = Project_members::where(['user_id' => $is, 'is_leaders' => '1'])->first();
 
-      // dd($is_leader->is_leaders);
+       //dd($is_leader);
 
        if($is_leader){
 
-             $projects = Projects::where('deleted','0')->get();
+            // $projects = Projects::where('deleted','0')->get();
 
+    $projects = User::Select('users.*','users.id as user_id','departments.prefix', 'departments.name as department_name','projects.id as id', 'projects.project_title as project_title')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('projects', 'projects.department','=' ,'departments.id')->where(['type' => 'employee' , 'users.id'=> $is_leader->user_id , 'users.deleted' =>'0'])->get();
+       
+      // dd($projects);
+
+     //   $projects = Projects::join('departments', 'departments.id','=',"projects.department")->where('projects.deleted', '0')->get();
       
+       //dd($projects);
+
        $tasks = Tasks::where('deleted', '0')->get();
 
        $task_status = Task_boards::where('deleted', '0')->get();
        
        //dd($tasks);
                    
-        $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
+      //  $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
 
-       
+          $employees = User::where('deleted','0')->get();
+
+       //$employee_dept = User::Select('users.*','departments.prefix', 'departments.name as department_name')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->where(['type' => 'employee' , 'users.deleted' =>'0'])->get();
+     
+
+       //dd($employee_dept);
+
          if(!empty($employees) )
         {
 
@@ -125,25 +94,29 @@ class TasksController extends CommonController
 
         }
 
-        return view('admin.projects.tasks', compact('employees', 'projects','tasks','task_status'));
+         $employee_role = employees::join('roles' , 'roles.id' , '=' , 'employees.role_id')->where(['user_id' => $is ,'employees.deleted' =>'0' ])->first();
+
+        return view('employees.projects.tasks', compact('employees', 'projects','tasks','task_status','employee_role'));
 
        }
 
-       
-        $projects = Project_members::join('projects', 'projects.id','=', 'project_members.project_id')->where(['user_id' => $is, 'project_members.deleted' =>'0'])->get();
+              
+       $projects = Projects::Select('projects.*', 'departments.name as department_name')->join('departments', 'departments.id','=',"projects.department")->where('projects.deleted', '0')->get();
 
-      //  dd($projects);
-
-    
+         
       
-       $tasks = Task_members::join('tasks', 'tasks.id', '=', 'task_members.task_id')->where(['user_id'=> $is, 'task_members.deleted' =>'0'])->get();
+       $tasks = Tasks::where(['assign_to' => $is, 'deleted' =>'0'])->get();
 
+     
        $task_status = Task_boards::where('deleted', '0')->get();
        
       // dd($tasks);
                    
-        $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
+       // $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
         
+        $employees = User::where('deleted','0')->get();
+
+
        // $user = auth()->user()->employee->user_id;
   
        // dd($user);
@@ -170,6 +143,7 @@ class TasksController extends CommonController
 
         }
 
+        
         return view('employees.projects.tasks', compact('employees', 'projects','tasks','task_status','employee_role'));
     }
 
@@ -402,7 +376,7 @@ class TasksController extends CommonController
     {
         $requestData =  $request->all();
 
-        //dd($requestData);
+        //dd($requestData['task_id']);
         $window_data['task_statuses'] = Task_boards::where('deleted', '0')->get();
       
               

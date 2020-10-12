@@ -915,7 +915,7 @@ function openTask(task_id) {
                     $(this).addClass('priority-danger');
                   }
 
-                   if ($.trim($(this).html()) == 'MEDIUM') {
+                   if ($.trim($(this).html()) == 'NORMAL') {
                     $(this).addClass('priority-medium');
                   }
                    if ($.trim($(this).html()) == 'LOW') {
