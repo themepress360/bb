@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Client;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -35,7 +35,6 @@ class ChatController extends CommonController
         $data['chat_lists'] = [];
         $data['clients_list'] = [];
         $data['chat_ids'] = [];
-        $data['user_ids'] = "";
         $mydetail = $request->user(); 
         /* To get all employee which are active and not deleted START */
         $data['employees_list'] = User::select(['designations.name as designation_name','users.*'])->where(['users.deleted' => '0','users.status' => '1' ])->join('employees', 'users.id', '=', 'employees.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->get()->toArray();
@@ -97,8 +96,8 @@ class ChatController extends CommonController
             }
             $data['chat_lists'] = $chat_lists;
             $data['chat_ids']   = json_encode($chat_ids);
-            $data['user_ids']   = implode(",",array_column($data['chat_lists'], 'user_id'));
         }
+
         /* To get the chat list End */
 
         return view('admin.apps.chat.index',$data);

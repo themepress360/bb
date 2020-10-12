@@ -30,7 +30,7 @@ class ChatMessages extends Model
   					{
   						$attachment[] = array(
   							"attachment_name"      => $file['attachment_name'],
-  							"attachment_name_url"  => ChatFileUploads::file_url(config('app.chatfilesfolder'),$file['attachment_name'])
+  							"attachment_url"  => ChatFileUploads::file_url(config('app.chatfilesfolder'),$file['attachment_name'])
   						);
   					}
   				}
