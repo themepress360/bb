@@ -41,7 +41,7 @@
 			<!-- /Sidebar -->
 @php
 
-									$mbox = imap_open("{imap.gmail.com:993/imap/ssl}INBOX", "themepress360@gmail.com", "Master@81");
+									$mbox = imap_open("{imap.gmail.com:993/imap/ssl}INBOX", "", "");
 
 											// get information about the current mailbox (INBOX in this case)
 											$mboxCheck = imap_check($mbox);
