@@ -28,6 +28,7 @@ $io->on('connection', function($socket){
         $usernames[$user_id]['chat_ids'] = $socket->chat_ids;
         $usernames[$user_id]['socket_id']= $socket->id;
         var_dump($usernames[$user_id]);
+        $socket->broadcast->emit("online_status",array_values($usernames));
         ++$numUsers;
         $socket->addedUser = true;
     });
@@ -45,78 +46,63 @@ $io->on('connection', function($socket){
         }
     });
 
-    $socket->on('Conflict_Approve_Popup', function ($data)use($socket){
-        $data = json_decode($data,true);
-        var_dump($data);
-        var_dump('***************************************');
-        // var_dump(!empty($GLOBALS['usernames'][$data['driver_user_id']]));
-        // var_dump(!empty($GLOBALS['usernames'][$data['driver_user_id']]['socket_id']));
-        // exit();
-        if(!empty($GLOBALS['usernames'][$data['driver_user_id']]) && !empty($GLOBALS['usernames'][$data['driver_user_id']]['socket_id']))
+    $socket->on('online_status', function ($data)use($socket){
+        $user_ids = explode(',',$data['user_ids']);
+        if(!empty($user_ids))
         {
-            var_dump("----------------------------------------------");
-            var_dump("emit_success ".$GLOBALS['usernames'][$data['driver_user_id']]['socket_id']);
-            var_dump("----------------------------------------------");
-            
-            if(empty($data['packet']['url']))
-                $data['packet']['url'] = "";
-            if(empty($data['packet']['param']))
-                $data['packet']['param'] = (object)[];
-            if(empty($data['packet']['type']))
-                $data['packet']['type'] = ""; 
-                
-            if($GLOBALS['usernames'][$data['driver_user_id']]['device_type'] == "android")
+            $user_status = [];
+            foreach ($user_ids as $key => $user_id) 
             {
-                $android_iphone_data = array('body' => $data['popup_message'], 'title'=> "TollPAYS",'type' => $data['packet']['type'],'url'=> $data['packet']['url'],"params" => $data['packet']['param'],"silent_notification" => '1');
+                if(!empty($GLOBALS['usernames'][$user_id]) && !empty($GLOBALS['usernames'][$user_id]['socket_id']))
+                {
+                   $user_status[] = array(
+                        "user_id"    => $user_id,
+                        "is_online"  => 1  
+                   );
+                }
+                else
+                {
+                    $user_status[] = array(
+                        "user_id"    => $user_id,
+                        "is_online"  => 0  
+                   );
+                }
             }
-            else
+            if(!empty($GLOBALS['usernames'][$data['my_user_id']]) && !empty($GLOBALS['usernames'][$data['my_user_id']]['socket_id']))
             {
-                $android_iphone_data = array('to' => "", 'notification' => array('title' => "TollPAYS" , 'text' => $data['popup_message']),'priority'=>'high',"data" => array("data"=>array('type'=>$data['packet']['type'],'url'=> $data['packet']['url'],"params" => $data['packet']['param'],"silent_notification" => '1',"title_text" => "TollPAYS","body" => $data['popup_message'])));
+                $socket->broadcast->emit("online_status",$user_status);
             }
-            var_dump("----------------------------------------------");
-            var_dump($android_iphone_data);
-            $socket->broadcast->to($GLOBALS['usernames'][$data['driver_user_id']]['socket_id'])->emit("Conflict_Approve_Popup",$android_iphone_data);
+        }
+    });
+
+    // when the client emits 'typing', we broadcast it to others
+    $socket->on('typing', function ($data) use($socket) {
+        if(!empty($GLOBALS['usernames'][$data['user_id']]) && !empty($GLOBALS['usernames'][$data['user_id']]['socket_id']))
+        {
+            $socket->broadcast->to($GLOBALS['usernames'][$data['user_id']]['socket_id'])->emit("typing",$data);
+            var_dump("emit sent ".$data['user_id']);
         }
         else
         {
             var_dump("not in array");
-            var_dump($GLOBALS['usernames'][$data['driver_user_id']]);
+            var_dump($GLOBALS['usernames'][$data['user_id']]);
         }
     });
-   
-    //When driver press the Decline Button This socket is working
-    $socket->on('Conflict_Driver_Reject_Request_Announcement', function ($data)use($socket){
-        $data = json_decode($data,true);
-        var_dump($data);
-        if(!empty($GLOBALS['usernames'][$data['contributor_user_id']]) && !empty($GLOBALS['usernames'][$data['contributor_user_id']]['socket_id']))
+
+    // when the client emits 'stop typing', we broadcast it to others
+    $socket->on('stop typing', function ($data) use($socket) {
+        if(!empty($GLOBALS['usernames'][$data['user_id']]) && !empty($GLOBALS['usernames'][$data['user_id']]['socket_id']))
         {
-            var_dump("emit_success Conflict_Driver_Reject_Request_Announcement ".$GLOBALS['usernames'][$data['contributor_user_id']]['socket_id']);
-            var_dump($data['packet']['param']);
-            if(empty($data['packet']['url']))
-                $data['packet']['url'] = "";
-            if(empty($data['packet']['param']))
-                $data['packet']['param'] = (object)[];
-            if(empty($data['packet']['type']))
-                $data['packet']['type'] = ""; 
-            var_dump($data['packet']['param']);
-            if($GLOBALS['usernames'][$data['contributor_user_id']]['device_type'] == "android")
-            {
-                $android_iphone_data = array('body' => $data['popup_message'], 'title'=> "TollPAYS",'type' => $data['packet']['type'],'url'=> $data['packet']['url'],"params" => $data['packet']['param'],"silent_notification" => '1');
-            }
-            else
-            {
-                $android_iphone_data = array('to' => "", 'notification' => array('title' => "TollPAYS" , 'text' => $data['popup_message']),'priority'=>'high',"data" => array("data"=>array('type'=>$data['packet']['type'],'url'=> $data['packet']['url'],"params" => $data['packet']['param'],"silent_notification" => '1',"title_text" => "TollPAYS","body" => $data['popup_message'])));
-            }
-            var_dump($android_iphone_data);
-            $socket->broadcast->to($GLOBALS['usernames'][$data['contributor_user_id']]['socket_id'])->emit("Conflict_Driver_Reject_Request_Announcement",$android_iphone_data);
+            $socket->broadcast->to($GLOBALS['usernames'][$data['user_id']]['socket_id'])->emit("stop typing",$data);
+            var_dump("emit sent ".$data['user_id']);
         }
         else
         {
             var_dump("not in array");
-            var_dump($GLOBALS['usernames'][$data['contributor_user_id']]);
+            var_dump($GLOBALS['usernames'][$data['user_id']]);
         }
     });
-    
+ 
     // when the user disconnects.. perform this
     $socket->on('disconnect', function () use($socket) {
         global $usernames,$numUsers;
@@ -124,6 +110,7 @@ $io->on('connection', function($socket){
         if($socket->addedUser) {
             print_r("disconnect user id = ".$socket->user_id);
             unset($usernames[$socket->user_id]);
+            $socket->broadcast->emit("online_status",array_values($usernames));
             --$numUsers;
         }
     });

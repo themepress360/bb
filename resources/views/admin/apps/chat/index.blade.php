@@ -609,6 +609,29 @@
       }
    }
    setUserid(my_user_id,chat_ids);
+   
+   //To check the online status
+   <?php if(!empty($user_ids)) { ?>
+      var user_ids = '{{$user_ids}}';
+      setInterval(function(){ 
+         var data =  {user_ids : user_ids,my_user_id : my_user_id};
+         socket.emit('online_status', data); 
+      },5000);
+
+      socket.on('online_status', function (data) {
+         if(chat_ids.length != 0)
+         {
+            for(var i=0;i<chat_ids.length;i++)
+            {
+               if(chat_ids.indexOf(data[i].chat_id) != -1)
+               {
+
+               }
+               console.log(data[i]);
+            }
+         }
+      });
+   <?php } ?>
    //Socket Working End
 </script>
 
@@ -692,12 +715,11 @@
                if(response.status == "SUCCESS")
                {
                   $('#add_followers').html('');
-                  start_conversation_user_id = 0;
-
                   $('#direct-chat-list li').removeClass("active");
                   $('#direct-chat-list').append('<li class="active"><a href="chat"><span class="chat-avatar-sm user-img"><img class="rounded-circle" alt="" src="'+response.data.user.profile_image_url+'"><span class="status online"></span></span> <span class="chat-user">'+response.data.user.name+'</span></a></li>');
                   $('#add_chat_user').modal('hide');
                   chatting_window(response.data.chat_id,start_conversation_user_id);
+                  start_conversation_user_id = 0;
                   toastr['success'](response.message);    
                }
                else
@@ -723,6 +745,13 @@
             // console.log(added_followers);
       }
    });
-</script>
 
+   $( document ).ready(function() {
+      <?php if(!empty($chat_lists)) { ?>
+         var default_chat_window_chat_id = "<?php echo $chat_lists[0]['chat_id'];?>";
+         var default_chat_window_user_id = "<?php echo $chat_lists[0]['user_id'];?>";
+         chatting_window(default_chat_window_chat_id,default_chat_window_user_id);
+      <?php } ?>
+   });
+</script>
 @endsection

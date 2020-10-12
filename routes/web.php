@@ -123,6 +123,12 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
         Route::get('profile', array('uses' => 'ProfileController@index'));
         Route::post('editprofile',array('as' => 'client.editprofile','uses' => 'ProfileController@editprofile'));
+
+        Route::get('chat', array('uses' => 'ChatController@getchats'));
+        Route::post('addchat', array('uses' => 'ChatController@addchat'));
+        Route::post('chattingwindow', array('uses' => 'ChatController@chattingwindow'));
+        Route::post('sendmessage', array('uses' => 'ChatController@sendmessage'));
+        
     });
 
     Route::group(
@@ -299,9 +305,9 @@ Route::get('/employee/file-manager', function () {
 
 
 
-Route::get('/client/chat', function () {
-        return view('clients.apps.chat.index');
-    });
+// Route::get('/client/chat', function () {
+//         return view('clients.apps.chat.index');
+//     });
 
 Route::get('/client/voice-call', function () {
         return view('clients.apps.calls.voice-call');

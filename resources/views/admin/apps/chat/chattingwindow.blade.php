@@ -11,7 +11,7 @@
          </div>
          @if(!empty($user))
             <div class="user-info float-left">
-               <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$user['id'] : '#') }}" title="{{!empty($user['name']) ? $user['name'] : '-'}}"><span>{{!empty($user['name']) ? $user['name'] : '-'}}</span> <i class="typing-text">Typing...</i></a>
+               <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$user['id'] : '#') }}" title="{{!empty($user['name']) ? $user['name'] : '-'}}"><span>{{!empty($user['name']) ? $user['name'] : '-'}}</span> <i class="typing-text"></i></a>
                <span class="last-seen">Last seen today at 7:50 AM</span>
             </div>
          @endif
@@ -65,9 +65,9 @@
                                           <ul class="attach-list">
                                              @foreach($chat_message['attachments'] as $attachment_key => $attachment_value)
                                                 @if(strpos($attachment_value['attachment_name'],".jpg") != false || strpos($attachment_value['attachment_name'],".jpeg") != false || strpos($attachment_value['attachment_name'],".png" != false))
-                                                <li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                <li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="{{$attachment_value['attachment_url']}}" download>{{$attachment_value['attachment_name']}}</a></li>
                                                 @else
-                                                   <li class="pdf-file"><i class="fa fa-file-pdf-o" ></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                   <li class="pdf-file"><i class="fa fa-file-pdf-o" ></i> <a href="{{$attachment_value['attachment_url']}}" download>{{$attachment_value['attachment_name']}}</a></li>
                                                 @endif
                                              @endforeach
                                           </ul>
@@ -98,9 +98,9 @@
                                           <ul class="attach-list">
                                              @foreach($chat_message['attachments'] as $attachment_key => $attachment_value)
                                                 @if(strpos($attachment_value['attachment_name'],".jpg") != false || strpos($attachment_value['attachment_name'],".jpeg") != false || strpos($attachment_value['attachment_name'],".png" != false))
-                                                   <li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                   <li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="{{$attachment_value['attachment_url']}}" download>{{$attachment_value['attachment_name']}}</a></li>
                                                 @else
-                                                   <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">{{$attachment_value['attachment_name']}}</a></li>
+                                                   <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="{{$attachment_value['attachment_url']}}" download>{{$attachment_value['attachment_name']}}</a></li>
                                                 @endif
                                              @endforeach
                                           </ul>
@@ -156,11 +156,9 @@
       name : "{{$mydetail['name']}}",
       profile_url : "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$mydetail['id'] : '#') }}"
    };
-   console.log(my_user);
    function SendMessage()
    {
       var message = $('#message').val();
-      
          $.ajaxSetup({
             headers: {
                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -229,7 +227,10 @@
                         html += '<ul class="attach-list">';
                         for(var i=0;i<response.data.attachments.length;i++)
                         {
-                           html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+response.data.attachments[i].attachement_name+'</a></li>';
+                           if(response.data.attachments[i].attachement_name.indexOf(".jpg") || response.data.attachments[i].attachement_name.indexOf(".jpeg") || response.data.attachments[i].attachement_name.indexOf(".png"))
+                              html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="'+response.data.attachments[i].attachement_url+'" download>'+response.data.attachments[i].attachement_name+'</a></li>';
+                           else
+                              html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="'+response.data.attachments[i].attachement_url+'" download>'+response.data.attachments[i].attachement_name+'</a></li>';
                         }
                         html += '</ul>';
 
@@ -245,9 +246,9 @@
                         for(var i=0;i<response.data.attachments.length;i++)
                         {
                            if(response.data.attachments[i].attachement_name.indexOf(".jpg") || response.data.attachments[i].attachement_name.indexOf(".jpeg") || response.data.attachments[i].attachement_name.indexOf(".png"))
-                              html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">'+response.data.attachments[i].attachement_name+'</a></li>';
+                              html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="'+response.data.attachments[i].attachement_url+'" download>'+response.data.attachments[i].attachement_name+'</a></li>';
                            else
-                              html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+response.data.attachments[i].attachement_name+'</a></li>';
+                              html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="'+response.data.attachments[i].attachement_url+'" download>'+response.data.attachments[i].attachement_name+'</a></li>';
                         }
                         html += '</ul>';
 
@@ -263,8 +264,7 @@
                   toastr['error'](response.message);
                }    
             }
-         });
-      
+         }); 
    }
 </script>
 
@@ -292,84 +292,48 @@
             if(fextension.match('pdf')){
                $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-pdf-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
             }
-                    if(fextension.match('docx')){
-                        $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-word-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                    }
-                    if(fextension.match('xlsx')){
-     
-                        $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-excel-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                    }
-                    if(fextension.match('csv')){
-     
-                        $("<li id = '"+div_id+"' ><i class='fa fa-file fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                         
-                    }
-                    //Only pics
-                    if(img_ext.includes(fextension)){
-                                          
-                   img_src = window.URL.createObjectURL(files[i]);
-                                      
-                 $("<li id = '"+div_id+"' class='file-preview'><img class='thumbnail' src='" + img_src + "'" +  "title='" + fname + "'/> " + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-                     
-                    }
-                     if(fextension.match('zip')){
-     
-                        $("<li id = '"+div_id+"' ><i class='fa fa-file-archive-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                         
-                    }
-                   if(fextension.match('zip')){
-     
-                        $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-archive-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                         
-                    }
-                    if(fextension.match('mp4')){
-     
-                        $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-video-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                         
-                    }
-                    if(fextension.match('ppt')){
-     
-                        $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-powerpoint-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                         
-                    }
-                     if(fextension.match('txt')){
-     
-                        $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-text-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                         
-                    }
-                     if(code_ext.includes(fextension)){
-     
-                        $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-code-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
-     
-                         
-                    }
-     
-                    div_id++;
-                            
-                 }
-                var output = document.getElementById("result");
-     
-                 
-                
-                       
-               
-            });
-        }
-        else
-        {
-            console.log("Your browser does not support File API");
-        }
-     });
-       
-     
+            if(fextension.match('docx')){
+               $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-word-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+            }
+            if(fextension.match('xlsx')){
+               $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-excel-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+            }
+            if(fextension.match('csv')){
+               $("<li id = '"+div_id+"' ><i class='fa fa-file fa-2x' aria-hidden='true'></i><i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+            }
+            //Only pics
+            if(img_ext.includes(fextension)){                              
+               img_src = window.URL.createObjectURL(files[i]);                       
+               $("<li id = '"+div_id+"' class='file-preview'><img class='thumbnail' src='" + img_src + "'" +  "title='" + fname + "'/> " + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');      
+            }
+            if(fextension.match('zip')){
+               $("<li id = '"+div_id+"' ><i class='fa fa-file-archive-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');          
+            }
+            if(fextension.match('zip')){
+               $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-archive-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');             
+            }
+            if(fextension.match('mp4')){     
+               $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-video-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+            }
+            if(fextension.match('ppt')){
+               $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-powerpoint-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+            }
+            if(fextension.match('txt')){
+               $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-text-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+            }
+            if(code_ext.includes(fextension)){
+               $("<li id = '"+div_id+"'  class='file-preview'><i class='fa fa-file-code-o fa-2x' aria-hidden='true'></i>" + fname + "<i class='fa fa-times close' id='remove_file' aria-hidden='true'></i></li>").appendTo('#result');
+            }
+            div_id++;                
+         }
+         var output = document.getElementById("result");      
+      });
+   }
+   else
+   {
+      console.log("Your browser does not support File API");
+   }
+});     
 </script>
 <script>
    var deleted_attachment_array = [];
@@ -385,8 +349,32 @@
     }
    });
    socket.on('single_message_emit', function (data) {
+      console.log(data);
+      if(conversation_chat_id == data.message_data.chat_id)
+         addChatMessage(data);
+      else
+         console.log("here not open window");
+   });
+      
+   $("#message").on('input', function() {
+      var emit_data = {"user_id" : other_user.user_id};
+      socket.emit('typing',emit_data);
+   });
+
+   socket.on('typing', function (data) {
     console.log(data);
-    addChatMessage(data);
+    $(".typing-text").html('Typing...');
+   });
+
+   $("#message").keydown(function (event) {
+      var emit_data = {"user_id" : other_user.user_id};
+      socket.emit('stop typing',emit_data);
+   });
+
+   // Whenever the server emits 'stop typing', kill the typing message
+   socket.on('stop typing', function (data) {
+      var timer = setTimeout(function(){ clearTimeout(timer); $(".typing-text").html(''); },5000);
+      console.log('stop');
    });
    
    function addChatMessage(data)
@@ -404,9 +392,9 @@
             for(var i=0;i<data.message_data.attachments.length;i++)
             {
                if(data.message_data.attachments[i].attachement_name.indexOf(".jpg") || data.message_data.attachments[i].attachement_name.indexOf(".jpeg") || data.message_data.attachments[i].attachement_name.indexOf(".png"))
-                  html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+                  html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="'+data.message_data.attachments[i].attachement_url+'" download>'+data.message_data.attachments[i].attachement_name+'</a></li>';
                else
-                  html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+                  html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="'+data.message_data.attachments[i].attachement_url+'" download>'+data.message_data.attachments[i].attachement_name+'</a></li>';
             }
             html += '</ul>';
 
@@ -422,9 +410,9 @@
             for(var i=0;i<data.message_data.attachments.length;i++)
             {
                if(data.message_data.attachments[i].attachement_name.indexOf(".jpg") || data.message_data.attachments[i].attachement_name.indexOf(".jpeg") || data.message_data.attachments[i].attachement_name.indexOf(".png"))
-                  html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+                  html += '<li class="pdf-file"><i class="fa fa-image" style="font-size:24px;margin-right:0px"></i> <a href="'+data.message_data.attachments[i].attachement_url+'" download>'+data.message_data.attachments[i].attachement_name+'</a></li>';
                else
-                  html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">'+data.message_data.attachments[i].attachement_name+'</a></li>';
+                  html += '<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="'+data.message_data.attachments[i].attachement_url+'" download>'+data.message_data.attachments[i].attachement_name+'</a></li>';
             }
             html += '</ul>';
 
