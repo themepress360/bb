@@ -69,15 +69,36 @@
 		<table style="table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0">
 										<tbody>
 											<tr>
-												@forelse($team_leaders as $team_leader)
+												@foreach($team_leaders as $team_leader)
+												 @if(!empty($team_leader['profile_images_url']))
+                                                   @if( $team_leader['profile_images_url'] != asset('/storage/profile_images/noimage.png'))
 												<td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
 													<img src="{{$team_leader['profile_images_url']}}" alt="{{$team_leader['name']}}" style="border-radius:24px;display:block;line-height:24px" class="CToWUd" width="24" height="24">
 												</td>
-												@empty
-												<td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
+
+												 @else
+                                         <td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
+                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest">
+                                          {{ mb_substr($employee['name'], 0, 1) }}
+                                          </span>
+                                          </div>
+                                      </td>
+                                          @endif
+                                           @else
+                                          <td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
+                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest">
+                                          {{ mb_substr($employee['name'], 0, 1) }}
+                                          </span>
+                                          </div>
+                                          </td>
+                                          @endif
+												
+												<!--<td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
 													No Records
-												</td>
-												@endforelse
+												</td> -->
+												@endforeach
 												
 											</tr>
 
