@@ -24,7 +24,7 @@ use DB;
 
 class ChatController extends CommonController
 {
-    /**
+   /**
      * To get the chats.
      *
      * @return \Illuminate\Http\Response
@@ -35,32 +35,34 @@ class ChatController extends CommonController
         $data['chat_lists'] = [];
         $data['clients_list'] = [];
         $data['chat_ids'] = [];
+        $data['user_ids'] = "";
         $mydetail = $request->user(); 
+        //$employee = Employees::where(['deleted' => '0', "user_id" => (int) $mydetail['id'] ])->first();
         /* To get all employee which are active and not deleted START */
-        $data['employees_list'] = User::select(['designations.name as designation_name','users.*'])->where(['users.deleted' => '0','users.status' => '1' ])->join('employees', 'users.id', '=', 'employees.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->get()->toArray();
-        if(!empty($data['employees_list']))
-        {
-            foreach ($data['employees_list'] as $key => $employee) 
-            {
-                $data['employees_list'][$key]['profile_image_url'] = "";
-                if(!empty($employee['profile_image']))
-                    $data['employees_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$employee['profile_image']);
-            }
-        }
+        // $data['employees_list'] = User::select(['designations.name as designation_name','users.*'])->where(['users.deleted' => '0','users.status' => '1','users.department_id' => (int)$employee['department_id'] ])->join('employees', 'users.id', '=', 'employees.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->get()->toArray();
+        // if(!empty($data['employees_list']))
+        // {
+        //     foreach ($data['employees_list'] as $key => $employee) 
+        //     {
+        //         $data['employees_list'][$key]['profile_image_url'] = "";
+        //         if(!empty($employee['profile_image']))
+        //             $data['employees_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$employee['profile_image']);
+        //     }
+        // }
         /* To get all employee which are active and not deleted end */
 
-        /* To get all client which are active and not deleted START */
-        $data['clients_list'] = User::where(['type' => 'client','deleted' => '0','status'=> '1'])->get()->toArray();
-        if(!empty($data['clients_list']))
+        /* To get all admin which are active and not deleted START */
+        $data['admin_list'] = User::where(['type' => 'admin','deleted' => '0','status'=> '1'])->get()->toArray();
+        if(!empty($data['admin_list']))
         {
-            foreach ($data['clients_list'] as $key => $client) 
+            foreach ($data['admin_list'] as $key => $admin) 
             {
-                $data['clients_list'][$key]['profile_image_url'] = "";
-                if(!empty($client['profile_image']))
-                    $data['clients_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$client['profile_image']);
+                $data['admin_list'][$key]['profile_image_url'] = "";
+                if(!empty($admin['profile_image']))
+                    $data['admin_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$admin['profile_image']);
             }
         }
-        /* To get all employee which are active and not deleted end */
+        /* To get all admin which are active and not deleted end */
 
         /* To get the chat list Start */
         $chats  = ChatMessages::select('id','chat_id','sender_user_id','receiver_user_id')->where(function ($query) use($mydetail) {
@@ -90,17 +92,18 @@ class ChatController extends CommonController
                     'name' => $user['name'],
                     'profile_image_url' => $profile_image_url,
                     'user_id' => $user['id'],
-                    'chat_id' => $chat_list['chat_id']
+                    'chat_id' => $chat_list['chat_id'],
+                    'is_login' => $user['is_login']
                 );
                 $chat_ids[] = $chat_list['chat_id'];
             }
             $data['chat_lists'] = $chat_lists;
             $data['chat_ids']   = json_encode($chat_ids);
+            $data['user_ids']   = implode(",",array_column($data['chat_lists'], 'user_id'));
         }
-
         /* To get the chat list End */
 
-        return view('admin.apps.chat.index',$data);
+        return view('clients.apps.chat.index',$data);
     }
 
 
@@ -216,7 +219,7 @@ class ChatController extends CommonController
 
                 $window_data['chat_messages'] = ChatMessages::getMessages($window_data['chat_id']);                
 
-                $data['getchatwindowhtml'] = view('admin.apps.chat.chattingwindow',$window_data)->render();
+                $data['getchatwindowhtml'] = view('clients.apps.chat.chattingwindow',$window_data)->render();
                 $status   = 200;
                 $response = array(
                     'status'  => 'SUCCESS',

@@ -14,9 +14,7 @@ class Projects extends Model
 
 	static function EmailAddProject($project_data_email)
 	{
-		$to_email = 'themepress360@gmail.com';
-        $to_name = 'A New Project has been Created';
-        if(!empty($project_data_email['team_leaders']))
+		if(!empty($project_data_email['team_leaders']))
         {
         	$team_leaders = explode(',',$project_data_email['team_leaders']);
         	foreach ($team_leaders as $key => $team_leader) {
@@ -65,15 +63,31 @@ class Projects extends Model
         	$email_data['project_added'] = array(
         		"name" => !empty($is_user_exists['name']) ? $is_user_exists['name'] : '-',
         		"profile_images_url" => $profile_image_url,
+                "email" => !empty($is_user_exists['email']) ? $is_user_exists['email'] : '-',
         	);        	
         }
 
         $email_data['project_title'] = $project_data_email['project_title'];
-        // print_r(view('admin.emails.AddProjectEmail',$email_data)->render());
-        // exit();
-		Mail::send('admin.emails.AddProjectEmail', $email_data, function($message) use ($to_name, $to_email) {
-            $message->to(strtolower($to_email), 'New Project')->subject($to_name);
-        });
-        // dd($project_data_email);
-	} 
+        if(!empty($email_data['team_leaders']))
+            self::EmailSent($email_data,$email_data['team_leaders']);
+        
+        if(!empty($email_data['team_members']))
+            self::EmailSent($email_data,$email_data['team_members']);
+	}
+
+    static function EmailSent($email_data,$users)
+    {
+        //$to_email = 'akkhan1587@gmail.com';
+        $to_name = 'A New Project has been Created';
+        if(!empty($users))
+        {
+            foreach ($users as $key => $user) 
+            {
+                $to_email = $user['email'];
+                Mail::send('admin.emails.AddProjectEmail', $email_data, function($message) use ($to_name, $to_email) {
+                    $message->to(strtolower($to_email), 'New Project')->subject($to_name);
+                });
+            }
+        }
+    } 
 }
