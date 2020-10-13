@@ -54,9 +54,14 @@
                         <a href="" onclick="return false;">
                         <span class="chat-avatar-sm user-img">
                         @if(!empty($chat_list['profile_image_url']))
-                           <img class="rounded-circle" alt="{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}" src="{{!empty($chat_list['profile_image_url']) ? $chat_list['profile_image_url'] : '-'}}"><span class="status online"></span>
+                           <img class="rounded-circle" alt="{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}" src="{{!empty($chat_list['profile_image_url']) ? $chat_list['profile_image_url'] : '-'}}">
                         @else
-                           <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-09.jpg')}}"><span class="status offline"></span>
+                           <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-09.jpg')}}">
+                        @endif
+                        @if(isset($chat_list['is_login']) && $chat_list['is_login'])
+                           <span class="status online" id="status_{{$user_id}}"></span>
+                        @else
+                           <span class="status offline" id="status_{{$user_id}}"></span>
                         @endif
                         </span> 
                         <span class="chat-user">{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}</span> <span class="badge badge-pill bg-danger">1</span>
@@ -64,30 +69,6 @@
                      </li>
                   @endforeach
                @endif
-               <li>
-                  <a href="chat">
-                  <span class="chat-avatar-sm user-img">
-                  <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-09.jpg')}}"><span class="status offline"></span>
-                  </span> 
-                  <span class="chat-user">Richard Miles</span> <span class="badge badge-pill bg-danger">7</span>
-                  </a>
-               </li>
-               <li>
-                  <a href="chat">
-                  <span class="chat-avatar-sm user-img">
-                  <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-10.jpg')}}"><span class="status away"></span>
-                  </span> 
-                  <span class="chat-user">John Smith</span>
-                  </a>
-               </li>
-               <li class="active">
-                  <a href="chat">
-                  <span class="chat-avatar-sm user-img">
-                  <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-05.jpg')}}"><span class="status online"></span>
-                  </span> 
-                  <span class="chat-user">Mike Litorus</span> <span class="badge badge-pill bg-danger">2</span>
-                  </a>
-               </li>
             </ul>
          </ul>
       </div>
@@ -592,6 +573,13 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.0/socket.io.js"></script>
 <script type="text/javascript">
+   function getCol(matrix, col){
+      var column = [];
+      for(var i=0; i<matrix.length; i++){
+         column.push(matrix[i][col]);
+      }
+      return column; // return column data..
+   }
    //Socket Working Start
    var socket = io('http://'+document.domain+':2020');
    //var socket = io('http://107.22.52.19:2020');
@@ -621,14 +609,25 @@
       socket.on('online_status', function (data) {
          if(chat_ids.length != 0)
          {
-            for(var i=0;i<chat_ids.length;i++)
+            var chatting_user_id = user_ids.split(',');
+            var socket_user_ids = getCol(data,'user_id');
+            for(var i=0;i<chatting_user_id.length;i++)
             {
-               if(chat_ids.indexOf(data[i].chat_id) != -1)
+               if(socket_user_ids.indexOf(chatting_user_id[i]) != -1)
                {
-
+                  $('#status_'+chatting_user_id[i]).removeClass("offline");
+                  $('#status_'+chatting_user_id[i]).removeClass("online");
+                  $('#status_'+chatting_user_id[i]).addClass("online");
                }
-               console.log(data[i]);
+               else
+               {
+                  $('#status_'+chatting_user_id[i]).removeClass("offline");
+                  $('#status_'+chatting_user_id[i]).removeClass("online");
+                  $('#status_'+chatting_user_id[i]).addClass("offline");
+               }
             }
+            var data =  {};
+            socket.emit('online_status', data);
          }
       });
    <?php } ?>

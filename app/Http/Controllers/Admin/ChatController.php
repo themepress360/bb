@@ -91,7 +91,8 @@ class ChatController extends CommonController
                     'name' => $user['name'],
                     'profile_image_url' => $profile_image_url,
                     'user_id' => $user['id'],
-                    'chat_id' => $chat_list['chat_id']
+                    'chat_id' => $chat_list['chat_id'],
+                    'is_login' => $user['is_login']
                 );
                 $chat_ids[] = $chat_list['chat_id'];
             }

@@ -1,957 +1,715 @@
-@extends('layout.clientlayout')
+@extends('layout.mainlayout')
 @section('content')
-
+<style type="text/css">
+.sidebar-menu ul ul.direct-chat-list{display: block !important;}
+.sidebar-menu ul ul.direct-chat-list a{padding: 9px 10px 9px 15px;}
+</style>
 <div class="sidebar" id="sidebar">
-                <div class="sidebar-inner slimscroll">
-					<div class="sidebar-menu">
-						<ul>
-							<li> 
-								<a href="{{url('/client/dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
-							</li>
-							<li class="menu-title"><span>Chat Groups</span> <a href="#" data-toggle="modal" data-target="#add_group"><i class="fa fa-plus"></i></a></li>
-							<li> 
-								<a href="chat">
-									<span class="chat-avatar-sm user-img">
-										<img class="rounded-circle" alt="" src="{{asset('img/user.jpg')}}">
-									</span> 
-									<span class="chat-user">#General</span>
-								</a>
-							</li>
-							<li> 
-								<a href="chat">
-									<span class="chat-avatar-sm user-img">
-										<img class="rounded-circle" alt="" src="{{asset('img/user.jpg')}}">
-									</span> 
-									<span class="chat-user">#Video Responsive Survey</span>
-								</a>
-							</li>
-							<li> 
-								<a href="chat">
-									<span class="chat-avatar-sm user-img">
-										<img class="rounded-circle" alt="" src="{{asset('img/user.jpg')}}">
-									</span> 
-									<span class="chat-user">#500rs</span>
-								</a>
-							</li>
-							<li> 
-								<a href="chat">
-									<span class="chat-avatar-sm user-img">
-										<img class="rounded-circle" alt="" src="{{asset('img/user.jpg')}}">
-									</span> 
-									<span class="chat-user">#warehouse</span>
-								</a>
-							</li>
-							<li class="menu-title">Direct Chats <a href="#" data-toggle="modal" data-target="#add_chat_user"><i class="fa fa-plus"></i></a></li>
-							<li>
-								<a href="chat">
-									<span class="chat-avatar-sm user-img">
-										<img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-02.jpg')}}"><span class="status online"></span>
-									</span> 
-									<span class="chat-user">John Doe</span> <span class="badge badge-pill bg-danger">1</span>
-								</a>
-							</li>
-							<li>
-								<a href="chat">
-									<span class="chat-avatar-sm user-img">
-										<img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-09.jpg')}}"><span class="status offline"></span>
-									</span> 
-									<span class="chat-user">Richard Miles</span> <span class="badge badge-pill bg-danger">7</span>
-								</a>
-							</li>
-							<li>
-								<a href="chat">
-									<span class="chat-avatar-sm user-img">
-										<img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-10.jpg')}}"><span class="status away"></span>
-									</span> 
-									<span class="chat-user">John Smith</span>
-								</a>
-							</li>
-							<li class="active">
-								<a href="chat">
-									<span class="chat-avatar-sm user-img">
-										<img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-05.jpg')}}"><span class="status online"></span>
-									</span> 
-									<span class="chat-user">Mike Litorus</span> <span class="badge badge-pill bg-danger">2</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-                </div>
-            </div>
-			<!-- /Sidebar -->
+   <div class="sidebar-inner slimscroll">
+      <div class="sidebar-menu">
+         <ul>
+            <li> 
+               <a href="{{url('/admin/dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
+            </li>
+            <li class="menu-title"><span>Chat Groups</span> <a href="#" data-toggle="modal" data-target="#add_group"><i class="fa fa-plus"></i></a></li>
+            <li> 
+               <a href="chat">
+               <span class="chat-avatar-sm user-img">
+               <img class="rounded-circle" alt="" src="{{asset('img/user.jpg')}}">
+               </span> 
+               <span class="chat-user">#General</span>
+               </a>
+            </li>
+            <li> 
+               <a href="chat">
+               <span class="chat-avatar-sm user-img">
+               <img class="rounded-circle" alt="" src="{{asset('img/user.jpg')}}">
+               </span> 
+               <span class="chat-user">#Video Responsive Survey</span>
+               </a>
+            </li>
+            <li> 
+               <a href="chat">
+               <span class="chat-avatar-sm user-img">
+               <img class="rounded-circle" alt="" src="{{asset('img/user.jpg')}}">
+               </span> 
+               <span class="chat-user">#500rs</span>
+               </a>
+            </li>
+            <li> 
+               <a href="chat">
+               <span class="chat-avatar-sm user-img">
+               <img class="rounded-circle" alt="" src="{{asset('img/user.jpg')}}">
+               </span> 
+               <span class="chat-user">#warehouse</span>
+               </a>
+            </li>
+            <li class="menu-title">Direct Chats <a href="#" data-toggle="modal" data-target="#add_chat_user"><i class="fa fa-plus"></i></a></li>
+            <ul class="direct-chat-list" id="direct-chat-list">
+               @if(!empty($chat_lists))
+                  @foreach($chat_lists as $key => $chat_list)
+                     <?php $chat_id = $chat_list['chat_id'];?>
+                     <?php $user_id = $chat_list['user_id'];?>
+                     @if($chat_list['user_id'] != Auth::user()->id)
+                        <li class="" onclick="chatting_window('{{$chat_id}}','{{$user_id}}')" id="chat_{{$chat_id}}">
+                           <a href="" onclick="return false;">
+                           <span class="chat-avatar-sm user-img">
+                           @if(!empty($chat_list['profile_image_url']))
+                              <img class="rounded-circle" alt="{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}" src="{{!empty($chat_list['profile_image_url']) ? $chat_list['profile_image_url'] : '-'}}">
+                           @else
+                              <img class="rounded-circle" alt="" src="{{asset('img/profiles/avatar-09.jpg')}}">
+                           @endif
+                           @if(isset($chat_list['is_login']) && $chat_list['is_login'])
+                              <span class="status online" id="status_{{$user_id}}"></span>
+                           @else
+                              <span class="status offline" id="status_{{$user_id}}"></span>
+                           @endif
+                           </span> 
+                           <span class="chat-user">{{!empty($chat_list['name']) ? $chat_list['name'] : '-'}}</span> <span class="badge badge-pill bg-danger">1</span>
+                           </a>
+                        </li>
+                     @endif
+                  @endforeach
+               @endif
+            </ul>
+         </ul>
+      </div>
+   </div>
+</div>
+<!-- /Sidebar -->
 <!-- Page Wrapper -->
-            <div class="page-wrapper">
-			
-				<!-- Chat Main Row -->
-				<div class="chat-main-row">
-				
-					<!-- Chat Main Wrapper -->
-					<div class="chat-main-wrapper">
-					
-						<!-- Chats View -->
-						<div class="col-lg-9 message-view task-view">
-							<div class="chat-window">
-								<div class="fixed-header">
-									<div class="navbar">
-										<div class="user-details mr-auto">
-											<div class="float-left user-img">
-												<a class="avatar" href="profile" title="Mike Litorus">
-													<img src="{{asset('img/profiles/avatar-05.jpg')}}" alt="" class="rounded-circle">
-													<span class="status online"></span>
-												</a>
-											</div>
-											<div class="user-info float-left">
-												<a href="profile" title="Mike Litorus"><span>Mike Litorus</span> <i class="typing-text">Typing...</i></a>
-												<span class="last-seen">Last seen today at 7:50 AM</span>
-											</div>
-										</div>
-										<div class="search-box">
-											<div class="input-group input-group-sm">
-												<input type="text" placeholder="Search" class="form-control">
-												<span class="input-group-append">
-													<button type="button" class="btn"><i class="fa fa-search"></i></button>
-												</span>
-											</div>
-										</div>
-										<ul class="nav custom-menu">
-											<li class="nav-item">
-												<a class="nav-link task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i class="fa fa-user"></i></a>
-											</li>
-											<li class="nav-item">
-												<a href="voice-call" class="nav-link"><i class="fa fa-phone"></i></a>
-											</li>
-											<li class="nav-item">
-												<a href="video-call" class="nav-link"><i class="fa fa-video-camera"></i></a>
-											</li>
-											<li class="nav-item dropdown dropdown-action">
-												<a aria-expanded="false" data-toggle="dropdown" class="nav-link dropdown-toggle" href=""><i class="fa fa-cog"></i></a>
-												<div class="dropdown-menu dropdown-menu-right">
-													<a href="javascript:void(0)" class="dropdown-item">Delete Conversations</a>
-													<a href="javascript:void(0)" class="dropdown-item">Settings</a>
-												</div>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="chat-contents">
-									<div class="chat-content-wrap">
-										<div class="chat-wrap-inner">
-											<div class="chat-box">
-												<div class="chats">
-													<div class="chat chat-right">
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>Hello. What can I do for you?</p>
-																	<span class="chat-time">8:30 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat-line">
-														<span class="chat-date">October 8th, 2018</span>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>I'm just looking around.</p>
-																	<p>Will you tell me something about yourself? </p>
-																	<span class="chat-time">8:35 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>Are you there? That time!</p>
-																	<span class="chat-time">8:40 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-right">
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>Where?</p>
-																	<span class="chat-time">8:35 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>OK, my name is Limingqiang. I like singing, playing basketballand so on.</p>
-																	<span class="chat-time">8:42 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-															<img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>You wait for notice.</p>
-																	<span class="chat-time">8:30 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>Consectetuorem ipsum dolor sit?</p>
-																	<span class="chat-time">8:50 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>OK?</p>
-																	<span class="chat-time">8:55 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="chat-bubble">
-																<div class="chat-content img-content">
-																	<div class="chat-img-group clearfix">
-																		<p>Uploaded 3 Images</p>
-																		<a class="chat-img-attach" href="#">
-																			<img width="182" height="137" alt="" src="img/placeholder.jpg">
-																			<div class="chat-placeholder">
-																				<div class="chat-img-name">placeholder.jpg</div>
-																				<div class="chat-file-desc">842 KB</div>
-																			</div>
-																		</a>
-																		<a class="chat-img-attach" href="#">
-																			<img width="182" height="137" alt="" src="img/placeholder.jpg">
-																			<div class="chat-placeholder">
-																				<div class="chat-img-name">842 KB</div>
-																			</div>
-																		</a>
-																		<a class="chat-img-attach" href="#">
-																			<img width="182" height="137" alt="" src="img/placeholder.jpg">
-																			<div class="chat-placeholder">
-																				<div class="chat-img-name">placeholder.jpg</div>
-																				<div class="chat-file-desc">842 KB</div>
-																			</div>
-																		</a>
-																	</div>
-																	<span class="chat-time">9:00 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-right">
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>OK!</p>
-																	<span class="chat-time">9:00 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>Uploaded 3 files</p>
-																	<ul class="attach-list">
-																		<li><i class="fa fa-file"></i> <a href="#">example.avi</a></li>
-																		<li><i class="fa fa-file"></i> <a href="#">activity.psd</a></li>
-																		<li><i class="fa fa-file"></i> <a href="#">example.psd</a></li>
-																	</ul>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>Consectetuorem ipsum dolor sit?</p>
-																	<span class="chat-time">8:50 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>OK?</p>
-																	<span class="chat-time">8:55 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-right">
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content img-content">
-																	<div class="chat-img-group clearfix">
-																		<p>Uploaded 6 Images</p>
-																		<a class="chat-img-attach" href="#">
-																			<img width="182" height="137" alt="" src="img/placeholder.jpg">
-																			<div class="chat-placeholder">
-																				<div class="chat-img-name">placeholder.jpg</div>
-																				<div class="chat-file-desc">842 KB</div>
-																			</div>
-																		</a>
-																		<a class="chat-img-attach" href="#">
-																			<img width="182" height="137" alt="" src="img/placeholder.jpg">
-																			<div class="chat-placeholder">
-																				<div class="chat-img-name">842 KB</div>
-																			</div>
-																		</a>
-																		<a class="chat-img-attach" href="#">
-																			<img width="182" height="137" alt="" src="img/placeholder.jpg">
-																			<div class="chat-placeholder">
-																				<div class="chat-img-name">placeholder.jpg</div>
-																				<div class="chat-file-desc">842 KB</div>
-																			</div>
-																		</a>
-																		<a class="chat-img-attach" href="#">
-																			<img width="182" height="137" alt="" src="img/placeholder.jpg">
-																			<div class="chat-placeholder">
-																				<div class="chat-img-name">placeholder.jpg</div>
-																				<div class="chat-file-desc">842 KB</div>
-																			</div>
-																		</a>
-																		<a class="chat-img-attach" href="#">
-																			<img width="182" height="137" alt="" src="img/placeholder.jpg">
-																			<div class="chat-placeholder">
-																				<div class="chat-img-name">placeholder.jpg</div>
-																				<div class="chat-file-desc">842 KB</div>
-																			</div>
-																		</a>
-																		<a class="chat-img-attach" href="#">
-																			<img width="182" height="137" alt="" src="img/placeholder.jpg">
-																			<div class="chat-placeholder">
-																				<div class="chat-img-name">placeholder.jpg</div>
-																				<div class="chat-file-desc">842 KB</div>
-																			</div>
-																		</a>
-																	</div>
-																	<span class="chat-time">9:00 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<ul class="attach-list">
-																		<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">Document_2016.pdf</a></li>
-																	</ul>
-																	<span class="chat-time">9:00 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>	
-													<div class="chat chat-right">
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<ul class="attach-list">
-																		<li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="#">Document_2016.pdf</a></li>
-																	</ul>
-																	<span class="chat-time">9:00 am</span>
-																</div>
-																<div class="chat-action-btns">
-																	<ul>
-																		<li><a href="#" class="share-msg" title="Share"><i class="fa fa-share-alt"></i></a></li>
-																		<li><a href="#" class="edit-msg"><i class="fa fa-pencil"></i></a></li>
-																		<li><a href="#" class="del-msg"><i class="fa fa-trash-o"></i></a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<p>Typing ...</p>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="chat-footer">
-									<div class="message-bar">
-										<div class="message-inner">
-											<a class="link attach-icon" href="#" data-toggle="modal" data-target="#drag_files"><img src="img/attachment.png" alt=""></a>
-											<div class="message-area">
-												<div class="input-group">
-													<textarea class="form-control" placeholder="Type message..."></textarea>
-													<span class="input-group-append">
-														<button class="btn btn-custom" type="button"><i class="fa fa-send"></i></button>
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /Chats View -->
-						
-						<!-- Chat Right Sidebar -->
-						<div class="col-lg-3 message-view chat-profile-view chat-sidebar" id="task_window">
-							<div class="chat-window video-window">
-								<div class="fixed-header">
-									<ul class="nav nav-tabs nav-tabs-bottom">
-										<li class="nav-item"><a class="nav-link" href="#calls_tab" data-toggle="tab">Calls</a></li>
-										<li class="nav-item"><a class="nav-link active" href="#profile_tab" data-toggle="tab">Profile</a></li>
-									</ul>
-								</div>
-								<div class="tab-content chat-contents">
-									<div class="content-full tab-pane" id="calls_tab">
-										<div class="chat-wrap-inner">
-											<div class="chat-box">
-												<div class="chats">
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="{{asset('img/profiles/avatar-02.jpg')}}">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">You</span> <span class="chat-time">8:35 am</span>
-																	<div class="call-details">
-																		<i class="material-icons">phone_missed</i>
-																		<div class="call-info">
-																			<div class="call-user-details">
-																				<span class="call-description">Jeffrey Warden missed the call</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="{{asset('img/profiles/avatar-02.jpg')}}">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span>
-																	<div class="call-details">
-																		<i class="material-icons">call_end</i>
-																		<div class="call-info">
-																			<div class="call-user-details"><span class="call-description">This call has ended</span></div>
-																			<div class="call-timing">Duration: <strong>5 min 57 sec</strong></div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat-line">
-														<span class="chat-date">January 29th, 2019</span>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">Richard Miles</span> <span class="chat-time">8:35 am</span>
-																	<div class="call-details">
-																		<i class="material-icons">phone_missed</i>
-																		<div class="call-info">
-																			<div class="call-user-details">
-																				<span class="call-description">You missed the call</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile" class="avatar">
-																<img alt="" src="{{asset('img/profiles/avatar-02.jpg')}}">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">You</span> <span class="chat-time">8:35 am</span>
-																	<div class="call-details">
-																		<i class="material-icons">ring_volume</i>
-																		<div class="call-info">
-																			<div class="call-user-details">
-																				<a href="#" class="call-description call-description--linked" data-qa="call_attachment_link">Calling John Smith ...</a>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="content-full tab-pane show active" id="profile_tab">
-										<div class="display-table">
-											<div class="table-row">
-												<div class="table-body">
-													<div class="table-content">
-														<div class="chat-profile-img">
-															<div class="edit-profile-img">
-																<img src="{{asset('img/profiles/avatar-02.jpg')}}" alt="">
-																<span class="change-img">Change Image</span>
-															</div>
-															<h3 class="user-name m-t-10 mb-0">John Doe</h3>
-															<small class="text-muted">Web Designer</small>
-															<a href="javascript:void(0);" class="btn btn-primary edit-btn"><i class="fa fa-pencil"></i></a>
-														</div>
-														<div class="chat-profile-info">
-															<ul class="user-det-list">
-																<li>
-																	<span>Username:</span>
-																	<span class="float-right text-muted">johndoe</span>
-																</li>
-																<li>
-																	<span>DOB:</span>
-																	<span class="float-right text-muted">24 July</span>
-																</li>
-																<li>
-																	<span>Email:</span>
-																	<span class="float-right text-muted">johndoe@example.com</span>
-																</li>
-																<li>
-																	<span>Phone:</span>
-																	<span class="float-right text-muted">9876543210</span>
-																</li>
-															</ul>
-														</div>
-														<div class="transfer-files">
-															<ul class="nav nav-tabs nav-tabs-solid nav-justified mb-0">
-																<li class="nav-item"><a class="nav-link active" href="#all_files" data-toggle="tab">All Files</a></li>
-																<li class="nav-item"><a class="nav-link" href="#my_files" data-toggle="tab">My Files</a></li>
-															</ul>
-															<div class="tab-content">
-																<div class="tab-pane show active" id="all_files">
-																	<ul class="files-list">
-																		<li>
-																			<div class="files-cont">
-																				<div class="file-type">
-																					<span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
-																				</div>
-																				<div class="files-info">
-																					<span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
-																					<span class="file-author"><a href="#">Loren Gatlin</a></span> <span class="file-date">May 31st at 6:53 PM</span>
-																				</div>
-																				<ul class="files-action">
-																					<li class="dropdown dropdown-action">
-																						<a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
-																						<div class="dropdown-menu">
-																							<a class="dropdown-item" href="javascript:void(0)">Download</a>
-																							<a class="dropdown-item" href="#" data-toggle="modal" data-target="#share_files">Share</a>
-																						</div>
-																					</li>
-																				</ul>
-																			</div>
-																		</li>
-																	</ul>
-																</div>
-																<div class="tab-pane" id="my_files">
-																	<ul class="files-list">
-																		<li>
-																			<div class="files-cont">
-																				<div class="file-type">
-																					<span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
-																				</div>
-																				<div class="files-info">
-																					<span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
-																					<span class="file-author"><a href="#">John Doe</a></span> <span class="file-date">May 31st at 6:53 PM</span>
-																				</div>
-																				<ul class="files-action">
-																					<li class="dropdown dropdown-action">
-																						<a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
-																						<div class="dropdown-menu">
-																							<a class="dropdown-item" href="javascript:void(0)">Download</a>
-																							<a class="dropdown-item" href="#" data-toggle="modal" data-target="#share_files">Share</a>
-																						</div>
-																					</li>
-																				</ul>
-																			</div>
-																		</li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /Chat Right Sidebar -->
-						
-					</div>
-					<!-- /Chat Main Wrapper -->
-					
-				</div>
-				<!-- /Chat Main Row -->
-				
-				<!-- Drogfiles Modal -->
-				<div id="drag_files" class="modal custom-modal fade" role="dialog">
-					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Drag and drop files upload</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-                                <form id="js-upload-form">
-									<div class="upload-drop-zone" id="drop-zone">
-										<i class="fa fa-cloud-upload fa-2x"></i> <span class="upload-text">Just drag and drop files here</span>
-									</div>
-                                    <h4>Uploading</h4>
-                                    <ul class="upload-list">
-                                        <li class="file-list">
-                                            <div class="upload-wrap">
-                                                <div class="file-name">
-                                                    <i class="fa fa-photo"></i>
-                                                    photo.png
-                                                </div>
-                                                <div class="file-size">1.07 gb</div>
-                                                <button type="button" class="file-close">
-                                                    <i class="fa fa-close"></i>
-                                                </button>
-                                            </div>
-                                            <div class="progress progress-xs progress-striped">
-												<div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
-											</div>
-                                            <div class="upload-process">37% done</div>
-                                        </li>
-                                        <li class="file-list">
-                                            <div class="upload-wrap">
-                                                <div class="file-name">
-                                                    <i class="fa fa-file"></i>
-                                                    task.doc
-                                                </div>
-                                                <div class="file-size">5.8 kb</div>
-                                                <button type="button" class="file-close">
-                                                    <i class="fa fa-close"></i>
-                                                </button>
-                                            </div>
-                                            <div class="progress progress-xs progress-striped">
-												<div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
-											</div>
-                                            <div class="upload-process">37% done</div>
-                                        </li>
-                                        <li class="file-list">
-                                            <div class="upload-wrap">
-                                                <div class="file-name">
-                                                    <i class="fa fa-photo"></i>
-                                                    dashboard.png
-                                                </div>
-                                                <div class="file-size">2.1 mb</div>
-                                                <button type="button" class="file-close">
-                                                    <i class="fa fa-close"></i>
-                                                </button>
-                                            </div>
-                                            <div class="progress progress-xs progress-striped">
-												<div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
-											</div>
-                                            <div class="upload-process">Completed</div>
-                                        </li>
-                                    </ul>
-                                </form>
-								<div class="submit-section">
-									<button class="btn btn-primary submit-btn">Submit</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Drogfiles Modal -->
-				
-				<!-- Add Group Modal -->
-				<div id="add_group" class="modal custom-modal fade" role="dialog">
-					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Create a group</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<p>Groups are where your team communicates. They’re best when organized around a topic — #leads, for example.</p>
-								<form>
-								<div class="form-group">
-									<label>Group Name <span class="text-danger">*</span></label>
-									<input class="form-control" type="text">
-								</div>
-								<div class="form-group">
-									<label>Send invites to: <span class="text-muted-light">(optional)</span></label>
-									<input class="form-control" type="text">
-								</div>
-								<div class="submit-section">
-									<button class="btn btn-primary submit-btn">Submit</button>
-								</div>
-							</form>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Add Group Modal -->
-				
-				<!-- Add Chat User Modal -->
-				<div id="add_chat_user" class="modal custom-modal fade" role="dialog">
-					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Direct Chat</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="input-group m-b-30">
-									<input placeholder="Search to start a chat" class="form-control search-input" type="text">
-									<span class="input-group-append">
-										<button class="btn btn-primary">Search</button>
-									</span>
-								</div>
-								<div>
-									<h5>Recent Conversations</h5>
-									<ul class="chat-user-list">
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar align-self-center">
-														<img src="img/profiles/avatar-16.jpg" alt="">
-													</span>
-												<div class="media-body align-self-center text-nowrap">
-													<div class="user-name">Jeffery Lalor</div>
-													<span class="designation">Team Leader</span>
-												</div>
-												<div class="text-nowrap align-self-center">
-													<div class="online-date">1 day ago</div>
-												</div>
-												</div>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="media ">
-													<span class="avatar align-self-center">
-														<img src="img/profiles/avatar-13.jpg" alt="">
-													</span>
-													<div class="media-body align-self-center text-nowrap">
-														<div class="user-name">Bernardo Galaviz</div>
-														<span class="designation">Web Developer</span>
-													</div>
-													<div class="align-self-center text-nowrap">
-														<div class="online-date">3 days ago</div>
-													</div>
-												</div>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="media">
-													<span class="avatar align-self-center">
-														<img src="{{asset('img/profiles/avatar-02.jpg')}}" alt="">
-													</span>
-													<div class="media-body text-nowrap align-self-center">
-														<div class="user-name">John Doe</div>
-														<span class="designation">Web Designer</span>
-													</div>
-													<div class="align-self-center text-nowrap">
-														<div class="online-date">7 months ago</div>
-													</div>
-												</div>
-											</a>
-										</li>
-									</ul>
-								</div>
-								<div class="submit-section">
-									<button class="btn btn-primary submit-btn">Submit</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Add Chat User Modal -->
-				
-				<!-- Share Files Modal -->
-				<div id="share_files" class="modal custom-modal fade" role="dialog">
-					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Share File</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="files-share-list">
-									<div class="files-cont">
-										<div class="file-type">
-											<span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
-										</div>
-										<div class="files-info">
-											<span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
-											<span class="file-author"><a href="#">Bernardo Galaviz</a></span> <span class="file-date">May 31st at 6:53 PM</span>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label>Share With</label>
-									<input class="form-control" type="text">
-								</div>
-								<div class="submit-section">
-									<button class="btn btn-primary submit-btn">Share</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Share Files Modal -->
-				
+<div class="page-wrapper">
+   <!-- Chat Main Row -->
+   <div class="chat-main-row">
+      <!-- Chat Main Wrapper -->
+      <div class="chat-main-wrapper">
+         <!-- Chats View -->
+         <div class="col-lg-9 message-view task-view">
+            <div class="chat-window" id="chat-window">
+               
             </div>
-			<!-- /Page Wrapper -->
-			@endsection
+         </div>
+         <!-- /Chats View -->
+         <!-- Chat Right Sidebar -->
+         <div class="col-lg-3 message-view chat-profile-view chat-sidebar" id="task_window" style="display:none">
+            <div class="chat-window video-window">
+               <div class="fixed-header">
+                  <ul class="nav nav-tabs nav-tabs-bottom">
+                     <li class="nav-item"><a class="nav-link" href="#calls_tab" data-toggle="tab">Calls</a></li>
+                     <li class="nav-item"><a class="nav-link active" href="#profile_tab" data-toggle="tab">Profile</a></li>
+                  </ul>
+               </div>
+               <div class="tab-content chat-contents">
+                  <div class="content-full tab-pane" id="calls_tab">
+                     <div class="chat-wrap-inner">
+                        <div class="chat-box">
+                           <div class="chats">
+                              <div class="chat chat-left">
+                                 <div class="chat-avatar">
+                                    <a href="profile" class="avatar">
+                                    <img alt="" src="{{asset('img/profiles/avatar-02.jpg')}}">
+                                    </a>
+                                 </div>
+                                 <div class="chat-body">
+                                    <div class="chat-bubble">
+                                       <div class="chat-content">
+                                          <span class="task-chat-user">You</span> <span class="chat-time">8:35 am</span>
+                                          <div class="call-details">
+                                             <i class="material-icons">phone_missed</i>
+                                             <div class="call-info">
+                                                <div class="call-user-details">
+                                                   <span class="call-description">Jeffrey Warden missed the call</span>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="chat chat-left">
+                                 <div class="chat-avatar">
+                                    <a href="profile" class="avatar">
+                                    <img alt="" src="{{asset('img/profiles/avatar-02.jpg')}}">
+                                    </a>
+                                 </div>
+                                 <div class="chat-body">
+                                    <div class="chat-bubble">
+                                       <div class="chat-content">
+                                          <span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span>
+                                          <div class="call-details">
+                                             <i class="material-icons">call_end</i>
+                                             <div class="call-info">
+                                                <div class="call-user-details"><span class="call-description">This call has ended</span></div>
+                                                <div class="call-timing">Duration: <strong>5 min 57 sec</strong></div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="chat-line">
+                                 <span class="chat-date">January 29th, 2019</span>
+                              </div>
+                              <div class="chat chat-left">
+                                 <div class="chat-avatar">
+                                    <a href="profile" class="avatar">
+                                    <img alt="" src="{{asset('img/profiles/avatar-05.jpg')}}">
+                                    </a>
+                                 </div>
+                                 <div class="chat-body">
+                                    <div class="chat-bubble">
+                                       <div class="chat-content">
+                                          <span class="task-chat-user">Richard Miles</span> <span class="chat-time">8:35 am</span>
+                                          <div class="call-details">
+                                             <i class="material-icons">phone_missed</i>
+                                             <div class="call-info">
+                                                <div class="call-user-details">
+                                                   <span class="call-description">You missed the call</span>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="chat chat-left">
+                                 <div class="chat-avatar">
+                                    <a href="profile" class="avatar">
+                                    <img alt="" src="{{asset('img/profiles/avatar-02.jpg')}}">
+                                    </a>
+                                 </div>
+                                 <div class="chat-body">
+                                    <div class="chat-bubble">
+                                       <div class="chat-content">
+                                          <span class="task-chat-user">You</span> <span class="chat-time">8:35 am</span>
+                                          <div class="call-details">
+                                             <i class="material-icons">ring_volume</i>
+                                             <div class="call-info">
+                                                <div class="call-user-details">
+                                                   <a href="#" class="call-description call-description--linked" data-qa="call_attachment_link">Calling John Smith ...</a>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="content-full tab-pane show active" id="profile_tab">
+                     <div class="display-table">
+                        <div class="table-row">
+                           <div class="table-body">
+                              <div class="table-content">
+                                 <div class="chat-profile-img">
+                                    <div class="edit-profile-img">
+                                       <img src="{{asset('img/profiles/avatar-02.jpg')}}" alt="">
+                                       <span class="change-img">Change Image</span>
+                                    </div>
+                                    <h3 class="user-name m-t-10 mb-0">John Doe</h3>
+                                    <small class="text-muted">Web Designer</small>
+                                    <a href="javascript:void(0);" class="btn btn-primary edit-btn"><i class="fa fa-pencil"></i></a>
+                                 </div>
+                                 <div class="chat-profile-info">
+                                    <ul class="user-det-list">
+                                       <li>
+                                          <span>Username:</span>
+                                          <span class="float-right text-muted">johndoe</span>
+                                       </li>
+                                       <li>
+                                          <span>DOB:</span>
+                                          <span class="float-right text-muted">24 July</span>
+                                       </li>
+                                       <li>
+                                          <span>Email:</span>
+                                          <span class="float-right text-muted">johndoe@example.com</span>
+                                       </li>
+                                       <li>
+                                          <span>Phone:</span>
+                                          <span class="float-right text-muted">9876543210</span>
+                                       </li>
+                                    </ul>
+                                 </div>
+                                 <div class="transfer-files">
+                                    <ul class="nav nav-tabs nav-tabs-solid nav-justified mb-0">
+                                       <li class="nav-item"><a class="nav-link active" href="#all_files" data-toggle="tab">All Files</a></li>
+                                       <li class="nav-item"><a class="nav-link" href="#my_files" data-toggle="tab">My Files</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                       <div class="tab-pane show active" id="all_files">
+                                          <ul class="files-list">
+                                             <li>
+                                                <div class="files-cont">
+                                                   <div class="file-type">
+                                                      <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
+                                                   </div>
+                                                   <div class="files-info">
+                                                      <span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
+                                                      <span class="file-author"><a href="#">Loren Gatlin</a></span> <span class="file-date">May 31st at 6:53 PM</span>
+                                                   </div>
+                                                   <ul class="files-action">
+                                                      <li class="dropdown dropdown-action">
+                                                         <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                         <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="javascript:void(0)">Download</a>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#share_files">Share</a>
+                                                         </div>
+                                                      </li>
+                                                   </ul>
+                                                </div>
+                                             </li>
+                                          </ul>
+                                       </div>
+                                       <div class="tab-pane" id="my_files">
+                                          <ul class="files-list">
+                                             <li>
+                                                <div class="files-cont">
+                                                   <div class="file-type">
+                                                      <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
+                                                   </div>
+                                                   <div class="files-info">
+                                                      <span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
+                                                      <span class="file-author"><a href="#">John Doe</a></span> <span class="file-date">May 31st at 6:53 PM</span>
+                                                   </div>
+                                                   <ul class="files-action">
+                                                      <li class="dropdown dropdown-action">
+                                                         <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                         <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="javascript:void(0)">Download</a>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#share_files">Share</a>
+                                                         </div>
+                                                      </li>
+                                                   </ul>
+                                                </div>
+                                             </li>
+                                          </ul>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- /Chat Right Sidebar -->
+      </div>
+      <!-- /Chat Main Wrapper -->
+   </div>
+   <!-- /Chat Main Row -->
+   <!-- Drogfiles Modal -->
+   <div id="drag_files" class="modal custom-modal fade" role="dialog">
+      <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">Drag and drop files upload</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form id="js-upload-form">
+                  <div class="upload-drop-zone" id="drop-zone">
+                     <i class="fa fa-cloud-upload fa-2x"></i> <span class="upload-text">Just drag and drop files here</span>
+                  </div>
+                  <h4>Uploading</h4>
+                  <ul class="upload-list">
+                     <li class="file-list">
+                        <div class="upload-wrap">
+                           <div class="file-name">
+                              <i class="fa fa-photo"></i>
+                              photo.png
+                           </div>
+                           <div class="file-size">1.07 gb</div>
+                           <button type="button" class="file-close">
+                           <i class="fa fa-close"></i>
+                           </button>
+                        </div>
+                        <div class="progress progress-xs progress-striped">
+                           <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                        </div>
+                        <div class="upload-process">37% done</div>
+                     </li>
+                     <li class="file-list">
+                        <div class="upload-wrap">
+                           <div class="file-name">
+                              <i class="fa fa-file"></i>
+                              task.doc
+                           </div>
+                           <div class="file-size">5.8 kb</div>
+                           <button type="button" class="file-close">
+                           <i class="fa fa-close"></i>
+                           </button>
+                        </div>
+                        <div class="progress progress-xs progress-striped">
+                           <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                        </div>
+                        <div class="upload-process">37% done</div>
+                     </li>
+                     <li class="file-list">
+                        <div class="upload-wrap">
+                           <div class="file-name">
+                              <i class="fa fa-photo"></i>
+                              dashboard.png
+                           </div>
+                           <div class="file-size">2.1 mb</div>
+                           <button type="button" class="file-close">
+                           <i class="fa fa-close"></i>
+                           </button>
+                        </div>
+                        <div class="progress progress-xs progress-striped">
+                           <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                        </div>
+                        <div class="upload-process">Completed</div>
+                     </li>
+                  </ul>
+               </form>
+               <div class="submit-section">
+                  <a class="btn btn-primary submit-btn">Submit</a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- /Drogfiles Modal -->
+   <!-- Add Group Modal -->
+   <div id="add_group" class="modal custom-modal fade" role="dialog">
+      <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">Create a group</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <p>Groups are where your team communicates. They’re best when organized around a topic — #leads, for example.</p>
+               <form>
+                  <div class="form-group">
+                     <label>Group Name <span class="text-danger">*</span></label>
+                     <input class="form-control" type="text">
+                  </div>
+                  <div class="form-group">
+                     <label>Send invites to: <span class="text-muted-light">(optional)</span></label>
+                     <input class="form-control" type="text">
+                  </div>
+                  <div class="submit-section">
+                     <button class="btn btn-primary submit-btn">Submit</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- /Add Group Modal -->
+   <!-- Add Chat User Modal -->
+   <div id="add_chat_user" class="modal custom-modal fade" role="dialog">
+      <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">Direct Chat</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <!-- <div class="row ">
+               <div class="col-md-6">
+                  <div class="radio">
+                     <label><input type="radio" name="radio" checked onchange="list_enable('employee');"> Employees</label>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="radio">
+                     <label><input type="radio" name="radio" onchange="list_enable('client');" > Clients</label>
+                  </div>
+               </div>
+            </div> -->
+            <div class="modal-body">
+               <div class="m-b-30 tag-control tag-input scrollbars">
+                  <div class="add_follower d-flex" id="add_followers" style="width: max-content;">
+                     <input placeholder="Add Follower" type="hidden" name="add_followers">
+                  </div>                  
+               </div>
+               <!--<div class="input-group m-b-30">
+                  <input placeholder="Search to start a chat" class="form-control search-input" type="text">
+                  <span class="input-group-append">
+                  <button class="btn btn-primary">Search</button>
+                  </span>
+               </div> -->
+               <div>
+                  <h5>Conversation Start</h5>
+                  @if(!empty($admin_list))
+                  <ul class="chat-user-list" id="client-chat-users">
+                     @foreach($admin_list as $key => $admin)
+                           <li id="{{$admin['id']}}">
+                              <a href="#">
+                                 <div class="media">
+                                    <input type="hidden" name="start_conversation_user_id" class="f-id" value="{{!empty($admin['id']) ? $admin['id'] : '-'}}">
+                                    <span class="avatar align-self-center">
+                                    <img src="{{!empty($admin['profile_image_url']) ? $admin['profile_image_url'] : '-'}}" alt="{{!empty($admin['name']) ? ucwords($admin['name']) : '-'}}">
+                                    </span>
+                                    <div class="media-body align-self-center text-nowrap">
+                                       <div class="user-name f-name">{{!empty($admin['name']) ? ucwords($admin['name']) : '-'}}</div>
+                                       <span class="designation">-</span>
+                                    </div>
+                                    <div class="text-nowrap align-self-center">
+                                       @if(!empty($admin['logout_time']))
+                                          @if($admin['is_login'] == 0)
+                                             <?php 
+                                                $match_date = strtotime($admin['logout_time']);
+                                                $date = strtotime(date("Y-m-d H:i:s"));
+                                                $difference = $date - $match_date;
+                                             ?>
+                                             @if($difference < 86400)
+                                                <div class="online-date">Today,{{date("H:i:s A",$match_date)}}</div>
+                                             @elseif($difference < 172800)
+                                                <div class="online-date">Yesterday,{{date("H:i:s A",$match_date)}}</div>
+                                             @else
+                                                <div class="online-date">{{date("Y-m-d,H:i:s A",$match_date)}}</div>
+                                             @endif
+                                          @else
+                                             <div class="online-date">Login User</div>
+                                          @endif
+                                       @else
+                                          <div class="online-date">This person is not login yet</div>
+                                       @endif
+                                    </div>
+                                 </div>
+                              </a>
+                           </li>
+                     @endforeach
+                  </ul>
+                  @endif
+               </div>
+               <div class="submit-section">
+                  <a onclick="start_chat();" class="btn btn-primary submit-btn">Submit</a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- /Add Chat User Modal -->
+   <!-- Share Files Modal -->
+   <div id="share_files" class="modal custom-modal fade" role="dialog">
+      <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">Share File</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="files-share-list">
+                  <div class="files-cont">
+                     <div class="file-type">
+                        <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
+                     </div>
+                     <div class="files-info">
+                        <span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
+                        <span class="file-author"><a href="#">Bernardo Galaviz</a></span> <span class="file-date">May 31st at 6:53 PM</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label>Share With</label>
+                  <input class="form-control" type="text">
+               </div>
+               <div class="submit-section">
+                  <button class="btn btn-primary submit-btn">Share</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- /Share Files Modal -->
+</div>
+<!-- /Page Wrapper -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.0/socket.io.js"></script>
+<script type="text/javascript">
+   function getCol(matrix, col){
+      var column = [];
+      for(var i=0; i<matrix.length; i++){
+         column.push(matrix[i][col]);
+      }
+      return column; // return column data..
+   }
+   //Socket Working Start
+   var socket = io('http://'+document.domain+':2020');
+   //var socket = io('http://107.22.52.19:2020');
+   var my_user_id = '{{isset(Auth::user()->id) ? Auth::user()->id : "0"}}';
+   <?php if(!empty($chat_ids)) { ?>
+      var chat_ids = JSON.parse('{{$chat_ids}}');
+   <?php } else { ?>
+      var chat_ids = [];
+   <?php }?>
+   //var chat_ids = "";
+   function setUserid(user_id,chat_ids) {
+      if (user_id && user_id != "0") {
+         var data =  {user_id : user_id ,chat_ids:chat_ids};
+         socket.emit('add_user_id', data);
+      }
+   }
+   setUserid(my_user_id,chat_ids);
+   
+   //To check the online status
+   <?php if(!empty($user_ids)) { ?>
+      var user_ids = '{{$user_ids}}';
+      setInterval(function(){ 
+         var data =  {user_ids : user_ids,my_user_id : my_user_id};
+         socket.emit('online_status', data); 
+      },5000);
+
+      socket.on('online_status', function (data) {
+         if(chat_ids.length != 0)
+         {
+            var chatting_user_id = user_ids.split(',');
+            var socket_user_ids = getCol(data,'user_id');
+            for(var i=0;i<chatting_user_id.length;i++)
+            {
+               if(socket_user_ids.indexOf(chatting_user_id[i]) != -1)
+               {
+                  $('#status_'+chatting_user_id[i]).removeClass("offline");
+                  $('#status_'+chatting_user_id[i]).removeClass("online");
+                  $('#status_'+chatting_user_id[i]).addClass("online");
+               }
+               else
+               {
+                  $('#status_'+chatting_user_id[i]).removeClass("offline");
+                  $('#status_'+chatting_user_id[i]).removeClass("online");
+                  $('#status_'+chatting_user_id[i]).addClass("offline");
+               }
+            }
+            var data =  {};
+            socket.emit('online_status', data);
+         }
+      });
+   <?php } ?>
+   //Socket Working End
+</script>
+
+
+<script>
+   var start_conversation_user_id = 0;
+   $('#client-chat-users li,#employee-chat-users li').on('click', function(){
+      var follower =  $(this).find("div.f-name").text();
+      start_conversation_user_id = $(this).find("input.f-id").val();
+      $('#add_followers').html('');
+      $('#add_followers').append('<span id="name" align="center" class="follower-tag">' + follower + '</span>');
+   });
+   
+   function list_enable(type)
+   {
+      start_conversation_user_id = 0;
+      if(type == "client")
+      {
+         $('#client-chat-users').show();
+         $('#employee-chat-users').hide();
+         $('#add_followers').html('');
+      }
+      else if(type == "employee")
+      {
+         $('#client-chat-users').hide();
+         $('#employee-chat-users').show();
+         $('#add_followers').html('');
+      }
+   }
+   
+   function chatting_window(chat_id,user_id)
+   {
+      $('#direct-chat-list li').removeClass("active");
+      $('#chat_'+chat_id).addClass("active");
+      $.ajaxSetup({
+            headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+         });
+         var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/chattingwindow' : '#') }}";
+         $.ajax({
+            type: "POST",
+            async: false,
+            url: url,    
+            data: {chat_id:chat_id,user_id:user_id},     
+            success: function(response)
+            {
+               if(response.status == "SUCCESS")
+               {
+                  $("#chat-window").html('');
+                  $("#chat-window").append(response.data.getchatwindowhtml);
+                  // $('#chat-window').animate({
+                  //    scrollTop: $(".scroll_chat").offset().top},
+                  // 'slow');
+               }
+               else
+               {
+                  toastr['error'](response.message);
+               }    
+            }
+         });
+   }
+
+   function start_chat()
+   {
+      if(start_conversation_user_id != 0)
+      {
+         $.ajaxSetup({
+            headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+         });
+         var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/addchat' : '#') }}";
+         $.ajax({
+            type: "POST",
+            async: false,
+            url: url,    
+            data: {start_conversation_user_id:start_conversation_user_id},     
+            success: function(response)
+            {
+               if(response.status == "SUCCESS")
+               {
+                  $('#add_followers').html('');
+                  $('#direct-chat-list li').removeClass("active");
+                  $('#direct-chat-list').append('<li class="active"><a href="chat"><span class="chat-avatar-sm user-img"><img class="rounded-circle" alt="" src="'+response.data.user.profile_image_url+'"><span class="status online"></span></span> <span class="chat-user">'+response.data.user.name+'</span></a></li>');
+                  $('#add_chat_user').modal('hide');
+                  chatting_window(response.data.chat_id,start_conversation_user_id);
+                  start_conversation_user_id = 0;
+                  toastr['success'](response.message);    
+               }
+               else
+               {
+                  toastr['error'](response.message);
+               }    
+            }
+         });
+      }
+      else 
+      {
+         toastr['error']('Select the user first');
+      }
+   }
+
+   $(document).on('click', '#close', function(){
+      $(this).closest('#name').remove();
+      var id = $(this).find("input.remove-id").val();
+      const index = added_followers.indexOf(added_followers[id]);
+      if (index > -1) {
+            added_followers.splice(index, 1);
+            // console.log("+++++++++++++");
+            // console.log(added_followers);
+      }
+   });
+
+   $( document ).ready(function() {
+      <?php if(!empty($chat_lists)) { ?>
+         var default_chat_window_chat_id = "<?php echo $chat_lists[0]['chat_id'];?>";
+         var default_chat_window_user_id = "<?php echo $chat_lists[0]['user_id'];?>";
+         chatting_window(default_chat_window_chat_id,default_chat_window_user_id);
+      <?php } ?>
+   });
+</script>
+@endsection

@@ -108,25 +108,28 @@
                           @foreach($employees as $employee)
                         @if($employee->id  == $project->user_id)              
                         <li>
-                 
-
-                     
+                      
+                      @if(!empty($employee->profile_image))
                           @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
                            <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                           <img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                            <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}"></a>
                          @else
-                               <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
-                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
-                                                {{ mb_substr($employee['name'], 0, 1) }}
-                                                    
-                                             </span>
-                                            </div>
-                                             @endif
-                 
-                                    </li>
-                                    @endif
-                                    @endforeach
+                          <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
+                         <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                         {{ mb_substr($employee['name'], 0, 1) }}
+                         </span>
+                         </div>
+                         @endif
+                       @else
+                      <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{ucwords($employee->name)}}">
+                      <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                      {{ mb_substr($employee['name'], 0, 1) }} </span>
+                       </div>
+                     @endif   
+                                       </li>
+                                   @endif
+                               @endforeach
                                  </ul>
                      
                   </div>
@@ -147,6 +150,7 @@
                         @if($employee->id  == $members['user_id'])   
 
                         <li>
+                            @if(!empty($employee->profile_image))
                            @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
                            <a href="#" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                               <img alt="" src="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
@@ -161,6 +165,13 @@
                                              </span>
                                             </div>
                                              @endif
+
+                                             @else
+                      <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{ucwords($employee->name)}}">
+                      <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                      {{ mb_substr($employee['name'], 0, 1) }} </span>
+                       </div>
+                     @endif  
 
                         </li>
                           @endif
@@ -341,6 +352,13 @@
                                           </span>
                                           </div>
                                           @endif
+                                           @else
+                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest">
+                                          {{ mb_substr($employee['name'], 0, 1) }}
+                                          </span>
+                                          </div>
+                                          
                                           @endif
                                           </a>
                                           <!--<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span> -->

@@ -3,6 +3,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description"><meta name="author">
 	<title>Business Box</title> 
+	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="email.css">
 	 <!--[if mso]><style type="text/css">body,table,td{font-family:Arial,Helvetica,sans-serif!important}a{text-decoration:none}</style><![endif]--> </head> 
 	 <body style="margin:0;padding:0;background-color:#ffffff;">
@@ -68,7 +69,11 @@
 		</table>
 		<table style="table-layout:fixed;border-collapse:separate;border-spacing:0" cellspacing="0" cellpadding="0">
 										<tbody>
+
 											<tr>
+
+												<tr>
+
 												@foreach($team_leaders as $team_leader)
 												 @if(!empty($team_leader['profile_images_url']))
                                                    @if( $team_leader['profile_images_url'] != asset('/storage/profile_images/noimage.png'))
@@ -78,18 +83,30 @@
 
 												 @else
                                          <td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
+
                                           <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
                                           <span class="symbol-label font-size-h3 font-weight-boldest">
                                           {{ mb_substr($employee['name'], 0, 1) }}
+
+                                      <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($team_leader['name']) ? ucwords($team_leader['name']) : '-'}}">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest">
+                                          {{ mb_substr($team_leader['name'], 0, 1) }}
+
                                           </span>
                                           </div>
                                       </td>
                                           @endif
                                            @else
                                           <td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
+
                                           <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
                                           <span class="symbol-label font-size-h3 font-weight-boldest">
                                           {{ mb_substr($employee['name'], 0, 1) }}
+
+                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($team_leader['name']) ? ucwords($team_leader['name']) : '-'}}">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest">
+                                          {{ mb_substr($team_leader['name'], 0, 1) }}
+
                                           </span>
                                           </div>
                                           </td>
@@ -243,5 +260,6 @@
 	</tr>
 	</tbody>
 	</table>
+	<script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>
 	</body>
 	</html>

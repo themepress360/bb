@@ -54,8 +54,7 @@ class TasksController extends CommonController
 
         $employees = User::where('deleted','0')->get();
 
-       //dd($employees);
-
+       
          if(!empty($employees) )
         {
 
@@ -167,6 +166,17 @@ class TasksController extends CommonController
                     $add_members = Task_members::create($task_members);
                   }
                 }
+                $task_data_email = array(
+                  'task_title'   => strtolower($task_id['task_title']),
+                  'description'  => $task_id['description'],
+                  'due_date'     => $task_id['due_date'],
+                  'priority'     => $task_id['priority'],
+                  'team_members' => $taskData['team_members'],
+                  'mydetail'     => $mydetail,
+                  'assign_to'    => $add_task['assign_to'],
+                  'project'      => $project
+                );
+                Tasks::EmailAddTask($task_data_email);
                 $status   = 200;
                 $response = array(
                  'status'  => 'SUCCESS',

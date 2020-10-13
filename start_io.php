@@ -47,32 +47,8 @@ $io->on('connection', function($socket){
     });
 
     $socket->on('online_status', function ($data)use($socket){
-        $user_ids = explode(',',$data['user_ids']);
-        if(!empty($user_ids))
-        {
-            $user_status = [];
-            foreach ($user_ids as $key => $user_id) 
-            {
-                if(!empty($GLOBALS['usernames'][$user_id]) && !empty($GLOBALS['usernames'][$user_id]['socket_id']))
-                {
-                   $user_status[] = array(
-                        "user_id"    => $user_id,
-                        "is_online"  => 1  
-                   );
-                }
-                else
-                {
-                    $user_status[] = array(
-                        "user_id"    => $user_id,
-                        "is_online"  => 0  
-                   );
-                }
-            }
-            if(!empty($GLOBALS['usernames'][$data['my_user_id']]) && !empty($GLOBALS['usernames'][$data['my_user_id']]['socket_id']))
-            {
-                $socket->broadcast->emit("online_status",$user_status);
-            }
-        }
+        if(!empty($GLOBALS['usernames']))
+            $socket->broadcast->emit("online_status",array_values($GLOBALS['usernames']));
     });
 
     // when the client emits 'typing', we broadcast it to others

@@ -137,21 +137,6 @@ public function projectlist(){
      */
     public function addprojects(Request $request)
     {
-        // $data = $request->all();
-        // $members = explode(",",$data['team_members']);
-          
-       //   $users = User::whereIn('id' , $members)->get();
-         // dd($users);
-
-        //  $emails = [];
-        //    foreach($users as $user) {
-        //      $emails[] = $user->email;
-              //do your thing here
-        //    }
-        //    print_r($emails);
-        //    exit();
-
-
         $rules = [
 
             'project_title'   => 'required|string|min:2|max:50',
@@ -164,144 +149,104 @@ public function projectlist(){
             'team_members' => 'required',
             'description'  => 'required'
         ];
-
-         $validator = Validator::make($request->all(),$rules);
-
-         if (!$validator->fails()) 
+        $validator = Validator::make($request->all(),$rules);
+        if (!$validator->fails()) 
         {
-            $projectData =  $request->all();
-            $mydetail = $request->user();   
-            $project_title = strtolower($projectData['project_title']);
-                                
-        $is_project_exists = Projects::where(['project_title' => strtolower($projectData['project_title']) ,"deleted" => '0'])->first(); 
-
-       // dd($is_project_exists->id);
-
-            if(empty( $is_project_exists)) {
-
+          $projectData =  $request->all();
+          $mydetail = $request->user();   
+          $project_title = strtolower($projectData['project_title']);                     
+          $is_project_exists = Projects::where(['project_title' => strtolower($projectData['project_title']) ,"deleted" => '0'])->first(); 
+          if(empty( $is_project_exists)) {
             $folder = Storage::makeDirectory('FileManager/ProjectFolders/' . ucwords($project_title));
-            
             $project_data = array(
-                'project_title' => strtolower($projectData['project_title']),
-                'description'   => strip_tags($projectData['description']),
-                'clients'     => $projectData['clients'],
-                'start_date'    => $projectData['start_date'],
-                'end_date'      => $projectData['end_date'],
-                'priority'     =>$projectData['priority'],
-                'department'    => $projectData['department'],
-                'deleted'  => '0',
-                'status'   => '1',
-                'added_by' => (int) $mydetail['id'],
-                
-             );
-
-             $add_project =  Projects::create($project_data);
-              
-
-             if($add_project){
-
-                $project_id = Projects::where(['project_title' => strtolower($projectData['project_title']) ,"deleted" => '0'])->first();
-
-               $members = explode(",",$projectData['team_members']);
-               $leaders = explode(",",$projectData['team_leaders']);
-
-               if(!empty($leaders)){
-
-                for($i=0; $i<sizeof($leaders); $i++ ){ 
-
-                    $project_leaders = array(
-                   
-                   'project_id' => $project_id->id,
-                   'user_id' => $leaders[$i],
-                   'is_members' => '0',
-                   'is_leaders' => '1',
-                   'deleted'  => '0',
-                   'status'   => '1',
-
-                  );
-             //  dd($project_members);
-                     $add_leaders = Project_members::create($project_leaders);
-                   }
-                 }
-
-               if(!empty($members)){
-            
-               for($i=0; $i<sizeof($members); $i++ ){              
-
-               // dd($members[$i]);
-
-               $project_members = array(
-                   
-                   'project_id' => $project_id->id,
-                   'user_id' => $members[$i],
-                   'is_members' => '1',
-                   'is_leaders' => '0',
-                   'deleted'  => '0',
-                   'status'   => '1',
-
-                  );
-                 
-                     $add_members = Project_members::create($project_members);
-                       }
-                 }
-                 $project_data_email = array(
               'project_title' => strtolower($projectData['project_title']),
-              'team_leaders' => $projectData['team_leaders'],
-              'team_members' => $projectData['team_members'],
-              'added_by' => $mydetail['id']
+              'description'   => strip_tags($projectData['description']),
+              'clients'     => $projectData['clients'],
+              'start_date'    => $projectData['start_date'],
+              'end_date'      => $projectData['end_date'],
+              'priority'     =>$projectData['priority'],
+              'department'    => $projectData['department'],
+              'deleted'  => '0',
+              'status'   => '1',
+              'added_by' => (int) $mydetail['id'] 
             );
-
+            $add_project =  Projects::create($project_data);
+            if($add_project){
+              $project_id = Projects::where(['project_title' => strtolower($projectData['project_title']) ,"deleted" => '0'])->first();
+              $members = explode(",",$projectData['team_members']);
+              $leaders = explode(",",$projectData['team_leaders']);
+              if(!empty($leaders)){
+                for($i=0; $i<sizeof($leaders); $i++ )
+                { 
+                  $project_leaders = array(   
+                    'project_id' => $project_id->id,
+                    'user_id' => $leaders[$i],
+                    'is_members' => '0',
+                    'is_leaders' => '1',
+                    'deleted'  => '0',
+                    'status'   => '1',
+                  );
+                  $add_leaders = Project_members::create($project_leaders);
+                }
+              }
+              if(!empty($members)){
+                for($i=0; $i<sizeof($members); $i++ ){              
+                  $project_members = array( 
+                    'project_id' => $project_id->id,
+                    'user_id' => $members[$i],
+                    'is_members' => '1',
+                    'is_leaders' => '0',
+                    'deleted'  => '0',
+                    'status'   => '1',
+                  );
+                  $add_members = Project_members::create($project_members);
+                }
+              }
+              $project_data_email = array(
+                'project_title' => strtolower($projectData['project_title']),
+                'team_leaders' => $projectData['team_leaders'],
+                'team_members' => $projectData['team_members'],
+                'added_by' => $mydetail['id']
+              );
               Projects::EmailAddProject($project_data_email);
                $status   = 200;
                $response = array(
-               'status'  => 'SUCCESS',
-               'message' => trans('messages.project_add_success'),
-               'ref'     => 'project_add_success',
+                'status'  => 'SUCCESS',
+                'message' => trans('messages.project_add_success'),
+                'ref'     => 'project_add_success',
                );
-                $team_leaders = User::whereIn('id' , $members)->get();
-                $team_members = User::whereIn('id' , $leaders)->get();
-             }else
-                {
-                    $status = 400;
-                    $response = array(
-                        'status'  => 'FAILED',
-                        'message' => trans('messages.server_error'),
-                        'ref'     => 'server_error'
-                    );
-                }
-
-
-
-             if(!empty($projectData['project_file'])) {
-
-                $rules = [
-
-                  'project_file'  => 'mimes:gif,png,jpeg,csv,txt,xlx,docs,pdf|max:5120'
-                ];
-
-                 $validator = Validator::make($request->all(),$rules);
-
-                 if (!$validator->fails()) 
-                     {
-                      
-                      $path = 'FileManager/ProjectFolders' . $project_title . '/' ; 
-                      $fileName = $request->file('project_file')->getClientOriginalName();
-                      $upload = $request->file('project_file')->storeAs($path, $fileName) ;
-
-                     }          
-                    
-                 } 
-
+              $team_leaders = User::whereIn('id' , $members)->get();
+              $team_members = User::whereIn('id' , $leaders)->get();
             }else
             {
-                $status = 400;
-                $response = array(
-                    'status'  => 'FAILED',
-                    'message' => trans('messages.error_project_exists'),
-                    'ref'     => 'error_project_exists'
-                );  
+              $status = 400;
+              $response = array(
+                'status'  => 'FAILED',
+                'message' => trans('messages.server_error'),
+                'ref'     => 'server_error'
+              );
             }
-      
+            if(!empty($projectData['project_file'])) {
+              $rules = [
+                'project_file'  => 'mimes:gif,png,jpeg,csv,txt,xlx,docs,pdf|max:5120'
+              ];
+              $validator = Validator::make($request->all(),$rules);
+              if (!$validator->fails()) 
+              {   
+                $path = 'FileManager/ProjectFolders' . $project_title . '/' ; 
+                $fileName = $request->file('project_file')->getClientOriginalName();
+                $upload = $request->file('project_file')->storeAs($path, $fileName) ;
+              }                
+            } 
+          }else
+          {
+            $status = 400;
+            $response = array(
+              'status'  => 'FAILED',
+              'message' => trans('messages.error_project_exists'),
+              'ref'     => 'error_project_exists'
+            );  
+          }
         }else {
             $status = 400;
             $response = array(
@@ -319,7 +264,6 @@ public function projectlist(){
         );
         array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
         return \Response::json($data,200);
-
     }
 
       /**

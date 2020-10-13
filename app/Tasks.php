@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Mail;
 
 class Tasks extends Model
 {
@@ -179,5 +180,113 @@ class Tasks extends Model
       $add_members = Task_members::create($task_members);
     }
     return true;
+  }
+
+  static function EmailAddTask($data)
+  {
+    if(!empty($data['team_leaders']))
+    {
+      $team_leaders = explode(',',$data['team_leaders']);
+      foreach ($team_leaders as $key => $team_leader) {
+        $is_user_exists = User::where(['id' => (int) $team_leader,"deleted" => '0'])->first(); 
+            
+        if(!empty($is_user_exists['profile_image']))
+          $profile_image_url = User::image_url(config('app.profileimagesfolder'),$is_user_exists['profile_image']);
+        else
+          $profile_image_url = '';
+
+        $email_data['team_leaders'][] = array(
+          "name" => !empty($is_user_exists['name']) ? $is_user_exists['name'] : '-',
+          "email" => !empty($is_user_exists['email']) ? $is_user_exists['email'] : '-',
+          "profile_images_url" => $profile_image_url,
+        );          
+      }
+    }
+
+    if(!empty($data['team_members']))
+    {
+      $team_members = explode(',',$data['team_members']);
+      foreach ($team_members as $key => $team_member) {
+        $is_user_exists = User::where(['id' => (int) $team_member,"deleted" => '0'])->first(); 
+            
+        if(!empty($is_user_exists['profile_image']))
+          $profile_image_url = User::image_url(config('app.profileimagesfolder'),$is_user_exists['profile_image']);
+        else
+          $profile_image_url = '';
+
+        $email_data['team_members'][] = array(
+          "name" => !empty($is_user_exists['name']) ? $is_user_exists['name'] : '-',
+          "email" => !empty($is_user_exists['email']) ? $is_user_exists['email'] : '-',
+          "profile_images_url" => $profile_image_url,
+          "type"  => !empty($is_user_exists['type']) ? $is_user_exists['type'] : '-',
+        );          
+      }
+    }
+
+    if(!empty($data['mydetail']))
+    {
+      if(!empty($data['mydetail']['profile_image']))
+        $profile_image_url = User::image_url(config('app.profileimagesfolder'),$data['mydetail']['profile_image']);
+      else
+        $profile_image_url = '';
+
+      $email_data['project_added'] = array(
+        "name" => !empty($data['mydetail']['name']) ? $data['mydetail']['name'] : '-',
+        "profile_images_url" => $profile_image_url,
+        "email" => !empty($data['mydetail']['email']) ? $data['mydetail']['email'] : '-',
+        "type"  => !empty($data['mydetail']['type']) ? $data['mydetail']['type'] : '-',
+      );          
+    }
+
+    $email_data['task_title'] = $data['task_title'];
+    $email_data['description'] = $data['description'];
+    $email_data['due_date'] = $data['due_date'];
+    $email_data['priority'] = $data['priority'];
+    $email_data['project_title'] = $data['project']['project_title'];
+    if(!empty($data['assign_to']))
+    {
+      $is_user_exists = User::where(['id' => (int) $data['assign_to'],"deleted" => '0'])->first(); 
+      if(!empty($is_user_exists['profile_image_url']))
+        $profile_image_url = User::image_url(config('app.profileimagesfolder'),$is_user_exists['profile_image_url']);
+      else
+        $profile_image_url = '';
+
+      $email_data['assign_to'] = array(
+        "name" => !empty($is_user_exists['name']) ? $is_user_exists['name'] : '-',
+        "profile_images_url" => $profile_image_url,
+        "email" => !empty($is_user_exists['email']) ? $is_user_exists['email'] : '-',
+        "type"  => !empty($is_user_exists['type']) ? $is_user_exists['type'] : '-',
+      );          
+    }
+
+    if(!empty($email_data['assign_to']))
+      self::SingleEmailSent($email_data,$email_data['assign_to']);
+  }
+
+  static function SingleEmailSent($email_data,$user)
+  {
+    $to_name = 'A New Task has been Created';
+    $to_email = $user['email'];
+    $email_data['type'] = $user['type'];
+    Mail::send('admin.emails.AddTaskEmail', $email_data, function($message) use ($to_name, $to_email) {
+      $message->to(strtolower($to_email), 'New Project')->subject($to_name);
+    });  
+  }
+
+  static function EmailSent($email_data,$users)
+  {
+    //$to_email = 'akkhan1587@gmail.com';
+    $to_name = 'A New Task has been Created';
+    if(!empty($users))
+    {
+      foreach ($users as $key => $user) 
+      {
+        $to_email = $user['email'];
+        $email_data['type'] = $user['type'];
+        Mail::send('admin.emails.AddTaskEmail', $email_data, function($message) use ($to_name, $to_email) {
+            $message->to(strtolower($to_email), 'New Project')->subject($to_name);
+        });
+      }
+    }
   }
 }
