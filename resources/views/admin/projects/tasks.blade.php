@@ -59,7 +59,7 @@
             @foreach($projects as $project)	
             <a href="#" class="dropdown-btn m-b-15" style="display:block;" value="{{$project->id}}">
             <span  class="span-rotate">{{ucwords($project->project_title)}} <i id="arrow" class="fa fa fa-chevron-down rotate m-l-10"></i></span>
-            <span class="label lable-sm label-light-success m-l-15">{{ucwords($project->name)}}</span> </a>
+            <span class="label lable-sm label-light-success m-l-15">{{ucwords($project->department_name)}}</span> </a>
             <div class="dropdown-container">
                <div class="task-wrapper" >
                   <div class="task-list-container">
@@ -84,7 +84,7 @@
                                        <i class="material-icons">check</i>
                                        </span>
                                        </span>
-                                       <span class="task-label" contenteditable="true">{{$task->task_title}} {{$task->added_by}} </span>
+                                       <span class="task-label" contenteditable="true">{{$task->task_title}}</span>
                                     </div>
                                  </td>
                                  @foreach($employees as $employee)
@@ -114,9 +114,17 @@
                                  @foreach($employees as $employee)
                                  @if($task->assign_to == $employee->id)
                                  <td class="task-list-data">
+                                   @if(!empty($employee->profile_image))
                                     @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
                                     <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                                     <img src="{{$employee->profile_image}}"></a>
+                                    @else
+                                    <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" style="display: inline-block;">
+                                       <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                       {{ mb_substr($employee['name'], 0, 1) }}
+                                       </span>
+                                    </div>
+                                    @endif
                                     @else
                                     <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" style="display: inline-block;">
                                        <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
@@ -769,9 +777,27 @@
       		$('#assigned-to').html('');
         	var employeeObject = search(id);
         	added_team_members[employeeObject.id] = employeeObject;
-        	var html = '';
+         
+            if(employeeObject.profile_image ===  window.location.origin +'/storage/profile_images/noimage.png' || employeeObject.profile_image === ''){
+         
+         var html = '';
+        
+         html += '<div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character" value = "'+id+'"  title="'+employeeObject.name+'" >'
+         html += '<span class="symbol-label font-size-h3 font-weight-boldest">' + employeeObject.name.charAt(0)
+         html += '</span>'
+         html +=  '</div>'
+         $('#assigned-to').addClass('d-flex');
+         
+         }
+         else{
+
+          	var html = '';
          	html +='<a href="#" data-toggle="tooltip" value = "'+id+'"  title="'+employeeObject.name+'"  class="avatar"">'
          	html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'  
+         
+           }
+
+
          	$('#assigned-to').append(html);
          	total_members = total_members + 1;
          	$('#total_members').html('+'+total_members); 

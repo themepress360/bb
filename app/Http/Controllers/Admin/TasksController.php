@@ -41,7 +41,7 @@ class TasksController extends CommonController
       
       // $projects = Projects::where('deleted','0')->get();
 
-       $projects = Projects::join('departments', 'departments.id','=',"projects.department")->where('projects.deleted', '0')->get();
+       $projects = Projects::Select('projects.*','projects.id as id', 'departments.id as dept_id', 'departments.name as department_name')->join('departments', 'departments.id','=',"projects.department")->where('projects.deleted', '0')->get();
 
        // dd($projects);
       

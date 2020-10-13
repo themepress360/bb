@@ -37,11 +37,27 @@
                   <div class="task-header">
                      <div class="assignee-info">
                         <a href="#" data-toggle="modal" data-target="#assignee">
-                           <div class="avatar">
+                          
                               @if(!empty($project['task']['assign_to_profile_image_url']))
+                                @if( $project['task']['assign_to_profile_image_url'] != asset('/storage/profile_images/noimage.png'))
+                              <div class="avatar">
                               <img alt="{{ !empty($project['task']['assign_to_name']) ? ucwords($project['task']['assign_to_name']) : '-' }}" src="{{ !empty($project['task']['assign_to_profile_image_url']) ? $project['task']['assign_to_profile_image_url'] : '-' }}">
+                               </div>
+                              @else
+                                    <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($project['task']['assign_to_name']) ? ucwords($project['task']['assign_to_name']) : '-'}}" style="display: inline-block;">
+                                       <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                       {{ mb_substr($project['task']['assign_to_name'], 0, 1) }}
+                                       </span>
+                                    </div>
+                                    @endif
+                                    @else
+                                    <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($project['task']['assign_to_name']) ? ucwords($project['task']['assign_to_name']) : '-'}}" style="display: inline-block;">
+                                       <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                       {{ mb_substr($project['task']['assign_to_name'], 0, 1) }}
+                                       </span>
+                                    </div>
                               @endif
-                           </div>
+                          
                            <div class="assigned-info">
                               <div class="task-head-title">Assign To </div>
                               <div class="task-assignee">{{ !empty($project['task']['assign_to_name']) ? ucwords($project['task']['assign_to_name']) : '-' }}</div>

@@ -726,10 +726,26 @@
          var employeeObject = search(id);
          added_team_leaders[employeeObject.id] = employeeObject;
         
+        console.log(employeeObject.profile_image);
+
+         if(employeeObject.profile_image ===  window.location.origin +'/storage/profile_images/noimage.png' || employeeObject.profile_image === ''){
          
+      
+         var html = '';
+         html += '<div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character" value = "'+id+'" title="'+employeeObject.name+'">'
+         html += '<span class="symbol-label font-size-h3 font-weight-boldest">' + employeeObject.name.charAt(0)
+         html += '</span>'
+         html +=  '</div>'
+         $('#team-lead').addClass('d-flex');
+         }
+         else{
+
          var html = '';
          html +='<a href="#" data-toggle="tooltip" value = "'+id+'"  title="'+employeeObject.name+'"  class="avatar"">'
          html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'  
+         
+         }
+
          $('#team-lead').append(html);
          total_leaders = total_leaders + 1;
          $('#total_leaders').html('+'+total_leaders); 
@@ -754,9 +770,28 @@
          var employeeObject = search(id);
          added_team_members[employeeObject.id] = employeeObject;
        //  console.log(added_employees);
+       
+       if(employeeObject.profile_image ===  window.location.origin +'/storage/profile_images/noimage.png' || employeeObject.profile_image === ''){
+         
+         var html = '';
+        
+         html += '<div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character" value = "'+id+'" title="'+employeeObject.name+'">'
+         html += '<span class="symbol-label font-size-h3 font-weight-boldest">' + employeeObject.name.charAt(0)
+         html += '</span>'
+         html +=  '</div>'
+         $('#all-team-members').addClass('d-flex');
+         
+         }
+         else{
+
+         
          var html = '';
          html +='<a href="#" data-toggle="tooltip" value = "'+id+'" title="'+employeeObject.name+'" class="avatar" id="all-team-members" class="avatar"" value="'+employeeObject.name+ '" >'
          html +='<img alt="'+employeeObject.name+ '" src="'  +employeeObject.profile_image+ ' " />'
+       
+         }
+
+
          $('#all-team-members').append(html);
          total_members = total_members + 1;
          $('#total_members').html('+'+total_members); 
