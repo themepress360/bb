@@ -20,6 +20,7 @@ use App\Department;
 use App\Designation;
 use App\Employees;
 use App\Roles;
+use App\Tasks;
 use App\Projects;
 use App\Project_members;
 
@@ -52,7 +53,8 @@ class ProjectsController extends CommonController
        //   $team_lead = Employees::join('roles' , 'roles.id', '=' , 'employees.role_id' )->where('role_name' , 'team lead')->get();
      
  $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
-
+ 
+  //  dd($employees);
        
          if(!empty($employees) )
         {
@@ -272,9 +274,66 @@ public function projectlist(){
      * @param  \App\projects  $projects
      * @return \Illuminate\Http\Response
      */
-    public function show(projects $projects)
+    public function getproject($id)
     {
-        //
+        $project = Projects::where(['id' => $id , 'deleted'=>'0'])->first();
+
+        $created_by = User::where(['id' => $project->added_by, 'deleted' => '0'])->first();
+       
+        $project_leaders = Project_members::Select('project_members.*', 'designations.name as designation', 'users.name as user_name', 'roles.role_name as role_name' , 'users.profile_image as profile_image')->join('users' , 'users.id' , "=" , "project_members.user_id" )->join('employees', 'employees.user_id', '=', 'project_members.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->join('roles','roles.id','=','employees.role_id')->where(['project_id'=> $id, 'is_leaders' =>'1', 'project_members.deleted' => '0'])->get();
+       // dd($project_leaders);
+
+        $project_members = Project_members::Select('project_members.*', 'designations.name as designation', 'users.name as user_name', 'roles.role_name as role_name', 'users.profile_image as profile_image')->join('users' , 'users.id' , "=" , "project_members.user_id" )->join('employees', 'employees.user_id', '=', 'project_members.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->join('roles','roles.id','=','employees.role_id')->where(['project_id'=> $id, 'is_members' =>'1', 'project_members.deleted' => '0'])->get();
+
+       // dd($project_members);
+
+        $tasks = Tasks::where(['project_id' => $id, 'deleted'=>'0'])->get();
+
+        //($tasks);
+
+         if(!empty($project_leaders) )
+        {
+
+            foreach( $project_leaders as $key => $project_leader){
+
+             //   dd($employee->profile_image);
+
+               if(!empty($project_leader->profile_image))
+
+                $project_leader->profile_image = User::image_url(config('app.profileimagesfolder'),$project_leader->profile_image);
+
+           //   dd($employee->profile_image);
+            
+            else
+                     $project_leader->profile_image = '';
+           
+
+        }
+      }
+
+
+      if(!empty($project_members) )
+        {
+
+            foreach( $project_members as $key => $project_member){
+
+             //   dd($employee->profile_image);
+
+               if(!empty($project_member->profile_image))
+
+                $project_member->profile_image = User::image_url(config('app.profileimagesfolder'),$project_member->profile_image);
+
+           //   dd($employee->profile_image);
+            
+            else
+                     $project_member->profile_image = '';
+           
+
+        }
+      }
+
+
+      return view('admin.projects.project-view', compact('project', 'created_by','project_leaders','project_members'));
     }
 
     /**

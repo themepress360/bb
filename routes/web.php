@@ -65,7 +65,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('employee-profile/{id}', array('uses' => 'EmployeeController@getprofile'));
         Route::post('editemployee', array('uses' => 'EmployeeController@editEmployee'));
         Route::get('employees-list', array('uses' => 'EmployeeController@employeelist'));
-
+        
         Route::post('saveEmpEducation', array('uses' => 'EducationInformationController@saveEmpEducation'));
         Route::post('saveEmpExperience', array('uses' => 'ExperienceController@saveEmpExperience'));
 
@@ -73,6 +73,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('projects',  array('uses' => 'ProjectsController@index'));
         Route::get('project-list',  array('uses' => 'ProjectsController@projectlist'));
         Route::post('addprojects',  array('uses' => 'ProjectsController@addprojects'));
+          Route::get('project-view/{id}',  array('uses' => 'ProjectsController@getproject'));
 
         Route::get('tasks', array('uses' => 'TasksController@index'));
         Route::post('addtasks', array('uses' => 'TasksController@addTask'));
@@ -199,14 +200,6 @@ Route::get('/admin/leads', function () {
     });
 
 
-
-
-Route::get('/admin/projects-list', function () {
-        return view('admin.projects.projects-list');
-    });
-Route::get('/admin/project-view', function () {
-        return view('admin.projects.project-view');
-    });
 
 
 Route::get('/admin/tickets', function () {

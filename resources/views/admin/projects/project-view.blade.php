@@ -10,7 +10,7 @@
 					<div class="page-header">
 						<div class="row align-items-center">
 							<div class="col">
-								<h3 class="page-title">Hospital Admin</h3>
+								<h3 class="page-title">{{strtoUpper($project->project_title)}}</h3>
 								<ul class="breadcrumb">
 									<li class="breadcrumb-item"><a href="index">Dashboard</a></li>
 									<li class="breadcrumb-item active">Project</li>
@@ -29,60 +29,13 @@
 							<div class="card">
 								<div class="card-body">
 									<div class="project-title">
-										<h5 class="card-title">Hospital Administration</h5>
+										<h5 class="card-title">{{ucwords($project->project_title)}}</h5>
 										<small class="block text-ellipsis m-b-15"><span class="text-xs">2</span> <span class="text-muted">open tasks, </span><span class="text-xs">5</span> <span class="text-muted">tasks completed</span></small>
 									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel elit neque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum sollicitudin libero vitae est consectetur, a molestie tortor consectetur. Aenean tincidunt interdum ipsum, id pellentesque diam suscipit ut. Vivamus massa mi, fermentum eget neque eget, imperdiet tristique lectus. Proin at purus ut sem pellentesque tempor sit amet ut lectus. Sed orci augue, placerat et pretium ac, hendrerit in felis. Integer scelerisque libero non metus commodo, et hendrerit diam aliquet. Proin tincidunt porttitor ligula, a tincidunt orci pellentesque nec. Ut ultricies maximus nulla id consequat. Fusce eu consequat mi, eu euismod ligula. Aliquam porttitor neque id massa porttitor, a pretium velit vehicula. Morbi volutpat tincidunt urna, vel ullamcorper ligula fermentum at. </p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel elit neque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum sollicitudin libero vitae est consectetur, a molestie tortor consectetur. Aenean tincidunt interdum ipsum, id pellentesque diam suscipit ut. Vivamus massa mi, fermentum eget neque eget, imperdiet tristique lectus. Proin at purus ut sem pellentesque tempor sit amet ut lectus. Sed orci augue, placerat et pretium ac, hendrerit in felis. Integer scelerisque libero non metus commodo, et hendrerit diam aliquet. Proin tincidunt porttitor ligula, a tincidunt orci pellentesque nec. Ut ultricies maximus nulla id consequat. Fusce eu consequat mi, eu euismod ligula. Aliquam porttitor neque id massa porttitor, a pretium velit vehicula. Morbi volutpat tincidunt urna, vel ullamcorper ligula fermentum at. </p>
+									<p>{{$project->description}} </p>
 								</div>
 							</div>
-							<div class="card">
-								<div class="card-body">
-				                    <h5 class="card-title m-b-20">Uploaded image files</h5>
-									<div class="row">
-										<div class="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-											<div class="uploaded-box">
-												<div class="uploaded-img">
-													<img src="img/placeholder.jpg" class="img-fluid" alt="">
-												</div>
-												<div class="uploaded-img-name">
-													 demo.png
-												</div>
-											</div>
-										</div>
-										<div class="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-											<div class="uploaded-box">
-												<div class="uploaded-img">
-													<img src="img/placeholder.jpg" class="img-fluid" alt="">
-												</div>
-												<div class="uploaded-img-name">
-													 demo.png
-												</div>
-											</div>
-										</div>
-										<div class="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-											<div class="uploaded-box">
-												<div class="uploaded-img">
-													<img src="img/placeholder.jpg" class="img-fluid" alt="">
-												</div>
-												<div class="uploaded-img-name">
-													 demo.png
-												</div>
-											</div>
-										</div>
-										<div class="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-											<div class="uploaded-box">
-												<div class="uploaded-img">
-													<img src="img/placeholder.jpg" class="img-fluid" alt="">
-												</div>
-												<div class="uploaded-img-name">
-													 demo.png
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+							
 							<div class="card">
 								<div class="card-body">
 									<h5 class="card-title m-b-20">Uploaded files</h5>
@@ -287,34 +240,42 @@
 												<td class="text-right">100 Hours</td>
 											</tr> -->
 											<tr>
-												<td>Created:</td>
-												<td class="text-right">25 Feb, 2019</td>
+												<td>Start Date:</td>
+												<td class="text-right">{{date("j M, y",strtotime(str_replace('/', '-', $project->start_date))) }}</td>
 											</tr>
 											<tr>
 												<td>Deadline:</td>
-												<td class="text-right">12 Jun, 2019</td>
+												<td class="text-right">{{date("j M, y",strtotime(str_replace('/', '-', $project->end_date)))}}</td>
 											</tr>
 											<tr>
 												<td>Priority:</td>
 												<td class="text-right">
 													<div class="btn-group">
-														<a href="#" class="badge badge-danger dropdown-toggle" data-toggle="dropdown">Highest </a>
-														<div class="dropdown-menu dropdown-menu-right">
+														<a href="#" class="badge badge-danger dropdown-toggle" data-toggle="dropdown">{{ucwords($project->priority)}} </a>
+														<!--<div class="dropdown-menu dropdown-menu-right">
 															<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Highest priority</a>
 															<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-info"></i> High priority</a>
 															<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-primary"></i> Normal priority</a>
-															<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low priority</a>
+															<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low priority</a> -->
 														</div>
 													</div>
 												</td>
 											</tr>
 											<tr>
 												<td>Created by:</td>
-												<td class="text-right"><a href="profile">Barry Cuda</a></td>
+												@if($created_by->id != '1')
+												<td class="text-right"><a href="employee-profile/{{$created_by->id}}">{{$created_by->name}}</a></td>
+												@else
+												<td class="text-right"><a href="{{url('/admin/profile')}}">{{$created_by->name}}</a></td>
+												@endif
 											</tr>
 											<tr>
 												<td>Status:</td>
-												<td class="text-right">Working</td>
+												@if($project->status == '1')
+												<td class="text-right">Open</td>
+												@else
+												<td class="text-right">Closed</td>
+												@endif
 											</tr>
 										</tbody>
 									</table>
@@ -328,34 +289,38 @@
 								<div class="card-body">
 									<h6 class="card-title m-b-20">Assigned Leader <button type="button" class="float-right btn btn-primary btn-sm" data-toggle="modal" data-target="#assign_leader"><i class="fa fa-plus"></i> Add</button></h6>
 									<ul class="list-box">
+										@foreach($project_leaders as $leaders)
 										<li>
 											<a href="profile">
 												<div class="list-item">
 													<div class="list-left">
-														<span class="avatar"><img alt="" src="img/profiles/avatar-11.jpg"></span>
+														 @if(!empty($leaders->profile_image))
+                        								  @if( $leaders->profile_image != asset('/storage/profile_images/noimage.png'))
+														<span class="avatar"><img alt="" src="{{$leaders->profile_image}}"></span>
+														@else
+								                          <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($leaders->user_name) ? ucwords($leaders->user_name) : '-'}}">
+								                         <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+								                         {{ mb_substr($leaders['user_name'], 0, 1) }}
+								                         </span>
+								                         </div>
+								                         @endif
+								                          @else
+                      <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{ucwords($leaders->user_name)}}">
+                      <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                      {{ mb_substr($leaders['user_name'], 0, 1) }} </span>
+                       </div>
+                     @endif 
 													</div>
-													<div class="list-body">
-														<span class="message-author">Wilmer Deluna</span>
+												<div class="list-body">
+													  <span class="message-author">{{$leaders->user_name}}</span>
 														<div class="clearfix"></div>
-														<span class="message-content">Team Leader</span>
+														<span class="message-content">{{ucwords($leaders->designation)}}</span>
+														
 													</div>
 												</div>
 											</a>
 										</li>
-										<li>
-											<a href="profile">
-												<div class="list-item">
-													<div class="list-left">
-														<span class="avatar"><img alt="" src="img/profiles/avatar-01.jpg"></span>
-													</div>
-													<div class="list-body">
-														<span class="message-author">Lesley Grauer</span>
-														<div class="clearfix"></div>
-														<span class="message-content">Team Leader</span>
-													</div>
-												</div>
-											</a>
-										</li>
+										@endforeach										
 									</ul>
 								</div>
 							</div>
@@ -366,34 +331,37 @@
 										<button type="button" class="float-right btn btn-primary btn-sm" data-toggle="modal" data-target="#assign_user"><i class="fa fa-plus"></i> Add</button>
 									</h6>
 									<ul class="list-box">
+										@foreach($project_members as $members)
 										<li>
 											<a href="profile">
 												<div class="list-item">
 													<div class="list-left">
-														<span class="avatar"><img alt="" src="img/profiles/avatar-02.jpg"></span>
+													@if(!empty($leaders->profile_image))
+                        								  @if( $leaders->profile_image != asset('/storage/profile_images/noimage.png'))
+														<span class="avatar"><img alt="" src="{{$members->profile_image}}"></span>
+														@else
+								                          <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($members->user_name) ? ucwords($members->user_name) : '-'}}">
+								                         <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+								                         {{ mb_substr($members['user_name'], 0, 1) }}
+								                         </span>
+								                         </div>
+								                         @endif
+								                          @else
+                      <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{ucwords($members->user_name)}}">
+                      <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                      {{ mb_substr($members['user_name'], 0, 1) }} </span>
+                       </div>
+                     @endif 
 													</div>
 													<div class="list-body">
-														<span class="message-author">John Doe</span>
+														<span class="message-author">{{$members->user_name}}</span>
 														<div class="clearfix"></div>
-														<span class="message-content">Web Designer</span>
+														<span class="message-content">{{ucwords($members->designation)}}</span>
 													</div>
 												</div>
 											</a>
 										</li>
-										<li>
-											<a href="profile">
-												<div class="list-item">
-													<div class="list-left">
-														<span class="avatar"><img alt="" src="img/profiles/avatar-09.jpg"></span>
-													</div>
-													<div class="list-body">
-														<span class="message-author">Richard Miles</span>
-														<div class="clearfix"></div>
-														<span class="message-content">Web Developer</span>
-													</div>
-												</div>
-											</a>
-										</li>
+										@endforeach
 									</ul>
 								</div>
 							</div>
@@ -671,5 +639,5 @@
 				<!-- /Edit Project Modal -->
 				
             </div>
-			<!-- /Page Wrapper -->
+	   <script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>		<!-- /Page Wrapper -->
 @endsection
