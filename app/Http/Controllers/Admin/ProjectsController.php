@@ -266,6 +266,153 @@ public function projectlist(){
         return \Response::json($data,200);
     }
 
+    public function getdepartmentmembers(Request $request)
+    {
+      $rules = [
+        'department_id'    => 'required'
+      ];
+
+      $validator = Validator::make($request->all(),$rules);
+
+      if (!$validator->fails()) 
+      {
+        $requestData =  $request->all();
+        $custom_validation = Department::getdepartmentmembersValidation($requestData);
+        if($custom_validation['status'])
+        {
+          $mydetail = $request->user();
+          
+          /* To get all team leads of this departments START */
+          $data['team_leads'] = User::select(['roles.role_name as role','users.profile_image as profile_image','users.id as user_id','users.name as name'])->where(['roles.role_name' => 'team lead','employees.department_id' => (int) $requestData['department_id']])->join('employees', 'users.id', '=', 'employees.user_id')->join('roles', 'roles.id', '=', 'employees.role_id')->get()->toArray();
+          if(!empty($data['team_leads']))
+          {
+            foreach ($data['team_leads'] as $key => $team_lead) 
+            {
+              $data['team_leads'][$key]['profile_image_url'] = "";
+                if(!empty($team_lead['profile_image']))
+                    $data['team_leads'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$team_lead['profile_image']);
+            }
+          }
+          /* To get all team leads of this departments End */
+
+          /* To get all team members of this departments START */
+          $data['team_members'] = User::select(['roles.role_name as role','users.profile_image as profile_image','users.id as user_id','users.name as name'])->where(['roles.role_name' => 'employee','employees.department_id' => (int) $requestData['department_id']])->join('employees', 'users.id', '=', 'employees.user_id')->join('roles', 'roles.id', '=', 'employees.role_id')->get()->toArray();
+          
+          if(!empty($data['team_members']))
+          {
+            foreach ($data['team_members'] as $key => $team_member) 
+            {
+              $data['team_members'][$key]['profile_image_url'] = "";
+                if(!empty($team_member['profile_image']))
+                    $data['team_members'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$team_member['profile_image']);
+            }
+          }
+          /* To get all team members of this departments End */
+
+          $status   = 200;
+          $response = array(
+            'status'  => 'SUCCESS',
+            'message' => trans('messages.getdepartment_success'),
+            'ref'     => 'getdepartment_success',
+            'data'    => $data
+          );
+        }
+        else
+        {
+          $status = 400;
+          $response = array(
+            'status'  => 'FAILED',
+            'message' => $custom_validation['message'],
+            'ref'     => $custom_validation['ref']
+          );
+        }
+      }
+      else {
+        $status = 400;
+        $response = array(
+          'status'  => 'FAILED',
+          'message' => $validator->messages()->first(),
+          'ref'     => 'missing_parameters',
+        );
+      }
+      $data = array_merge(
+        [
+          "code" => $status,
+          "message" =>$response['message']
+        ],
+            $response
+        );
+      array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+      return \Response::json($data,200);
+    }
+
+    public function getprojectmembersleaders(Request $request)
+    {
+      $rules = [
+        'project_id'    => 'required'
+      ];
+
+      $validator = Validator::make($request->all(),$rules);
+
+      if (!$validator->fails()) 
+      {
+        $requestData =  $request->all();
+        $custom_validation = Projects::getprojectmembersleadersValidation($requestData);
+        if($custom_validation['status'])
+        {
+          $mydetail = $request->user();
+          
+          /* To get all team leads and members of this project START */
+          
+          $data['project_members']  = Project_members::select(['roles.role_name as role','users.profile_image as profile_image','users.id as user_id','users.name as name'])->join('users', 'users.id','=', 'project_members.user_id')->join('employees', 'users.id', '=', 'employees.user_id')->join('roles', 'roles.id', '=', 'employees.role_id')->where(['project_members.project_id' => (int) $requestData['project_id'],'project_members.status' => '1' , 'project_members.deleted' => '0'])->get()->toArray();
+          if(!empty($data['project_members']))
+          {
+            foreach ($data['project_members'] as $key => $project_member) 
+            {
+              $data['project_members'][$key]['profile_image_url'] = "";
+                if(!empty($project_member['profile_image']))
+                    $data['project_members'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$project_member['profile_image']);
+            }
+          }
+          /* To get all team leads and members of this project End */
+
+          $status   = 200;
+          $response = array(
+            'status'  => 'SUCCESS',
+            'message' => trans('messages.getprojectmembersleaders_success'),
+            'ref'     => 'getprojectmembersleaders_success',
+            'data'    => $data
+          );
+        }
+        else
+        {
+          $status = 400;
+          $response = array(
+            'status'  => 'FAILED',
+            'message' => $custom_validation['message'],
+            'ref'     => $custom_validation['ref']
+          );
+        }
+      }
+      else {
+        $status = 400;
+        $response = array(
+          'status'  => 'FAILED',
+          'message' => $validator->messages()->first(),
+          'ref'     => 'missing_parameters',
+        );
+      }
+      $data = array_merge(
+        [
+          "code" => $status,
+          "message" =>$response['message']
+        ],
+            $response
+        );
+      array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+      return \Response::json($data,200);
+    }
+
       /**
      * Display the specified resource.
      *
@@ -310,4 +457,6 @@ public function projectlist(){
     {
         //
     }
+
+
 }

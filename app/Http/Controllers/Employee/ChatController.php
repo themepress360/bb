@@ -38,6 +38,7 @@ class ChatController extends CommonController
         $data['chat_ids'] = [];
         $data['user_ids'] = "";
         $mydetail = $request->user(); 
+        $gettimezone = User::getUserLocation();
         $employee = Employees::where(['deleted' => '0', "user_id" => (int) $mydetail['id'] ])->first();
         /* To get all employee which are active and not deleted START */
         $data['employees_list'] = User::select(['designations.name as designation_name','users.*'])->where(['users.deleted' => '0','users.status' => '1','employees.department_id' => (int)$employee['department_id'] ])->join('employees', 'users.id', '=', 'employees.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->get()->toArray();
@@ -48,6 +49,10 @@ class ChatController extends CommonController
                 $data['employees_list'][$key]['profile_image_url'] = "";
                 if(!empty($employee['profile_image']))
                     $data['employees_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$employee['profile_image']);
+                if(!empty($employee['logout_time']))
+                    $data['employees_list'][$key]['last_login_time'] = date('M d, Y h:i:s A',strtotime(User::UTCToDate($employee['logout_time'],$gettimezone)));
+                else
+                    $data['employees_list'][$key]['last_login_time'] = "";
             }
         }
         /* To get all employee which are active and not deleted end */

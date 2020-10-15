@@ -450,7 +450,15 @@
                                  <div class="media">
                                     <input type="hidden" name="start_conversation_user_id" class="f-id" value="{{!empty($admin['id']) ? $admin['id'] : '-'}}">
                                     <span class="avatar align-self-center">
-                                    <img src="{{!empty($admin['profile_image_url']) ? $admin['profile_image_url'] : '-'}}" alt="{{!empty($admin['name']) ? ucwords($admin['name']) : '-'}}">
+                                    @if(!empty($admin['profile_image_url']))
+                                       <img src="{{!empty($admin['profile_image_url']) ? $admin['profile_image_url'] : '-'}}" alt="{{!empty($admin['name']) ? ucwords($admin['name']) : '-'}}">
+                                    @else
+                                       <div class="symbol symbol-lg-75 " id="name-character">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest" id="add-letter" style="height: 0px">
+                                             {{ mb_substr($admin['name'], 0, 1) }}          
+                                          </span>
+                                       </div>
+                                    @endif
                                     </span>
                                     <div class="media-body align-self-center text-nowrap">
                                        <div class="user-name f-name">{{!empty($admin['name']) ? ucwords($admin['name']) : '-'}}</div>
@@ -465,11 +473,11 @@
                                                 $difference = $date - $match_date;
                                              ?>
                                              @if($difference < 86400)
-                                                <div class="online-date">Today,{{date("H:i:s A",$match_date)}}</div>
+                                                <div class="online-date">Today,{{date("h:i:s A",strtotime($admin['last_login_time']))}}</div>
                                              @elseif($difference < 172800)
-                                                <div class="online-date">Yesterday,{{date("H:i:s A",$match_date)}}</div>
+                                                <div class="online-date">Yesterday,{{date("h:i:s A",strtotime($admin['last_login_time']))}}</div>
                                              @else
-                                                <div class="online-date">{{date("Y-m-d,H:i:s A",$match_date)}}</div>
+                                                <div class="online-date">{{date("h:i:s A",strtotime($admin['last_login_time']))}}</div>
                                              @endif
                                           @else
                                              <div class="online-date">Login User</div>

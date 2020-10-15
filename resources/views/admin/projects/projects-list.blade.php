@@ -262,7 +262,8 @@
                      <div class="col-sm-6">
                         <div class="form-group">
                            <label>Department<span class="text-danger">*</span></label>
-                           <select class="select" name="department">
+                           <select class="select" name="department" onchange="getmembers(this);">
+                              <option value="" selected disabled>Select Department</option>
                               @foreach($departments as $department)
                               <option value="{{$department->id}}">{{strtoupper($department->name)}}</option>
                               @endforeach
@@ -280,34 +281,7 @@
                               <div class="dropdown-menu">
                                  <div>
                                     <ul class="chat-user-list" id="team-leader" >
-                                      @foreach($employees as $employee)
-                                       @if($employee->role == "team lead")
-                                       <li id="{{{$employee->id}}}">
-                                          <a href="#">
-                                             <div class="media">
-                                                @if(!empty($employee->profile_image))
-                                                   @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
-                                          <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
-                                          <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
-                                          @else
-                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
-                                          <span class="symbol-label font-size-h3 font-weight-boldest">
-                                          {{ mb_substr($employee['name'], 0, 1) }}
-                                          </span>
-                                          </div>
-                                          @endif
-                                          @endif
-                                          </a>
-                                          <!--<span class="avatar"><img alt="" src="img/profiles/avatar-16.jpg"></span> -->
-                                          <div class="media-body media-middle text-nowrap">
-                                          <div class="user-name">{{ $employee->name }}</div>
-                                          <span class="designation">{{ucwords($employee->role)}}</span>
-                                          </div>
-                                          </div>
-                                          </a>
-                                       </li>
-                                       @endif
-                                       @endforeach
+                                      
                                     </ul>
                                  </div>
                               </div>
@@ -341,39 +315,7 @@
                               <div class="dropdown-menu">
                                  <div>
                                     <ul class="chat-user-list" id="team-members">
-                                       @foreach($employees as $employee)
-                                       @if($employee->role == "employee")
-                                       <li   id="{{{$employee->id}}}">
-                                          
-                                             <div class="media">
-                                                @if(!empty($employee->profile_image))
-                                                 @if( $employee->profile_image != asset('/storage/profile_images/noimage.png'))
-                                          <a href="" class="avatar" title="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" id="TeamMember">
-                                          <img src="{{{$employee->profile_image}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}" >
-                                          @else
-                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
-                                          <span class="symbol-label font-size-h3 font-weight-boldest">
-                                          {{ mb_substr($employee['name'], 0, 1) }}
-                                          </span>
-                                          </div>
-                                          @endif
-                                          @else
-                                            <div class="symbol symbol-sm-35 m-r-10" id="name-character">
-                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
-                                                {{ mb_substr($employee['name'], 0, 1) }}
-                                                    
-                                             </span>
-                                            </div>
-                                          @endif
-                                          </a>
-                                          <div class="media-body media-middle text-nowrap">
-                                          <div class="user-name">{{$employee->name}}</div>
-                                          <span class="designation">{{ucwords($employee->designation_name)}}</span>
-                                          </div>
-                                          </div>
-                                       </li>
-                                       @endif
-                                       @endforeach
+                                       
                                     </ul>
                                  </div>
                               </div>
@@ -695,4 +637,95 @@ $.ajaxSetup({
         </script>
 
         <script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>
+<script type="text/javascript">
+  function getmembers(ele)
+  {
+    var department_id = ele.value;
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/getdepartmentmembers' : '#') }}";
+    $.ajax({
+      type: "POST",
+      async: false,
+      url: url,    
+      data: {department_id:department_id},     
+      success: function(response)
+      {
+        if(response.status == "SUCCESS")
+        {
+            $('#team-leader').html('');
+            if(response.data.team_leads.length != 0)
+            {
+              var team_lead_html = "";
+              for(var i=0;i<response.data.team_leads.length;i++)
+              {
+                team_lead_html += '<li id="'+response.data.team_leads[i].user_id+'"><a href="#"><div class="media">';
+
+                if(response.data.team_leads[i].profile_image.length > 0)
+                {
+                  team_lead_html += '<a onclick="return false" href="#" class="avatar" title="'+response.data.team_leads[i].name+'"><img src="'+response.data.team_leads[i].profile_image_url+'" alt="'+response.data.team_leads[i].name+'"></a>';  
+                }
+                else
+                {
+                  team_lead_html += '<div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character"><span class="symbol-label font-size-h3 font-weight-boldest">'+response.data.team_leads[i].name.substring(0, 1) +'</span></div>';
+                }
+                  
+                team_lead_html += '<div class="media-body media-middle text-nowrap"><div class="user-name">'+response.data.team_leads[i].name+'</div><span class="designation">'+response.data.team_leads[i].role+'</span></div>';
+                                          
+                                          
+                team_lead_html += '</div></a></li>';                                                 
+              }
+              $('#team-leader').html(team_lead_html);
+              $('#team-lead').html('');
+              total_leaders = 0;
+              $('#total_leaders').html('+'+total_leaders);
+            }
+            else
+            {
+              toastr['error']('In this department there is no team lead');
+            }
+
+            $('#team-members').html('');
+            if(response.data.team_members.length != 0)
+            {
+              var team_member_html = "";
+              for(var i=0;i<response.data.team_members.length;i++)
+              {
+                team_member_html += '<li id="'+response.data.team_members[i].user_id+'"><a href="#"><div class="media">';
+
+                if(response.data.team_members[i].profile_image.length > 0)
+                {
+                  team_member_html += '<a onclick="return false" href="#" class="avatar" title="'+response.data.team_members[i].name+'"><img src="'+response.data.team_members[i].profile_image_url+'" alt="'+response.data.team_members[i].name+'"></a>';  
+                }
+                else
+                {
+                  team_member_html += '<div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character"><span class="symbol-label font-size-h3 font-weight-boldest">'+response.data.team_members[i].name.substring(0, 1) +'</span></div>';
+                }
+                  
+                team_member_html += '<div class="media-body media-middle text-nowrap"><div class="user-name">'+response.data.team_members[i].name+'</div><span class="designation">'+response.data.team_members[i].role+'</span></div>';
+                                          
+                                          
+                team_member_html += '</div></a></li>';                                                 
+              }
+              $('#team-members').html(team_member_html);
+              $('#all-team-members').html('');
+              total_members = 0;
+              $('#total_members').html('+'+total_members);
+            }
+            else
+            {
+              toastr['error']('In this department there is no members');
+            }   
+        }
+        else
+        {
+          toastr['error'](response.message);
+        }    
+      }
+    });
+  }
+</script>
 @endsection

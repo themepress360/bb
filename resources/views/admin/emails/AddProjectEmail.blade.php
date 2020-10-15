@@ -99,9 +99,7 @@
                                            @else
                                           <td style="border-radius:12px;line-height:16px;min-width:24px;height:24px;width:24px;text-align:center;vertical-align:middle">
 
-                                          <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character">
-                                          <span class="symbol-label font-size-h3 font-weight-boldest">
-                                          {{ mb_substr($employee['name'], 0, 1) }}
+                                         
 
                                           <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character" data-toggle="tooltip" title="{{isset($team_leader['name']) ? ucwords($team_leader['name']) : '-'}}">
                                           <span class="symbol-label font-size-h3 font-weight-boldest">

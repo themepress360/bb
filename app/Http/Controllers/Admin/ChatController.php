@@ -37,6 +37,7 @@ class ChatController extends CommonController
         $data['chat_ids'] = [];
         $data['user_ids'] = "";
         $mydetail = $request->user(); 
+        $gettimezone = User::getUserLocation();
         /* To get all employee which are active and not deleted START */
         $data['employees_list'] = User::select(['designations.name as designation_name','users.*'])->where(['users.deleted' => '0','users.status' => '1' ])->join('employees', 'users.id', '=', 'employees.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->get()->toArray();
         if(!empty($data['employees_list']))
@@ -46,7 +47,12 @@ class ChatController extends CommonController
                 $data['employees_list'][$key]['profile_image_url'] = "";
                 if(!empty($employee['profile_image']))
                     $data['employees_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$employee['profile_image']);
+                if(!empty($employee['logout_time']))
+                    $data['employees_list'][$key]['last_login_time'] = date('M d, Y h:i:s A',strtotime(User::UTCToDate($employee['logout_time'],$gettimezone)));
+                else
+                    $data['employees_list'][$key]['last_login_time'] = "";
             }
+
         }
         /* To get all employee which are active and not deleted end */
 
@@ -59,10 +65,14 @@ class ChatController extends CommonController
                 $data['clients_list'][$key]['profile_image_url'] = "";
                 if(!empty($client['profile_image']))
                     $data['clients_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$client['profile_image']);
+                if(!empty($client['logout_time']))
+                    $data['clients_list'][$key]['last_login_time'] = date('M d, Y h:i:s A',strtotime(User::UTCToDate($client['logout_time'],$gettimezone)));
+                else
+                    $data['clients_list'][$key]['last_login_time'] = "";
             }
         }
         /* To get all employee which are active and not deleted end */
-
+        
         /* To get the chat list Start */
         $chats  = ChatMessages::select('id','chat_id','sender_user_id','receiver_user_id')->where(function ($query) use($mydetail) {
         $query->where('receiver_user_id', (int) $mydetail['id'])

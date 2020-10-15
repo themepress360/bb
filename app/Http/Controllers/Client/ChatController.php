@@ -21,6 +21,8 @@ use App\ChatMembers as ChatMembers;
 use App\ChatMessages as ChatMessages;
 use App\ChatFileUploads as ChatFileUploads;
 use DB;
+use App\Projects;
+use App\Project_members;
 
 class ChatController extends CommonController
 {
@@ -37,20 +39,8 @@ class ChatController extends CommonController
         $data['chat_ids'] = [];
         $data['user_ids'] = "";
         $mydetail = $request->user(); 
-        //$employee = Employees::where(['deleted' => '0', "user_id" => (int) $mydetail['id'] ])->first();
-        /* To get all employee which are active and not deleted START */
-        // $data['employees_list'] = User::select(['designations.name as designation_name','users.*'])->where(['users.deleted' => '0','users.status' => '1','users.department_id' => (int)$employee['department_id'] ])->join('employees', 'users.id', '=', 'employees.user_id')->join('designations', 'designations.id', '=', 'employees.designation_id')->get()->toArray();
-        // if(!empty($data['employees_list']))
-        // {
-        //     foreach ($data['employees_list'] as $key => $employee) 
-        //     {
-        //         $data['employees_list'][$key]['profile_image_url'] = "";
-        //         if(!empty($employee['profile_image']))
-        //             $data['employees_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$employee['profile_image']);
-        //     }
-        // }
-        /* To get all employee which are active and not deleted end */
-
+        $gettimezone = User::getUserLocation();
+        
         /* To get all admin which are active and not deleted START */
         $data['admin_list'] = User::where(['type' => 'admin','deleted' => '0','status'=> '1'])->get()->toArray();
         if(!empty($data['admin_list']))
@@ -60,10 +50,33 @@ class ChatController extends CommonController
                 $data['admin_list'][$key]['profile_image_url'] = "";
                 if(!empty($admin['profile_image']))
                     $data['admin_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$admin['profile_image']);
+                if(!empty($admin['logout_time']))
+                    $data['admin_list'][$key]['last_login_time'] = date('M d, Y h:i:s A',strtotime(User::UTCToDate($admin['logout_time'],$gettimezone)));
+                else
+                    $data['admin_list'][$key]['last_login_time'] = "";
             }
         }
         /* To get all admin which are active and not deleted end */
 
+        /* To get only project leaders Start */
+        $data['leader_employees_list'] = Project_members::select(['users.is_login as is_login','users.logout_time as logout_time','users.profile_image as profile_image','project_members.id as project_member_id','project_members.project_id as project_id','users.id as id','users.name'])->join('projects', 'projects.id', '=', 'project_members.project_id')->join('users', 'project_members.user_id', '=', 'users.id')->where(['project_members.is_leaders' => '1','projects.clients' => (int) $mydetail['id']])->groupBy('users.id')->get()->toArray();
+        if(!empty($data['leader_employees_list']))
+        {
+            foreach ($data['leader_employees_list'] as $key => $leader_employees_list) 
+            {
+                $data['leader_employees_list'][$key]['profile_image_url'] = "";
+                if(!empty($leader_employees_list['profile_image']))
+                    $data['leader_employees_list'][$key]['profile_image_url'] = User::image_url(config('app.profileimagesfolder'),$leader_employees_list['profile_image']);
+                if(!empty($leader_employees_list['logout_time']))
+                    $data['leader_employees_list'][$key]['last_login_time'] = date('M d, Y h:i:s A',strtotime(User::UTCToDate($leader_employees_list['logout_time'],$gettimezone)));
+                else
+                    $data['leader_employees_list'][$key]['last_login_time'] = "";
+            }
+        }
+        /* To get only project leaders End */
+
+        $data['admin_list'] = array_merge($data['leader_employees_list'],$data['admin_list']);
+        
         /* To get the chat list Start */
         $chats  = ChatMessages::select('id','chat_id','sender_user_id','receiver_user_id')->where(function ($query) use($mydetail) {
         $query->where('receiver_user_id', (int) $mydetail['id'])
