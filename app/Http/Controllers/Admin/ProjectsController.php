@@ -540,6 +540,16 @@ public function projectlist(){
                 'message' => trans('messages.project_deleted_success'),
                 'ref'     => 'project_deleted_success',
                );
+
+               $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
              
           
     }
