@@ -64,7 +64,7 @@
                      <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                      <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#" data-toggle="modal"><i class="fa fa-eye m-r-5"></i> View</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                        <a class="dropdown-item delete" href="#" data-id="{{$project->project_id}}"  data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                      </div>
                   </div>
                   <h4 class="project-title"><a href="project-view/{{$project->project_id}}">{{strtoUpper($project->project_title)}}</a></h4>
@@ -559,7 +559,8 @@
                <div class="modal-btn delete-action">
                   <div class="row">
                      <div class="col-6">
-                        <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                        <a href="javascript:void(0);"  onClick="deleteProject()" data-id="" class="btn btn-primary continue-btn">Delete</a>
+                        <input type="hidden" name="project-id" id="project_id" value="" />
                      </div>
                      <div class="col-6">
                         <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
@@ -635,7 +636,55 @@
    <!-- /Task Followers Modal -->
 </div>
 <!-- /Page Wrapper -->
-<script></script>
+<script>
+  
+
+$(document).on('click','.delete',function(){
+         var id = $(this).attr('data-id');
+          $('#project_id').val(id);
+    });
+
+
+
+
+  function deleteProject(id){
+       var proj_id = $('#project_id').val()
+       console.log(proj_id);
+
+       
+         $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/deleteproject' : '#') }}";
+
+    $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:{id:proj_id},
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+
+
+
+  }
+
+
+</script>
 
 <script>
    function search(id){

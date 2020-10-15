@@ -73,8 +73,9 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('projects',  array('uses' => 'ProjectsController@index'));
         Route::get('project-list',  array('uses' => 'ProjectsController@projectlist'));
         Route::post('addprojects',  array('uses' => 'ProjectsController@addprojects'));
+        Route::get('project-view/{id}',  array('uses' => 'ProjectsController@getproject'));
 
-          Route::get('project-view/{id}',  array('uses' => 'ProjectsController@getproject'));
+        Route::post('deleteproject',  array('uses' => 'ProjectsController@deleteproject'));
 
         Route::post('getdepartmentmembers',  array('uses' => 'ProjectsController@getdepartmentmembers'));
         Route::post('getprojectmembersleaders',  array('uses' => 'ProjectsController@getprojectmembersleaders'));

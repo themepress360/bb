@@ -23,6 +23,10 @@ use App\Roles;
 use App\Tasks;
 use App\Projects;
 use App\Project_members;
+use App\Task_members;
+use App\Task_boards;
+use App\TaskHistory;
+use App\TaskHistoryFileUploads;
 
 
 
@@ -39,7 +43,7 @@ class ProjectsController extends CommonController
     {
         
  $projects = Projects::join('project_members', 'project_members.project_id','=', 'projects.id')->join('departments', 'departments.id','=',"projects.department")->where('is_leaders','1')->where('projects.deleted', '0')->get();
-       //   dd($projects);
+       //  dd($projects);
          
   $project_members = Projects::join('project_members', 'project_members.project_id','=', 'projects.id')->where('is_members','1')->where('projects.deleted', '0')->get()->toArray();
          // dd($project_members);
@@ -512,9 +516,32 @@ public function projectlist(){
      * @param  \App\projects  $projects
      * @return \Illuminate\Http\Response
      */
-    public function destroy(projects $projects)
+    public function deleteproject(Request $request)
     {
-        //
+        $id = $request['id'];
+
+        //dd($id);
+
+        $deleted = array(
+
+          'deleted' => '1',
+
+        );
+        
+        $project_deleted = Projects::where(['id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $project_members_deleted = Project_members::where(['project_id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $project_task_deleted = Tasks::where(['project_id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $project_taskHistory_deleted = TaskHistory::where(['project_id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $project_taskHistoryFileupload_deleted = TaskHistoryFileUploads::where(['project_id' => $id  , 'deleted' => '0', ])->update($deleted);
+
+               $status   = 200;
+               $response = array(
+                'status'  => 'SUCCESS',
+                'message' => trans('messages.project_deleted_success'),
+                'ref'     => 'project_deleted_success',
+               );
+             
+          
     }
 
 

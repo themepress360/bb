@@ -57,6 +57,8 @@ return [
   'file_delete_success' => 'File Deleted Successfully',
   'error_file_not_found' => 'File Not Found',
   'error_department_id_invalid' => 'Department id is invalid',
-  'getprojectmembersleaders_success' => 'get all leaders and members'
+  'getprojectmembersleaders_success' => 'get all leaders and members',
+  'project_deleted_success' => 'Project Deleted Successfully'
+
 
 ];
