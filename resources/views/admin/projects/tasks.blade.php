@@ -78,15 +78,16 @@
                            <tbody>
                               @foreach($tasks as $index => $task)								 
                               @if($task->project_id == $project->id)
-                              <tr id="task-list" style="background-color:#fff" value="{{$task->id}}" onClick="openTask('{{$task->id}}')">
+                             
+                                                             
+                              <tr id="task-list" style="background-color:#fff" onClick="openTask('{{$task->id}}')" >
+                                                                                        
                                  <td class="task">
-                                    <div class="task-container">
-                                       <span class="task-action-btn task-check">
-                                       <span class="action-circle large complete-btn" title="Mark Complete">
-                                       <i class="material-icons">check</i>
-                                       </span>
-                                       </span>
-                                       <span class="task-label" contenteditable="true">{{$task->task_title}}</span>
+                                     <div class="task-container">
+                                       <span id="task-id" class="action-circle large delete-btn m-l-5 m-r-10" value="{{$task->id}}" title="Delete Task"  data-toggle="modal" data-target="#delete_project" >
+                                       <i class="material-icons">delete</i>
+                                     </span>
+                                         <span class="task-label" contenteditable="true" >{{$task->task_title}}</span>
                                     </div>
                                  </td>
                                  @foreach($employees as $employee)
@@ -667,6 +668,78 @@
    <!-- /Page Wrapper -->
 </div>
 <!-- /Main Wrapper -->
+ <!-- Delete Project Modal -->
+            <div class="modal custom-modal fade" id="delete_project" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-header">
+                                <h3>Delete Project</h3>
+                                <p>Are you sure want to delete?</p>
+                            </div>
+                            <div class="modal-btn delete-action">
+                                <div class="row">
+                                    <div class="col-6">
+                                       <a href="javascript:void(0);"  onClick="deleteTask()" data-id="" class="btn btn-primary continue-btn">Delete</a>
+                        <input type="hidden" name="task-id" id="task_id" value="" />
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Delete Project Modal -->
+
+
+
+<script>
+$(document).on('click','#task-id',function(){
+         var id = $(this).attr('value');
+         console.log(id);
+
+          $('#task_id').val(id);
+    });
+  function deleteTask(){
+       var task_id = $('#task_id').val()
+       console.log(task_id);
+
+       
+         $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/deletetask' : '#') }}";
+
+    $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:{id:task_id},
+                    success: function(response)
+                    {
+                        if(response.status == "SUCCESS")
+                        {
+                            toastr['success'](response.message);
+                            window.location = "";
+                        }
+                        else
+                        {
+                            toastr['error'](response.message);
+                        }    
+                    }
+                    
+                }); 
+
+  }
+</script>
+
+
+
 <script>
    $('#followers li').on('click', function(){
    

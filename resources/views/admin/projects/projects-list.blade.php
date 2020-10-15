@@ -523,16 +523,10 @@
          <!-- /Page Wrapper -->
 
 <script>
-  
-
 $(document).on('click','.delete',function(){
          var id = $(this).attr('data-id');
           $('#project_id').val(id);
     });
-
-
-
-
   function deleteProject(id){
        var proj_id = $('#project_id').val()
        console.log(proj_id);
@@ -565,11 +559,7 @@ $(document).on('click','.delete',function(){
                     
                 }); 
 
-
-
   }
-
-
 </script>
 <script>
    function search(id){

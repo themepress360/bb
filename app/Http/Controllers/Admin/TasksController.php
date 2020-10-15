@@ -490,10 +490,7 @@ class TasksController extends CommonController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+    
 
     public function addfollowers(Request $request)
     {
@@ -789,6 +786,43 @@ class TasksController extends CommonController
 
 
 
+    }
+
+
+    public function deleteTask(Request $request)
+    {
+        $id = $request['id'];
+       // dd($id);
+
+
+        $deleted = array(
+
+          'deleted' => '1',
+
+        );
+        
+        $task_deleted = Tasks::where(['id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $task_members_deleted = Task_members::where(['task_id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $task_taskHistory_deleted = TaskHistory::where(['task_id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $task_taskHistoryFileupload_deleted = TaskHistoryFileUploads::where(['task_id' => $id  , 'deleted' => '0', ])->update($deleted);
+
+               $status   = 200;
+               $response = array(
+                'status'  => 'SUCCESS',
+                'message' => trans('messages.task_deleted_success'),
+                'ref'     => 'task_deleted_success',
+               );
+
+               $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+             
     }
 
 }

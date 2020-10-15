@@ -90,6 +90,8 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('addfollowers', array('uses' => 'TasksController@addfollowers'));
         Route::post('updatetaskduedate', array('uses' => 'TasksController@updateDueDate'));
 
+         Route::post('deletetask', array('uses' => 'TasksController@deleteTask'));
+
         Route::post('completetask', array('uses' => 'TasksController@completeTask'));
 
         Route::get('task-board', array('uses' => 'TaskBoardController@getTaskboard'));
