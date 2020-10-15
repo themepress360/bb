@@ -55,6 +55,8 @@ return [
   'folder_created_success' => 'Folder Created Successfully',
   'error_folder_exists' => 'Folder Already Exists',
   'file_delete_success' => 'File Deleted Successfully',
-  'error_file_not_found' => 'File Not Found'
+  'error_file_not_found' => 'File Not Found',
+  'error_department_id_invalid' => 'Department id is invalid',
+  'getprojectmembersleaders_success' => 'get all leaders and members'
 
 ];

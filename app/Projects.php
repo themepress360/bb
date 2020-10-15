@@ -90,4 +90,24 @@ class Projects extends Model
             }
         }
     } 
+
+    static function getprojectmembersleadersValidation($requestData)
+    {
+        $validate = array(
+            "status"   => true,
+            "message"  => "",
+            "ref"      => "",
+        );
+        $project = self::where(['id' => (int) $requestData['project_id'],"status" => '1', "deleted" => '0'])->first();
+        if(empty($project))
+        {
+          $validate['status']  = false;
+          $validate['message'] = trans('messages.error_project_id_invalid');
+          $validate['ref']     = "error_project_id_invalid";
+          return $validate;
+        }
+        $validate['project'] = $project;
+        return $validate;
+    } 
+
 }

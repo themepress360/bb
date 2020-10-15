@@ -572,7 +572,8 @@
                         <div class="col-sm-6">
                            <div class="form-group">
                               <label>Projects<span class="text-danger">*</span></label>
-                              <select class="select" name="project_id">
+                              <select class="select" name="project_id" onchange="getprojectmembers(this)">
+                                  <option value="" selected disabled>Select Project</option>
                                  @foreach($projects as $project)
                                  <option  value="{{$project->id}}">{{ucwords($project->project_title)}}</option>
                                  @endforeach
@@ -873,5 +874,64 @@
    
    });
    
+</script>
+<script type="text/javascript">
+  function getprojectmembers(ele)
+  {
+    var project_id = ele.value;
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    var url = "{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/getprojectmembersleaders' : '#') }}";
+    $.ajax({
+      type: "POST",
+      async: false,
+      url: url,    
+      data: {project_id:project_id},     
+      success: function(response)
+      {
+        if(response.status == "SUCCESS")
+        {
+            $('#assign').html('');
+            if(response.data.project_members.length != 0)
+            {
+              var team_lead_html = "";
+              for(var i=0;i<response.data.project_members.length;i++)
+              {
+                team_lead_html += '<li id="'+response.data.project_members[i].user_id+'"><a href="#"><div class="media">';
+
+                if(response.data.project_members[i].profile_image.length > 0)
+                {
+                  team_lead_html += '<a onclick="return false" href="#" class="avatar" title="'+response.data.project_members[i].name+'"><img src="'+response.data.project_members[i].profile_image_url+'" alt="'+response.data.project_members[i].name+'"></a>';  
+                }
+                else
+                {
+                  team_lead_html += '<div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character"><span class="symbol-label font-size-h3 font-weight-boldest">'+response.data.project_members[i].name.substring(0, 1) +'</span></div>';
+                }
+                  
+                team_lead_html += '<div class="media-body media-middle text-nowrap"><div class="user-name">'+response.data.project_members[i].name+'</div><span class="designation">'+response.data.project_members[i].role+'</span></div>';
+                                          
+                                          
+                team_lead_html += '</div></a></li>';                                                 
+              }
+              $('#assign').html(team_lead_html);
+              $('#assigned-to').html('');
+              total_members = 0;
+              $('#total_members').html('+'+total_members);
+            }
+            else
+            {
+              toastr['error']('In this department there is no team lead');
+            }
+        }
+        else
+        {
+          toastr['error'](response.message);
+        }    
+      }
+    });
+  }
 </script>
 @endsection

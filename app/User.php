@@ -9,6 +9,7 @@ use Storage;
 use File;
 use Image;
 use Roles;
+use \Carbon\Carbon as Carbon;
 
 class User extends Authenticatable
 {
@@ -68,15 +69,52 @@ class User extends Authenticatable
     }
 
 
-public function employee() {
+    public function employee() {
       
        return $this->hasOne('App\Employees');
 
    }
 
 
+    public static function  DatetoUTC($timezone = '')
+    {
+        $login_data_time = Carbon::now($timezone)->toDateTimeString();
+        $utcdatetime = Carbon::parse($login_data_time, $timezone)->setTimezone('UTC')->format("Y-m-d H:i:s");
+        return $utcdatetime;
+    }
 
+    public static function UTCToDate($localTime, $timezone = '')
+    {
+        
+        if ($timezone == '') {
+            $userLocation = static::userLocation();
+            $timezone     = $userLocation->time_zone;
+        }
+        return $data['modified_timestamp'] = Carbon::createFromFormat('Y-m-d H:i:s', $localTime, 'UTC')->setTimezone($timezone)->format('Y-m-d H:i:s');
+    }
 
+    public static function userLocation()
+    {
+        $userLocation = session()->get('userLocation');
+        if (!$userLocation) {
+            $userLocation = static::getLocation($_SERVER["REMOTE_ADDR"] == "::1" ? '103.24.99.166' : $_SERVER["REMOTE_ADDR"]);
+            session()->put('userLocation', $userLocation);
+            $userLocation = session()->get('userLocation');
+        }
+        elseif($userLocation->time_zone=='')
+        {
+            $userLocation = static::getLocation('103.24.99.166');
+            session()->put('userLocation', $userLocation);
+            $userLocation = session()->get('userLocation');         
+        }
+        return $userLocation;
+    }
 
+    public static function getUserLocation()
+    {
+        $ip = $_SERVER["REMOTE_ADDR"] == "127.0.0.1" ? '110.39.229.74' : $_SERVER["REMOTE_ADDR"];
+        $details = json_decode(file_get_contents("https://ipinfo.io/{$ip}/json"));
+        return $details->timezone;
+    }
    
 }
