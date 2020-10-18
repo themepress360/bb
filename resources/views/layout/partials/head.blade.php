@@ -56,6 +56,7 @@
         
         <script src="{{asset('js/jquery-3.2.1.min.js')}}" type='application/javascript'></script> 
 
+        <link href='https://cdn.jsdelivr.net/npm/froala-editor@3.1.0/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
 
         
     </head>

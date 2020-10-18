@@ -8980,3 +8980,139 @@ color:#fff;
 .task{
 	width:500px;
 }
+
+.timeline-comment {
+    position: relative;
+    color: #24292e;
+    background-color: #f1f8ff;
+    border: 1px solid #d1d5da;
+    border-radius: 6px;
+   
+    margin-bottom:20px;
+   
+}
+
+.comment-editor {
+    position: relative;
+    color: #24292e;
+    background-color: #f5f5f5;
+    border: 1px solid #d1d5da;
+    border-radius: 6px;
+   
+    margin-bottom:20px;
+   
+}
+
+.m-r-50 {
+    margin-left: 50px;
+}
+
+.border-md {
+    border: 1px solid #c0d3eb !important;
+}
+
+
+.timeline-comment--caret::before {
+    border-width: 8px;
+    border-left-color: #c0d3eb !important;
+}
+.timeline-comment--caret::before {
+    position: absolute;
+    top: 11px;
+    right: 100%;
+    left: 1166px;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    content: " ";
+    border-color: transparent;
+    border-style: solid solid outset;
+}
+.comment{
+	padding:10px;
+}
+
+.timeline-comment--caret-left::before {
+    border-width: 8px;
+    border-right-color: #c0d3eb !important;
+}
+.timeline-comment--caret-left::before {
+    position: absolute;
+    top: 11px;
+    right: 100%;
+    left: -16px;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    content: " ";
+    border-color: transparent;
+    border-style: solid solid outset;
+}
+
+.timeline-comment--caret-editor::before {
+    border-width: 8px;
+    border-right-color: #d1d5da !important;
+}
+.timeline-comment--caret-editor::before {
+    position: absolute;
+    top: 11px;
+    right: 100%;
+    left: -16px;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    content: " ";
+    border-color: transparent;
+    border-style: solid solid outset;
+}
+.timeline-comment-header {
+    border-color: #e1e4e8;
+}
+
+.timeline-comment-header {
+  
+    align-items: center;
+    padding-right: 16px;
+    padding-left: 16px;
+    flex-direction: row-reverse;
+    background-color: #f6f8fa;
+    border-bottom: 1px solid #d1d5da;
+        border-bottom-color: rgb(209, 213, 218);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin-top: 10px;
+    overflow: hidden;
+	padding-bottom: 10px;
+}
+
+.comment-reply-right{
+	float:right;
+}
+
+.timelineItem::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 2px;
+    content: "";
+    background-color: #e1e4e8;
+}
+
+.ticket-navbar{
+
+    position: relative;
+    display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+    
+}
+
+.ticket-fixed-header{
+	background-color: #fff;
+border-bottom: 1px solid #eaeaea;
+padding: 10px 15px;
+display: flex;
+justify-content: space-between;
+}
