@@ -126,7 +126,7 @@
 												<a class="link attach-icon" href="#" style="position:absolute;bottom:25px">
 								               <span class="btn-file">
 								               <input multiple="" type="file" class="upload" name="attachment[]" id="attachment">
-								               <img type="file" src="http://127.0.0.1:8000/img/attachment.png" alt=""></span>
+								               <img type="file" src="{{asset('/img/attachment.png')}}" alt=""></span>
 								               </a>
 								           </div>
 											    
