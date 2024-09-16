@@ -40,8 +40,7 @@ class EmployeeController extends CommonController
 
         $data['employees_list'] = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get()->toArray();
     
-           
-        // dd($data['employees_list']);
+         //  dd($profile_details);
 
         if(!empty($data['employees_list']))
         {
@@ -287,6 +286,7 @@ $data['employee'] = User::Select('users.*','departments.prefix', 'departments.na
            $edit_user_data = array(
                         'name'  => trim($requestData['first_name'])." ".trim($requestData['last_name']),
                         'phone_no' => trim($requestData['phone_no']),
+                        'email'    => strtolower($requestData['email']),
                         'address'  => trim($requestData['address']),
                         'state'    => trim($requestData['state']),
                         'country'  => trim($requestData['country']),

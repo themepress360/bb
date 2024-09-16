@@ -208,12 +208,30 @@
          <div class="col-md-6">
             <div class="project-members task-followers">
                <span class="followers-title">Followers</span>
-               @forelse ($project['task']['followers'] as $follower)
+              @foreach ($project['task']['followers'] as $follower)
+                 
+               @if(!empty($follower['profile_image_url']))
+                @if( $follower['profile_image_url'] != asset('/storage/profile_images/noimage.png'))
                <a class="avatar" href="#" data-toggle="tooltip" title="{{ucwords($follower['name'])}}">
                <img alt="{{ucwords($follower['name'])}}" src="{{$follower['profile_image_url']}}">
                </a>
-               @empty
-               @endforelse
+                   @else
+         <div class="symbol symbol-sm-35 symbol-primary m-r-10" id="name-character" data-toggle="tooltip" title="{{ucwords($follower['name'])}}">
+                                          <span class="symbol-label font-size-h3 font-weight-boldest">
+                                          {{ mb_substr($follower['name'], 0, 1) }}
+                                          </span>
+                                          </div>
+                                          @endif
+                                          @else
+                                            <div class="symbol symbol-sm-35 m-r-10" id="name-character" data-toggle="tooltip" title="{{ucwords($follower['name'])}}">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($follower['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                          @endif          
+               
+               @endforeach
                <a href="#" class="followers-add" data-toggle="modal" data-target="#task_followers"><i class="material-icons">add</i></a>
             </div>
          </div>
@@ -312,7 +330,8 @@
    	//console.log('Clicked 123')
      $("#task_window").removeClass("left-task-window");
      $("#main").removeClass("all-task-list");
-    // $("#task_window").addClass("closeTask");
+    $(".task-window").removeAttr("style","width:80%");
+     $(".task-main-wrapper").removeAttr("style","width:75%");
      
    }	
    

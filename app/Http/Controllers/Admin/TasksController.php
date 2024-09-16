@@ -39,16 +39,20 @@ class TasksController extends CommonController
     public function index()
     {
       
-       $projects = Projects::where('deleted','0')->get();
+      // $projects = Projects::where('deleted','0')->get();
 
+       $projects = Projects::Select('projects.*','projects.id as id', 'departments.id as dept_id', 'departments.name as department_name')->join('departments', 'departments.id','=',"projects.department")->where('projects.deleted', '0')->get();
+
+        //dd($projects);
       
        $tasks = Tasks::where('deleted', '0')->get();
 
        $task_status = Task_boards::where('deleted', '0')->get();
-       
-       //dd($tasks);
-                   
-        $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
+     //  dd($tasks);
+
+      //  $employees = User::Select('users.*','departments.prefix', 'departments.name as department_name', 'designations.name as designation_name' , 'role_name as role', 'employees.department_id', 'employees.designation_id', 'employees.role_id')->join('employees' , 'employees.user_id' , '=' ,'users.id')->join('departments','departments.id', '=', 'employees.department_id')->join('designations', 'designations.id' , '=' , 'employees.designation_id')->join('roles' , 'roles.id', '=', 'employees.role_id')->where(['type' => 'employee','users.deleted' => '0'])->get();
+
+        $employees = User::where('deleted','0')->get();
 
        
          if(!empty($employees) )
@@ -112,10 +116,12 @@ class TasksController extends CommonController
                 'assign_to' => !empty($members[0]) ? (int) $members[0] : 0 
               );
               $project = Projects::where(['id' => (int) $taskData['project_id'] ,"deleted" => '0'])->first();
-              if (!file_exists(config('app.folder').'/'.$project['project_title'])) {
-                  $project_folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'], 777, true, true);
+              if (!file_exists(config('app.folder').'/'.config('app.filemanagerfolder').'/'.$project['project_title'])) {
+                  $project_folder_create = Storage::makeDirectory(config('app.folder').'/'.config('app.filemanagerfolder').'/'.$project['project_title'], 777, true, true);
+                 
               }
-              $folder_create = Storage::makeDirectory(config('app.folder').'/'.$project['project_title'].'/'.strtolower($taskData['task_title']), 777, true, true);
+              $folder_create = Storage::makeDirectory(config('app.folder').'/'.config('app.filemanagerfolder').'/'.$project['project_title'].'/'.strtolower($taskData['task_title']), 777, true, true);
+
               $add_task =  Tasks::create($task_data);
               if($add_task)
               {    
@@ -160,6 +166,17 @@ class TasksController extends CommonController
                     $add_members = Task_members::create($task_members);
                   }
                 }
+                $task_data_email = array(
+                  'task_title'   => strtolower($task_id['task_title']),
+                  'description'  => $task_id['description'],
+                  'due_date'     => $task_id['due_date'],
+                  'priority'     => $task_id['priority'],
+                  'team_members' => $taskData['team_members'],
+                  'mydetail'     => $mydetail,
+                  'assign_to'    => $add_task['assign_to'],
+                  'project'      => $project
+                );
+                Tasks::EmailAddTask($task_data_email);
                 $status   = 200;
                 $response = array(
                  'status'  => 'SUCCESS',
@@ -285,7 +302,7 @@ class TasksController extends CommonController
                         {
                           $attachments[] = array(
                             "attachment_name"     => $file_value['attachment_name'],
-                            "attachment_name_url" => TaskHistoryFileUploads::file_url($window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$file_value['attachment_name']),
+                            "attachment_name_url" => TaskHistoryFileUploads::file_url(config('app.filemanagerfolder').'/'.$window_data['project']['project_title'].'/'.$window_data['project']['task']['task_title'],$file_value['attachment_name']),
                           );
                         }
                         $task_histories[$key]['attachments'] = $attachments; 
@@ -473,10 +490,7 @@ class TasksController extends CommonController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+    
 
     public function addfollowers(Request $request)
     {
@@ -772,6 +786,43 @@ class TasksController extends CommonController
 
 
 
+    }
+
+
+    public function deleteTask(Request $request)
+    {
+        $id = $request['id'];
+       // dd($id);
+
+
+        $deleted = array(
+
+          'deleted' => '1',
+
+        );
+        
+        $task_deleted = Tasks::where(['id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $task_members_deleted = Task_members::where(['task_id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $task_taskHistory_deleted = TaskHistory::where(['task_id' => $id  , 'deleted' => '0', ])->update($deleted);
+        $task_taskHistoryFileupload_deleted = TaskHistoryFileUploads::where(['task_id' => $id  , 'deleted' => '0', ])->update($deleted);
+
+               $status   = 200;
+               $response = array(
+                'status'  => 'SUCCESS',
+                'message' => trans('messages.task_deleted_success'),
+                'ref'     => 'task_deleted_success',
+               );
+
+               $data = array_merge(
+            [
+                "code" => $status,
+                "message" =>$response['message']
+            ],
+            $response
+        );
+        array_walk_recursive($data, function(&$item){if(is_numeric($item) || is_float($item) || is_double($item)){$item=(string)$item;}});
+        return \Response::json($data,200);
+             
     }
 
 }

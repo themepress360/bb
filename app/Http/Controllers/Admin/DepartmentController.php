@@ -37,10 +37,25 @@ class DepartmentController extends CommonController
         if (!$validator->fails()) 
         {
             $requestData = $request->all();
+
+         //   dd($requestData);
+            $data['name'] = trim(strtolower($requestData['name']));
             $data['prefix'] = trim(strtolower($requestData['prefix']));
-            $is_prefix_exists = Department::where(['prefix' => $data['prefix'],"deleted" => '0'])->first();  
-            if(empty($is_prefix_exists))
+
+            $is_department_exists = Department::where(['name' => $data['name'], "deleted" => '0'])->first();
+
+           //dd($is_department_exists);
+                    
+
+            if(empty($is_department_exists))
             {
+               
+                $is_prefix_exists = Department::where(['prefix' => $data['prefix'],"deleted" => '0'])->first();
+
+               // dd($is_prefix_exists);
+
+                if(empty($is_prefix_exists))
+                {
                 $data['name'] = trim(strtolower($requestData['name']));
                 $data['deleted'] = '0';
                 $data['status']   = '1';
@@ -63,8 +78,7 @@ class DepartmentController extends CommonController
                         'ref'     => 'server_error'
                     );
                 }
-            }
-            else
+            }else
             {
                 $status = 400;
                 $response = array(
@@ -72,7 +86,20 @@ class DepartmentController extends CommonController
                     'message' => trans('messages.error_prefix_exists'),
                     'ref'     => 'error_prefix_exists'
                 );  
-            }        
+            } 
+
+        }
+            else
+            {
+                $status = 400;
+                $response = array(
+                    'status'  => 'FAILED',
+                    'message' => trans('messages.error_department_exists'),
+                    'ref'     => 'error_department_exists'
+                );  
+            } 
+
+
         } else {
             $status = 400;
             $response = array(

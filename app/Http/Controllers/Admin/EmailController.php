@@ -24,7 +24,7 @@ class EmailController extends CommonController
     public function index()
     {
             
-            $mbox = imap_open("{imap.gmail.com:993/imap/ssl}INBOX", "themepress360@gmail.com", "Master@81");
+            $mbox = imap_open("{imap.gmail.com:993/imap/ssl}INBOX", "", "");
 
              $unread = imap_search($mbox,'UNSEEN');
 
@@ -47,7 +47,7 @@ class EmailController extends CommonController
         
         $mail_id = $id;
 
-        $mbox = imap_open("{imap.gmail.com:993/imap/ssl}INBOX", "themepress360@gmail.com", "Master@81");
+        $mbox = imap_open("{imap.gmail.com:993/imap/ssl}INBOX", "", "");
 
         $mailBody = imap_fetchbody($mbox, $mail_id, 1.1);
 
@@ -202,7 +202,7 @@ $totalMessages = Session::get('lastmsgNo');
 $showMessages = 10;
 
 
-$mbox = imap_open("{imap.gmail.com:993/imap/ssl}INBOX", "themepress360@gmail.com", "Master@81");
+$mbox = imap_open("{imap.gmail.com:993/imap/ssl}INBOX", "", "");
 
 $result = array_reverse(imap_fetch_overview($mbox,($totalMessages-$showMessages+1).":".$totalMessages));
 

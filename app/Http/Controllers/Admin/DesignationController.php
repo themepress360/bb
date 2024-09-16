@@ -39,8 +39,14 @@ class DesignationController extends CommonController
         if (!$validator->fails()) 
         {
             $requestData = $request->all();
-            $department = Department::where(['id' => (int) $requestData['department_id'],"deleted" => '0'])->first();
-            if(!empty($department))
+            //dd($requestData);
+            $data['name'] = trim(strtolower($requestData['name']));
+
+            $is_department_exists = Designation::where(['name' => $data['name'], "deleted" => '0'])->first();;
+            
+             // dd( $is_department_exists);
+
+            if(empty($is_department_exists))
             {    
                 $data['name'] = trim(strtolower($requestData['name']));
                 $data['deleted'] = '0';
@@ -71,8 +77,8 @@ class DesignationController extends CommonController
                 $status = 400;
                 $response = array(
                     'status'  => 'FAILED',
-                    'message' => trans('messages.error_invalid_department_id'),
-                    'ref'     => 'error_invalid_department_id'
+                    'message' => trans('messages.designation_exists'),
+                    'ref'     => 'error_designation_exists'
                 );
             }        
         } else {

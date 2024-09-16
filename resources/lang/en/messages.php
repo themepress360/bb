@@ -15,7 +15,9 @@ return [
   'designation_edit_success'   => 'Edit Designation successfully.',
   'error_invalid_designation_id' => 'Invalid Designation Id.',
   'designation_deleted_success' => 'Deleted Designation successfully.',
+  'designation_exists' => 'Designation Already Exsists',
   'error_prefix_exists' => 'Prefix already exists.',
+  'error_department_exists' => 'Department already exists.',
   'education_information_add_success' => 'Education information save successfully.',
   'experience_add_success' => 'Experiences save successfully.',
   'error_client_email_exists' => 'Client already exists in this email address.',
@@ -50,6 +52,16 @@ return [
   'error_project_id_invalid' => "Project id is invalid",
   "error_start_date_invalid" => "Project start date is less as comapre to due date",
   "error_end_date_invalid" => "Project end date is greater as comapre to due date",
-  "error_empty_task_description_and_attachement" => "Atleast Comment or attachment one field is required"
+  "error_empty_task_description_and_attachement" => "Atleast Comment or attachment one field is required",
+  'getfolders_add_success' => 'Loading',
+  'folder_created_success' => 'Folder Created Successfully',
+  'error_folder_exists' => 'Folder Already Exists',
+  'file_delete_success' => 'File Deleted Successfully',
+  'error_file_not_found' => 'File Not Found',
+  'error_department_id_invalid' => 'Department id is invalid',
+  'getprojectmembersleaders_success' => 'get all leaders and members',
+  'project_deleted_success' => 'Project Deleted Successfully',
+  'task_deleted_success' => 'Task Deleted Successfully'
+
 
 ];

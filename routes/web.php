@@ -65,7 +65,7 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('employee-profile/{id}', array('uses' => 'EmployeeController@getprofile'));
         Route::post('editemployee', array('uses' => 'EmployeeController@editEmployee'));
         Route::get('employees-list', array('uses' => 'EmployeeController@employeelist'));
-
+        
         Route::post('saveEmpEducation', array('uses' => 'EducationInformationController@saveEmpEducation'));
         Route::post('saveEmpExperience', array('uses' => 'ExperienceController@saveEmpExperience'));
 
@@ -73,6 +73,13 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('projects',  array('uses' => 'ProjectsController@index'));
         Route::get('project-list',  array('uses' => 'ProjectsController@projectlist'));
         Route::post('addprojects',  array('uses' => 'ProjectsController@addprojects'));
+        Route::get('project-view/{id}',  array('uses' => 'ProjectsController@getproject'));
+
+        Route::post('deleteproject',  array('uses' => 'ProjectsController@deleteproject'));
+
+        Route::post('getdepartmentmembers',  array('uses' => 'ProjectsController@getdepartmentmembers'));
+        Route::post('getprojectmembersleaders',  array('uses' => 'ProjectsController@getprojectmembersleaders'));
+
 
         Route::get('tasks', array('uses' => 'TasksController@index'));
         Route::post('addtasks', array('uses' => 'TasksController@addTask'));
@@ -81,9 +88,11 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
         Route::post('addtaskhistory', array('uses' => 'TaskHistoryController@addtaskhistory'));
         Route::post('addfollowers', array('uses' => 'TasksController@addfollowers'));
-         Route::post('updatetaskduedate', array('uses' => 'TasksController@updateDueDate'));
+        Route::post('updatetaskduedate', array('uses' => 'TasksController@updateDueDate'));
 
-         Route::post('completetask', array('uses' => 'TasksController@completeTask'));
+         Route::post('deletetask', array('uses' => 'TasksController@deleteTask'));
+
+        Route::post('completetask', array('uses' => 'TasksController@completeTask'));
 
         Route::get('task-board', array('uses' => 'TaskBoardController@getTaskboard'));
         Route::post('getprojecttaskboard', array('uses' => 'TaskBoardController@getprojecttaskboard'));
@@ -95,9 +104,27 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
 
         Route::get('inbox', array('uses' => 'EmailController@index'));
         Route::get('mail-view/{id}', array('uses' => 'EmailController@showMessage'));
-         Route::post('nextmessages', array('uses' => 'EmailController@listmessages'));
-       
+        Route::post('nextmessages', array('uses' => 'EmailController@listmessages'));
+
+        Route::get('file-manager', array('uses' => 'FilemanagerController@index'));
+        Route::post('gettaskfolders', array('uses' => 'FilemanagerController@gettaskfolders'));
+        Route::post('gettaskfiles', array('uses' => 'FilemanagerController@gettaskfiles'));
+        Route::post('createfolder', array('uses' => 'FilemanagerController@createFolder'));
+
+        Route::post('uploadfiles', array('uses' => 'FilemanagerController@uploadFiles'));
+        Route::post('deletefile', array('uses' => 'FilemanagerController@deleteFile'));
+              
                         
+
+
+        Route::get('chat', array('uses' => 'ChatController@getchats'));
+        Route::post('addchat', array('uses' => 'ChatController@addchat'));
+        Route::post('chattingwindow', array('uses' => 'ChatController@chattingwindow'));
+        Route::post('sendmessage', array('uses' => 'ChatController@sendmessage'));
+        // Route::get('chat', function () {
+        //     return view('admin.apps.chat.index');
+        // });                  
+
     });
 
     Route::group(
@@ -105,6 +132,12 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::get('dashboard', array('uses' => 'DashboardController@index'));
         Route::get('profile', array('uses' => 'ProfileController@index'));
         Route::post('editprofile',array('as' => 'client.editprofile','uses' => 'ProfileController@editprofile'));
+
+        Route::get('chat', array('uses' => 'ChatController@getchats'));
+        Route::post('addchat', array('uses' => 'ChatController@addchat'));
+        Route::post('chattingwindow', array('uses' => 'ChatController@chattingwindow'));
+        Route::post('sendmessage', array('uses' => 'ChatController@sendmessage'));
+        
     });
 
     Route::group(
@@ -119,6 +152,11 @@ Route::get('logout', array('uses' => 'Auth\LoginController@doLogout'));
         Route::post('gettaskwindow', array('uses' => 'TasksController@gettaskwindow'));
         Route::post('addtaskhistory', array('uses' => 'TaskHistoryController@addtaskhistory'));
         Route::post('completetask', array('uses' => 'TasksController@completeTask'));
+
+        Route::get('chat', array('uses' => 'ChatController@getchats'));
+        Route::post('addchat', array('uses' => 'ChatController@addchat'));
+        Route::post('chattingwindow', array('uses' => 'ChatController@chattingwindow'));
+        Route::post('sendmessage', array('uses' => 'ChatController@sendmessage'));
 
        });
 //});
@@ -150,15 +188,6 @@ Route::get('/admin/passwordreset', function () {
         return view('admin.emails.ResetPasswordEmail');
     });
 
-
-
-
-Route::get('/admin/chat', function () {
-        return view('admin.apps.chat.index');
-    });
-
-
-
 Route::get('/admin/voice-call', function () {
         return view('admin.apps.calls.voice-call');
     });
@@ -181,14 +210,6 @@ Route::get('/admin/leads', function () {
 
 
 
-Route::get('/admin/projects-list', function () {
-        return view('admin.projects.projects-list');
-    });
-Route::get('/admin/project-view', function () {
-        return view('admin.projects.project-view');
-    });
-
-
 Route::get('/admin/tickets', function () {
         return view('admin.tickets.index');
     });
@@ -208,9 +229,7 @@ Route::get('/admin/contacts', function () {
 Route::get('/admin/events', function () {
         return view('admin.apps.calender.index');
     });
-Route::get('/admin/file-manager', function () {
-        return view('admin.apps.filemanager.index');
-    });
+
 
 
 
@@ -220,9 +239,7 @@ Route::get('/admin/file-manager', function () {
 //Route::get('/employee/profile', function () {
   //      return view('employees.profile.index');
     //});
-Route::get('/employee/chat', function () {
-        return view('employees.apps.chat.index');
-    });
+
 
 Route::get('/employee/voice-call', function () {
         return view('employees.apps.calls.voice-call');
@@ -289,9 +306,9 @@ Route::get('/employee/file-manager', function () {
 
 
 
-Route::get('/client/chat', function () {
-        return view('clients.apps.chat.index');
-    });
+// Route::get('/client/chat', function () {
+//         return view('clients.apps.chat.index');
+//     });
 
 Route::get('/client/voice-call', function () {
         return view('clients.apps.calls.voice-call');

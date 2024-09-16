@@ -15,7 +15,10 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "^6.1",
-         "intervention/image": "2.*"
+         "intervention/image": "2.*",
+        "workerman/workerman" : ">=3.5.16",
+        "workerman/channel" : ">=1.0.0",
+        "workerman/phpsocket.io": "^1.1"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

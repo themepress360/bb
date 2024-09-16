@@ -81,16 +81,26 @@
                                                 
                                                 
                             @if(!empty($employee['profile_image_url']))
+                              @if( $employee['profile_image_url'] != asset('/storage/profile_images/noimage.png'))
                              <a href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'.$employee['id'] : '#') }}" class="avatar">
                                 <img src="{{{$employee['profile_image_url']}}}" alt="{{isset($employee->name) ? ucwords($employee->name) : '-'}}">
                             @else
-                               <div class="symbol symbol-sm-35 symbol-primary m-r-10">
-                                             <span class="symbol-label font-size-h3 font-weight-boldest">
+                               <div class="symbol symbol-sm-35 m-r-10" id="name-character">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
+                                                {{ mb_substr($employee['name'], 0, 1) }}
+                                                    
+                                             </span>
+                                            </div>
+                                             @endif
+                                            @else
+                                            <div class="symbol symbol-sm-35 m-r-10" id="name-character">
+                                             <span class="symbol-label font-size-h3 font-weight-boldest letter-text">
                                                 {{ mb_substr($employee['name'], 0, 1) }}
                                                     
                                              </span>
                                             </div>
 
+                                           
                             @endif
                            </a>
 
@@ -112,7 +122,7 @@
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    <a class="dropdown-item" href="{{ URL::to(isset(Auth::user()->type) ? Auth::user()->type.'/employee-profile/'. $employee['id'] : '#') }}"  ><i class="fa fa-eye m-r-5"></i> View</a>
                                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                 </div>
                                             </div>
@@ -589,4 +599,6 @@
                 }); 
             }
         </script>
+
+        <script src="{{asset('js/name-letter.js')}}" type='application/javascript'></script>
 @endsection
